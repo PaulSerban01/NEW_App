@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="manifest" href="../manifest.json">
+  <title>Dash Ops — UI Preview</title>
+  <link rel="stylesheet" href="../design-system.css">
+  <style>
+    .preview-root { display: flex; height: calc(100vh - 40px); gap: 0; margin-top: 40px; }
+    .panel-mobile { width: 420px; flex-shrink: 0; padding: 24px 16px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; display: flex; flex-direction: column; align-items: center; }
+    .panel-desktop { flex: 1; padding: 24px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; }
+    .panel-spec { width: 340px; flex-shrink: 0; padding: 24px 20px; overflow-y: auto; background: #fafafa; font-size: 14px; line-height: 1.6; }
+    .toggle-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 8px 16px; display: flex; gap: 8px; align-items: center; height: 40px; }
+    .toggle-bar button { padding: 4px 14px; border-radius: 6px; border: 1px solid #d4d4d4; cursor: pointer; font-size: 14px; background: transparent; color: var(--brand-text-primary); }
+    .toggle-bar button.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+    .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
+    .browser-dots { display: flex; gap: 6px; }
+    .browser-dots span { width: 12px; height: 12px; border-radius: 50%; }
+    .browser-dots span:nth-child(1) { background: #FF5F57; }
+    .browser-dots span:nth-child(2) { background: #FFBD2E; }
+    .browser-dots span:nth-child(3) { background: #28CA41; }
+    .browser-url { flex: 1; background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; padding: 4px 10px; font-size: 13px; color: #888; }
+    .browser-screen { background: var(--brand-background); min-height: 600px; overflow-y: auto; }
+    .spec-section { margin-bottom: 20px; }
+    .spec-section h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 8px; }
+    #ctx-list{padding:8px 12px;}
+    .ctx-item{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;font-size:14px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);margin-bottom:8px;transition:all 0.15s;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+    .ctx-item:active{transform:scale(0.98);box-shadow:0 0 0 2px var(--brand-primary-40);}
+    .ctx-item.selected{background:var(--brand-hover-bg);border-color:var(--brand-primary);box-shadow:0 0 0 2px var(--brand-primary-20);}
+    .ctx-item .ctx-badge{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.15);}
+    .ctx-item .ctx-info{flex:1;min-width:0;}
+    .ctx-item .ctx-name{font-size:15px;font-weight:700;color:var(--brand-text-primary);}
+    .ctx-item .ctx-desc{font-size:13px;color:var(--brand-text-muted);margin-top:2px;}
+    .ctx-item .ctx-arrow{font-size:17px;color:var(--brand-text-muted);flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--brand-surface);border-radius:50%;border:1px solid var(--brand-border);}
+    .ctx-item .ctx-check{color:var(--brand-primary);font-size:19px;font-weight:700;flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--brand-success-bg);border-radius:50%;}
+    .ctx-manage-actions{display:flex;gap:6px;flex-shrink:0;}
+    .ctx-manage-btn{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;border:none;}
+    .ctx-manage-btn.edit{background:var(--brand-hover-bg);color:var(--brand-primary);}
+    .ctx-manage-btn.delete{background:var(--brand-danger-bg);color:var(--brand-danger);}
+    @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  </style>
+</head>
+<body>
+
+<div class="toggle-bar">
+  <span style="font-size:14px; font-weight:600; color:var(--brand-text-primary); margin-right:8px;">Dash Ops</span>
+  <button class="active" onclick="setView('both', this)">Both</button>
+  <button onclick="setView('mobile', this)">Mobile</button>
+  <button onclick="setView('desktop', this)">Desktop</button>
+  <span style="margin-left:auto; font-size:13px; color:#aaa;">ConnAgri &middot; FeatureForge Preview</span>
+</div>
+
+<div class="preview-root">
+  <div class="panel-mobile" id="panel-mobile">
+    <p style="font-size:13px; color:#aaa; margin-bottom:16px; text-align:center;">Mobile &mdash; 370px</p>
+    <div class="phone-chrome">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+
+        <div id="app-topbar" data-title="CONNAGRI" data-logo="true"></div>
+
+        <!-- Spatiu de lucru activ (copiat din Dashboard) -->
+        <div onclick="openContextSwitcher()" style="display:flex; align-items:center; gap:10px; padding:12px 14px; background:linear-gradient(135deg, var(--brand-surface) 0%, var(--brand-hover-bg) 100%); border-bottom:2px solid var(--brand-primary-40); flex-shrink:0; cursor:pointer; position:relative;">
+          <div style="width:40px; height:40px; border-radius:10px; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; flex-shrink:0; box-shadow:0 2px 8px rgba(0,104,106,0.3);">AV</div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:13px; font-weight:700; color:var(--brand-primary); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px;">Spatiu de lucru activ</div>
+            <div style="font-size:15px; font-weight:800; color:var(--brand-text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Agro Vest Holdings</div>
+            <div style="font-size:13px; color:var(--brand-text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px;">Firma A &rsaquo; PL ferma1</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:2px; flex-shrink:0;">
+            <div style="padding:6px 10px; border-radius:6px; background:var(--brand-primary); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,104,106,0.25);">Schimba &#9660;</div>
+          </div>
+        </div>
+
+        <!-- Context Switcher Popup (copiat 1:1 din Dashboard) -->
+        <div id="ctx-popup" style="display:none; position:absolute; inset:0; z-index:65;">
+          <div onclick="closeContextSwitcher()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1;"></div>
+          <div onclick="event.stopPropagation()" style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:75%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out; z-index:2;">
+            <div style="display:flex; align-items:center; padding:14px 16px; border-bottom:1px solid var(--brand-border); flex-shrink:0;">
+              <div id="ctx-back" onclick="ctxGoBack()" style="display:none; width:32px; height:32px; align-items:center; justify-content:center; cursor:pointer; font-size:19px; color:var(--brand-text-primary); margin-right:8px;">&#9664;</div>
+              <div id="ctx-title" style="flex:1; font-size:16px; font-weight:700; color:var(--brand-text-primary);">Spatiile mele de lucru</div>
+              <div id="ctx-manage-btn" onclick="toggleCtxManageMode()" style="padding:12px 14px; border-radius:var(--brand-radius); font-size:13px; font-weight:700; color:#fff; background:var(--brand-primary); cursor:pointer; margin-right:8px; box-shadow:0 2px 6px rgba(0,104,106,0.3); display:flex; align-items:center; gap:5px;"><span style="font-size:14px;">&#9881;</span> Gestioneaza</div>
+              <div onclick="closeContextSwitcher()" style="width:32px; height:32px; border-radius:50%; background:var(--brand-primary); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:17px; color:#fff; box-shadow:0 2px 6px rgba(0,104,106,0.3);">&times;</div>
+            </div>
+            <div id="ctx-search-bar" style="padding:8px 16px; border-bottom:1px solid var(--brand-border); flex-shrink:0;">
+              <input id="ctx-search" type="text" autocomplete="off" placeholder="Cauta firma, punct/grup de lucru..." oninput="ctxFilterDebounced(this.value)" style="width:100%; padding:10px 12px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); font-size:15px; outline:none;">
+            </div>
+            <div id="ctx-add-header" style="display:none; padding:8px 16px; border-bottom:1px solid var(--brand-border); flex-shrink:0;">
+              <div onclick="openCtxAddWs()" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); font-size:14px; font-weight:600; cursor:pointer;">+ Adauga spatiu de lucru</div>
+            </div>
+            <div id="ctx-list" style="flex:1; overflow-y:auto; scrollbar-width:none; -ms-overflow-style:none;"></div>
+          </div>
+        </div>
+
+        <!-- Add/Edit Workspace Popup -->
+        <div id="ctx-ws-form" style="display:none; position:absolute; inset:0; z-index:70;">
+          <div onclick="closeCtxWsForm()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1;"></div>
+          <div onclick="event.stopPropagation()" style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:80%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out; z-index:2;">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 16px 12px; border-bottom:1px solid var(--brand-border);">
+              <div id="ctx-ws-form-title" style="font-size:17px; font-weight:700; color:var(--brand-text-primary);">Adauga spatiu de lucru</div>
+              <div onclick="closeCtxWsForm()" class="close-btn">&times;</div>
+            </div>
+            <div style="flex:1; overflow-y:auto; padding:16px;">
+              <div style="margin-bottom:14px;">
+                <div style="font-size:13px; font-weight:600; color:var(--brand-text-muted); text-transform:uppercase; margin-bottom:6px;">Tip spatiu</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;" id="ws-type-grid">
+                  <div onclick="selectWsType(this,'complex')" class="ws-type-opt" style="padding:12px; border:2px solid var(--brand-primary); border-radius:var(--brand-radius); text-align:center; cursor:pointer; background:var(--brand-hover-bg);">
+                    <div style="font-size:23px; margin-bottom:4px;">&#127963;</div>
+                    <div style="font-size:13px; font-weight:600; color:var(--brand-primary);">Organizatie</div>
+                    <div style="font-size:13px; color:var(--brand-text-muted);">Grupuri, firme, puncte</div>
+                  </div>
+                  <div onclick="selectWsType(this,'simplu')" class="ws-type-opt" style="padding:12px; border:2px solid var(--brand-border); border-radius:var(--brand-radius); text-align:center; cursor:pointer;">
+                    <div style="font-size:23px; margin-bottom:4px;">&#127793;</div>
+                    <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Simplu</div>
+                    <div style="font-size:13px; color:var(--brand-text-muted);">Ferma, gradina, stupina</div>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-bottom:14px;">
+                <div style="font-size:13px; font-weight:600; color:var(--brand-text-muted); text-transform:uppercase; margin-bottom:4px;">Denumire</div>
+                <input id="ws-form-name" type="text" placeholder="Ex: Ferma Vest, Gradina mea..." style="width:100%; padding:10px 12px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); font-size:15px; outline:none;" />
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+                <div>
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-muted); text-transform:uppercase; margin-bottom:4px;">Initiale (2 litere)</div>
+                  <input id="ws-form-initials" type="text" maxlength="2" placeholder="AV" style="width:100%; padding:10px 12px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); font-size:15px; outline:none; text-transform:uppercase; font-weight:700; text-align:center;" />
+                </div>
+                <div>
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-muted); text-transform:uppercase; margin-bottom:4px;">Culoare</div>
+                  <div id="ws-color-grid" style="display:flex; flex-wrap:wrap; gap:6px; padding:4px 0;">
+                    <div onclick="selectWsColor(this,'#00686A')" class="ws-color-dot" style="width:28px; height:28px; border-radius:50%; background:#00686A; cursor:pointer; border:3px solid var(--brand-primary);"></div>
+                    <div onclick="selectWsColor(this,'#8B5E3C')" class="ws-color-dot" style="width:28px; height:28px; border-radius:50%; background:#8B5E3C; cursor:pointer; border:3px solid transparent;"></div>
+                    <div onclick="selectWsColor(this,'#1B5E20')" class="ws-color-dot" style="width:28px; height:28px; border-radius:50%; background:#1B5E20; cursor:pointer; border:3px solid transparent;"></div>
+                    <div onclick="selectWsColor(this,'#B7791F')" class="ws-color-dot" style="width:28px; height:28px; border-radius:50%; background:#B7791F; cursor:pointer; border:3px solid transparent;"></div>
+                    <div onclick="selectWsColor(this,'#6D28D9')" class="ws-color-dot" style="width:28px; height:28px; border-radius:50%; background:#6D28D9; cursor:pointer; border:3px solid transparent;"></div>
+                    <div onclick="selectWsColor(this,'#C0392B')" class="ws-color-dot" style="width:28px; height:28px; border-radius:50%; background:#C0392B; cursor:pointer; border:3px solid transparent;"></div>
+                    <div onclick="selectWsColor(this,'#0369A1')" class="ws-color-dot" style="width:28px; height:28px; border-radius:50%; background:#0369A1; cursor:pointer; border:3px solid transparent;"></div>
+                    <div onclick="selectWsColor(this,'#F57C00')" class="ws-color-dot" style="width:28px; height:28px; border-radius:50%; background:#F57C00; cursor:pointer; border:3px solid transparent;"></div>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-bottom:14px;">
+                <div style="font-size:13px; font-weight:600; color:var(--brand-text-muted); text-transform:uppercase; margin-bottom:4px;">Descriere (optional)</div>
+                <textarea id="ws-form-desc" placeholder="Scurta descriere a spatiului de lucru..." style="width:100%; padding:10px 12px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); font-size:14px; outline:none; min-height:50px; resize:vertical; font-family:var(--brand-font-sans);"></textarea>
+              </div>
+            </div>
+            <div style="padding:12px 16px; border-top:1px solid var(--brand-border); display:flex; gap:8px;">
+              <div onclick="closeCtxWsForm()" style="flex:1; padding:12px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); text-align:center; font-size:14px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;">Anuleaza</div>
+              <div onclick="saveCtxWs()" style="flex:1; padding:12px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:14px; font-weight:600; cursor:pointer;">&#10003; Salveaza</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Confirmation Popup -->
+        <div id="ctx-delete-confirm" style="display:none; position:absolute; inset:0; z-index:75;">
+          <div onclick="closeCtxDeleteConfirm()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1;"></div>
+          <div onclick="event.stopPropagation()" style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out; z-index:2;">
+            <div style="padding:24px 20px; text-align:center;">
+              <div style="width:48px; height:48px; border-radius:50%; background:var(--brand-danger-bg); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:23px;" id="ctx-delete-icon">&#128465;</div>
+              <div id="ctx-delete-heading" style="font-size:17px; font-weight:700; color:var(--brand-text-primary); margin-bottom:6px;">Sterge spatiul de lucru?</div>
+              <div id="ctx-delete-name" style="font-size:14px; color:var(--brand-text-muted); margin-bottom:4px;"></div>
+              <div id="ctx-delete-content"></div>
+            </div>
+            <div id="ctx-delete-actions" style="padding:12px 16px 20px; display:flex; gap:8px;"></div>
+          </div>
+        </div>
+
+        <div class="phone-scroll">
+          <div style="padding-top:12px;"></div>
+        </div>
+
+        <div id="app-bottombar"></div>
+        <script src="../bars.js"></script>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-desktop" id="panel-desktop">
+    <p style="font-size:13px; color:#aaa; margin-bottom:16px;">Desktop &mdash; full width</p>
+    <div class="browser-chrome">
+      <div class="browser-bar">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">connagri.app/dash_ops</div>
+      </div>
+      <div class="browser-screen" style="min-height:600px; display:flex; align-items:center; justify-content:center;">
+        <div style="text-align:center;">
+          <div style="font-size:65px; margin-bottom:16px; opacity:0.3;">opacity:0.3;">&#128101;#128202;</div>
+          <div style="font-size:21px; font-weight:600; color:var(--brand-text-muted); margin-bottom:8px;">Dash Ops</div>
+          <div style="font-size:15px; color:var(--brand-text-muted); opacity:0.6;">Continut in curs de dezvoltare</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-spec" id="panel-spec">
+    <div style="font-size:16px; font-weight:700; margin-bottom:4px; color:var(--brand-text-primary);">Dash Ops</div>
+    <div style="font-size:13px; color:#aaa; margin-bottom:20px;">Dashboard nou Angajati si colaboratori &middot; Spec Panelmiddot; Spec Panel</div>
+    <div class="spec-section">
+      <h3>Descriere</h3>
+      <p style="font-size:13px; color:#555;">Dashboard nou cu structura standard.</p>
+    </div>
+    <div class="spec-section">
+      <h3>Status</h3>
+      <p style="font-size:13px; color:var(--brand-primary); font-weight:600;">Preview activ</p>
+    </div>
+  </div>
+</div>
+
+<script src="../components.js"></script>
+<script>
+function setView(view, btn) {
+  document.querySelectorAll('.toggle-bar button').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  var m = document.getElementById('panel-mobile');
+  var d = document.getElementById('panel-desktop');
+  var s = document.getElementById('panel-spec');
+  m.style.display = (view === 'desktop') ? 'none' : 'flex';
+  d.style.display = (view === 'mobile') ? 'none' : 'block';
+  s.style.display = 'block';
+}
+
+// ===== CONTEXT SWITCHER (copiat 1:1 din Dashboard) =====
+// ===== CONTEXT SWITCHER =====
+var ctxData = {
+  workspaces: [
+    {id:'av', name:'Agro Vest Holdings', initials:'AV', color:'#00686A', grups:[
+      {id:'g1', name:'Grup Vest', firme:[
+        {id:'fa', name:'Firma A', puncte:[{id:'a1',name:'PL ferma1'},{id:'a2',name:'PL ferma2'}]},
+        {id:'fb', name:'Firma B', puncte:[{id:'b1',name:'PL agricola'},{id:'b2',name:'PL AgrSud'},{id:'b3',name:'PL AgrEst'}]}
+      ], grupLucru:[
+        {id:'gl1',name:'Echipa Vest',color:'#E65100',puncteIds:['a1','b2']},
+        {id:'gl2',name:'Echipa Transport',color:'#6D28D9',puncteIds:['a2','b1','b3']}
+      ]},
+    ]},
+    {id:'fc', name:'Ferma Constanta', initials:'FC', color:'#8B5E3C', grups:[], firme:[
+      {id:'fc1', name:'Ferma Constanta SRL', puncte:[{id:'c1',name:'PL Constnta'},{id:'c2',name:'PL Litoral'}]}
+    ]},
+    {id:'paduri', name:'Paduri', initials:'PD', color:'#1B5E20', grups:[
+      {id:'timis', name:'Timis', firme:[
+        {id:'os1',name:'Ocolul Silvic Lugoj',puncte:[{id:'t1',name:'Canton Poieni'},{id:'t2',name:'Canton Margina'},{id:'t3',name:'Canton Traian Vuia'}]},
+        {id:'os2',name:'Ocolul Silvic Faget',puncte:[{id:'t4',name:'Canton Bichigi'},{id:'t5',name:'Canton Curtea'},{id:'t6',name:'Canton Manastire'},{id:'t7',name:'Canton Sinersig'}]},
+        {id:'os3',name:'Ocolul Silvic Buzias',puncte:[{id:'t8',name:'Canton Bacova'},{id:'t9',name:'Canton Silagiu'}]}
+      ]},
+      {id:'arad', name:'Arad', firme:[
+        {id:'os4',name:'Ocolul Silvic Lipova',puncte:[{id:'a1a',name:'Canton Radna'},{id:'a2a',name:'Canton Soimos'},{id:'a3a',name:'Canton Saraca'}]},
+        {id:'os5',name:'Ocolul Silvic Sebis',puncte:[{id:'a4a',name:'Canton Moneasa'},{id:'a5a',name:'Canton Dezna'}]},
+        {id:'os6',name:'Ocolul Silvic Ineu',puncte:[{id:'a6a',name:'Canton Bocsig'},{id:'a7a',name:'Canton Taut'}]}
+      ]},
+      {id:'bihor', name:'Bihor', firme:[
+        {id:'os7',name:'Ocolul Silvic Beius',puncte:[{id:'b1b',name:'Canton Remetea'},{id:'b2b',name:'Canton Budureasa'},{id:'b3b',name:'Canton Pietroasa'}]},
+        {id:'os8',name:'Ocolul Silvic Stei',puncte:[{id:'b4b',name:'Canton Campani'},{id:'b5b',name:'Canton Lunca'}]}
+      ]}
+    ]},
+    {id:'gosp', name:'Gospodaria mea', initials:'GM', color:'#B7791F', flat:true},
+    {id:'stup', name:'Stupina mea', initials:'SM', color:'#F57C00', flat:true},
+    {id:'bio', name:'Bio Farm Arad', initials:'BF', color:'#2D8E5F', flat:true},
+    {id:'pom', name:'Pomicola Bistrita', initials:'PB', color:'#6D28D9', flat:true},
+    {id:'vit', name:'Vita de Vie Recas', initials:'VR', color:'#C0392B', flat:true},
+    {id:'leg', name:'Legume Dolj', initials:'LD', color:'#0369A1', flat:true},
+    {id:'ser', name:'Sere Braila', initials:'SB', color:'#4A4A6A', flat:true},
+    {id:'ori', name:'Orizarii Ialomita', initials:'OI', color:'#338687', flat:true},
+    {id:'api', name:'Apicola Maramures', initials:'AM', color:'#8B5E3C', flat:true}
+  ]
+};
+
+var ctxState = {ws:'av', grup:'g1', firma:'fa', punct:'a1'};
+var ctxStep = 0; // 0=ws, 1=grup, 2=firma, 3=punct
+var ctxHistory = [];
+
+function openContextSwitcher() {
+  document.getElementById('ctx-popup').style.display = 'block';
+  ctxStep = 0;
+  ctxHistory = [];
+  // Reset manage mode
+  ctxManageMode = false;
+  var btn = document.getElementById('ctx-manage-btn');
+  btn.innerHTML = '<span style="font-size:14px;">&#9881;</span> Gestioneaza';
+  btn.style.background = 'var(--brand-primary)';
+  btn.style.color = '#fff';
+  btn.style.boxShadow = '0 2px 6px rgba(0,104,106,0.3)';
+  document.getElementById('ctx-search-bar').style.display = 'block';
+  document.getElementById('ctx-add-header').style.display = 'none';
+  renderCtxStep();
+  setTimeout(function(){ document.getElementById('ctx-search').focus(); }, 100);
+}
+function closeContextSwitcher() {
+  document.getElementById('ctx-popup').style.display = 'none';
+  document.getElementById('ctx-search').value = '';
+  // Reset manage mode on close
+  ctxManageMode = false;
+  var btn = document.getElementById('ctx-manage-btn');
+  btn.innerHTML = '<span style="font-size:14px;">&#9881;</span> Gestioneaza';
+  btn.style.background = 'var(--brand-primary)';
+  btn.style.color = '#fff';
+  btn.style.boxShadow = '0 2px 6px rgba(0,104,106,0.3)';
+  document.getElementById('ctx-search-bar').style.display = 'block';
+  document.getElementById('ctx-add-header').style.display = 'none';
+}
+
+function renderCtxStep(keepSearch) {
+  var list = document.getElementById('ctx-list');
+  var title = document.getElementById('ctx-title');
+  var back = document.getElementById('ctx-back');
+  var search = document.getElementById('ctx-search');
+  if (!keepSearch) search.value = '';
+  back.style.display = ctxStep > 0 ? 'flex' : 'none';
+  // Show manage button only on step 0
+  var manageBtn = document.getElementById('ctx-manage-btn');
+  if (manageBtn) manageBtn.style.display = ctxStep === 0 ? 'flex' : 'none';
+  var html = '';
+
+  if (ctxStep === 0) {
+    title.textContent = 'Spatiile mele de lucru';
+    // Show/hide add footer based on manage mode
+    var addFooter = document.getElementById('ctx-add-header');
+    if (addFooter) addFooter.style.display = ctxManageMode ? 'block' : 'none';
+    ctxData.workspaces.forEach(function(ws) {
+      var sel = ws.id === ctxState.ws;
+      var hasChildren = (ws.grups && ws.grups.length > 0) || (ws.firme && ws.firme.length > 1) || false;
+      var desc = ws.flat ? 'Spatiu simplu' : (ws.grups && ws.grups.length > 0 ? ws.grups.length + ' grupuri' : (ws.firme ? ws.firme.length + ' firme' : ''));
+      html += '<div style="display:flex;align-items:center;gap:6px;">';
+      html += '<div class="ctx-item' + (sel ? ' selected' : '') + '" onclick="' + (ctxManageMode ? '' : 'ctxSelectWs(\'' + ws.id + '\')') + '" style="flex:1;' + (ctxManageMode ? 'cursor:default;' : '') + '">';
+      html += '<div class="ctx-badge" style="background:' + ws.color + ';">' + ws.initials + '</div>';
+      html += '<div class="ctx-info"><div class="ctx-name">' + ws.name + '</div><div class="ctx-desc">' + desc + '</div></div>';
+      if (ctxManageMode) {
+        html += '<div class="ctx-manage-actions">';
+        html += '<div class="ctx-manage-btn edit" onclick="openCtxEditWs(\'' + ws.id + '\')" title="Editeaza">&#9998;</div>';
+        html += '<div class="ctx-manage-btn delete" onclick="openCtxDeleteConfirm(\'' + ws.id + '\')" title="Sterge">&#128465;</div>';
+        html += '</div>';
+      } else {
+        if (sel) html += '<span class="ctx-check">&#10003;</span>';
+        if (hasChildren && !ws.flat) html += '<span class="ctx-arrow">&#9654;</span>';
+      }
+      html += '</div>';
+      if (!ctxManageMode && !ws.flat) html += '<a href="firme.html" onclick="event.stopPropagation();closeContextSwitcher();" style="width:44px;height:44px;border-radius:10px;background:var(--brand-hover-bg);border:1px solid var(--brand-primary-40);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:var(--brand-primary);flex-shrink:0;text-decoration:none;box-shadow:0 1px 3px rgba(0,104,106,0.15);" title="Editeaza firme si puncte">&#9998;</a>';
+      html += '</div>';
+    });
+  }
+  else if (ctxStep === 1) {
+    var ws = ctxData.workspaces.find(function(w){return w.id===ctxState.ws;});
+    title.textContent = ws.name + ' — Grupuri';
+    ws.grups.forEach(function(g) {
+      var sel = g.id === ctxState.grup;
+      var nf = g.firme ? g.firme.length : 0;
+      html += '<div class="ctx-item' + (sel ? ' selected' : '') + '" onclick="ctxSelectGrup(\'' + g.id + '\')">';
+      html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#128193;</div>';
+      html += '<div class="ctx-info"><div class="ctx-name">' + g.name + '</div><div class="ctx-desc">' + nf + ' firme</div></div>';
+      if (sel) html += '<span class="ctx-check">&#10003;</span>';
+      html += '<span class="ctx-arrow">&#9654;</span>';
+      html += '</div>';
+    });
+  }
+  else if (ctxStep === 2) {
+    var ws = ctxData.workspaces.find(function(w){return w.id===ctxState.ws;});
+    var grups = ws.grups && ws.grups.length > 0 ? ws.grups : null;
+    var grup = grups ? grups.find(function(g){return g.id===ctxState.grup;}) : null;
+    var firme = grup ? grup.firme : (ws.firme || []);
+    var parentName = grup ? grup.name : ws.name;
+    title.textContent = parentName + ' — Firme';
+    firme.forEach(function(f) {
+      var sel = f.id === ctxState.firma;
+      var np = f.puncte ? f.puncte.length : 0;
+      html += '<div class="ctx-item' + (sel ? ' selected' : '') + '" onclick="ctxSelectFirma(\'' + f.id + '\')">';
+      html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#127963;</div>';
+      html += '<div class="ctx-info"><div class="ctx-name">' + f.name + '</div><div class="ctx-desc">' + np + ' puncte de lucru</div></div>';
+      if (sel) html += '<span class="ctx-check">&#10003;</span>';
+      if (np > 1) html += '<span class="ctx-arrow">&#9654;</span>';
+      html += '</div>';
+    });
+    // Grupuri de lucru cu culori
+    if (grup && grup.grupLucru && grup.grupLucru.length > 0) {
+      html += '<div style="padding:6px 16px;font-size:13px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.5px;border-top:1px solid var(--brand-border);margin-top:4px;">Grupuri de lucru</div>';
+      grup.grupLucru.forEach(function(gl) {
+        var puncteNames = [];
+        if (gl.puncteIds && grup.firme) {
+          grup.firme.forEach(function(f){if(f.puncte)f.puncte.forEach(function(p){if(gl.puncteIds.indexOf(p.id)!==-1)puncteNames.push(p.name);});});
+        }
+        html += '<div class="ctx-item" onclick="ctxSelectGrupLucru(\'' + gl.id + '\',\'' + gl.name + '\')">';
+        html += '<div class="ctx-badge" style="background:' + gl.color + ';">&#128101;</div>';
+        html += '<div class="ctx-info"><div class="ctx-name">' + gl.name + '</div>';
+        html += '<div class="ctx-desc" style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">';
+        puncteNames.forEach(function(pn){
+          html += '<span style="display:inline-flex;align-items:center;gap:2px;"><span style="width:6px;height:6px;border-radius:50%;background:' + gl.color + ';display:inline-block;"></span>' + pn + '</span>';
+        });
+        html += '</div></div></div>';
+      });
+    }
+  }
+  else if (ctxStep === 3) {
+    var ws = ctxData.workspaces.find(function(w){return w.id===ctxState.ws;});
+    var grups = ws.grups && ws.grups.length > 0 ? ws.grups : null;
+    var grup = grups ? grups.find(function(g){return g.id===ctxState.grup;}) : null;
+    var firme = grup ? grup.firme : (ws.firme || []);
+    var firma = firme.find(function(f){return f.id===ctxState.firma;});
+    var grupLucru = grup && grup.grupLucru ? grup.grupLucru : [];
+    title.textContent = firma.name + ' — Puncte de lucru';
+    // Toate punctele
+    html += '<div class="ctx-item" onclick="ctxSelectPunct(\'all\',\'Toate punctele\')">';
+    html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#127758;</div>';
+    html += '<div class="ctx-info"><div class="ctx-name">Toate punctele</div><div class="ctx-desc">' + firma.puncte.length + ' puncte</div></div>';
+    if (ctxState.punct === 'all') html += '<span class="ctx-check">&#10003;</span>';
+    html += '</div>';
+    firma.puncte.forEach(function(p) {
+      var sel = p.id === ctxState.punct;
+      // Find which grupuri de lucru this punct belongs to
+      var punctGrupuri = [];
+      grupLucru.forEach(function(gl){
+        if (gl.puncteIds && gl.puncteIds.indexOf(p.id) !== -1) punctGrupuri.push(gl);
+      });
+      html += '<div class="ctx-item' + (sel ? ' selected' : '') + '" onclick="ctxSelectPunct(\'' + p.id + '\',\'' + p.name + '\')">';
+      html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#128205;</div>';
+      html += '<div class="ctx-info"><div class="ctx-name">' + p.name + '</div>';
+      if (punctGrupuri.length > 0) {
+        html += '<div class="ctx-desc" style="display:flex;gap:6px;align-items:center;margin-top:2px;">';
+        punctGrupuri.forEach(function(gl){
+          html += '<span style="display:inline-flex;align-items:center;gap:3px;"><span style="width:8px;height:8px;border-radius:50%;background:' + gl.color + ';display:inline-block;"></span><span style="font-size:13px;color:' + gl.color + ';font-weight:600;">' + gl.name + '</span></span>';
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+      if (sel) html += '<span class="ctx-check">&#10003;</span>';
+      html += '</div>';
+    });
+  }
+
+  list.innerHTML = html;
+}
+
+function ctxSelectWs(id) {
+  var ws = ctxData.workspaces.find(function(w){return w.id===id;});
+  ctxState.ws = id;
+  if (ws.flat) {
+    ctxState.grup = null; ctxState.firma = null; ctxState.punct = null;
+    updateCtxDisplay();
+    closeContextSwitcher();
+    return;
+  }
+  if (ws.grups && ws.grups.length > 0) {
+    ctxHistory.push(0); ctxStep = 1; renderCtxStep();
+  } else if (ws.firme && ws.firme.length > 1) {
+    ctxHistory.push(0); ctxStep = 2; renderCtxStep();
+  } else if (ws.firme && ws.firme.length === 1) {
+    ctxState.firma = ws.firme[0].id;
+    if (ws.firme[0].puncte.length > 1) {
+      ctxHistory.push(0); ctxStep = 3; renderCtxStep();
+    } else {
+      ctxState.punct = ws.firme[0].puncte[0].id;
+      updateCtxDisplay(); closeContextSwitcher();
+    }
+  } else {
+    updateCtxDisplay(); closeContextSwitcher();
+  }
+}
+
+function ctxSelectGrup(id) {
+  ctxState.grup = id;
+  var ws = ctxData.workspaces.find(function(w){return w.id===ctxState.ws;});
+  var grup = ws.grups.find(function(g){return g.id===id;});
+  if (grup.firme.length > 1) {
+    ctxHistory.push(1); ctxStep = 2; renderCtxStep();
+  } else if (grup.firme.length === 1) {
+    ctxState.firma = grup.firme[0].id;
+    if (grup.firme[0].puncte.length > 1) {
+      ctxHistory.push(1); ctxStep = 3; renderCtxStep();
+    } else {
+      ctxState.punct = grup.firme[0].puncte[0].id;
+      updateCtxDisplay(); closeContextSwitcher();
+    }
+  }
+}
+
+function ctxSelectFirma(id) {
+  ctxState.firma = id;
+  var ws = ctxData.workspaces.find(function(w){return w.id===ctxState.ws;});
+  var grups = ws.grups && ws.grups.length > 0 ? ws.grups : null;
+  var grup = grups ? grups.find(function(g){return g.id===ctxState.grup;}) : null;
+  var firme = grup ? grup.firme : (ws.firme || []);
+  var firma = firme.find(function(f){return f.id===id;});
+  if (firma.puncte.length > 1) {
+    ctxHistory.push(2); ctxStep = 3; renderCtxStep();
+  } else {
+    ctxState.punct = firma.puncte[0].id;
+    updateCtxDisplay(); closeContextSwitcher();
+  }
+}
+
+function ctxSelectPunct(id, name) {
+  ctxState.punct = id;
+  updateCtxDisplay();
+  closeContextSwitcher();
+}
+
+function ctxSelectGrupLucru(id, name) {
+  ctxState.firma = null; ctxState.punct = null;
+  updateCtxDisplay();
+  document.getElementById('ctx-sub').textContent = 'Grup lucru: ' + name;
+  closeContextSwitcher();
+}
+
+function ctxGoBack() {
+  if (ctxHistory.length > 0) {
+    ctxStep = ctxHistory.pop();
+  } else {
+    ctxStep = 0;
+  }
+  renderCtxStep();
+}
+
+function updateCtxDisplay() {
+  var ws = ctxData.workspaces.find(function(w){return w.id===ctxState.ws;});
+  document.getElementById('ctx-path').textContent = ws.name;
+  var sub = '';
+  if (ctxState.grup) {
+    var grups = ws.grups || [];
+    var grup = grups.find(function(g){return g.id===ctxState.grup;});
+    if (grup) sub += grup.name;
+  }
+  if (ctxState.firma) {
+    var grups2 = ws.grups && ws.grups.length > 0 ? ws.grups : null;
+    var grup2 = grups2 ? grups2.find(function(g){return g.id===ctxState.grup;}) : null;
+    var firme = grup2 ? grup2.firme : (ws.firme || []);
+    var firma = firme.find(function(f){return f.id===ctxState.firma;});
+    if (firma) sub += (sub ? ' \u203A ' : '') + firma.name;
+  }
+  if (ctxState.punct && ctxState.punct !== 'all') {
+    // find punct name
+    var ws2 = ctxData.workspaces.find(function(w){return w.id===ctxState.ws;});
+    var allPuncte = [];
+    if (ws2.grups) ws2.grups.forEach(function(g){if(g.firme)g.firme.forEach(function(f){if(f.puncte)allPuncte=allPuncte.concat(f.puncte);});});
+    if (ws2.firme) ws2.firme.forEach(function(f){if(f.puncte)allPuncte=allPuncte.concat(f.puncte);});
+    var p = allPuncte.find(function(pp){return pp.id===ctxState.punct;});
+    if (p) sub += (sub ? ' \u203A ' : '') + p.name;
+  } else if (ctxState.punct === 'all') {
+    sub += (sub ? ' \u203A ' : '') + 'Toate punctele';
+  }
+  document.getElementById('ctx-sub').textContent = sub || 'Spatiu simplu';
+}
+
+var ctxFilterTimer = null;
+function ctxFilterDebounced(val) {
+  clearTimeout(ctxFilterTimer);
+  ctxFilterTimer = setTimeout(function(){ ctxFilter(val); }, 300);
+}
+
+function ctxFilter(val) {
+  var q = val.toLowerCase().trim();
+  if (q.length < 3) {
+    renderCtxStep(true);
+    return;
+  }
+  // Global search across all levels
+  var results = [];
+  ctxData.workspaces.forEach(function(ws) {
+    // Match workspace
+    if (ws.name.toLowerCase().indexOf(q) !== -1) {
+      results.push({type:'workspace', name:ws.name, path:'', wsId:ws.id, color:ws.color, initials:ws.initials, icon:'&#127963;'});
+    }
+    // Search grups
+    if (ws.grups) ws.grups.forEach(function(g) {
+      if (g.name.toLowerCase().indexOf(q) !== -1) {
+        results.push({type:'grup', name:g.name, path:ws.name, wsId:ws.id, grupId:g.id, color:ws.color, icon:'&#128193;'});
+      }
+      // Search firme in grup
+      if (g.firme) g.firme.forEach(function(f) {
+        if (f.name.toLowerCase().indexOf(q) !== -1) {
+          results.push({type:'firma', name:f.name, path:ws.name+' \u203A '+g.name, wsId:ws.id, grupId:g.id, firmaId:f.id, color:ws.color, icon:'&#127963;'});
+        }
+        // Search puncte
+        if (f.puncte) f.puncte.forEach(function(p) {
+          if (p.name.toLowerCase().indexOf(q) !== -1) {
+            results.push({type:'punct', name:p.name, path:ws.name+' \u203A '+g.name+' \u203A '+f.name, wsId:ws.id, grupId:g.id, firmaId:f.id, punctId:p.id, color:ws.color, icon:'&#128205;'});
+          }
+        });
+      });
+      // Search grupuri lucru
+      if (g.grupLucru) g.grupLucru.forEach(function(gl) {
+        if (gl.name.toLowerCase().indexOf(q) !== -1) {
+          results.push({type:'grupLucru', name:gl.name, path:ws.name+' \u203A '+g.name, wsId:ws.id, grupId:g.id, glId:gl.id, glName:gl.name, color:gl.color, icon:'&#128101;'});
+        }
+      });
+    });
+    // Search firme direct on ws
+    if (ws.firme) ws.firme.forEach(function(f) {
+      if (f.name.toLowerCase().indexOf(q) !== -1) {
+        results.push({type:'firma', name:f.name, path:ws.name, wsId:ws.id, grupId:null, firmaId:f.id, color:ws.color, icon:'&#127963;'});
+      }
+      if (f.puncte) f.puncte.forEach(function(p) {
+        if (p.name.toLowerCase().indexOf(q) !== -1) {
+          results.push({type:'punct', name:p.name, path:ws.name+' \u203A '+f.name, wsId:ws.id, grupId:null, firmaId:f.id, punctId:p.id, color:ws.color, icon:'&#128205;'});
+        }
+      });
+    });
+  });
+
+  var list = document.getElementById('ctx-list');
+  var title = document.getElementById('ctx-title');
+  title.textContent = results.length + ' rezultate pentru "' + val + '"';
+  document.getElementById('ctx-back').style.display = 'none';
+
+  var html = '';
+  if (results.length === 0) {
+    html = '<div style="padding:40px 20px;text-align:center;color:var(--brand-text-muted);font-size:14px;">Niciun rezultat gasit</div>';
+  }
+  results.forEach(function(r) {
+    html += '<div class="ctx-item" onclick="ctxSearchSelect(\'' + r.type + '\',\'' + (r.wsId||'') + '\',\'' + (r.grupId||'') + '\',\'' + (r.firmaId||'') + '\',\'' + (r.punctId||r.glId||'') + '\',\'' + (r.glName||'').replace(/'/g,"\\'") + '\')">';
+    html += '<div class="ctx-badge" style="background:' + r.color + ';">' + r.icon + '</div>';
+    html += '<div class="ctx-info"><div class="ctx-name">' + r.name + '</div>';
+    html += '<div class="ctx-desc" style="font-size:13px;color:var(--brand-text-muted);">' + r.path + '</div></div>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+// ===== MANAGE MODE =====
+var ctxManageMode = false;
+var ctxDeleteTarget = null;
+var ctxEditTarget = null;
+var ctxWsFormColor = '#00686A';
+
+function toggleCtxManageMode() {
+  ctxManageMode = !ctxManageMode;
+  var btn = document.getElementById('ctx-manage-btn');
+  var footer = document.getElementById('ctx-add-header');
+  if (ctxManageMode) {
+    btn.innerHTML = '&#10003; Gata';
+    btn.style.background = 'var(--brand-text-muted)';
+    btn.style.color = '#fff';
+    btn.style.boxShadow = 'none';
+    document.getElementById('ctx-search-bar').style.display = 'none';
+    document.getElementById('ctx-add-header').style.display = ctxStep === 0 ? 'block' : 'none';
+  } else {
+    btn.innerHTML = '<span style="font-size:14px;">&#9881;</span> Gestioneaza';
+    btn.style.background = 'var(--brand-primary)';
+    btn.style.color = '#fff';
+    btn.style.boxShadow = '0 2px 6px rgba(0,104,106,0.3)';
+    document.getElementById('ctx-search-bar').style.display = 'block';
+    document.getElementById('ctx-add-header').style.display = 'none';
+  }
+  renderCtxStep(true);
+}
+
+function openCtxAddWs() {
+  document.getElementById('ctx-ws-form-title').textContent = 'Adauga spatiu de lucru';
+  document.getElementById('ws-form-name').value = '';
+  document.getElementById('ws-form-initials').value = '';
+  document.getElementById('ws-form-desc').value = '';
+  ctxWsFormColor = '#00686A';
+  resetWsColorSelection();
+  ctxEditTarget = null;
+  document.getElementById('ctx-ws-form').style.display = 'block';
+}
+
+function openCtxEditWs(wsId) {
+  event.stopPropagation();
+  var ws = ctxData.workspaces.find(function(w){return w.id===wsId;});
+  if (!ws) return;
+  ctxEditTarget = wsId;
+  document.getElementById('ctx-ws-form-title').textContent = 'Editeaza spatiu de lucru';
+  document.getElementById('ws-form-name').value = ws.name;
+  document.getElementById('ws-form-initials').value = ws.initials;
+  document.getElementById('ws-form-desc').value = '';
+  ctxWsFormColor = ws.color;
+  resetWsColorSelection();
+  // Highlight current color
+  var dots = document.querySelectorAll('.ws-color-dot');
+  dots.forEach(function(d){
+    if (d.style.background === ws.color || d.style.backgroundColor === ws.color) {
+      d.style.borderColor = ws.color;
+    }
+  });
+  document.getElementById('ctx-ws-form').style.display = 'block';
+}
+
+function closeCtxWsForm() {
+  document.getElementById('ctx-ws-form').style.display = 'none';
+  ctxEditTarget = null;
+}
+
+function saveCtxWs() {
+  var name = document.getElementById('ws-form-name').value.trim();
+  var initials = document.getElementById('ws-form-initials').value.trim().toUpperCase();
+  if (!name) { document.getElementById('ws-form-name').style.borderColor = 'var(--brand-danger)'; return; }
+  if (!initials) initials = name.substring(0,2).toUpperCase();
+
+  if (ctxEditTarget) {
+    // Edit existing
+    var ws = ctxData.workspaces.find(function(w){return w.id===ctxEditTarget;});
+    if (ws) { ws.name = name; ws.initials = initials; ws.color = ctxWsFormColor; }
+  } else {
+    // Add new
+    var newId = 'ws_' + Date.now();
+    ctxData.workspaces.push({id:newId, name:name, initials:initials, color:ctxWsFormColor, flat:true});
+  }
+  closeCtxWsForm();
+  renderCtxStep(true);
+  if (ctxEditTarget) updateCtxDisplay();
+}
+
+function isWsEmpty(ws) {
+  if (!ws) return true;
+  if (ws.grups && ws.grups.length > 0) return false;
+  if (ws.firme && ws.firme.length > 0) return false;
+  return true;
+}
+
+function openCtxDeleteConfirm(wsId) {
+  event.stopPropagation();
+  var ws = ctxData.workspaces.find(function(w){return w.id===wsId;});
+  if (!ws) return;
+
+  if (!isWsEmpty(ws)) {
+    // Show blocked delete popup
+    ctxDeleteTarget = null;
+    document.getElementById('ctx-delete-name').textContent = ws.name;
+    var content = document.getElementById('ctx-delete-content');
+    var actions = document.getElementById('ctx-delete-actions');
+    var icon = document.getElementById('ctx-delete-icon');
+    icon.textContent = '\u26D4';
+    document.getElementById('ctx-delete-heading').textContent = 'Nu se poate sterge';
+    content.innerHTML = '<div style="font-size:13px;color:var(--brand-text-muted);background:var(--brand-warning-bg);padding:10px 12px;border-radius:var(--brand-radius);margin-top:10px;line-height:1.5;">'
+      + 'Spatiul <strong>' + ws.name + '</strong> contine '
+      + (ws.grups && ws.grups.length > 0 ? ws.grups.length + ' grupuri, ' : '')
+      + (ws.firme && ws.firme.length > 0 ? ws.firme.length + ' firme' : '')
+      + '. Sterge mai intai toate elementele din interior.'
+      + '</div>';
+    actions.innerHTML = '<div onclick="closeCtxDeleteConfirm()" style="flex:1;padding:12px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:pointer;">Am inteles</div>';
+    document.getElementById('ctx-delete-confirm').style.display = 'block';
+    return;
+  }
+
+  // Empty workspace — allow delete
+  ctxDeleteTarget = wsId;
+  document.getElementById('ctx-delete-name').textContent = ws.name;
+  var icon = document.getElementById('ctx-delete-icon');
+  icon.textContent = '\uD83D\uDDD1';
+  document.getElementById('ctx-delete-heading').textContent = 'Sterge spatiul de lucru?';
+  var content = document.getElementById('ctx-delete-content');
+  content.innerHTML = '<div style="font-size:13px;color:var(--brand-danger);background:var(--brand-danger-bg);padding:8px 12px;border-radius:var(--brand-radius);margin-top:10px;">Aceasta actiune este permanenta.</div>';
+  var actions = document.getElementById('ctx-delete-actions');
+  actions.innerHTML = '<div onclick="closeCtxDeleteConfirm()" style="flex:1;padding:12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div>'
+    + '<div onclick="confirmCtxDelete()" style="flex:1;padding:12px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:pointer;">&#128465; Sterge</div>';
+  document.getElementById('ctx-delete-confirm').style.display = 'block';
+}
+
+function closeCtxDeleteConfirm() {
+  document.getElementById('ctx-delete-confirm').style.display = 'none';
+  ctxDeleteTarget = null;
+}
+
+function confirmCtxDelete() {
+  if (!ctxDeleteTarget) return;
+  ctxData.workspaces = ctxData.workspaces.filter(function(w){return w.id !== ctxDeleteTarget;});
+  // If deleted workspace was selected, switch to first available
+  if (ctxState.ws === ctxDeleteTarget && ctxData.workspaces.length > 0) {
+    var first = ctxData.workspaces[0];
+    ctxState.ws = first.id;
+    ctxState.grup = null; ctxState.firma = null; ctxState.punct = null;
+    updateCtxDisplay();
+  }
+  closeCtxDeleteConfirm();
+  renderCtxStep(true);
+}
+
+function selectWsType(el, type) {
+  document.querySelectorAll('.ws-type-opt').forEach(function(o){
+    o.style.borderColor = 'var(--brand-border)';
+    o.style.background = 'transparent';
+  });
+  el.style.borderColor = 'var(--brand-primary)';
+  el.style.background = 'var(--brand-hover-bg)';
+}
+
+function selectWsColor(el, color) {
+  ctxWsFormColor = color;
+  document.querySelectorAll('.ws-color-dot').forEach(function(d){ d.style.borderColor = 'transparent'; });
+  el.style.borderColor = color;
+}
+
+function resetWsColorSelection() {
+  document.querySelectorAll('.ws-color-dot').forEach(function(d){ d.style.borderColor = 'transparent'; });
+  var first = document.querySelector('.ws-color-dot');
+  if (first) first.style.borderColor = '#00686A';
+}
+function ctxSearchSelect(type, wsId, grupId, firmaId, punctOrGlId, glName) {
+  ctxState.ws = wsId;
+  ctxState.grup = grupId || null;
+  ctxState.firma = firmaId || null;
+  ctxState.punct = null;
+  if (type === 'punct') {
+    ctxState.punct = punctOrGlId;
+  } else if (type === 'grupLucru') {
+    ctxState.firma = null;
+    updateCtxDisplay();
+    document.getElementById('ctx-sub').textContent = 'Grup lucru: ' + glName;
+    closeContextSwitcher();
+    return;
+  }
+  updateCtxDisplay();
+  closeContextSwitcher();
+}
+</script>
+
+</body>
+</html>

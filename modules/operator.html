@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="manifest" href="../manifest.json">
+  <title>Ecran operator — UI Preview</title>
+  <link rel="stylesheet" href="../design-system.css">
+  <style>
+    .preview-root { display: flex; height: calc(100vh - 40px); gap: 0; margin-top: 40px; }
+    .panel-mobile { width: 420px; flex-shrink: 0; padding: 24px 16px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; display: flex; flex-direction: column; align-items: center; }
+    .panel-desktop { flex: 1; padding: 24px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; }
+    .panel-spec { width: 340px; flex-shrink: 0; padding: 24px 20px; overflow-y: auto; background: #fafafa; font-size: 14px; line-height: 1.6; }
+    .toggle-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 8px 16px; display: flex; gap: 8px; align-items: center; height: 40px; }
+    .toggle-bar button { padding: 4px 14px; border-radius: 6px; border: 1px solid #d4d4d4; cursor: pointer; font-size: 14px; background: transparent; color: var(--brand-text-primary); }
+    .toggle-bar button.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+    .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
+    .browser-dots { display: flex; gap: 6px; }
+    .browser-dots span { width: 12px; height: 12px; border-radius: 50%; }
+    .browser-dots span:nth-child(1) { background: #FF5F57; }
+    .browser-dots span:nth-child(2) { background: #FFBD2E; }
+    .browser-dots span:nth-child(3) { background: #28CA41; }
+    .browser-url { flex: 1; background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; padding: 4px 10px; font-size: 13px; color: #888; }
+    .browser-screen { background: var(--brand-background); min-height: 600px; overflow-y: auto; }
+    .spec-section { margin-bottom: 20px; }
+    .spec-section h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 8px; }
+
+    /* === ECRAN OPERATOR === */
+    .op-greeting { padding: 18px 16px 12px; background: var(--brand-primary); color: #fff; }
+    .op-greeting-hi { font-size: 13px; opacity: 0.8; }
+    .op-greeting-name { font-size: 22px; font-weight: 800; margin-top: 2px; }
+    .op-greeting-sub { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+
+    .op-section-label { padding: 18px 16px 8px; font-size: 11px; font-weight: 800; color: var(--brand-text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
+
+    /* Task card - mare, tappable */
+    .op-task { background: #fff; margin: 0 10px 12px; border-radius: 16px; border: 1px solid var(--brand-border); box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.05); overflow: hidden; }
+    .op-task.active { border-left: 6px solid var(--brand-primary); }
+    .op-task.pending { border-left: 6px solid #E6853D; }
+    .op-task.done { border-left: 6px solid #27AE60; opacity: 0.75; }
+
+    .op-task-hd { padding: 14px 16px 8px; display: flex; align-items: center; gap: 8px; }
+    .op-task-type { flex: 1; font-size: 18px; font-weight: 800; color: var(--brand-text-primary); }
+    .op-task-badge { padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; }
+    .op-task-badge.active { background: var(--brand-primary); color: #fff; }
+    .op-task-badge.pending { background: #FFF0E6; color: #E6853D; }
+    .op-task-badge.done { background: #E6F4E8; color: #27AE60; }
+
+    .op-task-parcel { padding: 0 16px 10px; display: flex; align-items: center; gap: 6px; font-size: 15px; color: var(--brand-text-primary); font-weight: 600; }
+    .op-task-parcel-ico { font-size: 18px; }
+
+    .op-task-info { padding: 0 16px 12px; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--brand-text-muted); font-weight: 600; }
+    .op-task-info-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    .op-task-btn { display: block; width: calc(100% - 24px); margin: 4px 12px 14px; padding: 16px; border-radius: 12px; border: none; font-size: 17px; font-weight: 800; cursor: pointer; font-family: inherit; box-shadow: 0 2px 8px rgba(0,104,106,0.25); }
+    .op-task-btn.start { background: var(--brand-primary); color: #fff; }
+    .op-task-btn.stop { background: #E6853D; color: #fff; box-shadow: 0 2px 8px rgba(230,133,61,0.3); }
+
+    /* Timer running */
+    .op-task-timer { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--brand-hover-bg); border-top: 1px solid var(--brand-border); font-size: 14px; font-weight: 700; color: var(--brand-primary); }
+    .op-task-timer-dot { width: 10px; height: 10px; background: var(--brand-danger); border-radius: 50%; animation: pulse 1.2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
+
+    /* Prompt morning overlay */
+    .op-prompt { position: absolute; inset: 0; background: rgba(0,0,0,0.55); z-index: 60; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .op-prompt-card { background: #fff; width: 100%; max-width: 320px; border-radius: 18px; padding: 22px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+    .op-prompt-ico { font-size: 44px; margin-bottom: 10px; }
+    .op-prompt-title { font-size: 18px; font-weight: 800; color: var(--brand-text-primary); margin-bottom: 8px; }
+    .op-prompt-sub { font-size: 14px; color: var(--brand-text-muted); line-height: 1.5; margin-bottom: 18px; }
+    .op-prompt-buttons { display: flex; flex-direction: column; gap: 8px; }
+    .op-prompt-btn { padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 800; cursor: pointer; font-family: inherit; }
+    .op-prompt-btn.primary { background: #27AE60; color: #fff; }
+    .op-prompt-btn.secondary { background: var(--brand-hover-bg); color: var(--brand-primary); }
+
+    /* Empty state */
+    .op-empty { padding: 40px 20px; text-align: center; color: var(--brand-text-muted); }
+    .op-empty-ico { font-size: 52px; opacity: 0.4; margin-bottom: 10px; }
+    .op-empty-txt { font-size: 15px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<div class="toggle-bar">
+  <span style="font-size:14px; font-weight:600; color:var(--brand-text-primary); margin-right:8px;">Ecran operator</span>
+  <button class="active" onclick="setView('both', this)">Both</button>
+  <button onclick="setView('mobile', this)">Mobile</button>
+  <button onclick="setView('desktop', this)">Desktop</button>
+  <span style="margin-left:auto; font-size:13px; color:#aaa;">ConnAgri &middot; FeatureForge Preview</span>
+</div>
+
+<div class="preview-root">
+  <div class="panel-mobile" id="panel-mobile">
+    <p style="font-size:13px; color:#aaa; margin-bottom:16px; text-align:center;">Mobile &mdash; 370px</p>
+    <div class="phone-chrome">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div id="app-topbar" data-title="Ecran operator"></div>
+
+        <!-- Prompt matin: task rămas de ieri -->
+        <div class="op-prompt" id="op-prompt">
+          <div class="op-prompt-card">
+            <div class="op-prompt-ico">&#9200;</div>
+            <div class="op-prompt-title">Ai terminat Erbicidarea de ieri?</div>
+            <div class="op-prompt-sub">Parcela 12 Nord &middot; rămas deschis la 18:45</div>
+            <div class="op-prompt-buttons">
+              <button class="op-prompt-btn primary" onclick="promptResolve('done')">&#10003; DA, am terminat</button>
+              <button class="op-prompt-btn secondary" onclick="promptResolve('continue')">&#9654; Mai continui azi</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="phone-scroll" style="padding-bottom:100px;">
+          <div class="op-greeting">
+            <div class="op-greeting-hi">&#127780; Bună dimineața,</div>
+            <div class="op-greeting-name">Ion Popescu</div>
+            <div class="op-greeting-sub">Ai <strong>3 lucrări</strong> de făcut astăzi</div>
+          </div>
+
+          <div class="op-section-label">CE AI DE FĂCUT AZI</div>
+
+          <div id="op-task-list"></div>
+        </div>
+
+        <div id="app-bottombar"></div>
+        <script src="../bars.js"></script>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-desktop" id="panel-desktop">
+    <p style="font-size:13px; color:#aaa; margin-bottom:16px;">Desktop &mdash; full width</p>
+    <div class="browser-chrome">
+      <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">connagri.app/operator</div></div>
+      <div class="browser-screen" style="min-height:600px; display:flex; align-items:center; justify-content:center;">
+        <div style="text-align:center;"><div style="font-size:65px; margin-bottom:16px; opacity:0.3;">&#128736;</div><div style="font-size:21px; font-weight:600; color:var(--brand-text-muted); margin-bottom:8px;">Ecran operator</div><div style="font-size:15px; color:var(--brand-text-muted); opacity:0.6;">Versiune desktop &mdash; in curs</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-spec" id="panel-spec">
+    <div style="font-size:16px; font-weight:700; margin-bottom:4px; color:var(--brand-text-primary);">Ecran operator</div>
+    <div style="font-size:13px; color:#aaa; margin-bottom:20px;">Start / Gata pe azi &middot; Spec Panel</div>
+    <div class="spec-section"><h3>Descriere</h3><p style="font-size:13px; color:#555;">Ecranul simplu pentru operatorul in camp. Vede ce are de facut azi, apasa START / GATA PE AZI. Restul e automat (GPS, timp, aria).</p></div>
+    <div class="spec-section"><h3>Flux</h3>
+      <ol style="font-size:13px; color:#555; padding-left:18px;">
+        <li>Dimineata daca are task ramas deschis &rarr; prompt: "Terminat / Continui?"</li>
+        <li>Listă: "Ce am de facut azi" (carduri mari)</li>
+        <li>Pe fiecare: buton <strong>ÎNCEP</strong> &rarr; GPS + timer pornesc</li>
+        <li>La final: <strong>GATA PE AZI</strong> (nu "Gata cu tot")</li>
+        <li>Manager valideaza sau redeschide.</li>
+      </ol>
+    </div>
+    <div class="spec-section"><h3>Status</h3><p style="font-size:13px; color:var(--brand-primary); font-weight:600;">Preview activ</p></div>
+  </div>
+</div>
+
+<script src="../components.js"></script>
+<script>
+function setView(view, btn) {
+  document.querySelectorAll('.toggle-bar button').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('panel-mobile').style.display = (view === 'desktop') ? 'none' : 'flex';
+  document.getElementById('panel-desktop').style.display = (view === 'mobile') ? 'none' : 'block';
+  document.getElementById('panel-spec').style.display = 'block';
+}
+
+// Task list (demo)
+var OPERATOR_TASKS = [
+  { id: 1, type: 'Semanat', parcel: 'Parcela 22 Nord', ha: 55, utilaj: 'Tractor Case Puma 165', agregat: 'Semanatoare ED 6000', state: 'pending' },
+  { id: 2, type: 'Erbicidare', parcel: 'Parcela 15 Est', ha: 14.8, utilaj: 'Tractor JD 6130R', agregat: 'Sprayer Amazone UF2002', state: 'pending' },
+  { id: 3, type: 'Fertilizare', parcel: 'Parcela 9 Centru', ha: 42.3, utilaj: 'Tractor JD 6130R', agregat: 'Distribuitor Amazone ZA-M', state: 'pending' }
+];
+
+function renderTasks() {
+  var wrap = document.getElementById('op-task-list');
+  if (!wrap) return;
+  var html = '';
+  OPERATOR_TASKS.forEach(function (t) {
+    var badgeLabel = t.state === 'active' ? 'In lucru' : (t.state === 'done' ? 'Gata pe azi' : 'De facut');
+    html += '<div class="op-task ' + t.state + '" id="task-' + t.id + '">';
+    html += '<div class="op-task-hd"><div class="op-task-type">' + t.type + '</div><div class="op-task-badge ' + t.state + '">' + badgeLabel + '</div></div>';
+    html += '<div class="op-task-parcel"><span class="op-task-parcel-ico">&#127806;</span> ' + t.parcel + ' &middot; ' + t.ha + ' ha</div>';
+    html += '<div class="op-task-info">';
+    html += '<div class="op-task-info-item">&#128668; ' + t.utilaj + '</div>';
+    html += '<div class="op-task-info-item">&#9881; ' + t.agregat + '</div>';
+    html += '</div>';
+    if (t.state === 'pending') {
+      html += '<button class="op-task-btn start" onclick="startTask(' + t.id + ')">&#9654;&nbsp; &Icirc;NCEP</button>';
+    } else if (t.state === 'active') {
+      html += '<div class="op-task-timer"><span class="op-task-timer-dot"></span> <span id="timer-' + t.id + '">&Icirc;n lucru de 0 min</span></div>';
+      html += '<button class="op-task-btn stop" onclick="stopTask(' + t.id + ')">&#10004;&nbsp; GATA PE AZI</button>';
+    } else if (t.state === 'done') {
+      html += '<div class="op-task-timer" style="background:#E6F4E8;color:#27AE60;"><span style="color:#27AE60;font-size:16px;">&#10003;</span> Finalizat &middot; trimis la manager</div>';
+    }
+    html += '</div>';
+  });
+  if (!html) html = '<div class="op-empty"><div class="op-empty-ico">&#127793;</div><div class="op-empty-txt">Azi n-ai task-uri.<br>Bună zi!</div></div>';
+  wrap.innerHTML = html;
+}
+
+var _taskTimers = {};
+
+function startTask(id) {
+  var t = OPERATOR_TASKS.find(function(x){ return x.id === id; });
+  if (!t) return;
+  // Scade alte active la pending (doar 1 activ o data)
+  OPERATOR_TASKS.forEach(function(x){ if (x.state === 'active') x.state = 'pending'; });
+  t.state = 'active';
+  t._startedAt = Date.now();
+  renderTasks();
+  if (_taskTimers[id]) clearInterval(_taskTimers[id]);
+  _taskTimers[id] = setInterval(function() {
+    var el = document.getElementById('timer-' + id);
+    if (!el) return;
+    var mins = Math.floor((Date.now() - t._startedAt) / 60000);
+    var hrs = Math.floor(mins / 60);
+    var m = mins % 60;
+    if (hrs > 0) el.textContent = 'In lucru de ' + hrs + 'h ' + m + 'min';
+    else el.textContent = 'In lucru de ' + mins + ' min';
+  }, 1000);
+  showToast('success', 'Pornit. GPS-ul te urmărește acum.');
+}
+
+function stopTask(id) {
+  var t = OPERATOR_TASKS.find(function(x){ return x.id === id; });
+  if (!t) return;
+  t.state = 'done';
+  if (_taskTimers[id]) { clearInterval(_taskTimers[id]); delete _taskTimers[id]; }
+  renderTasks();
+  showToast('success', 'Gata pe azi. Managerul primește datele.');
+}
+
+function promptResolve(action) {
+  var p = document.getElementById('op-prompt');
+  if (p) p.style.display = 'none';
+  if (action === 'done') {
+    showToast('success', 'Marcat ca terminat. Managerul va valida.');
+  } else {
+    // Adauga task-ul de ieri ca activ
+    OPERATOR_TASKS.unshift({ id: 99, type: 'Erbicidare (continuă)', parcel: 'Parcela 12 Nord', ha: 67.8, utilaj: 'Tractor JD 6130R', agregat: 'Sprayer Amazone UF2002', state: 'active' });
+    OPERATOR_TASKS[0]._startedAt = Date.now();
+    renderTasks();
+    if (_taskTimers[99]) clearInterval(_taskTimers[99]);
+    _taskTimers[99] = setInterval(function() {
+      var el = document.getElementById('timer-99');
+      if (!el) return;
+      var mins = Math.floor((Date.now() - OPERATOR_TASKS[0]._startedAt) / 60000);
+      el.textContent = 'In lucru de ' + mins + ' min';
+    }, 1000);
+    showToast('success', 'OK, continui azi. Pornit automat.');
+  }
+}
+
+renderTasks();
+</script>
+</body>
+</html>

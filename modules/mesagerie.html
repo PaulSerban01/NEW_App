@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="manifest" href="../manifest.json">
+  <title>Mesagerie — UI Preview</title>
+  <style>
+    :root {
+      --brand-primary:        #00686A;
+      --brand-primary-80:     #338687;
+      --brand-primary-60:     #66A4A5;
+      --brand-primary-40:     #99C2C3;
+      --brand-primary-20:     #CCE1E1;
+      --brand-primary-hover:  #005557;
+      --brand-hover-bg:       #E6F3F3;
+      --brand-accent:         #00686A;
+      --brand-background:     #FFFFFF;
+      --brand-surface:        #F7FAFA;
+      --brand-border:         #D0E5E5;
+      --brand-text-primary:   #0D2626;
+      --brand-text-muted:     #4A6E6E;
+      --brand-danger:         #C0392B;
+      --brand-danger-bg:      #FDECEA;
+      --brand-success:        #00686A;
+      --brand-success-bg:     #E6F3F3;
+      --brand-warning:        #B7791F;
+      --brand-warning-bg:     #FEFCE8;
+      --brand-radius:         8px;
+      --brand-radius-lg:      12px;
+      --brand-font-sans:      'Inter', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--brand-font-sans); background: #f0f0f0; color: var(--brand-text-primary); }
+    .preview-root { display: flex; height: calc(100vh - 40px); gap: 0; margin-top: 40px; }
+    .panel-mobile { width: 420px; flex-shrink: 0; padding: 24px 16px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; display: flex; flex-direction: column; align-items: center; }
+    .panel-desktop { flex: 1; padding: 24px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; }
+    .panel-spec { width: 340px; flex-shrink: 0; padding: 24px 20px; overflow-y: auto; background: #fafafa; font-size: 13px; line-height: 1.6; }
+    .toggle-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 8px 16px; display: flex; gap: 8px; align-items: center; height: 40px; }
+    .toggle-bar button { padding: 4px 14px; border-radius: 6px; border: 1px solid #d4d4d4; cursor: pointer; font-size: 13px; background: transparent; color: var(--brand-text-primary); }
+    .toggle-bar button.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+    .phone-chrome { border: 8px solid #1a1a1a; border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.15); width: 370px; }
+    .phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 24px; background: #1a1a1a; border-radius: 0 0 16px 16px; z-index: 10; }
+    .phone-screen { background: var(--brand-background); height: 780px; overflow: hidden; padding-top: 28px; display: flex; flex-direction: column; }
+    .phone-scroll { flex: 1; overflow-y: auto; }
+    .phone-bottom-nav { flex-shrink: 0; }
+    .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
+    .browser-dots { display: flex; gap: 6px; }
+    .browser-dots span { width: 12px; height: 12px; border-radius: 50%; }
+    .browser-dots span:nth-child(1) { background: #FF5F57; }
+    .browser-dots span:nth-child(2) { background: #FFBD2E; }
+    .browser-dots span:nth-child(3) { background: #28CA41; }
+    .browser-url { flex: 1; background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; padding: 4px 10px; font-size: 12px; color: #888; }
+    .browser-screen { background: var(--brand-background); min-height: 600px; overflow-y: auto; }
+    .spec-section { margin-bottom: 20px; }
+    .spec-section h3 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 8px; }
+    .card { background: #fff; border: 1px solid var(--brand-border); border-radius: var(--brand-radius-lg); padding: 16px; }
+
+    /* === Search bar === */
+    .search-bar { padding: 8px 16px; background: #fff; border-bottom: 1px solid var(--brand-border); flex-shrink: 0; }
+    .search-bar input { width: 100%; border: 1px solid var(--brand-border); border-radius: 20px; padding: 8px 14px 8px 34px; font-size: 15px; outline: none; background: var(--brand-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234A6E6E' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 12px center; }
+    .search-bar input:focus { border-color: var(--brand-primary); background-color: #fff; }
+
+    /* === Tab bar (bottom style) === */
+    .msg-tabs { display: flex; border-top: 1px solid var(--brand-border); flex-shrink: 0; background: #fff; }
+    .msg-tab { flex: 1; text-align: center; padding: 10px 0 8px; font-size: 14px; font-weight: 600; color: var(--brand-text-muted); cursor: pointer; position: relative; border-top: 2px solid transparent; margin-top: -1px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .msg-tab.active { color: var(--brand-primary); border-top-color: var(--brand-primary); }
+    .msg-tab .tab-icon { font-size: 18px; }
+    .msg-tab .badge-count { position: absolute; top: 4px; right: calc(50% - 24px); min-width: 16px; height: 16px; border-radius: 8px; background: var(--brand-danger); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+
+
+    /* === Android nav bar === */
+    .android-nav { display: flex; align-items: center; justify-content: center; gap: 40px; padding: 8px 0 20px; background: #f5f5f5; flex-shrink: 0; }
+    .android-nav span { font-size: 16px; color: #999; cursor: pointer; }
+    .android-nav span:hover { color: #666; }
+
+    .contact-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+    .contact-item:hover { background: var(--brand-hover-bg); }
+    .contact-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .contact-info { flex: 1; min-width: 0; }
+    .contact-name { font-size: 18px; font-weight: 600; color: var(--brand-text-primary); }
+    .contact-msg { font-size: 15px; color: var(--brand-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .contact-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+    .contact-time { font-size: 13px; color: var(--brand-text-muted); }
+    .contact-badge { min-width: 20px; height: 20px; border-radius: 10px; background: var(--brand-primary); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 6px; }
+
+    .geo-avatar { width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; background: var(--brand-hover-bg); border: 1px solid var(--brand-border); }
+
+    .alert-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .alert-temp { background: var(--brand-danger-bg); color: var(--brand-danger); }
+    .alert-sat { background: #E0F2FE; color: #0369A1; }
+    .alert-geo { background: var(--brand-warning-bg); color: var(--brand-warning); }
+    .alert-rain { background: #EDE9FE; color: #6D28D9; }
+
+    /* Chat view */
+    .chat-view { display: none; flex-direction: column; height: 100%; }
+    .chat-header { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--brand-primary-hover); flex-shrink: 0; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 12px 16px; background: #f0f5f5; }
+    .bubble { max-width: 75%; padding: 8px 12px; border-radius: 12px; margin-bottom: 8px; font-size: 16px; line-height: 1.4; position: relative; }
+    .bubble-sent { background: var(--brand-primary); color: #fff; margin-left: auto; border-bottom-right-radius: 4px; }
+    .bubble-recv { background: #fff; color: var(--brand-text-primary); border: 1px solid var(--brand-border); border-bottom-left-radius: 4px; }
+    .bubble-time { font-size: 12px; opacity: 0.6; margin-top: 4px; text-align: right; }
+    .chat-input { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #fff; border-top: 1px solid var(--brand-border); flex-shrink: 0; }
+    .chat-input input { flex: 1; border: 1px solid var(--brand-border); border-radius: 20px; padding: 8px 14px; font-size: 16px; outline: none; }
+    .chat-input button { width: 36px; height: 36px; border-radius: 50%; background: var(--brand-primary); color: #fff; border: none; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    /* Comment thread */
+    .comment-bubble { display: flex; gap: 10px; margin-bottom: 12px; }
+    .comment-avatar-sm { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .comment-body { flex: 1; }
+    .comment-author { font-size: 13px; font-weight: 600; color: var(--brand-text-primary); }
+    .comment-text { font-size: 15px; color: var(--brand-text-primary); margin-top: 2px; }
+    .comment-meta { font-size: 12px; color: var(--brand-text-muted); margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+<div class="toggle-bar">
+  <span style="font-size:13px; font-weight:600; color:var(--brand-text-primary); margin-right:8px;">Mesagerie</span>
+  <button class="active" onclick="setView('both', this)">Both</button>
+  <button onclick="setView('mobile', this)">Mobile</button>
+  <button onclick="setView('desktop', this)">Desktop</button>
+  <span style="margin-left:auto; font-size:12px; color:#aaa;">ConnAgri &middot; FeatureForge Preview</span>
+</div>
+
+<div class="preview-root">
+  <div class="panel-mobile" id="panel-mobile">
+    <p style="font-size:12px; color:#aaa; margin-bottom:16px; text-align:center;">Mobile &mdash; 370px</p>
+    <div class="phone-chrome">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div id="app-topbar" data-title="Mesagerie"></div>
+
+        <!-- ===== LIST VIEW ===== -->
+        <div id="list-view" style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
+
+          <!-- Search bar -->
+          <div class="search-bar" id="search-bar">
+            <input type="text" id="search-input" placeholder="Cauta in mesaje..." oninput="filterList()" />
+          </div>
+
+          <!-- Scrollable content — GLOBAL cross-workspace -->
+          <div id="tab-mesaje" class="phone-scroll" style="display:block;">
+
+            <!-- BOT: Asistent ConnAgri — pinned first -->
+            <div class="contact-item" onclick="openBotChat()" style="background:linear-gradient(135deg, var(--brand-hover-bg) 0%, #fff 100%); border-bottom:2px solid var(--brand-primary-40);">
+              <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, var(--brand-primary), var(--brand-primary-hover)); display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative;">
+                <span style="font-size:20px;">&#129302;</span>
+                <div style="position:absolute; bottom:-1px; right:-1px; width:14px; height:14px; border-radius:50%; background:var(--brand-success); border:2px solid #fff; display:flex; align-items:center; justify-content:center;">
+                  <span style="font-size:12px; color:#fff;">&#10003;</span>
+                </div>
+              </div>
+              <div class="contact-info">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span class="contact-name">Asistent ConnAgri</span>
+                  <span style="padding:1px 6px; border-radius:4px; font-size:12px; font-weight:700; background:var(--brand-primary); color:#fff; letter-spacing:0.5px;">BOT</span>
+                </div>
+                <div class="contact-msg">&#127874; Maine: Ziua de nastere Ion Popescu</div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">08:00</span>
+                <span class="contact-badge" style="background:var(--brand-primary);">5</span>
+              </div>
+            </div>
+
+            <div class="contact-item" onclick="openChat('Maria Ionescu', 'MI', '#2E86AB')">
+              <div class="contact-avatar" style="background:#2E86AB;">MI</div>
+              <div class="contact-info">
+                <div class="contact-name">Maria Ionescu</div>
+                <div class="contact-msg">Am terminat tratamentul pe parcela 12</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">10:42</span>
+                <span class="contact-badge">2</span>
+              </div>
+            </div>
+            <div class="contact-item" onclick="openChat('Vasile Lungu', 'VL', '#1B5E20')">
+              <div class="contact-avatar" style="background:#1B5E20;">VL</div>
+              <div class="contact-info">
+                <div class="contact-name">Vasile Lungu</div>
+                <div class="contact-msg">Am gasit copaci doborati pe Canton Poieni</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E8F5E9;color:#1B5E20;">&#127794; Paduri &rsaquo; Timis</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">09:30</span>
+                <span class="contact-badge">1</span>
+              </div>
+            </div>
+            <div class="contact-item" onclick="openChat('Andrei Popa', 'AP', '#8B5E3C')">
+              <div class="contact-avatar" style="background:#8B5E3C;">AP</div>
+              <div class="contact-info">
+                <div class="contact-name">Andrei Popa</div>
+                <div class="contact-msg">Tractorul e gata, pot incepe maine</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">09:15</span>
+                <span class="contact-badge">1</span>
+              </div>
+            </div>
+            <div class="contact-item" onclick="openChat('Elena Vasile', 'EV', '#6D28D9')">
+              <div class="contact-avatar" style="background:#6D28D9;">EV</div>
+              <div class="contact-info">
+                <div class="contact-name">Elena Vasile</div>
+                <div class="contact-msg">Stocul de ingrasamant e pe terminate</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;">&#127963; Ferma Constanta</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">Ieri</span>
+              </div>
+            </div>
+            <div class="contact-item" onclick="openChat('Mihai Stancu', 'MS', '#0D7377')">
+              <div class="contact-avatar" style="background:#0D7377;">MS</div>
+              <div class="contact-info">
+                <div class="contact-name">Mihai Stancu</div>
+                <div class="contact-msg">Raportul de costuri e trimis</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">Ieri</span>
+              </div>
+            </div>
+            <div class="contact-item" onclick="openChat('Ioana Marin', 'IM', '#C0392B')">
+              <div class="contact-avatar" style="background:#C0392B;">IM</div>
+              <div class="contact-info">
+                <div class="contact-name">Ioana Marin</div>
+                <div class="contact-msg">Pot prelua parcela 7 saptamana viitoare?</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;">&#127963; Ferma Constanta</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">Lun</span>
+              </div>
+            </div>
+            <div class="contact-item" onclick="openChat('Dan Gheorghe', 'DG', '#B7791F')">
+              <div class="contact-avatar" style="background:#B7791F;">DG</div>
+              <div class="contact-info">
+                <div class="contact-name">Dan Gheorghe</div>
+                <div class="contact-msg">Verificati NDVI pe parcela 3, arata ciudat</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">Lun</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: Comentarii — GLOBAL cross-workspace -->
+          <div id="tab-comentarii" class="phone-scroll" style="display:none;">
+            <div class="contact-item" onclick="openComments('Parcela 12 Nord', 'Agro Vest Holdings')">
+              <div class="geo-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,8 22,16 12,22 2,16 2,8" stroke="var(--brand-primary)" stroke-width="2" fill="var(--brand-primary-20)"/></svg>
+              </div>
+              <div class="contact-info">
+                <div class="contact-name">Parcela 12 Nord</div>
+                <div class="contact-msg" style="font-size:12px;">Grau de toamna &middot; 3 comentarii noi</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">10:30</span>
+                <span class="contact-badge">3</span>
+              </div>
+            </div>
+            <div class="contact-item" onclick="openComments('Canton Poieni', 'Paduri')">
+              <div class="geo-avatar" style="background:#E8F5E9;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,8 22,16 12,22 2,16 2,8" stroke="#1B5E20" stroke-width="2" fill="#C8E6C9"/></svg>
+              </div>
+              <div class="contact-info">
+                <div class="contact-name">Canton Poieni</div>
+                <div class="contact-msg" style="font-size:12px;">Sector 3 — raport copaci doborati</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E8F5E9;color:#1B5E20;">&#127794; Paduri &rsaquo; Timis &rsaquo; OS Lugoj</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">10:10</span>
+                <span class="contact-badge">2</span>
+              </div>
+            </div>
+            <div class="contact-item" onclick="openComments('Parcela 7 Vest', 'Agro Vest Holdings')">
+              <div class="geo-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="var(--brand-primary)" stroke-width="2" fill="var(--brand-primary-20)"/></svg>
+              </div>
+              <div class="contact-info">
+                <div class="contact-name">Parcela 7 Vest</div>
+                <div class="contact-msg" style="font-size:12px;">Porumb &middot; Problema drenaj</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">09:45</span>
+                <span class="contact-badge">1</span>
+              </div>
+            </div>
+            <div class="contact-item" onclick="openComments('Parcela 3 Sud', 'Ferma Constanta')">
+              <div class="geo-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="12,3 21,9 18,20 6,20 3,9" stroke="var(--brand-warning)" stroke-width="2" fill="var(--brand-warning-bg)"/></svg>
+              </div>
+              <div class="contact-info">
+                <div class="contact-name">Parcela 3 Sud</div>
+                <div class="contact-msg" style="font-size:12px;">Floarea-soarelui &middot; Evaluare cultura</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;">&#127963; Ferma Constanta</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">Ieri</span>
+                <span class="contact-badge">1</span>
+              </div>
+            </div>
+            <div class="contact-item" onclick="openComments('Parcela 15 Est', 'Agro Vest Holdings')">
+              <div class="geo-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,8 22,16 12,22 2,16 2,8" stroke="var(--brand-primary)" stroke-width="2" fill="var(--brand-primary-20)"/></svg>
+              </div>
+              <div class="contact-info">
+                <div class="contact-name">Parcela 15 Est</div>
+                <div class="contact-msg" style="font-size:12px;">Rapita &middot; Tratament finalizat</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+              </div>
+              <div class="contact-meta">
+                <span class="contact-time">Mar</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: Alerte — GLOBAL cross-workspace -->
+          <div id="tab-alerte" class="phone-scroll" style="display:none;">
+            <div class="contact-item" onclick="showSwitchPopup('Agro Vest Holdings','Parcela 12 Nord — Temperatura peste 30°C')">
+              <div class="alert-icon alert-temp">&#127777;</div>
+              <div class="contact-info">
+                <div class="contact-name" style="color:var(--brand-danger);">Temperatura peste 30&deg;C</div>
+                <div class="contact-msg">Opriti lucrarile de tratamente foliare pe toate parcelele din zona Vest</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+              </div>
+              <div class="contact-meta"><span class="contact-time">11:05</span></div>
+            </div>
+            <div class="contact-item" onclick="showSwitchPopup('Ferma Constanta','Parcela 3 Sud — Risc inghet nocturn')">
+              <div class="alert-icon alert-temp" style="background:var(--brand-danger-bg);color:var(--brand-danger);">&#10052;</div>
+              <div class="contact-info">
+                <div class="contact-name" style="color:var(--brand-danger);">Risc inghet — Parcela 3 Sud</div>
+                <div class="contact-msg">70% sanse Tmin &lt;0&deg;C. Cer senin, vant slab. Protejati rasadurile.</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;">&#127963; Ferma Constanta</span></div>
+              </div>
+              <div class="contact-meta"><span class="contact-time">10:45</span></div>
+            </div>
+            <div class="contact-item" onclick="showSwitchPopup('Agro Vest Holdings','Sentinel-2 update')">
+              <div class="alert-icon alert-sat">&#128752;</div>
+              <div class="contact-info">
+                <div class="contact-name" style="color:#0369A1;">Update imagini satelitare</div>
+                <div class="contact-msg">S-au actualizat imaginile Sentinel-2 pentru 12 parcele</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+              </div>
+              <div class="contact-meta"><span class="contact-time">10:22</span></div>
+            </div>
+            <div class="contact-item" onclick="showSwitchPopup('Paduri','Canton Poieni — Copaci doborati')">
+              <div class="alert-icon" style="background:#E8F5E9;color:#1B5E20;font-size:16px;">&#127794;</div>
+              <div class="contact-info">
+                <div class="contact-name" style="color:#1B5E20;">Copaci doborati — Canton Poieni</div>
+                <div class="contact-msg">Furtuna a doborat 12 copaci pe sectorul 3. Necesita interventie urgenta.</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E8F5E9;color:#1B5E20;">&#127794; Paduri &rsaquo; Timis &rsaquo; OS Lugoj</span></div>
+              </div>
+              <div class="contact-meta"><span class="contact-time">09:50</span></div>
+            </div>
+            <div class="contact-item" onclick="showSwitchPopup('Agro Vest Holdings','Geofencing JD-4520')">
+              <div class="alert-icon alert-geo">&#128668;</div>
+              <div class="contact-info">
+                <div class="contact-name" style="color:var(--brand-warning);">Geofencing — Tractor JD-4520</div>
+                <div class="contact-msg">Tractorul JD-4520 a iesit din zona de lucru Parcela 7</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+              </div>
+              <div class="contact-meta"><span class="contact-time">09:38</span></div>
+            </div>
+            <div class="contact-item" onclick="showSwitchPopup('Ferma Constanta','Stoc expirat Karate Zeon')">
+              <div class="alert-icon" style="background:var(--brand-danger-bg);color:var(--brand-danger);font-size:16px;">&#128137;</div>
+              <div class="contact-info">
+                <div class="contact-name" style="color:var(--brand-danger);">Stoc expirat — Karate Zeon 5CS</div>
+                <div class="contact-msg">12 L expirate pe 01 Mar 2026. Scoateti din uz imediat.</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;">&#127963; Ferma Constanta</span></div>
+              </div>
+              <div class="contact-meta"><span class="contact-time">Ieri</span></div>
+            </div>
+            <div class="contact-item" onclick="showSwitchPopup('Agro Vest Holdings','Precipitatii 48h')">
+              <div class="alert-icon alert-rain">&#127783;</div>
+              <div class="contact-info">
+                <div class="contact-name" style="color:#6D28D9;">Precipitatii prognozate</div>
+                <div class="contact-msg">Ploi moderate asteptate in urmatoarele 48h — zona Nord-Est</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+              </div>
+              <div class="contact-meta"><span class="contact-time">Ieri</span></div>
+            </div>
+            <div class="contact-item" onclick="showSwitchPopup('Paduri','NDVI anomalie Canton Margina')">
+              <div class="alert-icon alert-sat">&#128752;</div>
+              <div class="contact-info">
+                <div class="contact-name" style="color:#0369A1;">NDVI anomalie — Canton Margina</div>
+                <div class="contact-msg">Valori NDVI scazute pe 4.1 ha. Posibila defrișare neautorizata.</div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E8F5E9;color:#1B5E20;">&#127794; Paduri &rsaquo; Timis &rsaquo; OS Lugoj</span></div>
+              </div>
+              <div class="contact-meta"><span class="contact-time">Lun</span></div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <!-- ===== CHAT VIEW ===== -->
+        <div id="chat-view" class="chat-view">
+          <div class="chat-header">
+            <div onclick="closeChat()" style="cursor:pointer; color:#fff; font-size:18px; width:28px;">&#8592;</div>
+            <div id="chat-avatar" class="contact-avatar" style="width:32px; height:32px; font-size:12px;"></div>
+            <div id="chat-name" style="font-size:17px; font-weight:600; color:#fff;"></div>
+          </div>
+          <div class="chat-messages" id="chat-messages">
+            <div class="bubble bubble-recv">Salut! Am terminat tratamentul pe parcela 12, totul in regula.<div class="bubble-time">10:38</div></div>
+            <div class="bubble bubble-sent">Perfect, multumesc! Ce cantitate ai folosit?<div class="bubble-time">10:39</div></div>
+            <div class="bubble bubble-recv">250L la hectar, conform recomandarilor. Am facut si poze.<div class="bubble-time">10:40</div></div>
+            <div class="bubble bubble-sent">Super. Incarca pozele in app te rog.<div class="bubble-time">10:41</div></div>
+            <div class="bubble bubble-recv">Gata, le-am incarcat acum.<div class="bubble-time">10:42</div></div>
+          </div>
+          <div class="chat-input">
+            <input type="text" placeholder="Scrie un mesaj..." />
+            <button>&#10148;</button>
+          </div>
+        </div>
+
+        <!-- ===== BOT CHAT VIEW ===== -->
+        <div id="bot-chat-view" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
+          <div class="chat-header" style="background:linear-gradient(135deg, var(--brand-primary-hover), #003D3E);">
+            <div onclick="closeBotChat()" style="cursor:pointer; color:#fff; font-size:18px; width:28px;">&#8592;</div>
+            <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--brand-primary), var(--brand-primary-hover)); display:flex; align-items:center; justify-content:center; font-size:16px;">&#129302;</div>
+            <div style="flex:1;">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span style="font-size:17px; font-weight:600; color:#fff;">Asistent ConnAgri</span>
+                <span style="padding:1px 6px; border-radius:4px; font-size:12px; font-weight:700; background:rgba(255,255,255,0.2); color:#fff;">BOT</span>
+              </div>
+              <div style="font-size:12px; color:rgba(255,255,255,0.7);">Activ mereu &middot; Notificari automate</div>
+            </div>
+            <div onclick="openBotSettings()" style="cursor:pointer; color:#fff; font-size:22px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.2); border-radius:8px;">&#9881;</div>
+          </div>
+          <div class="chat-messages" id="bot-messages" style="padding:12px 12px; flex:1; overflow-y:auto;">
+
+            <!-- Data separator -->
+            <div style="text-align:center; margin:8px 0 14px;">
+              <span style="padding:4px 14px; border-radius:10px; background:rgba(0,0,0,0.06); font-size:12px; font-weight:600; color:var(--brand-text-muted);">Azi, 14 Aprilie 2026</span>
+            </div>
+
+            <!-- Bot message: Raport zilnic -->
+            <div style="margin-bottom:14px;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <span style="font-size:12px;">&#129302;</span>
+                <span style="font-size:12px; font-weight:700; color:var(--brand-primary);">Asistent ConnAgri</span>
+                <span style="font-size:12px; color:var(--brand-text-muted);">08:00</span>
+              </div>
+              <div style="background:#fff; border:1px solid var(--brand-border); border-radius:12px; border-top-left-radius:4px; padding:12px; max-width:92%;">
+                <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                  <span style="font-size:14px;">&#128200;</span>
+                  <span style="font-size:12px; font-weight:700; color:var(--brand-text-primary);">Raport zilnic — 13 Aprilie</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px; margin-bottom:10px; padding:4px 8px; background:var(--brand-hover-bg); border-radius:6px;">
+                  <span style="font-size:12px;">&#128205;</span>
+                  <span style="font-size:12px; font-weight:600; color:var(--brand-primary);">PL ferma1 — Recoltei</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:8px;">
+                  <div style="background:var(--brand-surface); border-radius:6px; padding:6px 8px; text-align:center;">
+                    <div style="font-size:12px; color:var(--brand-text-muted); font-weight:600;">SUPRAFATA</div>
+                    <div style="font-size:14px; font-weight:800; color:var(--brand-primary);">48.2 ha</div>
+                  </div>
+                  <div style="background:var(--brand-surface); border-radius:6px; padding:6px 8px; text-align:center;">
+                    <div style="font-size:12px; color:var(--brand-text-muted); font-weight:600;">LUCRARI</div>
+                    <div style="font-size:14px; font-weight:800; color:var(--brand-primary);">7</div>
+                  </div>
+                  <div style="background:var(--brand-surface); border-radius:6px; padding:6px 8px; text-align:center;">
+                    <div style="font-size:12px; color:var(--brand-text-muted); font-weight:600;">COMBUSTIBIL</div>
+                    <div style="font-size:14px; font-weight:800; color:var(--brand-warning);">340 L</div>
+                  </div>
+                  <div style="background:var(--brand-surface); border-radius:6px; padding:6px 8px; text-align:center;">
+                    <div style="font-size:12px; color:var(--brand-text-muted); font-weight:600;">ORE LUCRATE</div>
+                    <div style="font-size:14px; font-weight:800; color:var(--brand-primary);">62h</div>
+                  </div>
+                </div>
+                <div style="font-size:12px; color:var(--brand-text-muted); line-height:1.5;">
+                  &#127806; Arat: 24.5 ha (Parcela 12, 7, 4)<br>
+                  &#128167; Erbicidat: 18.2 ha (Parcela 9, 15)<br>
+                  &#127793; Semanat: 5.5 ha (Parcela 3)
+                </div>
+                <div onclick="alert('Deschide raport complet')" style="margin-top:8px; padding:6px; border-radius:6px; background:var(--brand-hover-bg); text-align:center; font-size:12px; font-weight:600; color:var(--brand-primary); cursor:pointer;">Vezi raport complet &#10132;</div>
+              </div>
+            </div>
+
+            <!-- Bot message: Zile de nastere -->
+            <div style="margin-bottom:14px;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <span style="font-size:12px;">&#129302;</span>
+                <span style="font-size:12px; font-weight:700; color:var(--brand-primary);">Asistent ConnAgri</span>
+                <span style="font-size:12px; color:var(--brand-text-muted);">08:00</span>
+              </div>
+              <div style="background:#fff; border:1px solid var(--brand-border); border-radius:12px; border-top-left-radius:4px; padding:12px; max-width:92%;">
+                <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+                  <span style="font-size:14px;">&#127874;</span>
+                  <span style="font-size:12px; font-weight:700; color:var(--brand-text-primary);">Zile de nastere</span>
+                </div>
+                <div style="background:linear-gradient(135deg, #FFF7ED, #FFFBEB); border:1px solid #FED7AA; border-radius:8px; padding:10px; margin-bottom:6px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="width:36px; height:36px; border-radius:50%; background:#F57C00; color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">IP</div>
+                    <div style="flex:1;">
+                      <div style="font-size:12px; font-weight:700; color:var(--brand-text-primary);">&#127881; Maine — Ion Popescu</div>
+                      <div style="font-size:12px; color:var(--brand-text-muted);">Operator &middot; PL ferma1</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="background:var(--brand-surface); border:1px solid var(--brand-border); border-radius:8px; padding:10px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="width:36px; height:36px; border-radius:50%; background:#6D28D9; color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">EV</div>
+                    <div style="flex:1;">
+                      <div style="font-size:12px; font-weight:700; color:var(--brand-text-primary);">18 Aprilie — Elena Vasile</div>
+                      <div style="font-size:12px; color:var(--brand-text-muted);">Agronom &middot; PL ferma2</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+          <!-- Bot has no input — read only -->
+          <div style="padding:10px 16px; background:#fff; border-top:1px solid var(--brand-border); display:flex; align-items:center; gap:8px;">
+            <span style="font-size:14px;">&#129302;</span>
+            <span style="font-size:12px; color:var(--brand-text-muted); flex:1;">Mesajele sunt generate automat de sistem</span>
+            <div onclick="openBotSettings()" style="padding:4px 10px; border-radius:6px; border:1px solid var(--brand-border); font-size:12px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;">&#9881; Setari</div>
+          </div>
+        </div>
+
+        <!-- ===== BOT SETTINGS POPUP ===== -->
+        <div id="bot-settings" style="display:none; position:absolute; inset:0; z-index:70;">
+          <div onclick="closeBotSettings()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1;"></div>
+          <div onclick="event.stopPropagation()" style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:85%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out; z-index:2;">
+            <div style="display:flex; align-items:center; padding:16px 16px 12px; border-bottom:1px solid var(--brand-border); flex-shrink:0;">
+              <div style="flex:1;">
+                <div style="font-size:15px; font-weight:700; color:var(--brand-text-primary);">&#129302; Setari Asistent</div>
+                <div style="font-size:12px; color:var(--brand-text-muted); margin-top:2px;">Alege ce notificari primesti automat</div>
+              </div>
+              <div onclick="closeBotSettings()" style="width:28px; height:28px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; color:#888;">&times;</div>
+            </div>
+            <div style="flex:1; overflow-y:auto; padding:8px 0; scrollbar-width:none;">
+
+              <!-- 1. Raport zilnic -->
+              <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
+                <span style="font-size:18px; width:24px; text-align:center;">&#128200;</span>
+                <div style="flex:1;">
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Raport zilnic de activitate</div>
+                  <div style="font-size:12px; color:var(--brand-text-muted);">Rezumat ha lucrate, lucrari, combustibil — per punct de lucru</div>
+                </div>
+                <div class="bot-toggle on" style="width:42px; height:24px; border-radius:12px; background:var(--brand-primary); position:relative; flex-shrink:0; transition:background 0.2s;">
+                  <div style="width:20px; height:20px; border-radius:50%; background:#fff; position:absolute; top:2px; right:2px; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:all 0.2s;"></div>
+                </div>
+              </div>
+
+              <!-- 2. Raport saptamanal -->
+              <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
+                <span style="font-size:18px; width:24px; text-align:center;">&#128202;</span>
+                <div style="flex:1;">
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Raport saptamanal</div>
+                  <div style="font-size:12px; color:var(--brand-text-muted);">Rezumat complet al saptamanii — costuri, productivitate, comparatii</div>
+                </div>
+                <div class="bot-toggle on" style="width:42px; height:24px; border-radius:12px; background:var(--brand-primary); position:relative; flex-shrink:0; transition:background 0.2s;">
+                  <div style="width:20px; height:20px; border-radius:50%; background:#fff; position:absolute; top:2px; right:2px; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:all 0.2s;"></div>
+                </div>
+              </div>
+
+              <!-- 3. Zile de nastere -->
+              <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
+                <span style="font-size:18px; width:24px; text-align:center;">&#127874;</span>
+                <div style="flex:1;">
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Zile de nastere</div>
+                  <div style="font-size:12px; color:var(--brand-text-muted);">Notificare azi/maine cand cineva din echipa are ziua</div>
+                </div>
+                <div class="bot-toggle on" style="width:42px; height:24px; border-radius:12px; background:var(--brand-primary); position:relative; flex-shrink:0; transition:background 0.2s;">
+                  <div style="width:20px; height:20px; border-radius:50%; background:#fff; position:absolute; top:2px; right:2px; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:all 0.2s;"></div>
+                </div>
+              </div>
+
+              <!-- 4. Remindere lucrari -->
+              <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
+                <span style="font-size:18px; width:24px; text-align:center;">&#128276;</span>
+                <div style="flex:1;">
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Remindere lucrari planificate</div>
+                  <div style="font-size:12px; color:var(--brand-text-muted);">Amintire cu lucrarile programate pentru azi si maine</div>
+                </div>
+                <div class="bot-toggle on" style="width:42px; height:24px; border-radius:12px; background:var(--brand-primary); position:relative; flex-shrink:0; transition:background 0.2s;">
+                  <div style="width:20px; height:20px; border-radius:50%; background:#fff; position:absolute; top:2px; right:2px; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:all 0.2s;"></div>
+                </div>
+              </div>
+
+              <!-- 5. Status terenuri -->
+              <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
+                <span style="font-size:18px; width:24px; text-align:center;">&#127793;</span>
+                <div style="flex:1;">
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Status terenuri si culturi</div>
+                  <div style="font-size:12px; color:var(--brand-text-muted);">Evolutia culturilor, stadii fenologice, parcele nelucrate</div>
+                </div>
+                <div class="bot-toggle" style="width:42px; height:24px; border-radius:12px; background:#ccc; position:relative; flex-shrink:0; transition:background 0.2s;">
+                  <div style="width:20px; height:20px; border-radius:50%; background:#fff; position:absolute; top:2px; left:2px; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:all 0.2s;"></div>
+                </div>
+              </div>
+
+              <!-- 6. Utilaje — service si revizii -->
+              <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
+                <span style="font-size:18px; width:24px; text-align:center;">&#128668;</span>
+                <div style="flex:1;">
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Utilaje — revizii si service</div>
+                  <div style="font-size:12px; color:var(--brand-text-muted);">Remindere revizii programate, ore depasit, mentenanta</div>
+                </div>
+                <div class="bot-toggle on" style="width:42px; height:24px; border-radius:12px; background:var(--brand-primary); position:relative; flex-shrink:0; transition:background 0.2s;">
+                  <div style="width:20px; height:20px; border-radius:50%; background:#fff; position:absolute; top:2px; right:2px; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:all 0.2s;"></div>
+                </div>
+              </div>
+
+              <!-- 7. Task-uri si sarcini -->
+              <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
+                <span style="font-size:18px; width:24px; text-align:center;">&#9745;</span>
+                <div style="flex:1;">
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Task-uri si sarcini</div>
+                  <div style="font-size:12px; color:var(--brand-text-muted);">Sarcini nefinalizate, task-uri asignate, deadline-uri</div>
+                </div>
+                <div class="bot-toggle on" style="width:42px; height:24px; border-radius:12px; background:var(--brand-primary); position:relative; flex-shrink:0; transition:background 0.2s;">
+                  <div style="width:20px; height:20px; border-radius:50%; background:#fff; position:absolute; top:2px; right:2px; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:all 0.2s;"></div>
+                </div>
+              </div>
+
+              <!-- 8. Pontaj si prezenta -->
+              <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
+                <span style="font-size:18px; width:24px; text-align:center;">&#128101;</span>
+                <div style="flex:1;">
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Pontaj si prezenta</div>
+                  <div style="font-size:12px; color:var(--brand-text-muted);">Rezumat prezenti/absenti, ore lucrate pe echipa</div>
+                </div>
+                <div class="bot-toggle" style="width:42px; height:24px; border-radius:12px; background:#ccc; position:relative; flex-shrink:0; transition:background 0.2s;">
+                  <div style="width:20px; height:20px; border-radius:50%; background:#fff; position:absolute; top:2px; left:2px; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:all 0.2s;"></div>
+                </div>
+              </div>
+
+              <!-- 9. Consum combustibil -->
+              <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
+                <span style="font-size:18px; width:24px; text-align:center;">&#9981;</span>
+                <div style="flex:1;">
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Consum combustibil</div>
+                  <div style="font-size:12px; color:var(--brand-text-muted);">Raport zilnic consum per utilaj, comparatie cu normativul</div>
+                </div>
+                <div class="bot-toggle" style="width:42px; height:24px; border-radius:12px; background:#ccc; position:relative; flex-shrink:0; transition:background 0.2s;">
+                  <div style="width:20px; height:20px; border-radius:50%; background:#fff; position:absolute; top:2px; left:2px; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:all 0.2s;"></div>
+                </div>
+              </div>
+
+              <!-- 10. Documente si contracte -->
+              <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; cursor:pointer;">
+                <span style="font-size:18px; width:24px; text-align:center;">&#128196;</span>
+                <div style="flex:1;">
+                  <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Documente si contracte</div>
+                  <div style="font-size:12px; color:var(--brand-text-muted);">Remindere contracte arenda, documente de reinoit</div>
+                </div>
+                <div class="bot-toggle on" style="width:42px; height:24px; border-radius:12px; background:var(--brand-primary); position:relative; flex-shrink:0; transition:background 0.2s;">
+                  <div style="width:20px; height:20px; border-radius:50%; background:#fff; position:absolute; top:2px; right:2px; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:all 0.2s;"></div>
+                </div>
+              </div>
+
+            </div>
+            <!-- Footer -->
+            <div style="padding:12px 16px; border-top:1px solid var(--brand-border); display:flex; gap:8px; flex-shrink:0;">
+              <div onclick="closeBotSettings()" style="flex:1; padding:12px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:13px; font-weight:600; cursor:pointer;">&#10003; Salveaza setarile</div>
+            </div>
+          </div>
+        </div>
+        <style>@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}</style>
+
+        <!-- ===== COMMENTS VIEW ===== -->
+        <div id="comments-view" style="display:none; flex-direction:column; height:100%;">
+          <div class="chat-header">
+            <div onclick="closeComments()" style="cursor:pointer; color:#fff; font-size:18px; width:28px;">&#8592;</div>
+            <div style="width:32px; height:32px; border-radius:6px; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,8 22,16 12,22 2,16 2,8" stroke="#fff" stroke-width="2" fill="rgba(255,255,255,0.2)"/></svg>
+            </div>
+            <div>
+              <div id="comment-title" style="font-size:13px; font-weight:600; color:#fff;"></div>
+              <div id="comment-farm" style="font-size:12px; color:rgba(255,255,255,0.7);"></div>
+            </div>
+          </div>
+          <div class="phone-scroll" style="padding:16px; background:#f0f5f5;">
+            <div class="comment-bubble">
+              <div class="comment-avatar-sm" style="background:#2E86AB;">MI</div>
+              <div class="comment-body">
+                <div class="comment-author">Maria Ionescu</div>
+                <div class="comment-text">Am observat zone cu plante mai scunde in coltul de Nord-Est. Posibil problema de drenaj.</div>
+                <div class="comment-meta">Azi, 10:28 &middot; &#128247; 2 poze atasate</div>
+              </div>
+            </div>
+            <div class="comment-bubble">
+              <div class="comment-avatar-sm" style="background:#8B5E3C;">AP</div>
+              <div class="comment-body">
+                <div class="comment-author">Andrei Popa</div>
+                <div class="comment-text">Confirm, am vazut si eu asta ieri. Cred ca e de la ploile din saptamana trecuta.</div>
+                <div class="comment-meta">Azi, 10:30</div>
+              </div>
+            </div>
+            <div class="comment-bubble">
+              <div class="comment-avatar-sm" style="background:#0D7377;">MS</div>
+              <div class="comment-body">
+                <div class="comment-author">Mihai Stancu</div>
+                <div class="comment-text">Am programat o inspectie cu drona pentru maine dimineata. Vom avea date mai clare.</div>
+                <div class="comment-meta">Azi, 10:35</div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input">
+            <input type="text" placeholder="Adauga un comentariu..." />
+            <button>&#10148;</button>
+          </div>
+        </div>
+
+        <!-- Shortcuts + Android nav (injected by bars.js) -->
+        <!-- Workspace Switch Confirmation Popup -->
+        <div id="ws-switch-popup" style="display:none; position:absolute; inset:0; z-index:70;">
+          <div onclick="closeSwitchPopup()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1;"></div>
+          <div onclick="event.stopPropagation()" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; border-radius:var(--brand-radius-lg); box-shadow:0 8px 32px rgba(0,0,0,0.25); width:85%; max-width:300px; z-index:2; overflow:hidden;">
+            <div style="padding:20px 16px; text-align:center;">
+              <div style="font-size:32px; margin-bottom:8px;">&#128204;</div>
+              <div style="font-size:14px; font-weight:700; color:var(--brand-text-primary); margin-bottom:8px;">Schimba spatiul de lucru?</div>
+              <div style="font-size:12px; color:var(--brand-text-muted); line-height:1.5;">Aceasta resursa este din<br><strong id="ws-switch-name" style="color:var(--brand-primary);">Ferma Constanta</strong></div>
+              <div id="ws-switch-detail" style="font-size:12px; color:var(--brand-text-muted); margin-top:6px; padding:6px 10px; background:var(--brand-surface); border-radius:var(--brand-radius);"></div>
+            </div>
+            <div style="display:flex; border-top:1px solid var(--brand-border);">
+              <div onclick="closeSwitchPopup()" style="flex:1; padding:14px; text-align:center; font-size:14px; font-weight:600; color:var(--brand-text-muted); cursor:pointer; border-right:1px solid var(--brand-border);">Anuleaza</div>
+              <div onclick="confirmSwitch()" style="flex:1; padding:14px; text-align:center; font-size:14px; font-weight:600; color:var(--brand-primary); cursor:pointer;">Comuta</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="app-bottombar"></div>
+        <script src="../bars.js"></script>
+        <script>
+        // Mesagerie: show bottom nav permanently with 3 tabs
+        (function() {
+          var nav = document.querySelector('.phone-bottom-nav');
+          var toggle = document.getElementById('shortcuts-toggle');
+          if (toggle) toggle.classList.add('hidden');
+          if (nav) {
+            nav.style.display = 'flex';
+            nav.innerHTML =
+              '<div onclick="toggleLeftMenu()" style="flex:0.7; text-align:center; padding:10px 0 8px; font-size:12px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;">' +
+                '<div style="font-size:18px; margin-bottom:2px;">&#9776;</div>Meniu</div>' +
+              '<div onclick="switchTabFromNav(\'mesaje\')" style="flex:1; text-align:center; padding:10px 0 8px; font-size:12px; font-weight:600; color:var(--brand-primary); cursor:pointer; position:relative; border-top:2px solid var(--brand-primary);" id="nav-mesaje">' +
+                '<div style="font-size:18px; margin-bottom:2px;">&#128172;</div>Mesaje' +
+                '<span class="nav-badge" style="position:absolute; top:4px; right:calc(50% - 22px); min-width:16px; height:16px; border-radius:8px; background:var(--brand-danger); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 4px;">3</span></div>' +
+              '<div onclick="switchTabFromNav(\'comentarii\')" style="flex:1; text-align:center; padding:10px 0 8px; font-size:12px; font-weight:600; color:var(--brand-text-muted); cursor:pointer; position:relative; border-top:2px solid transparent;" id="nav-comentarii">' +
+                '<div style="font-size:18px; margin-bottom:2px;">&#128221;</div>Comentarii' +
+                '<span class="nav-badge" style="position:absolute; top:4px; right:calc(50% - 28px); min-width:16px; height:16px; border-radius:8px; background:var(--brand-danger); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 4px;">5</span></div>' +
+              '<div onclick="switchTabFromNav(\'alerte\')" style="flex:1; text-align:center; padding:10px 0 8px; font-size:12px; font-weight:600; color:var(--brand-text-muted); cursor:pointer; position:relative; border-top:2px solid transparent;" id="nav-alerte">' +
+                '<div style="font-size:18px; margin-bottom:2px;">&#128276;</div>Alerte' +
+                '<span class="nav-badge" style="position:absolute; top:4px; right:calc(50% - 20px); min-width:16px; height:16px; border-radius:8px; background:var(--brand-danger); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 4px;">4</span></div>';
+          }
+          // Disable auto-hide for mesagerie
+          window.shortcutsVisible = true;
+          window.shortcutsPinned = true;
+        })();
+
+        function switchTabFromNav(tab) {
+          currentTab = tab;
+          document.getElementById('tab-mesaje').style.display = tab === 'mesaje' ? 'block' : 'none';
+          document.getElementById('tab-comentarii').style.display = tab === 'comentarii' ? 'block' : 'none';
+          document.getElementById('tab-alerte').style.display = tab === 'alerte' ? 'block' : 'none';
+          document.getElementById('search-input').placeholder = searchPlaceholders[tab];
+          document.getElementById('search-input').value = '';
+          // Highlight active tab + border
+          ['mesaje','comentarii','alerte'].forEach(function(t) {
+            var el = document.getElementById('nav-' + t);
+            if (el) {
+              el.style.color = (t === tab) ? 'var(--brand-primary)' : 'var(--brand-text-muted)';
+              el.style.borderTopColor = (t === tab) ? 'var(--brand-primary)' : 'transparent';
+            }
+          });
+        }
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= DESKTOP PANEL ======================= -->
+  <div class="panel-desktop" id="panel-desktop">
+    <p style="font-size:12px; color:#aaa; margin-bottom:16px;">Desktop &mdash; full width</p>
+    <div class="browser-chrome">
+      <div class="browser-bar">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">connagri.app/mesagerie</div>
+      </div>
+      <div class="browser-screen" style="min-height:600px; display:flex; align-items:center; justify-content:center;">
+        <div style="text-align:center;">
+          <div style="font-size:64px; margin-bottom:16px; opacity:0.3;">&#128172;</div>
+          <div style="font-size:20px; font-weight:600; color:var(--brand-text-muted); margin-bottom:8px;">Mesagerie</div>
+          <div style="font-size:14px; color:var(--brand-text-muted); opacity:0.6;">Continut in curs de dezvoltare</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= SPEC PANEL ======================= -->
+  <div class="panel-spec" id="panel-spec">
+    <div style="font-size:15px; font-weight:700; margin-bottom:4px; color:var(--brand-text-primary);">Mesagerie</div>
+    <div style="font-size:12px; color:#aaa; margin-bottom:20px;">Comunicare interna &middot; Spec Panel</div>
+    <div class="spec-section">
+      <h3>Descriere</h3>
+      <p style="font-size:12px; color:#555;">Sistem de comunicare interna cu 3 canale: mesaje directe (stil chat), comentarii pe terenuri si alerte de sistem.</p>
+    </div>
+    <div class="spec-section">
+      <h3>Categorii</h3>
+      <div style="font-size:12px; color:#555; margin-bottom:4px;"><strong>Mesaje</strong> — Chat direct intre utilizatori</div>
+      <div style="font-size:12px; color:#555; margin-bottom:4px;"><strong>Comentarii</strong> — Comentarii atasate parcelelor</div>
+      <div style="font-size:12px; color:#555;"><strong>Alerte</strong> — Notificari automate din sistem</div>
+    </div>
+    <div class="spec-section">
+      <h3>Status</h3>
+      <p style="font-size:12px; color:var(--brand-primary); font-weight:600;">Preview activ</p>
+    </div>
+  </div>
+</div>
+
+<script>
+var currentTab = 'mesaje';
+var searchPlaceholders = {
+  mesaje: 'Cauta in mesaje...',
+  comentarii: 'Cauta in comentarii...',
+  alerte: 'Cauta in alerte...'
+};
+
+function setView(view, btn) {
+  document.querySelectorAll('.toggle-bar button').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  var m = document.getElementById('panel-mobile');
+  var d = document.getElementById('panel-desktop');
+  var s = document.getElementById('panel-spec');
+  m.style.display = (view === 'desktop') ? 'none' : 'flex';
+  d.style.display = (view === 'mobile') ? 'none' : 'block';
+  s.style.display = 'block';
+}
+
+
+function filterList() {
+  var query = document.getElementById('search-input').value.toLowerCase();
+  var activeTab = document.getElementById('tab-' + currentTab);
+  var items = activeTab.querySelectorAll('.contact-item');
+  items.forEach(function(item) {
+    var text = item.textContent.toLowerCase();
+    item.style.display = text.indexOf(query) !== -1 ? 'flex' : 'none';
+  });
+}
+
+function openChat(name, initials, color) {
+  document.getElementById('list-view').style.display = 'none';
+  document.getElementById('chat-view').style.display = 'flex';
+  document.getElementById('chat-name').textContent = name;
+  var av = document.getElementById('chat-avatar');
+  av.textContent = initials;
+  av.style.background = color;
+}
+
+function closeChat() {
+  document.getElementById('chat-view').style.display = 'none';
+  document.getElementById('list-view').style.display = 'flex';
+}
+
+function openBotChat() {
+  document.getElementById('list-view').style.display = 'none';
+  document.getElementById('search-bar').style.display = 'none';
+  document.getElementById('bot-chat-view').style.display = 'flex';
+  var msgs = document.getElementById('bot-messages');
+  if (msgs) msgs.scrollTop = 0;
+}
+
+function closeBotChat() {
+  document.getElementById('bot-chat-view').style.display = 'none';
+  document.getElementById('list-view').style.display = 'flex';
+  document.getElementById('search-bar').style.display = 'block';
+}
+
+function openBotSettings() {
+  document.getElementById('bot-settings').style.display = 'block';
+}
+function closeBotSettings() {
+  document.getElementById('bot-settings').style.display = 'none';
+}
+function toggleBotSetting(item) {
+  var toggle = item.querySelector('.bot-toggle');
+  if (!toggle) return;
+  var isOn = toggle.classList.contains('on');
+  var dot = toggle.querySelector('div');
+  if (isOn) {
+    toggle.classList.remove('on');
+    toggle.style.background = '#ccc';
+    dot.style.right = 'auto';
+    dot.style.left = '2px';
+  } else {
+    toggle.classList.add('on');
+    toggle.style.background = 'var(--brand-primary)';
+    dot.style.left = 'auto';
+    dot.style.right = '2px';
+  }
+}
+
+function openComments(terenName, farmName) {
+  document.getElementById('list-view').style.display = 'none';
+  document.getElementById('comments-view').style.display = 'flex';
+  document.getElementById('comment-title').textContent = terenName;
+  document.getElementById('comment-farm').textContent = farmName;
+}
+
+function closeComments() {
+  document.getElementById('comments-view').style.display = 'none';
+  document.getElementById('list-view').style.display = 'flex';
+}
+
+// ===== WORKSPACE SWITCH CONFIRMATION =====
+var pendingSwitch = null;
+function showSwitchPopup(wsName, detail) {
+  pendingSwitch = wsName;
+  document.getElementById('ws-switch-name').textContent = wsName;
+  document.getElementById('ws-switch-detail').textContent = detail;
+  document.getElementById('ws-switch-popup').style.display = 'block';
+}
+function closeSwitchPopup() {
+  document.getElementById('ws-switch-popup').style.display = 'none';
+  pendingSwitch = null;
+}
+function confirmSwitch() {
+  alert('Comutare pe spatiul de lucru:' + pendingSwitch + '\nTot contextul se schimba — terenuri, utilaje, stocuri, angajati.');
+  closeSwitchPopup();
+}
+</script>
+</body>
+</html>

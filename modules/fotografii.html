@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="manifest" href="../manifest.json">
+  <title>Media — UI Preview</title>
+  <link rel="stylesheet" href="../design-system.css">
+  <style>
+    .preview-root { display: flex; height: calc(100vh - 40px); gap: 0; margin-top: 40px; }
+    .panel-mobile { width: 420px; flex-shrink: 0; padding: 24px 16px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; display: flex; flex-direction: column; align-items: center; }
+    .panel-desktop { flex: 1; padding: 24px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; }
+    .panel-spec { width: 340px; flex-shrink: 0; padding: 24px 20px; overflow-y: auto; background: #fafafa; font-size: 14px; line-height: 1.6; }
+    .toggle-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 8px 16px; display: flex; gap: 8px; align-items: center; height: 40px; }
+    .toggle-bar button { padding: 4px 14px; border-radius: 6px; border: 1px solid #d4d4d4; cursor: pointer; font-size: 14px; background: transparent; color: var(--brand-text-primary); }
+    .toggle-bar button.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+    .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
+    .browser-dots { display: flex; gap: 6px; }
+    .browser-dots span { width: 12px; height: 12px; border-radius: 50%; }
+    .browser-dots span:nth-child(1) { background: #FF5F57; }
+    .browser-dots span:nth-child(2) { background: #FFBD2E; }
+    .browser-dots span:nth-child(3) { background: #28CA41; }
+    .browser-url { flex: 1; background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; padding: 4px 10px; font-size: 13px; color: #888; }
+    .browser-screen { background: var(--brand-background); min-height: 600px; overflow-y: auto; }
+    .spec-section { margin-bottom: 20px; }
+    .spec-section h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 8px; }
+    .gallery-date { padding: 10px 12px 6px; font-size: 13px; font-weight: 700; color: var(--brand-text-primary); }
+    .gallery-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; padding: 0 3px; }
+    .gallery-item { aspect-ratio: 1; border-radius: 4px; overflow: hidden; position: relative; cursor: pointer; }
+    .gallery-img { width: 100%; height: 100%; object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 29px; }
+    .gallery-item .gallery-badge { position: absolute; bottom: 4px; left: 4px; padding: 2px 6px; border-radius: 4px; font-size: 13px; font-weight: 700; color: #fff; background: rgba(0,0,0,0.5); }
+    .gallery-item .gallery-select { position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 5px; border: 2px solid rgba(255,255,255,0.6); background: transparent; display: flex; align-items: center; justify-content: center; font-size: 13px; color: transparent; cursor: pointer; z-index: 2; }
+    .gallery-select.checked { background: #fff; border-color: #fff; color: var(--brand-primary); font-weight: 700; }
+
+    /* Foto detail view — apare între top bar și bottom autohide */
+    .foto-dv { display: none; flex-direction: column; flex: 1; overflow: hidden; background: var(--brand-background); position: relative; }
+    .foto-dh { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--brand-primary); color: #fff; flex-shrink: 0; }
+    .foto-ds { flex: 1; overflow-y: auto; padding: 0; }
+    .foto-preview { aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; font-size: 70px; color: rgba(255,255,255,0.5); cursor: pointer; position: relative; }
+    .foto-preview::after { content: '\2922'; position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; background: rgba(0,0,0,0.6); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; backdrop-filter: blur(4px); }
+    .foto-terrain-badge { position: absolute; bottom: 12px; right: 12px; padding: 10px 16px; background: rgba(0,0,0,0.72); color: #fff; border-radius: 14px; font-size: 15px; font-weight: 700; box-shadow: 0 4px 14px rgba(0,0,0,0.35); display: flex; flex-direction: column; align-items: flex-end; gap: 4px; z-index: 2; max-width: 70%; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+    .foto-terrain-badge .ft-name { display: flex; align-items: center; gap: 6px; }
+    .foto-terrain-badge .ft-sub { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.3px; }
+    .foto-terrain-badge .ft-sub.auto { background: #27AE60; color: #fff; }
+    .foto-terrain-badge .ft-sub.manual { background: #E6853D; color: #fff; }
+    /* 2-col metadata */
+    .foto-meta-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 14px 14px; }
+    .foto-meta-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; padding: 5px 0; }
+    .foto-meta-ico { font-size: 15px; flex-shrink: 0; line-height: 1.3; }
+    .foto-meta-txt { flex: 1; min-width: 0; }
+    .foto-meta-k { font-size: 10px; font-weight: 700; color: var(--brand-text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+    .foto-meta-v { font-size: 14px; font-weight: 700; color: var(--brand-text-primary); line-height: 1.3; word-break: break-all; }
+    /* Fullscreen viewer */
+    .foto-fs { position: absolute; inset: 0; background: #000; z-index: 90; display: flex; flex-direction: column; user-select: none; }
+    .foto-fs-hd { padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; color: #fff; flex-shrink: 0; background: linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%); }
+    .foto-fs-hd-info { flex: 1; min-width: 0; }
+    .foto-fs-label { font-size: 19px; font-weight: 800; display: flex; align-items: center; gap: 6px; line-height: 1.2; }
+    .foto-fs-sub { font-size: 16px; opacity: 0.9; margin-top: 4px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .foto-fs-count { font-size: 14px; font-weight: 700; opacity: 0.85; flex-shrink: 0; padding: 8px 12px; background: rgba(255,255,255,0.12); border-radius: 100px; }
+    .foto-fs-close { width: 40px; height: 40px; background: rgba(255,255,255,0.18); border: none; color: #fff; border-radius: 50%; cursor: pointer; font-size: 20px; line-height: 1; flex-shrink: 0; }
+    .foto-fs-body { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: pan-y; }
+    .foto-fs-img { width: 92%; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; font-size: 120px; color: rgba(255,255,255,0.5); border-radius: 10px; max-height: 90%; }
+    .foto-fs-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; background: rgba(255,255,255,0.15); border: none; color: #fff; border-radius: 50%; cursor: pointer; font-size: 22px; line-height: 1; }
+    .foto-fs-nav.prev { left: 12px; } .foto-fs-nav.next { right: 12px; }
+    .foto-fs-hint { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 600; pointer-events: none; }
+    .foto-fs-comment { padding: 12px 16px; background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.35) 100%); color: #fff; flex-shrink: 0; display: flex; gap: 8px; align-items: flex-start; font-size: 14px; line-height: 1.45; }
+    .foto-fs-comment-ico { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .foto-meta-box { background: var(--brand-surface); border-bottom: 1px solid var(--brand-border); }
+    .foto-meta-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; cursor: pointer; user-select: none; }
+    .foto-meta-head:hover { background: rgba(0,0,0,0.02); }
+    .foto-meta-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; color: var(--brand-text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .foto-meta-chev { font-size: 12px; color: var(--brand-text-muted); transition: transform 0.2s; display: inline-block; }
+    .foto-meta-chev.open { transform: rotate(180deg); }
+    .foto-note-box { padding: 14px; background: #FFFBEB; border-bottom: 1px solid var(--brand-border); border-left: 3px solid #F59E0B; }
+    .foto-note-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; gap: 8px; }
+    .foto-note-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; color: #92400E; text-transform: uppercase; letter-spacing: 0.5px; }
+    .foto-note-edit-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 54px; padding: 14px 16px; margin-top: 10px; border-radius: 12px; background: rgba(245,158,11,0.18); border: 1.5px solid rgba(245,158,11,0.45); color: #78350F; font-size: 16px; font-weight: 800; cursor: pointer; letter-spacing: 0.2px; box-sizing: border-box; -webkit-tap-highlight-color: rgba(245,158,11,0.3); transition: background 0.15s, transform 0.05s; }
+    .foto-note-edit-btn:hover { background: rgba(245,158,11,0.28); }
+    .foto-note-edit-btn:active { background: rgba(245,158,11,0.38); transform: scale(0.985); }
+    .foto-note-edit-btn svg { flex-shrink: 0; }
+    .foto-note-txt { font-size: 14px; color: var(--brand-text-primary); line-height: 1.5; white-space: pre-wrap; padding: 4px 2px; border-radius: 8px; cursor: pointer; -webkit-tap-highlight-color: rgba(245,158,11,0.15); min-height: 24px; }
+    .foto-note-txt:active { background: rgba(245,158,11,0.10); }
+    .foto-note-txt.empty { color: var(--brand-text-muted); font-style: italic; }
+    .foto-note-input { width: 100%; min-height: 120px; padding: 14px; background: #fff; border: 1.5px solid #F59E0B; border-radius: 12px; font-size: 16px; font-family: inherit; line-height: 1.5; color: var(--brand-text-primary); resize: vertical; outline: none; box-sizing: border-box; }
+    .foto-note-input:focus { border-color: #B45309; box-shadow: 0 0 0 3px rgba(245,158,11,0.18); }
+    .foto-note-actions { display: flex; gap: 10px; margin-top: 12px; }
+    .foto-note-btn { flex: 1; min-height: 52px; padding: 14px 16px; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; border: none; letter-spacing: 0.2px; -webkit-tap-highlight-color: transparent; transition: background 0.15s, transform 0.05s; box-sizing: border-box; }
+    .foto-note-btn:active { transform: scale(0.985); }
+    .foto-note-btn.cancel { background: #E7E5E4; color: #44403C; }
+    .foto-note-btn.cancel:hover { background: #D6D3D1; }
+    .foto-note-btn.save { background: #F59E0B; color: #fff; box-shadow: 0 2px 8px rgba(245,158,11,0.4); }
+    .foto-note-btn.save:hover { background: #D97706; }
+    .foto-meta-grid { padding: 0 14px 14px; font-size: 13px; }
+    .foto-ai-box { padding: 14px; border-bottom: 1px solid var(--brand-border); background: linear-gradient(135deg, #F3E8FF 0%, #FEE2E2 100%); }
+    .foto-ai-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; color: #6D28D9; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .foto-ai-card { background: #fff; border-radius: 10px; padding: 10px 12px; margin-bottom: 6px; display: flex; gap: 10px; align-items: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .foto-ai-ico { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .foto-ai-ico.danger { background: var(--brand-danger-bg); color: var(--brand-danger); }
+    .foto-ai-ico.warning { background: var(--brand-warning-bg); color: var(--brand-warning); }
+    .foto-ai-ico.ok { background: var(--brand-success-bg); color: var(--brand-success); }
+    .foto-ai-body { flex: 1; min-width: 0; }
+    .foto-ai-name { font-size: 14px; font-weight: 700; color: var(--brand-text-primary); }
+    .foto-ai-conf { font-size: 11px; font-weight: 700; color: var(--brand-text-muted); margin-left: 6px; }
+    .foto-ai-desc { font-size: 12px; color: var(--brand-text-muted); margin-top: 3px; line-height: 1.4; }
+    .foto-section { padding: 12px 14px; }
+    .foto-section-label { font-size: 10px; font-weight: 800; color: var(--brand-text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    /* Share — bottom sheet */
+    .foto-share-fab-count { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 100px; background: #E6853D; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    /* ===== Gallery FAB menu (speed-dial, arenda pattern) ===== */
+    .foto-fab-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.45); z-index: 219; display: none; animation: fadeIn 0.18s ease; }
+    .foto-fab-backdrop.on { display: block; }
+    .foto-fab-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 220; background: #fff; border-radius: 20px 20px 0 0; max-height: 85%; overflow-y: auto; padding: 10px 12px calc(14px + env(safe-area-inset-bottom)); box-shadow: 0 -6px 22px rgba(0,0,0,0.18); display: none; }
+    .foto-fab-sheet.on { display: block; animation: slideUp 0.28s cubic-bezier(0.2,0.8,0.3,1); }
+    .foto-fab-handle { width: 42px; height: 4px; background: #D4D4D8; border-radius: 100px; margin: 2px auto 10px; }
+    .foto-fab-hdr { display: flex; align-items: center; justify-content: space-between; padding: 2px 6px 10px; }
+    .foto-fab-hdr-ttl { font-size: 16px; font-weight: 800; color: var(--brand-text-primary); }
+    .foto-fab-hdr-sel { font-size: 12px; font-weight: 700; color: var(--brand-primary); background: rgba(0,104,106,0.10); padding: 5px 10px; border-radius: 100px; }
+    .foto-fab-hdr-sel.empty { color: var(--brand-text-muted); background: #F3F4F6; }
+    .foto-fab-item { display: flex; align-items: center; gap: 12px; padding: 10px 10px; min-height: 60px; border-radius: 12px; cursor: pointer; user-select: none; transition: background 0.12s; }
+    .foto-fab-item:hover { background: #F5F5F5; }
+    .foto-fab-item:active { background: #E7E5E4; }
+    .foto-fab-item.disabled { opacity: 0.45; cursor: not-allowed; }
+    .foto-fab-item.disabled:hover { background: transparent; }
+    .foto-fab-item.danger .ffi-ico { background: #FEE2E2; color: #DC2626; }
+    .foto-fab-item .ffi-ico { width: 44px; height: 44px; border-radius: 12px; background: #F3F4F6; display: flex; align-items: center; justify-content: center; font-size: 23px; flex-shrink: 0; }
+    .foto-fab-item .ffi-body { flex: 1; min-width: 0; }
+    .foto-fab-item .ffi-lbl { font-size: 15px; font-weight: 800; color: var(--brand-text-primary); line-height: 1.2; }
+    .foto-fab-item.danger .ffi-lbl { color: #DC2626; }
+    .foto-fab-item .ffi-desc { font-size: 12px; color: var(--brand-text-muted); margin-top: 2px; line-height: 1.35; }
+    .foto-fab-item .ffi-chev { font-size: 16px; color: var(--brand-text-muted); flex-shrink: 0; }
+    /* ===== Generic bottom sheet (tag / attach / pdf) ===== */
+    .foto-bs { position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
+    .foto-bs.on { display: flex; animation: fadeIn 0.18s ease; }
+    .foto-bs-panel { width: 100%; background: #fff; border-radius: 20px 20px 0 0; padding: 14px 16px calc(16px + env(safe-area-inset-bottom)); max-height: 85%; overflow-y: auto; animation: slideUp 0.28s cubic-bezier(0.2,0.8,0.3,1); box-sizing: border-box; }
+    .foto-bs-handle { width: 42px; height: 4px; background: #D4D4D8; border-radius: 100px; margin: 0 auto 12px; }
+    .foto-bs-title { font-size: 17px; font-weight: 800; color: var(--brand-text-primary); margin-bottom: 2px; }
+    .foto-bs-sub { font-size: 13px; color: var(--brand-text-muted); margin-bottom: 14px; }
+    /* Tag/Star sheet */
+    .foto-tag-row { display: flex; align-items: center; gap: 12px; padding: 14px 12px; background: #FEF3C7; border-radius: 12px; margin-bottom: 14px; }
+    .foto-tag-row-lbl { flex: 1; font-size: 15px; font-weight: 700; color: #78350F; }
+    .foto-switch { width: 48px; height: 28px; border-radius: 100px; background: #D4D4D8; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+    .foto-switch.on { background: #F59E0B; }
+    .foto-switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .foto-switch.on::after { transform: translateX(20px); }
+    .foto-tag-input { width: 100%; padding: 12px 14px; border: 1.5px solid #E5E7EB; border-radius: 10px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box; margin-bottom: 10px; }
+    .foto-tag-input:focus { border-color: var(--brand-primary); }
+    .foto-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .foto-chip { padding: 7px 12px; border-radius: 100px; background: #F3F4F6; color: var(--brand-text-primary); font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid transparent; user-select: none; }
+    .foto-chip:hover { background: #E5E7EB; }
+    .foto-chip.on { background: rgba(0,104,106,0.14); border-color: var(--brand-primary); color: var(--brand-primary); }
+    .foto-tag-list-title { font-size: 11px; font-weight: 800; color: var(--brand-text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .foto-bs-btns { display: flex; gap: 10px; margin-top: 8px; }
+    .foto-bs-btn { flex: 1; min-height: 50px; padding: 13px; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; border: none; }
+    .foto-bs-btn.cancel { background: #F3F4F6; color: var(--brand-text-primary); }
+    .foto-bs-btn.save { background: var(--brand-primary); color: #fff; }
+    .foto-bs-btn.primary { background: var(--brand-primary); color: #fff; }
+    .foto-bs-btn.secondary { background: #F3F4F6; color: var(--brand-text-primary); }
+    /* Attach lucrare sheet */
+    .foto-attach-search { position: relative; display: flex; align-items: center; margin-bottom: 10px; }
+    .foto-attach-search-ico { position: absolute; left: 14px; font-size: 16px; color: var(--brand-text-muted); pointer-events: none; }
+    .foto-attach-input { width: 100%; padding: 14px 42px 14px 40px; font-size: 15px; font-family: inherit; border: 1.5px solid #E5E7EB; border-radius: 12px; outline: none; background: #F9FAFB; color: var(--brand-text-primary); box-sizing: border-box; }
+    .foto-attach-input:focus { border-color: var(--brand-primary); background: #fff; box-shadow: 0 0 0 3px rgba(0,104,106,0.12); }
+    .foto-attach-clear { position: absolute; right: 10px; width: 26px; height: 26px; border-radius: 50%; background: #E5E7EB; border: none; color: #6B7280; font-size: 18px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .foto-attach-clear:hover { background: #D1D5DB; }
+    .foto-attach-count { font-size: 11px; font-weight: 700; color: var(--brand-text-muted); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px; padding: 0 2px; }
+    .foto-attach-list { max-height: 340px; overflow-y: auto; margin: 0 -4px; padding: 0 4px; }
+    .foto-attach-group-hdr { font-size: 11px; font-weight: 800; color: var(--brand-text-muted); text-transform: uppercase; letter-spacing: 0.4px; padding: 10px 4px 6px; border-bottom: 1px solid #E5E7EB; margin-bottom: 8px; position: sticky; top: 0; background: #fff; z-index: 1; }
+    .foto-attach-empty { text-align: center; padding: 30px 10px; }
+    .foto-luc-item mark { background: rgba(245,158,11,0.35); color: inherit; padding: 0 2px; border-radius: 3px; }
+    .foto-luc-item { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1.5px solid #E5E7EB; border-radius: 12px; margin-bottom: 8px; cursor: pointer; min-height: 60px; position: relative; transition: background 0.15s, border-color 0.15s; }
+    .foto-luc-item.selected { background: rgba(0,104,106,0.08); border-color: var(--brand-primary); border-width: 2px; padding: 11px; }
+    .foto-luc-item .fli-check { position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: none; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; box-shadow: 0 2px 6px rgba(0,104,106,0.35); }
+    .foto-luc-item.selected .fli-check { display: flex; }
+    .foto-bs-btn[disabled], .foto-bs-btn:disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(0.3); }
+    .foto-luc-item:hover { background: #F9FAFB; border-color: var(--brand-primary); }
+    .foto-luc-item .fli-ico { width: 42px; height: 42px; border-radius: 10px; background: #F3F4F6; display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+    .foto-luc-item .fli-body { flex: 1; min-width: 0; }
+    .foto-luc-item .fli-ttl { font-size: 14px; font-weight: 700; color: var(--brand-text-primary); }
+    .foto-luc-item .fli-sub { font-size: 12px; color: var(--brand-text-muted); margin-top: 2px; }
+    .foto-luc-item .fli-type { font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 100px; letter-spacing: 0.3px; }
+    .foto-luc-item .fli-type.lucrare { background: rgba(0,104,106,0.14); color: var(--brand-primary); }
+    .foto-luc-item .fli-type.evaluare { background: rgba(109,40,217,0.14); color: #6D28D9; }
+    /* PDF preview sheet */
+    .foto-pdf-preview { background: #fff; border: 1px solid #E5E7EB; border-radius: 10px; padding: 14px; margin-bottom: 14px; max-height: 420px; overflow-y: auto; font-size: 13px; }
+    .foto-pdf-item { border: 1px solid #E5E7EB; border-radius: 10px; margin-bottom: 12px; overflow: hidden; background: #fff; break-inside: avoid; }
+    .foto-pdf-item:last-child { margin-bottom: 0; }
+    .foto-pdf-item-no { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.72); color: #fff; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.3px; z-index: 2; }
+    .foto-pdf-photo { position: relative; width: 100%; aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center; font-size: 60px; color: rgba(255,255,255,0.75); }
+    .foto-pdf-photo-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.72); color: #fff; padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+    .foto-pdf-meta { padding: 10px 12px; font-size: 12px; color: var(--brand-text-primary); line-height: 1.5; }
+    .foto-pdf-meta-row { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 3px; }
+    .foto-pdf-meta-row .k { font-weight: 700; color: var(--brand-text-muted); min-width: 70px; flex-shrink: 0; }
+    .foto-pdf-note { margin-top: 6px; padding: 8px 10px; background: #FFFBEB; border-left: 3px solid #F59E0B; border-radius: 4px; font-style: italic; color: var(--brand-text-primary); font-size: 12px; }
+    .foto-pdf-ai-pill { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; margin-right: 4px; margin-bottom: 3px; }
+    .foto-pdf-ai-pill.danger { background: var(--brand-danger-bg); color: var(--brand-danger); }
+    .foto-pdf-ai-pill.warning { background: var(--brand-warning-bg); color: var(--brand-warning); }
+    .foto-pdf-ai-pill.ok { background: var(--brand-success-bg); color: var(--brand-success); }
+    .foto-pdf-hdr { border-bottom: 2px solid var(--brand-primary); padding-bottom: 8px; margin-bottom: 10px; }
+    .foto-pdf-hdr-ttl { font-size: 15px; font-weight: 800; color: var(--brand-text-primary); }
+    .foto-pdf-hdr-sub { font-size: 11px; color: var(--brand-text-muted); margin-top: 2px; }
+    .foto-pdf-row { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px dashed #E5E7EB; }
+    .foto-pdf-row:last-child { border-bottom: none; }
+    .foto-pdf-thumb { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .foto-pdf-info { flex: 1; min-width: 0; font-size: 12px; line-height: 1.45; }
+    .foto-pdf-info strong { font-size: 13px; color: var(--brand-text-primary); display: block; }
+    .foto-pdf-ftr { margin-top: 10px; padding-top: 8px; border-top: 1px solid #E5E7EB; font-size: 11px; color: var(--brand-text-muted); text-align: center; }
+    /* Compare fullscreen */
+    .foto-cmp { position: absolute; inset: 0; background: #000; z-index: 100; display: none; flex-direction: column; }
+    .foto-cmp.on { display: flex; animation: fadeIn 0.2s ease; }
+    .foto-cmp-hd { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; color: #fff; background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); position: absolute; left: 0; right: 0; top: 0; z-index: 2; }
+    .foto-cmp-ttl { font-size: 15px; font-weight: 800; }
+    .foto-cmp-close { width: 40px; height: 40px; background: rgba(255,255,255,0.18); border: none; color: #fff; border-radius: 50%; cursor: pointer; font-size: 20px; }
+    .foto-cmp-body { flex: 1; display: flex; flex-direction: column; }
+    .foto-cmp-half { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; font-size: 90px; color: rgba(255,255,255,0.5); border-bottom: 2px solid #000; overflow: hidden; }
+    .foto-cmp-half:last-child { border-bottom: none; }
+    .foto-cmp-pill { position: absolute; bottom: 12px; left: 12px; padding: 7px 12px; background: rgba(0,0,0,0.72); color: #fff; border-radius: 100px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; backdrop-filter: blur(6px); }
+    .foto-cmp-pos { position: absolute; top: 58px; left: 12px; padding: 4px 10px; background: var(--brand-primary); color: #fff; border-radius: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; }
+    /* Indicators on gallery thumbnails (star + tag count) */
+    .gallery-star { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; font-size: 13px; line-height: 1; z-index: 2; }
+    .gallery-tagcount { position: absolute; bottom: 4px; right: 4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 100px; background: rgba(0,104,106,0.92); color: #fff; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; z-index: 2; }
+    /* Confirm delete dialog */
+    .foto-confirm { position: absolute; inset: 0; background: rgba(0,0,0,0.55); z-index: 210; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .foto-confirm.on { display: flex; animation: fadeIn 0.18s ease; }
+    .foto-confirm-card { background: #fff; border-radius: 16px; padding: 22px 18px 16px; max-width: 320px; width: 100%; text-align: center; }
+    .foto-confirm-ico { width: 56px; height: 56px; border-radius: 50%; background: #FEE2E2; color: #DC2626; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 12px; }
+    .foto-confirm-title { font-size: 17px; font-weight: 800; color: var(--brand-text-primary); margin-bottom: 4px; }
+    .foto-confirm-txt { font-size: 13px; color: var(--brand-text-muted); margin-bottom: 16px; line-height: 1.5; }
+    .foto-confirm-btns { display: flex; gap: 8px; }
+    .foto-confirm-btns button { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; }
+    .foto-confirm-btns .cancel { background: #F5F5F5; color: var(--brand-text-primary); }
+    .foto-confirm-btns .del { background: #DC2626; color: #fff; }
+    .foto-share-btn { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.18); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+    .foto-share-btn:hover { background: rgba(255,255,255,0.28); }
+    .foto-share-btn.dark { background: rgba(0,0,0,0.06); color: var(--brand-text-primary); }
+    .foto-share-sheet { position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
+    .foto-share-sheet.on { display: flex; animation: fadeIn 0.2s ease; }
+    .foto-share-panel { width: 100%; background: #fff; border-radius: 20px 20px 0 0; padding: 20px 16px calc(20px + env(safe-area-inset-bottom)); max-height: 80%; overflow-y: auto; animation: slideUp 0.28s cubic-bezier(0.2,0.8,0.3,1); }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .foto-share-handle { width: 40px; height: 4px; background: #D4D4D8; border-radius: 100px; margin: 0 auto 14px; }
+    .foto-share-title { font-size: 17px; font-weight: 800; color: var(--brand-text-primary); margin-bottom: 4px; }
+    .foto-share-sub { font-size: 13px; color: var(--brand-text-muted); margin-bottom: 16px; }
+    .foto-share-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .foto-share-opt { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 4px; border-radius: 10px; cursor: pointer; text-align: center; }
+    .foto-share-opt:hover { background: #F5F5F5; }
+    .foto-share-opt-ico { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #fff; }
+    .foto-share-opt-lbl { font-size: 11px; font-weight: 700; color: var(--brand-text-primary); line-height: 1.15; }
+    .foto-share-cancel { width: 100%; padding: 14px; border-radius: 12px; background: #F5F5F5; border: none; font-size: 15px; font-weight: 700; color: var(--brand-text-primary); cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="toggle-bar">
+  <span style="font-size:14px; font-weight:600; color:var(--brand-text-primary); margin-right:8px;">Media</span>
+  <button class="active" onclick="setView('both', this)">Both</button>
+  <button onclick="setView('mobile', this)">Mobile</button>
+  <button onclick="setView('desktop', this)">Desktop</button>
+  <span style="margin-left:auto; font-size:13px; color:#aaa;">ConnAgri &middot; FeatureForge Preview</span>
+</div>
+
+<div class="preview-root">
+  <div class="panel-mobile" id="panel-mobile">
+    <p style="font-size:13px; color:#aaa; margin-bottom:16px; text-align:center;">Mobile &mdash; 370px</p>
+    <div class="phone-chrome">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div id="app-topbar" data-title="Media"></div>
+        <div class="view-tabs"><button class="view-tab active">Fotografii</button><button class="view-tab">Video</button></div>
+        <div class="toolbar">
+          <div class="toolbar-pill" onclick="selectAllVisible()">&#9744; Toate</div>
+          <div class="toolbar-search" style="flex:1;"><span class="toolbar-search-icon">&#128269;</span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow">&#9660;</span></div>
+          <div class="filter-dropdown" id="filter-dd"></div>
+        </div>
+        <div class="phone-scroll" id="gallery" style="padding-bottom:150px;"></div>
+
+        <!-- FOTO DETAIL VIEW -->
+        <div id="foto-detail" class="foto-dv">
+          <div class="foto-dh">
+            <div onclick="closeFoto()" style="cursor:pointer;font-size:18px;width:28px;">&larr;</div>
+            <div id="foto-title" style="font-size:15px;font-weight:600;flex:1;">Detalii foto</div>
+            <button class="foto-share-btn" onclick="shareCurrentDetail()" title="Distribuie">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            </button>
+          </div>
+          <div class="foto-ds">
+            <div id="foto-preview" class="foto-preview" onclick="openFullscreen()" title="Apasă pentru fullscreen">&#128247;</div>
+            <div class="foto-meta-box">
+              <div class="foto-meta-head" onclick="toggleMeta()">
+                <div class="foto-meta-label"><span style="font-size:13px;">&#9881;</span> Metadate foto</div>
+                <span id="foto-meta-chev" class="foto-meta-chev">&#9662;</span>
+              </div>
+              <div class="foto-meta-grid" id="foto-meta-grid" style="display:none;"></div>
+            </div>
+            <div id="foto-comment-section" class="foto-note-box">
+              <div class="foto-note-head">
+                <div class="foto-note-label"><span style="font-size:14px;">&#128221;</span> Notă</div>
+              </div>
+              <div id="foto-comment" class="foto-note-txt" onclick="startEditNote()" role="button" tabindex="0"></div>
+              <button id="foto-note-edit-btn" class="foto-note-edit-btn" onclick="startEditNote()">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <span id="foto-note-edit-label">Editează nota</span>
+              </button>
+              <div id="foto-note-edit" style="display:none;">
+                <textarea id="foto-note-textarea" class="foto-note-input" placeholder="Scrie o notă despre această fotografie..."></textarea>
+                <div class="foto-note-actions">
+                  <button class="foto-note-btn cancel" onclick="cancelEditNote()">Anulează</button>
+                  <button class="foto-note-btn save" onclick="saveNote()">Salvează</button>
+                </div>
+              </div>
+            </div>
+            <div class="foto-ai-box">
+              <div class="foto-ai-label"><span style="font-size:14px;">&#129302;</span> Interpretare AI — ce s-a detectat</div>
+              <div id="foto-ai-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main gallery FAB (arenda pattern) -->
+        <button id="foto-fab" class="fab" onclick="toggleFotoFabMenu()" title="Acțiuni foto">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          <span id="foto-share-fab-count" class="foto-share-fab-count" style="display:none;">0</span>
+        </button>
+        <!-- FAB action menu backdrop + sheet -->
+        <div id="foto-fab-backdrop" class="foto-fab-backdrop" onclick="closeFotoFabMenu()"></div>
+        <div id="foto-fab-sheet" class="foto-fab-sheet">
+          <div class="foto-fab-handle"></div>
+          <div class="foto-fab-hdr">
+            <div class="foto-fab-hdr-ttl">Acțiuni foto</div>
+            <div id="foto-fab-sel" class="foto-fab-hdr-sel empty">Selectează poze</div>
+          </div>
+          <div id="foto-fab-list"></div>
+        </div>
+        <!-- Tag + Star bottom sheet -->
+        <div id="foto-tag-sheet" class="foto-bs" onclick="if(event.target===this)closeTagSheet()">
+          <div class="foto-bs-panel">
+            <div class="foto-bs-handle"></div>
+            <div class="foto-bs-title">Etichetă și Important</div>
+            <div class="foto-bs-sub" id="foto-tag-sub">Pentru fotografia selectată</div>
+            <div class="foto-tag-row">
+              <span style="font-size:22px;">&#11088;</span>
+              <div class="foto-tag-row-lbl">Marchează ca important</div>
+              <div id="foto-tag-switch" class="foto-switch" onclick="toggleTagStar()"></div>
+            </div>
+            <div class="foto-tag-list-title">Adaugă etichetă</div>
+            <input id="foto-tag-input" type="text" class="foto-tag-input" placeholder="ex: rugină, stadiu fenologic..." />
+            <div class="foto-tag-list-title">Etichete rapide</div>
+            <div id="foto-tag-chips" class="foto-chips"></div>
+            <div class="foto-bs-btns">
+              <button class="foto-bs-btn cancel" onclick="closeTagSheet()">Anulează</button>
+              <button class="foto-bs-btn save" onclick="saveTagSheet()">Salvează</button>
+            </div>
+          </div>
+        </div>
+        <!-- Attach to lucrare bottom sheet -->
+        <div id="foto-attach-sheet" class="foto-bs" onclick="if(event.target===this)closeAttachSheet()">
+          <div class="foto-bs-panel" style="max-height:85%;">
+            <div class="foto-bs-handle"></div>
+            <div class="foto-bs-title">Atașează la lucrare</div>
+            <div class="foto-bs-sub" id="foto-attach-sub">Alege lucrarea sau evaluarea</div>
+            <div class="foto-attach-search">
+              <span class="foto-attach-search-ico">&#128269;</span>
+              <input type="search" id="foto-attach-input" class="foto-attach-input" placeholder="Caută după parcelă sau tip lucrare..." inputmode="search" autocomplete="off">
+              <button class="foto-attach-clear" id="foto-attach-clear" onclick="clearAttachSearch()" style="display:none;">&times;</button>
+            </div>
+            <div class="foto-attach-count" id="foto-attach-count">—</div>
+            <div id="foto-attach-list" class="foto-attach-list"></div>
+            <div id="foto-attach-empty" class="foto-attach-empty" style="display:none;">
+              <div style="font-size:40px;opacity:0.35;margin-bottom:8px;">&#128269;</div>
+              <div style="font-size:14px;font-weight:700;color:var(--brand-text-primary);">Nu am găsit nimic</div>
+              <div style="font-size:12px;color:var(--brand-text-muted);margin-top:4px;">Încearcă alt termen de căutare</div>
+            </div>
+            <div class="foto-bs-btns" style="margin-top:4px;">
+              <button class="foto-bs-btn cancel" onclick="closeAttachSheet()">Anulează</button>
+              <button id="foto-attach-save" class="foto-bs-btn save" onclick="saveAttach()" disabled>Salvează</button>
+            </div>
+          </div>
+        </div>
+        <!-- PDF preview bottom sheet -->
+        <div id="foto-pdf-sheet" class="foto-bs" onclick="if(event.target===this)closePdfSheet()">
+          <div class="foto-bs-panel">
+            <div class="foto-bs-handle"></div>
+            <div class="foto-bs-title">Raport PDF</div>
+            <div class="foto-bs-sub" id="foto-pdf-sub">Previzualizare document</div>
+            <div id="foto-pdf-preview" class="foto-pdf-preview"></div>
+            <div class="foto-bs-btns">
+              <button class="foto-bs-btn secondary" onclick="closePdfSheet()">Anulează</button>
+              <button class="foto-bs-btn primary" onclick="pdfAction('send')">Trimite</button>
+              <button class="foto-bs-btn primary" onclick="pdfAction('download')">Descarcă</button>
+            </div>
+          </div>
+        </div>
+        <!-- Compare fullscreen -->
+        <div id="foto-compare" class="foto-cmp">
+          <div class="foto-cmp-hd">
+            <div class="foto-cmp-ttl">Comparație 2 fotografii</div>
+            <button class="foto-cmp-close" onclick="closeCompare()">&times;</button>
+          </div>
+          <div id="foto-cmp-body" class="foto-cmp-body"></div>
+        </div>
+        <!-- Confirm delete dialog -->
+        <div id="foto-confirm" class="foto-confirm" onclick="if(event.target===this)closeConfirm()">
+          <div class="foto-confirm-card">
+            <div class="foto-confirm-ico">&#128465;</div>
+            <div class="foto-confirm-title" id="foto-confirm-title">Șterge fotografiile?</div>
+            <div class="foto-confirm-txt" id="foto-confirm-txt">—</div>
+            <div class="foto-confirm-btns">
+              <button class="cancel" onclick="closeConfirm()">Anulează</button>
+              <button class="del" onclick="confirmDelete()">Șterge</button>
+            </div>
+          </div>
+        </div>
+        <!-- Share bottom sheet -->
+        <div id="foto-share-sheet" class="foto-share-sheet" onclick="if(event.target===this)closeShareSheet()">
+          <div class="foto-share-panel">
+            <div class="foto-share-handle"></div>
+            <div class="foto-share-title" id="foto-share-title">Distribuie</div>
+            <div class="foto-share-sub" id="foto-share-sub">—</div>
+            <div class="foto-share-grid">
+              <div class="foto-share-opt" onclick="doShare('whatsapp')"><div class="foto-share-opt-ico" style="background:#25D366;">&#128241;</div><div class="foto-share-opt-lbl">WhatsApp</div></div>
+              <div class="foto-share-opt" onclick="doShare('email')"><div class="foto-share-opt-ico" style="background:#EA4335;">&#9993;</div><div class="foto-share-opt-lbl">Email</div></div>
+              <div class="foto-share-opt" onclick="doShare('sms')"><div class="foto-share-opt-ico" style="background:#4A90E2;">&#128172;</div><div class="foto-share-opt-lbl">SMS</div></div>
+              <div class="foto-share-opt" onclick="doShare('link')"><div class="foto-share-opt-ico" style="background:#6B7280;">&#128279;</div><div class="foto-share-opt-lbl">Copiază link</div></div>
+              <div class="foto-share-opt" onclick="doShare('team')"><div class="foto-share-opt-ico" style="background:#00686A;">&#128101;</div><div class="foto-share-opt-lbl">Echipa fermă</div></div>
+              <div class="foto-share-opt" onclick="doShare('agronom')"><div class="foto-share-opt-ico" style="background:#16A34A;">&#128377;</div><div class="foto-share-opt-lbl">Agronom</div></div>
+              <div class="foto-share-opt" onclick="doShare('download')"><div class="foto-share-opt-ico" style="background:#7C3AED;">&#11015;</div><div class="foto-share-opt-lbl">Descarcă</div></div>
+              <div class="foto-share-opt" onclick="doShare('pdf')"><div class="foto-share-opt-ico" style="background:#DC2626;">&#128196;</div><div class="foto-share-opt-lbl">Export PDF</div></div>
+            </div>
+            <button class="foto-share-cancel" onclick="closeShareSheet()">Anulează</button>
+          </div>
+        </div>
+        <div id="app-bottombar"></div>
+        <script src="../bars.js"></script>
+      </div>
+    </div>
+  </div>
+  <div class="panel-desktop" id="panel-desktop">
+    <p style="font-size:13px; color:#aaa; margin-bottom:16px;">Desktop &mdash; full width</p>
+    <div class="browser-chrome">
+      <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">connagri.app/media</div></div>
+      <div class="browser-screen" style="min-height:600px; display:flex; align-items:center; justify-content:center;">
+        <div style="text-align:center;"><div style="font-size:65px; margin-bottom:16px; opacity:0.3;">opacity:0.3;">&#128247;</div><div style="font-size:21px; font-weight:600; color:var(--brand-text-muted); margin-bottom:8px;">Fotografii#128247;</div><div style="font-size:21px; font-weight:600; color:var(--brand-text-muted); margin-bottom:8px;">Media</div><div style="font-size:15px; color:var(--brand-text-muted); opacity:0.6;">Continut in curs de dezvoltare</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-spec" id="panel-spec">
+    <div style="font-size:16px; font-weight:700; margin-bottom:4px; color:var(--brand-text-primary);">Media</div>
+    <div style="font-size:13px; color:#aaa; margin-bottom:20px;">Media Foto geolocalizate &middot; Spec Panelmiddot; Spec Panel</div>
+    <div class="spec-section"><h3>Descriere</h3><p style="font-size:13px; color:#555;">Fotografii geolocalizate atasate terenurilor si culturilor.</p></div>
+    <div class="spec-section"><h3>Status</h3><p style="font-size:13px; color:var(--brand-primary); font-weight:600;">Preview activ</p></div>
+  </div>
+</div>
+
+<script src="../components.js"></script>
+<script>
+function setView(view, btn) {
+  document.querySelectorAll('.toggle-bar button').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('panel-mobile').style.display = (view === 'desktop') ? 'none' : 'flex';
+  document.getElementById('panel-desktop').style.display = (view === 'mobile') ? 'none' : 'block';
+  document.getElementById('panel-spec').style.display = 'block';
+}
+// Galerie foto grupata pe date
+var photos = [
+  { date: '2026-apr-16', items: [
+    { bg: '#1B5E20', icon: '&#127793;', label: 'Parcela 12', search: 'parcela 12 grau ion popescu', comment: 'Cultură uniformă după tratamentul de săptămâna trecută. Plantele arată viguroase, densitatea bună pe toată suprafața. Am observat câteva zone cu ușor stres hidric pe latura de sud — de monitorizat.' },
+    { bg: '#2E86AB', icon: '&#127806;', label: 'Parcela 7', search: 'parcela 7 porumb andrei popa', comment: 'Verificare rapidă fenofază V4-V5.' },
+    { bg: '#F57C00', icon: '&#127804;', label: 'Parcela 3', search: 'parcela 3 floarea soarelui maria ionescu', comment: 'Răsărire neuniformă pe latura de est, probabil din cauza compactării solului. De revenit peste 5 zile pentru reevaluare.' },
+    { bg: '#6D28D9', icon: '&#127803;', label: 'Parcela 15', search: 'parcela 15 rapita elena vasile', comment: 'Înflorire în plin — sezon bun până acum.' },
+    { bg: '#C0392B', icon: '&#128030;', label: 'Parcela 9', search: 'parcela 9 grau ion popescu', comment: 'ATENȚIE! Focar de rugină galbenă identificat într-o zonă de 2-3 m². Necesită tratament fungicid urgent în 48h, altfel riscăm extinderea pe toată parcela. Am sunat agronomul.' }
+  ]},
+  { date: '2026-apr-15', items: [
+    { bg: '#0D7377', icon: '&#127793;', label: 'Parcela 4', search: 'parcela 4 soia andrei popa', comment: 'Control fenologic săptămânal. Totul arată ok.' },
+    { bg: '#8B5E3C', icon: '&#128668;', label: 'JD 6130R', search: 'john deere tractor ion popescu', comment: 'Revizie făcută la 2400 ore. Filtrele schimbate, lagărele verificate. Gata pentru campania de primăvară.' },
+    { bg: '#1B5E20', icon: '&#127806;', label: 'Lotul 3', search: 'lotul 3 orz maria ionescu', comment: 'Orzul se prezintă bine, spicul format.' },
+    { bg: '#B7791F', icon: '&#127805;', label: 'Parcela 22', search: 'parcela 22 porumb andrei popa', comment: 'Prășit efectuat ieri, buruienile bine stăpânite.' },
+    { bg: '#00686A', icon: '&#127793;', label: 'Parcela 18', search: 'parcela 18 grau elena vasile', comment: 'Foto martor după tratamentul erbicid — zona de control arată diferențe clare față de parcela netratată. Rezultat foarte bun.' },
+    { bg: '#C0392B', icon: '&#9888;', label: 'Parcela 30', search: 'parcela 30 floarea soarelui ion popescu', comment: 'URGENT — zone cu atac de gărgăriță identificate. Pragul economic aproape atins, trebuie intervenit cât mai rapid. Am programat tratament pentru mâine dimineață.' }
+  ]},
+  { date: '2026-apr-14', items: [
+    { bg: '#6D28D9', icon: '&#127803;', label: 'Parcela 11', search: 'parcela 11 rapita maria ionescu', comment: 'Rapița în fenofază de înflorire completă, polen vizibil pe flori. Albinele active — vizită polenizator reușită.' },
+    { bg: '#1B5E20', icon: '&#127793;', label: 'Parcela 12', search: 'parcela 12 grau andrei popa', comment: 'Vizită rutină.' },
+    { bg: '#F57C00', icon: '&#128247;', label: 'Depozit A1', search: 'depozit a1 ion popescu', comment: 'Verificare stoc îngrășăminte NPK — mai avem aproximativ 3.5 tone. Suficient pentru următoarele 2 campanii.' },
+    { bg: '#2E86AB', icon: '&#127806;', label: 'Parcela 7', search: 'parcela 7 porumb elena vasile', comment: 'Creștere armonioasă, fără semne de atac.' }
+  ]},
+  { date: '2026-apr-13', items: [
+    { bg: '#B7791F', icon: '&#127805;', label: 'Parcela 22', search: 'parcela 22 porumb ion popescu', comment: 'Monitorizare post-prășit, solul bine structurat.' },
+    { bg: '#0D7377', icon: '&#127793;', label: 'Parcela 4', search: 'parcela 4 soia maria ionescu', comment: 'Răsărire completă.' },
+    { bg: '#8B5E3C', icon: '&#128668;', label: 'Combina', search: 'combina cr9 andrei popa', comment: 'Combina CR9 pregătită pentru perioada de recoltare. Am verificat lagărele și curelele, uleiul hidraulic completat. Testul la gol a decurs fără probleme.' }
+  ]},
+  { date: '2026-apr-12', items: [
+    { bg: '#1B5E20', icon: '&#127793;', label: 'Parcela 9', search: 'parcela 9 grau elena vasile', comment: 'Primul control vizual la această parcelă — cultura arată excelent, fără probleme vizibile.' },
+    { bg: '#00686A', icon: '&#127793;', label: 'Parcela 6', search: 'parcela 6 ion popescu', comment: 'Observație: mici zone cu apă stagnantă în capăt — de verificat drenajul.' },
+    { bg: '#C0392B', icon: '&#128030;', label: 'Parcela 15', search: 'parcela 15 rapita maria ionescu', comment: 'Insecte detectate pe frunze, probabil gărgăriță. Voi consulta agronomul pentru strategia de tratament.' },
+    { bg: '#6D28D9', icon: '&#127804;', label: 'Parcela 3', search: 'parcela 3 floarea soarelui andrei popa', comment: 'Foto rutină, plantele uniforme.' },
+    { bg: '#F57C00', icon: '&#127793;', label: 'Parcela 18', search: 'parcela 18 grau ion popescu', comment: 'Spicul în curs de formare, stare generală bună.' }
+  ]}
+];
+
+// ===== Mock lucrari pentru picker-ul Atașează =====
+// dateISO = YYYY-MM-DD pentru sortare; date = display
+var MOCK_LUCRARI = [
+  { id: 'L1',  title: 'Tratament fungicid',       parcela: 'Parcela 12', dateISO: '2026-04-16', date: '16 apr 2026', type: 'lucrare',  icon: '&#129514;' },
+  { id: 'L3',  title: 'Erbicidare',               parcela: 'Parcela 18', dateISO: '2026-04-15', date: '15 apr 2026', type: 'lucrare',  icon: '&#128167;' },
+  { id: 'E1',  title: 'Evaluare cultură',         parcela: 'Parcela 9',  dateISO: '2026-04-15', date: '15 apr 2026', type: 'evaluare', icon: '&#128269;' },
+  { id: 'L2',  title: 'Prășit',                   parcela: 'Parcela 22', dateISO: '2026-04-13', date: '13 apr 2026', type: 'lucrare',  icon: '&#128668;' },
+  { id: 'E2',  title: 'Monitorizare dăunători',   parcela: 'Parcela 15', dateISO: '2026-04-12', date: '12 apr 2026', type: 'evaluare', icon: '&#128027;' },
+  { id: 'L4',  title: 'Tratament insecticid',     parcela: 'Parcela 30', dateISO: '2026-04-11', date: '11 apr 2026', type: 'lucrare',  icon: '&#128029;' },
+  { id: 'L5',  title: 'Fertilizare NPK',          parcela: 'Parcela 7',  dateISO: '2026-04-10', date: '10 apr 2026', type: 'lucrare',  icon: '&#127806;' },
+  { id: 'E3',  title: 'Evaluare răsărire',        parcela: 'Parcela 3',  dateISO: '2026-04-09', date: '9 apr 2026',  type: 'evaluare', icon: '&#127804;' },
+  { id: 'L6',  title: 'Semănat porumb',           parcela: 'Parcela 7',  dateISO: '2026-04-05', date: '5 apr 2026',  type: 'lucrare',  icon: '&#127806;' },
+  { id: 'L7',  title: 'Discuit',                  parcela: 'Parcela 11', dateISO: '2026-04-03', date: '3 apr 2026',  type: 'lucrare',  icon: '&#9881;' },
+  { id: 'L8',  title: 'Arat de primăvară',        parcela: 'Parcela 4',  dateISO: '2026-03-28', date: '28 mar 2026', type: 'lucrare',  icon: '&#128668;' },
+  { id: 'E4',  title: 'Evaluare densitate',       parcela: 'Parcela 12', dateISO: '2026-03-22', date: '22 mar 2026', type: 'evaluare', icon: '&#127793;' },
+  { id: 'L9',  title: 'Tratament T1',             parcela: 'Parcela 9',  dateISO: '2026-03-18', date: '18 mar 2026', type: 'lucrare',  icon: '&#129514;' },
+  { id: 'L10', title: 'Fertilizare azotată',      parcela: 'Parcela 18', dateISO: '2026-03-12', date: '12 mar 2026', type: 'lucrare',  icon: '&#128293;' },
+  { id: 'E5',  title: 'Monitorizare dezghețare',  parcela: 'Parcela 6',  dateISO: '2026-03-08', date: '8 mar 2026',  type: 'evaluare', icon: '&#10052;' },
+  { id: 'L11', title: 'Erbicidare de toamnă',     parcela: 'Parcela 15', dateISO: '2025-11-20', date: '20 nov 2025', type: 'lucrare',  icon: '&#128167;' },
+  { id: 'L12', title: 'Semănat rapiță',           parcela: 'Parcela 15', dateISO: '2025-09-05', date: '5 sep 2025',  type: 'lucrare',  icon: '&#127803;' },
+  { id: 'L13', title: 'Semănat grâu',             parcela: 'Parcela 12', dateISO: '2025-10-02', date: '2 oct 2025',  type: 'lucrare',  icon: '&#127793;' }
+];
+// Sortat descrescator dupa data (cel mai recent primul)
+MOCK_LUCRARI.sort(function(a, b) { return b.dateISO.localeCompare(a.dateISO); });
+var QUICK_TAGS = ['rugină', 'recoltă', 'utilaj', 'sol', 'dăunători', 'tratament'];
+
+// ===== Pull photos din Camera (localStorage) + pregatire pentru render =====
+var CAM_PHOTOS = [];
+try { CAM_PHOTOS = JSON.parse(localStorage.getItem('camphotos') || '[]'); } catch (e) {}
+// Azi group pentru camphotos
+if (CAM_PHOTOS.length) {
+  photos.unshift({ date: '2026-apr-20 (camera)', items: CAM_PHOTOS.map(function(cp, i) {
+    return {
+      bg: '#00686A', icon: '&#128247;',
+      label: (cp.parcele && cp.parcele[0]) ? cp.parcele[0].split(' ').slice(0,2).join(' ') : 'Foto',
+      search: ((cp.parcele || []).join(' ') + ' ' + (cp.comment || '') + ' camera').toLowerCase(),
+      _camId: cp.id
+    };
+  })});
+}
+
+// Mock AI detections per photo (in producție = API AI real)
+function mockAIDetections(label) {
+  label = (label || '').toLowerCase();
+  // Reguli simple per tip poza:
+  if (label.indexOf('grau') >= 0) return [
+    { level: 'danger', icon: '&#128030;', name: 'Rugina galbenă', conf: 91, desc: 'Pete galbene pe 3 zone identificate — tratament recomandat în 48h.' },
+    { level: 'ok', icon: '&#127793;', name: 'Densitate cultură', conf: 88, desc: 'Uniformă — ~450 plante/m² (peste pragul minim).' }
+  ];
+  if (label.indexOf('porumb') >= 0) return [
+    { level: 'warning', icon: '&#128027;', name: 'Sfredelitor porumb', conf: 76, desc: 'Ouă detectate pe 2 frunze — monitorizare activă.' },
+    { level: 'ok', icon: '&#127804;', name: 'Înălțime medie', conf: 95, desc: 'V6-V7 (optim pentru sezon).' }
+  ];
+  if (label.indexOf('rapita') >= 0 || label.indexOf('rapiță') >= 0) return [
+    { level: 'warning', icon: '&#128027;', name: 'Gărgăriță siliconică', conf: 82, desc: '5-7 exemplare / m² — aproape de prag.' }
+  ];
+  if (label.indexOf('floarea') >= 0 || label.indexOf('floarea soarelui') >= 0) return [
+    { level: 'ok', icon: '&#127804;', name: 'Fenofază', conf: 93, desc: 'R3 — optim pentru tratament.' }
+  ];
+  if (label.indexOf('combina') >= 0 || label.indexOf('tractor') >= 0) return [
+    { level: 'ok', icon: '&#128668;', name: 'Echipament identificat', conf: 97, desc: 'Stare aparentă bună, fără anomalii vizibile.' }
+  ];
+  if (label.indexOf('depozit') >= 0) return [
+    { level: 'ok', icon: '&#128230;', name: 'Depozit produse', conf: 89, desc: 'Nu s-au detectat anomalii.' }
+  ];
+  // Default
+  return [
+    { level: 'ok', icon: '&#127807;', name: 'Cultură sănătoasă', conf: 84, desc: 'Nu s-au detectat boli sau dăunători la scanare.' }
+  ];
+}
+
+// Lista plată cu toate pozele (pentru navigare fullscreen next/prev) — include data zilei
+var ALL_FOTOS = [];
+photos.forEach(function(day) {
+  day.items.forEach(function(p) { p._dayDate = day.date; ALL_FOTOS.push(p); });
+});
+
+// Helper: compute stabile photoKey pentru meta/atașament persistent
+function photoKeyOf(p) {
+  if (!p) return '';
+  if (p._camId) return 'cam:' + p._camId;
+  return 'hc:' + (p._dayDate || '') + '|' + (p.label || '');
+}
+
+var gallery = document.getElementById('gallery');
+photos.forEach(function(day) {
+  gallery.insertAdjacentHTML('beforeend', '<div class="gallery-date">' + day.date + '</div>');
+  var grid = '<div class="gallery-grid">';
+  day.items.forEach(function(p) {
+    var pData = encodeURIComponent(JSON.stringify(p));
+    var globalIdx = ALL_FOTOS.indexOf(p);
+    var pKey = photoKeyOf(p);
+    grid += '<div class="gallery-item" data-search="' + (p.search || p.label.toLowerCase()) + '" data-photo="' + pData + '" data-idx="' + globalIdx + '" data-key="' + pKey + '" onclick="openFoto(this)">';
+    grid += '<div class="gallery-img" style="background:' + p.bg + ';">' + p.icon + '</div>';
+    grid += '<div class="gallery-badge">' + p.label + '</div>';
+    grid += '<div class="gallery-select" onclick="event.stopPropagation();this.classList.toggle(\'checked\');updateShareFab()">&#10003;</div>';
+    grid += '</div>';
+  });
+  grid += '</div>';
+  gallery.insertAdjacentHTML('beforeend', grid);
+});
+
+// Paint star + tag indicators din localStorage
+function refreshThumbIndicators() {
+  var meta = {};
+  try { meta = JSON.parse(localStorage.getItem('foto-meta') || '{}'); } catch(e) {}
+  document.querySelectorAll('.gallery-item').forEach(function(item) {
+    var key = item.getAttribute('data-key');
+    var m = meta[key] || {};
+    // Remove previous
+    var oldStar = item.querySelector('.gallery-star'); if (oldStar) oldStar.remove();
+    var oldTag = item.querySelector('.gallery-tagcount'); if (oldTag) oldTag.remove();
+    if (m.star) {
+      var s = document.createElement('div');
+      s.className = 'gallery-star';
+      s.innerHTML = '&#11088;';
+      item.appendChild(s);
+    }
+    if (m.tags && m.tags.length) {
+      var t = document.createElement('div');
+      t.className = 'gallery-tagcount';
+      t.textContent = '#' + m.tags.length;
+      item.appendChild(t);
+    }
+  });
+}
+refreshThumbIndicators();
+
+// ===== Detail foto =====
+function openFoto(el) {
+  var data = {};
+  try { data = JSON.parse(decodeURIComponent(el.getAttribute('data-photo'))); } catch (e) {}
+  window._fotoIdx = parseInt(el.getAttribute('data-idx'), 10) || 0;
+  // Hide gallery + show detail
+  var tabs = document.querySelector('.view-tabs'); if (tabs) tabs.style.display = 'none';
+  if (typeof updateFabPosition === 'function') updateFabPosition();
+  var tb = document.querySelector('.toolbar'); if (tb) tb.style.display = 'none';
+  var gg = document.getElementById('gallery'); if (gg) gg.style.display = 'none';
+  var fabBtn = document.getElementById('foto-fab'); if (fabBtn) fabBtn.style.display = 'none';
+  closeFotoFabMenu();
+  document.getElementById('foto-detail').style.display = 'flex';
+  populateDetail(data);
+}
+
+function populateDetail(data) {
+  var camData = null;
+  if (data && data._camId) {
+    camData = CAM_PHOTOS.find(function(c){ return c.id === data._camId; });
+  }
+  document.getElementById('foto-title').textContent = (data && data.label) || 'Foto';
+  // Preview + terrain badge overlay pe poza (dreapta jos)
+  var prev = document.getElementById('foto-preview');
+  prev.style.background = (data && data.bg) || '#00686A';
+  var terainName = '', autoBadge = '';
+  if (camData) {
+    terainName = (camData.parcele && camData.parcele.length) ? camData.parcele.join(', ') : '—';
+    autoBadge = camData.parcelaAuto
+      ? '<span class="ft-sub auto">&#10003; AUTO GPS</span>'
+      : '<span class="ft-sub manual">&#9998; MANUAL</span>';
+  } else {
+    terainName = (data && data.label) || '—';
+  }
+  prev.innerHTML = (data && data.icon ? data.icon : '&#128247;') +
+    '<div class="foto-terrain-badge">' +
+      '<div class="ft-name"><span style="font-size:17px;">&#127806;</span> ' + terainName + '</div>' +
+      (autoBadge ? autoBadge : '') +
+    '</div>';
+
+  // Metadate — 2 coloane clare
+  // Col1: data, ora, user | Col2: GPS, direcție, temperatură
+  var metaBox = document.getElementById('foto-meta-grid');
+  metaBox.className = 'foto-meta-cols';
+  var d_date, d_time, d_user, d_gps, d_orient, d_temp;
+  if (camData) {
+    d_date = camData.displayDate || '—';
+    d_time = camData.displayTime || '—';
+    d_user = camData.author || 'Ion Popescu';
+    d_gps = camData.gps || '—';
+    d_orient = camData.orientation || '—';
+    d_temp = camData.temperature || '—';
+  } else {
+    d_date = '15.04.2026';
+    d_time = '11:24:08';
+    d_user = 'Ion Popescu';
+    d_gps = '45.74894, 21.20866';
+    d_orient = 'NE &middot; 45°';
+    d_temp = '17.3°C';
+  }
+  var mh = '';
+  // Coloana 1
+  mh += '<div>';
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#128197;</span><div class="foto-meta-txt"><div class="foto-meta-k">Data</div><div class="foto-meta-v">' + d_date + '</div></div></div>';
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#128368;</span><div class="foto-meta-txt"><div class="foto-meta-k">Ora</div><div class="foto-meta-v">' + d_time + '</div></div></div>';
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#128100;</span><div class="foto-meta-txt"><div class="foto-meta-k">Cine a făcut</div><div class="foto-meta-v">' + d_user + '</div></div></div>';
+  mh += '</div>';
+  // Coloana 2
+  mh += '<div>';
+  // Split coordonate in X si Y
+  var xyParts = (d_gps || '').split(/[,;]\s*/);
+  var gx = xyParts[0] || '—';
+  var gy = xyParts[1] || '—';
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#128205;</span><div class="foto-meta-txt"><div class="foto-meta-k">Coordonate</div>' +
+        '<div class="foto-meta-v"><span style="display:inline-block;min-width:18px;color:var(--brand-text-muted);font-weight:800;">X</span> ' + gx + '</div>' +
+        '<div class="foto-meta-v"><span style="display:inline-block;min-width:18px;color:var(--brand-text-muted);font-weight:800;">Y</span> ' + gy + '</div>' +
+        '</div></div>';
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#129517;</span><div class="foto-meta-txt"><div class="foto-meta-k">Direcție</div><div class="foto-meta-v">' + d_orient + '</div></div></div>';
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#127777;</span><div class="foto-meta-txt"><div class="foto-meta-k">Temperatură</div><div class="foto-meta-v">' + d_temp + '</div></div></div>';
+  mh += '</div>';
+  metaBox.innerHTML = mh;
+  // AI analysis — prefera cele deja salvate in localStorage, fallback la mock
+  var ai = document.getElementById('foto-ai-list');
+  var detections;
+  if (camData && camData.aiDetections && camData.aiDetections.length) {
+    detections = camData.aiDetections;
+  } else {
+    var searchText = (camData && (camData.comment || (camData.parcele || []).join(' '))) || data.search || data.label || '';
+    detections = mockAIDetections(searchText);
+  }
+  var aiHTML = '';
+  detections.forEach(function(d) {
+    aiHTML += '<div class="foto-ai-card">';
+    aiHTML += '<div class="foto-ai-ico ' + d.level + '">' + d.icon + '</div>';
+    aiHTML += '<div class="foto-ai-body">';
+    aiHTML += '<div class="foto-ai-name">' + d.name + '<span class="foto-ai-conf">' + d.conf + '% confidence</span></div>';
+    aiHTML += '<div class="foto-ai-desc">' + d.desc + '</div>';
+    aiHTML += '</div>';
+    aiHTML += '</div>';
+  });
+  ai.innerHTML = aiHTML;
+  // Notă — prefera camData.comment, fallback la data.comment (hardcoded)
+  var commentEl = document.getElementById('foto-comment');
+  // Citește overrides salvate local (localStorage foto-notes)
+  var overrides = {}; try { overrides = JSON.parse(localStorage.getItem('foto-notes') || '{}'); } catch (e) {}
+  var noteKey = (data && data._camId) ? ('cam:' + data._camId) : ('hc:' + (data && data._dayDate) + '|' + (data && data.label));
+  window._currentNoteKey = noteKey;
+  window._currentNoteData = data;
+  var commentTxt = overrides[noteKey];
+  if (commentTxt === undefined) {
+    commentTxt = (camData && camData.comment) || (data && data.comment) || '';
+  }
+  if (commentTxt) {
+    commentEl.textContent = commentTxt;
+    commentEl.classList.remove('empty');
+  } else {
+    commentEl.textContent = 'Fără notă adăugată.';
+    commentEl.classList.add('empty');
+  }
+  // Ieși din edit mode la re-populate
+  var editBox = document.getElementById('foto-note-edit');
+  var editBtn = document.getElementById('foto-note-edit-btn');
+  var editLbl = document.getElementById('foto-note-edit-label');
+  if (editBox) editBox.style.display = 'none';
+  if (commentEl) commentEl.style.display = '';
+  if (editBtn) editBtn.style.display = '';
+  if (editLbl) editLbl.textContent = commentTxt ? 'Editează nota' : 'Adaugă notă';
+  // Metadate — colaps by default
+  var metaGrid = document.getElementById('foto-meta-grid');
+  var chev = document.getElementById('foto-meta-chev');
+  if (metaGrid) metaGrid.style.display = 'none';
+  if (chev) chev.classList.remove('open');
+}
+
+function toggleMeta() {
+  var metaGrid = document.getElementById('foto-meta-grid');
+  var chev = document.getElementById('foto-meta-chev');
+  if (!metaGrid) return;
+  var open = metaGrid.style.display !== 'none';
+  metaGrid.style.display = open ? 'none' : '';
+  if (chev) chev.classList.toggle('open', !open);
+}
+
+// ===== Editare Notă =====
+function startEditNote() {
+  var commentEl = document.getElementById('foto-comment');
+  var editBox = document.getElementById('foto-note-edit');
+  var editBtn = document.getElementById('foto-note-edit-btn');
+  var ta = document.getElementById('foto-note-textarea');
+  if (!commentEl || !editBox || !ta) return;
+  // Current text (nu placeholder-ul "Fără notă")
+  var current = commentEl.classList.contains('empty') ? '' : commentEl.textContent;
+  ta.value = current;
+  commentEl.style.display = 'none';
+  editBtn.style.display = 'none';
+  editBox.style.display = '';
+  setTimeout(function(){ ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }, 10);
+}
+
+function cancelEditNote() {
+  var commentEl = document.getElementById('foto-comment');
+  var editBox = document.getElementById('foto-note-edit');
+  var editBtn = document.getElementById('foto-note-edit-btn');
+  if (editBox) editBox.style.display = 'none';
+  if (commentEl) commentEl.style.display = '';
+  if (editBtn) editBtn.style.display = '';
+}
+
+function saveNote() {
+  var commentEl = document.getElementById('foto-comment');
+  var editBox = document.getElementById('foto-note-edit');
+  var editBtn = document.getElementById('foto-note-edit-btn');
+  var editLbl = document.getElementById('foto-note-edit-label');
+  var ta = document.getElementById('foto-note-textarea');
+  if (!ta || !commentEl) return;
+  var newText = (ta.value || '').trim();
+  // Persist in localStorage
+  var key = window._currentNoteKey;
+  if (key) {
+    var overrides = {};
+    try { overrides = JSON.parse(localStorage.getItem('foto-notes') || '{}'); } catch (e) {}
+    if (newText) overrides[key] = newText;
+    else delete overrides[key];
+    try { localStorage.setItem('foto-notes', JSON.stringify(overrides)); } catch (e) {}
+  }
+  // Sincronizează și în camphotos dacă e poză din cameră
+  var data = window._currentNoteData;
+  if (data && data._camId) {
+    try {
+      var cams = JSON.parse(localStorage.getItem('camphotos') || '[]');
+      cams.forEach(function(c){ if (c.id === data._camId) c.comment = newText; });
+      localStorage.setItem('camphotos', JSON.stringify(cams));
+      // Update în memorie
+      CAM_PHOTOS = cams;
+    } catch (e) {}
+  } else if (data) {
+    // sync și în obiectul in-memory pentru sesiunea curentă
+    data.comment = newText;
+  }
+  // Update UI
+  if (newText) {
+    commentEl.textContent = newText;
+    commentEl.classList.remove('empty');
+    if (editLbl) editLbl.textContent = 'Editează';
+  } else {
+    commentEl.textContent = 'Fără notă adăugată.';
+    commentEl.classList.add('empty');
+    if (editLbl) editLbl.textContent = 'Adaugă';
+  }
+  if (editBox) editBox.style.display = 'none';
+  commentEl.style.display = '';
+  if (editBtn) editBtn.style.display = '';
+  // Toast rapid
+  var screen = document.querySelector('.phone-screen');
+  if (screen) {
+    var toast = document.createElement('div');
+    toast.style.cssText = 'position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;z-index:250;box-shadow:0 4px 14px rgba(0,0,0,0.3);';
+    toast.textContent = '\u2713 Notă salvată';
+    screen.appendChild(toast);
+    setTimeout(function(){ toast.remove(); }, 1500);
+  }
+}
+
+function closeFoto() {
+  document.getElementById('foto-detail').style.display = 'none';
+  var tabs = document.querySelector('.view-tabs'); if (tabs) tabs.style.display = '';
+  if (typeof updateFabPosition === 'function') updateFabPosition();
+  var tb = document.querySelector('.toolbar'); if (tb) tb.style.display = '';
+  var gg = document.getElementById('gallery'); if (gg) gg.style.display = '';
+  var fabBtn = document.getElementById('foto-fab'); if (fabBtn) fabBtn.style.display = '';
+  updateShareFab();
+}
+
+// ===== FULLSCREEN viewer cu swipe / keyboard / buttons =====
+function openFullscreen() {
+  var screen = document.querySelector('.phone-screen');
+  if (!screen) return;
+  var existing = document.getElementById('foto-fs');
+  if (existing) existing.remove();
+  var ov = document.createElement('div');
+  ov.id = 'foto-fs';
+  ov.className = 'foto-fs';
+  renderFS(ov);
+  screen.appendChild(ov);
+  attachSwipe(ov);
+  document.addEventListener('keydown', fsKeyNav);
+}
+
+function renderFS(container) {
+  var idx = window._fotoIdx || 0;
+  var p = ALL_FOTOS[idx];
+  if (!p) return;
+  var hasNav = ALL_FOTOS.length > 1;
+  // Parcela + data + comentariu pentru overlay info
+  var parcela = p.label || '—';
+  var dataStr = p._dayDate || '—';
+  var commentStr = '';
+  if (p._camId) {
+    var cam = CAM_PHOTOS.find(function(c){ return c.id === p._camId; });
+    if (cam) {
+      if (cam.parcele && cam.parcele.length) parcela = cam.parcele.join(', ');
+      dataStr = (cam.displayDate || '') + (cam.displayTime ? ' · ' + cam.displayTime : '');
+      if (cam.comment) commentStr = cam.comment;
+    }
+  }
+  // fallback pentru poze hardcodate
+  if (!commentStr && p.comment) commentStr = p.comment;
+  container.innerHTML =
+    '<div class="foto-fs-hd">' +
+      '<div class="foto-fs-hd-info">' +
+        '<div class="foto-fs-label"><span style="font-size:21px;">&#127806;</span> ' + parcela + '</div>' +
+        '<div class="foto-fs-sub"><span style="font-size:17px;">&#128197;</span> ' + dataStr + '</div>' +
+      '</div>' +
+      '<span class="foto-fs-count">' + (idx + 1) + ' / ' + ALL_FOTOS.length + '</span>' +
+      '<button class="foto-share-btn" onclick="shareCurrentFS()" title="Distribuie" style="width:40px;height:40px;">' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>' +
+      '</button>' +
+      '<button class="foto-fs-close" onclick="closeFullscreen()">&times;</button>' +
+    '</div>' +
+    '<div class="foto-fs-body" id="foto-fs-body">' +
+      '<div class="foto-fs-img" style="background:' + p.bg + ';">' + p.icon + '</div>' +
+      (hasNav ? '<button class="foto-fs-nav prev" onclick="navFS(-1)">&lsaquo;</button>' : '') +
+      (hasNav ? '<button class="foto-fs-nav next" onclick="navFS(1)">&rsaquo;</button>' : '') +
+      (hasNav ? '<div class="foto-fs-hint">Swipe ←/→ sau taste</div>' : '') +
+    '</div>' +
+    (commentStr ? '<div class="foto-fs-comment"><span class="foto-fs-comment-ico">&#128172;</span><span>' + commentStr + '</span></div>' : '');
+}
+
+function navFS(dir) {
+  if (!ALL_FOTOS.length) return;
+  window._fotoIdx = (window._fotoIdx + dir + ALL_FOTOS.length) % ALL_FOTOS.length;
+  var ov = document.getElementById('foto-fs');
+  if (ov) renderFS(ov);
+}
+
+function closeFullscreen() {
+  var ov = document.getElementById('foto-fs');
+  if (ov) ov.remove();
+  document.removeEventListener('keydown', fsKeyNav);
+  // Sincronizeaza detail view cu poza curenta din fullscreen
+  var current = ALL_FOTOS[window._fotoIdx];
+  if (current && document.getElementById('foto-detail').style.display === 'flex') {
+    populateDetail(current);
+  }
+}
+
+function fsKeyNav(e) {
+  if (e.key === 'ArrowLeft') navFS(-1);
+  else if (e.key === 'ArrowRight') navFS(1);
+  else if (e.key === 'Escape') closeFullscreen();
+}
+
+function attachSwipe(el) {
+  var touchX = 0, touchY = 0;
+  el.addEventListener('touchstart', function(e) {
+    touchX = e.touches[0].clientX;
+    touchY = e.touches[0].clientY;
+  }, { passive: true });
+  el.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - touchX;
+    var dy = e.changedTouches[0].clientY - touchY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      navFS(dx > 0 ? -1 : 1);
+    }
+  }, { passive: true });
+}
+
+// Cautare text pe galerie
+var searchTrigger = document.querySelector('.toolbar-search');
+if (searchTrigger) {
+  // Inlocuieste div-ul static cu input real
+  searchTrigger.innerHTML = '<input type="search" inputmode="search" autocomplete="off" placeholder="Cauta teren, utilizator, cultura..." style="width:100%;border:none;background:transparent;font-size:14px;outline:none;font-family:var(--brand-font-sans);color:var(--brand-text-primary);">';
+  var searchInput = searchTrigger.querySelector('input');
+  searchInput.addEventListener('input', function() {
+    var q = this.value.toLowerCase().trim();
+    document.querySelectorAll('.gallery-item').forEach(function(item) {
+      var data = (item.getAttribute('data-search') || '');
+      item.style.display = (!q || data.indexOf(q) !== -1) ? 'block' : 'none';
+    });
+    document.querySelectorAll('.gallery-date').forEach(function(dateEl) {
+      var grid = dateEl.nextElementSibling;
+      if (!grid) return;
+      var hasVisible = false;
+      grid.querySelectorAll('.gallery-item').forEach(function(item) {
+        if (item.style.display !== 'none') hasVisible = true;
+      });
+      dateEl.style.display = hasVisible ? 'block' : 'none';
+    });
+  });
+}
+
+// Override selectAllVisible for gallery
+window.selectAllVisible = function() {
+  var checks = document.querySelectorAll('.gallery-select');
+  var allChecked = true;
+  checks.forEach(function(c) { if (!c.classList.contains('checked')) allChecked = false; });
+  checks.forEach(function(c) {
+    if (allChecked) c.classList.remove('checked');
+    else c.classList.add('checked');
+  });
+  updateShareFab();
+};
+
+// ============ SELECTION STATE (badge on main FAB) ============
+window.updateShareFab = function() {
+  var count = document.getElementById('foto-share-fab-count');
+  var n = document.querySelectorAll('.gallery-select.checked').length;
+  if (count) {
+    if (n > 0) { count.style.display = 'flex'; count.textContent = n; }
+    else { count.style.display = 'none'; }
+  }
+  // Keep the open menu state (if any) up to date with new selection
+  var menu = document.getElementById('foto-fab-sheet');
+  if (menu && menu.classList.contains('on')) renderFotoFabMenu();
+};
+window.updateGalleryFabs = window.updateShareFab;
+
+window.shareSelected = function() {
+  var n = document.querySelectorAll('.gallery-select.checked').length;
+  if (!n) return;
+  openShareSheet('Distribuie ' + n + ' ' + (n === 1 ? 'fotografie' : 'fotografii'),
+    'Alege unde vrei să trimiți fotografiile selectate');
+};
+
+window.shareCurrentDetail = function() {
+  var p = ALL_FOTOS[window._fotoIdx || 0] || {};
+  openShareSheet('Distribuie foto', (p.label || '—') + ' · ' + (p._dayDate || '—'));
+};
+
+window.shareCurrentFS = function() {
+  var p = ALL_FOTOS[window._fotoIdx || 0] || {};
+  openShareSheet('Distribuie foto', (p.label || '—') + ' · ' + (p._dayDate || '—'));
+};
+
+window.openShareSheet = function(title, sub) {
+  var sheet = document.getElementById('foto-share-sheet');
+  if (!sheet) return;
+  document.getElementById('foto-share-title').textContent = title;
+  document.getElementById('foto-share-sub').textContent = sub;
+  sheet.classList.add('on');
+};
+
+window.closeShareSheet = function() {
+  var sheet = document.getElementById('foto-share-sheet');
+  if (sheet) sheet.classList.remove('on');
+};
+
+window.doShare = function(channel) {
+  var labels = {
+    whatsapp: 'WhatsApp',
+    email: 'Email',
+    sms: 'SMS',
+    link: 'link copiat',
+    team: 'Echipa fermă',
+    agronom: 'Agronom',
+    download: 'descărcare',
+    pdf: 'Export PDF'
+  };
+  var lbl = labels[channel] || channel;
+  closeShareSheet();
+  // Mock feedback
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;z-index:250;box-shadow:0 4px 14px rgba(0,0,0,0.3);';
+  toast.textContent = '\u2713 Trimis prin ' + lbl;
+  var screen = document.querySelector('.phone-screen');
+  if (screen) {
+    screen.appendChild(toast);
+    setTimeout(function(){ toast.remove(); }, 1800);
+  }
+};
+
+// ============ DELETE ============
+window.deleteSelected = function() {
+  var n = document.querySelectorAll('.gallery-select.checked').length;
+  if (!n) return;
+  var dlg = document.getElementById('foto-confirm');
+  document.getElementById('foto-confirm-title').textContent = 'Șterge ' + n + ' ' + (n === 1 ? 'fotografie?' : 'fotografii?');
+  document.getElementById('foto-confirm-txt').textContent = 'Acțiunea nu poate fi anulată. ' + (n === 1 ? 'Fotografia selectată va fi eliminată' : 'Fotografiile selectate vor fi eliminate') + ' din galerie.';
+  if (dlg) dlg.classList.add('on');
+};
+
+window.closeConfirm = function() {
+  var dlg = document.getElementById('foto-confirm');
+  if (dlg) dlg.classList.remove('on');
+};
+
+window.confirmDelete = function() {
+  var checks = document.querySelectorAll('.gallery-select.checked');
+  var n = checks.length;
+  checks.forEach(function(c) {
+    var item = c.closest('.gallery-item');
+    if (item) item.remove();
+  });
+  // Ascunde date headers goale
+  document.querySelectorAll('.gallery-date').forEach(function(dateEl) {
+    var grid = dateEl.nextElementSibling;
+    if (!grid) return;
+    var visible = grid.querySelectorAll('.gallery-item').length;
+    if (!visible) { dateEl.style.display = 'none'; grid.style.display = 'none'; }
+  });
+  closeConfirm();
+  updateShareFab();
+  // Toast
+  var screen = document.querySelector('.phone-screen');
+  if (screen) {
+    var toast = document.createElement('div');
+    toast.style.cssText = 'position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;z-index:250;box-shadow:0 4px 14px rgba(0,0,0,0.3);';
+    toast.textContent = '\u2713 ' + n + ' ' + (n === 1 ? 'fotografie ștearsă' : 'fotografii șterse');
+    screen.appendChild(toast);
+    setTimeout(function(){ toast.remove(); }, 1800);
+  }
+};
+
+// Override applyCardFilters for gallery
+var origApply = window.applyCardFilters;
+window.applyCardFilters = function() {
+  var items = document.querySelectorAll('.gallery-item');
+  if (!items.length) return;
+  var hasFilters = false;
+  for (var k in window.activeFilters) { if (window.activeFilters[k].length) hasFilters = true; }
+  items.forEach(function(item) {
+    if (!hasFilters) { item.style.display = 'block'; return; }
+    var searchData = (item.getAttribute('data-search') || '');
+    var match = true;
+    for (var key in window.activeFilters) {
+      var vals = window.activeFilters[key];
+      if (vals.length === 0) continue;
+      var found = false;
+      vals.forEach(function(v) { if (searchData.indexOf(v.toLowerCase()) !== -1) found = true; });
+      if (!found) match = false;
+    }
+    item.style.display = match ? 'block' : 'none';
+  });
+  // Hide empty date headers
+  document.querySelectorAll('.gallery-date').forEach(function(dateEl) {
+    var grid = dateEl.nextElementSibling;
+    if (!grid) return;
+    var visible = grid.querySelectorAll('.gallery-item[style="display: block;"], .gallery-item:not([style*="display"])');
+    dateEl.style.display = visible.length > 0 ? 'block' : 'none';
+  });
+};
+// ============ FAB MENU (speed-dial arenda pattern) ============
+function getSelectedPhotos() {
+  var out = [];
+  document.querySelectorAll('.gallery-item').forEach(function(item) {
+    var sel = item.querySelector('.gallery-select');
+    if (sel && sel.classList.contains('checked')) {
+      var p = {};
+      try { p = JSON.parse(decodeURIComponent(item.getAttribute('data-photo'))); } catch(e) {}
+      p._key = item.getAttribute('data-key');
+      p._idx = parseInt(item.getAttribute('data-idx'), 10);
+      out.push(p);
+    }
+  });
+  return out;
+}
+
+function showFotoToast(txt) {
+  var screen = document.querySelector('.phone-screen');
+  if (!screen) return;
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;z-index:260;box-shadow:0 4px 14px rgba(0,0,0,0.3);max-width:300px;text-align:center;';
+  toast.innerHTML = txt;
+  screen.appendChild(toast);
+  setTimeout(function(){ toast.remove(); }, 1800);
+}
+
+function renderFotoFabMenu() {
+  var sel = getSelectedPhotos();
+  var n = sel.length;
+  var selEl = document.getElementById('foto-fab-sel');
+  if (selEl) {
+    if (n === 0) { selEl.className = 'foto-fab-hdr-sel empty'; selEl.textContent = 'Selectează poze'; }
+    else { selEl.className = 'foto-fab-hdr-sel'; selEl.textContent = n + ' ' + (n === 1 ? 'fotografie selectată' : 'fotografii selectate'); }
+  }
+  var needsAny = n >= 1;
+  var needs2 = n === 2;
+  var actions = [
+    { key:'share', icon:'&#128228;', lbl:'Distribuie', desc:'Trimite la WhatsApp, email, agronom', need:needsAny, needHint:'Selectează poze' },
+    { key:'tag', icon:'&#127991;', lbl:'Etichetă / Important', desc:'Marchează cu ⭐ sau adaugă etichete', need:needsAny, needHint:'Selectează poze' },
+    { key:'attach', icon:'&#128206;', lbl:'Atașează la lucrare', desc:'Leagă pozele de o lucrare din Jurnal', need:needsAny, needHint:'Selectează poze' },
+    { key:'compare', icon:'&#128202;', lbl:'Compară (2)', desc:'Vezi 2 poze side-by-side (before / after)', need:needs2, needHint:'Selectează exact 2 poze' },
+    { key:'pdf', icon:'&#128196;', lbl:'Raport PDF', desc:'Generează raport cu toate metadatele', need:needsAny, needHint:'Selectează poze' },
+    { key:'delete', icon:'&#128465;', lbl:'Șterge', desc:'Elimină pozele selectate din galerie', need:needsAny, needHint:'Selectează poze', danger:true }
+  ];
+  var html = '';
+  actions.forEach(function(a) {
+    var cls = 'foto-fab-item' + (a.danger ? ' danger' : '') + (a.need ? '' : ' disabled');
+    var click = a.need
+      ? (' onclick="fabAction(\'' + a.key + '\')"')
+      : (' onclick="showFotoToast(\'' + a.needHint + '\')"');
+    html += '<div class="' + cls + '"' + click + '>';
+    html += '<div class="ffi-ico">' + a.icon + '</div>';
+    html += '<div class="ffi-body"><div class="ffi-lbl">' + a.lbl + '</div><div class="ffi-desc">' + (a.need ? a.desc : a.needHint) + '</div></div>';
+    html += '<div class="ffi-chev">&rsaquo;</div>';
+    html += '</div>';
+  });
+  document.getElementById('foto-fab-list').innerHTML = html;
+}
+
+window.toggleFotoFabMenu = function() {
+  var menu = document.getElementById('foto-fab-sheet');
+  var bd = document.getElementById('foto-fab-backdrop');
+  if (!menu || !bd) return;
+  if (menu.classList.contains('on')) { closeFotoFabMenu(); return; }
+  renderFotoFabMenu();
+  bd.classList.add('on');
+  menu.classList.add('on');
+};
+window.closeFotoFabMenu = function() {
+  var menu = document.getElementById('foto-fab-sheet');
+  var bd = document.getElementById('foto-fab-backdrop');
+  if (menu) menu.classList.remove('on');
+  if (bd) bd.classList.remove('on');
+};
+
+window.fabAction = function(key) {
+  closeFotoFabMenu();
+  setTimeout(function() {
+    if (key === 'share') shareSelected();
+    else if (key === 'tag') openTagSheet();
+    else if (key === 'attach') openAttachSheet();
+    else if (key === 'compare') openCompare();
+    else if (key === 'pdf') openPdfSheet();
+    else if (key === 'delete') deleteSelected();
+  }, 180);
+};
+
+// ============ ACTION 2: Tag + Star sheet ============
+var _tagState = { star: false, tags: [], applyKeys: [] };
+
+window.openTagSheet = function() {
+  var sel = getSelectedPhotos();
+  if (!sel.length) { showFotoToast('Selectează cel puțin o fotografie'); return; }
+  _tagState.applyKeys = sel.map(function(p){ return p._key; });
+  var meta = {};
+  try { meta = JSON.parse(localStorage.getItem('foto-meta') || '{}'); } catch(e) {}
+  // Dacă e 1 poza, preload state-ul ei; altfel gol
+  if (sel.length === 1) {
+    var m = meta[sel[0]._key] || {};
+    _tagState.star = !!m.star;
+    _tagState.tags = (m.tags || []).slice();
+  } else {
+    _tagState.star = false;
+    _tagState.tags = [];
+  }
+  document.getElementById('foto-tag-sub').textContent = sel.length === 1
+    ? ('Pentru ' + (sel[0].label || 'această fotografie'))
+    : ('Se aplică la ' + sel.length + ' fotografii');
+  // Render switch + chips
+  var sw = document.getElementById('foto-tag-switch');
+  sw.classList.toggle('on', _tagState.star);
+  document.getElementById('foto-tag-input').value = '';
+  renderTagChips();
+  document.getElementById('foto-tag-sheet').classList.add('on');
+};
+window.closeTagSheet = function() {
+  document.getElementById('foto-tag-sheet').classList.remove('on');
+};
+window.toggleTagStar = function() {
+  _tagState.star = !_tagState.star;
+  document.getElementById('foto-tag-switch').classList.toggle('on', _tagState.star);
+};
+function renderTagChips() {
+  var host = document.getElementById('foto-tag-chips');
+  var html = '';
+  QUICK_TAGS.forEach(function(t) {
+    var on = _tagState.tags.indexOf(t) !== -1;
+    html += '<div class="foto-chip' + (on ? ' on' : '') + '" onclick="toggleTagChip(\'' + t + '\')">' + (on ? '&#10003; ' : '') + t + '</div>';
+  });
+  // Custom tags (not in QUICK_TAGS)
+  _tagState.tags.forEach(function(t) {
+    if (QUICK_TAGS.indexOf(t) !== -1) return;
+    html += '<div class="foto-chip on" onclick="toggleTagChip(\'' + t.replace(/'/g,"\\'") + '\')">&#10003; ' + t + ' &times;</div>';
+  });
+  host.innerHTML = html;
+}
+window.toggleTagChip = function(t) {
+  var i = _tagState.tags.indexOf(t);
+  if (i >= 0) _tagState.tags.splice(i, 1);
+  else _tagState.tags.push(t);
+  renderTagChips();
+};
+// Enter in input → add tag
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  var inp = document.getElementById('foto-tag-input');
+  if (!inp || document.activeElement !== inp) return;
+  var v = (inp.value || '').trim();
+  if (!v) return;
+  if (_tagState.tags.indexOf(v) === -1) _tagState.tags.push(v);
+  inp.value = '';
+  renderTagChips();
+  e.preventDefault();
+});
+window.saveTagSheet = function() {
+  // Include pending free-text input if the user typed but didn't press Enter
+  var inp = document.getElementById('foto-tag-input');
+  if (inp) {
+    var v = (inp.value || '').trim();
+    if (v && _tagState.tags.indexOf(v) === -1) _tagState.tags.push(v);
+  }
+  var meta = {};
+  try { meta = JSON.parse(localStorage.getItem('foto-meta') || '{}'); } catch(e) {}
+  _tagState.applyKeys.forEach(function(k) {
+    meta[k] = { star: _tagState.star, tags: _tagState.tags.slice() };
+  });
+  try { localStorage.setItem('foto-meta', JSON.stringify(meta)); } catch(e) {}
+  refreshThumbIndicators();
+  closeTagSheet();
+  showFotoToast('\u2713 Salvat pentru ' + _tagState.applyKeys.length + ' ' + (_tagState.applyKeys.length === 1 ? 'fotografie' : 'fotografii'));
+};
+
+// ============ ACTION 3: Attach la lucrare ============
+function _escHtml(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function _highlight(text, query) {
+  var safe = _escHtml(text);
+  if (!query) return safe;
+  var q = query.trim();
+  if (!q) return safe;
+  // escape regex special chars
+  var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig');
+  return safe.replace(re, '<mark>$1</mark>');
+}
+function _groupLabelForISO(iso) {
+  // Grupează pe luna-an în română
+  var parts = (iso || '').split('-');
+  if (parts.length < 2) return 'Fără dată';
+  var y = parts[0], m = parseInt(parts[1], 10);
+  var luni = ['ian', 'feb', 'mar', 'apr', 'mai', 'iun', 'iul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+  return (luni[m - 1] || m) + ' ' + y;
+}
+
+window._attachQuery = '';
+window._attachPickedId = null;
+window.renderAttachList = function() {
+  var q = (window._attachQuery || '').toLowerCase().trim();
+  var list = MOCK_LUCRARI.filter(function(l) {
+    if (!q) return true;
+    var hay = (l.title + ' ' + l.parcela + ' ' + l.type + ' ' + l.date).toLowerCase();
+    return hay.indexOf(q) !== -1;
+  });
+  // Deja sortat descrescator. Rupem pe grupuri luna-an.
+  var html = '';
+  var currentGroup = null;
+  list.forEach(function(l) {
+    var grp = _groupLabelForISO(l.dateISO);
+    if (grp !== currentGroup) {
+      if (currentGroup !== null) html += '</div>';
+      html += '<div class="foto-attach-group"><div class="foto-attach-group-hdr">' + grp + '</div>';
+      currentGroup = grp;
+    }
+    var title = _highlight(l.title, q);
+    var parcela = _highlight(l.parcela, q);
+    var selCls = (window._attachPickedId === l.id) ? ' selected' : '';
+    html += '<div class="foto-luc-item' + selCls + '" onclick="pickLucrare(\'' + l.id + '\')">';
+    html += '<div class="fli-ico">' + l.icon + '</div>';
+    html += '<div class="fli-body">';
+    html += '<div class="fli-ttl">' + parcela + ' &middot; ' + title + '</div>';
+    html += '<div class="fli-sub">' + _escHtml(l.date) + '</div>';
+    html += '</div>';
+    html += '<div class="fli-type ' + l.type + '">' + (l.type === 'lucrare' ? 'LUCRARE' : 'EVALUARE') + '</div>';
+    html += '<div class="fli-check">&#10003;</div>';
+    html += '</div>';
+  });
+  if (currentGroup !== null) html += '</div>';
+  var listEl = document.getElementById('foto-attach-list');
+  var emptyEl = document.getElementById('foto-attach-empty');
+  var countEl = document.getElementById('foto-attach-count');
+  if (list.length === 0) {
+    if (listEl) listEl.innerHTML = '';
+    if (emptyEl) emptyEl.style.display = '';
+  } else {
+    if (listEl) listEl.innerHTML = html;
+    if (emptyEl) emptyEl.style.display = 'none';
+  }
+  if (countEl) {
+    countEl.textContent = list.length + ' ' + (list.length === 1 ? 'rezultat' : 'rezultate') +
+      (q ? ' pentru "' + q + '"' : ' · sortate după dată');
+  }
+};
+window.clearAttachSearch = function() {
+  var input = document.getElementById('foto-attach-input');
+  if (input) input.value = '';
+  window._attachQuery = '';
+  var clr = document.getElementById('foto-attach-clear');
+  if (clr) clr.style.display = 'none';
+  renderAttachList();
+  if (input) input.focus();
+};
+window.openAttachSheet = function() {
+  var sel = getSelectedPhotos();
+  if (!sel.length) { showFotoToast('Selectează cel puțin o fotografie'); return; }
+  document.getElementById('foto-attach-sub').textContent =
+    'Alege lucrarea pentru ' + sel.length + ' ' + (sel.length === 1 ? 'fotografie' : 'fotografii');
+  // Reset search
+  var input = document.getElementById('foto-attach-input');
+  if (input) {
+    input.value = '';
+    if (!input._hooked) {
+      input._hooked = true;
+      input.addEventListener('input', function() {
+        window._attachQuery = this.value || '';
+        var clr = document.getElementById('foto-attach-clear');
+        if (clr) clr.style.display = this.value ? '' : 'none';
+        renderAttachList();
+      });
+    }
+  }
+  window._attachQuery = '';
+  window._attachPickedId = null;
+  var saveBtn = document.getElementById('foto-attach-save');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Salvează'; }
+  var clr = document.getElementById('foto-attach-clear');
+  if (clr) clr.style.display = 'none';
+  renderAttachList();
+  document.getElementById('foto-attach-sheet').classList.add('on');
+};
+window.closeAttachSheet = function() {
+  document.getElementById('foto-attach-sheet').classList.remove('on');
+};
+window.pickLucrare = function(lucrareId) {
+  // Toggle — click pe aceeași deselectează
+  if (window._attachPickedId === lucrareId) {
+    window._attachPickedId = null;
+  } else {
+    window._attachPickedId = lucrareId;
+  }
+  renderAttachList();
+  var saveBtn = document.getElementById('foto-attach-save');
+  if (saveBtn) {
+    var picked = window._attachPickedId;
+    saveBtn.disabled = !picked;
+    if (picked) {
+      var luc = MOCK_LUCRARI.find(function(l){ return l.id === picked; });
+      saveBtn.textContent = luc ? ('Salvează la ' + luc.parcela) : 'Salvează';
+    } else {
+      saveBtn.textContent = 'Salvează';
+    }
+  }
+};
+window.saveAttach = function() {
+  var lucrareId = window._attachPickedId;
+  if (!lucrareId) return;
+  attachTo(lucrareId);
+};
+window.attachTo = function(lucrareId) {
+  var sel = getSelectedPhotos();
+  if (!sel.length) return;
+  var luc = MOCK_LUCRARI.find(function(l){ return l.id === lucrareId; });
+  var att = {};
+  try { att = JSON.parse(localStorage.getItem('foto-attachments') || '{}'); } catch(e) {}
+  if (!att[lucrareId]) att[lucrareId] = [];
+  sel.forEach(function(p) {
+    if (att[lucrareId].indexOf(p._key) === -1) att[lucrareId].push(p._key);
+  });
+  try { localStorage.setItem('foto-attachments', JSON.stringify(att)); } catch(e) {}
+  closeAttachSheet();
+  showFotoToast('\u2713 Atașat la ' + (luc ? luc.title : 'lucrare'));
+};
+
+// ============ ACTION 4: Compare 2 poze ============
+window.openCompare = function() {
+  var sel = getSelectedPhotos();
+  if (sel.length !== 2) { showFotoToast('Selectează exact 2 fotografii'); return; }
+  var body = document.getElementById('foto-cmp-body');
+  var html = '';
+  sel.forEach(function(p, i) {
+    var pill = (p.label || '—') + ' &middot; ' + (p._dayDate || '—');
+    html += '<div class="foto-cmp-half" style="background:' + (p.bg || '#333') + ';">';
+    html += (p.icon || '&#128247;');
+    html += '<div class="foto-cmp-pos">' + (i === 0 ? 'A' : 'B') + '</div>';
+    html += '<div class="foto-cmp-pill"><span style="font-size:14px;">&#127806;</span> ' + pill + '</div>';
+    html += '</div>';
+  });
+  body.innerHTML = html;
+  document.getElementById('foto-compare').classList.add('on');
+};
+window.closeCompare = function() {
+  document.getElementById('foto-compare').classList.remove('on');
+};
+
+// ============ ACTION 5: PDF raport preview ============
+window.openPdfSheet = function() {
+  var sel = getSelectedPhotos();
+  if (!sel.length) { showFotoToast('Selectează cel puțin o fotografie'); return; }
+  document.getElementById('foto-pdf-sub').textContent =
+    'Preview raport cu ' + sel.length + ' ' + (sel.length === 1 ? 'fotografie' : 'fotografii');
+  var overrides = {};
+  try { overrides = JSON.parse(localStorage.getItem('foto-notes') || '{}'); } catch(e) {}
+  var preview = document.getElementById('foto-pdf-preview');
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('ro-RO');
+  var html = '';
+  html += '<div class="foto-pdf-hdr">';
+  html += '<div class="foto-pdf-hdr-ttl">Ferma Rurio &middot; Raport fotografii</div>';
+  html += '<div class="foto-pdf-hdr-sub">Generat: ' + dateStr + ' &middot; Operator: Ion Popescu</div>';
+  html += '</div>';
+  sel.forEach(function(p, i) {
+    var cam = null;
+    if (p._camId) cam = CAM_PHOTOS.find(function(c){ return c.id === p._camId; });
+    var pDate = (cam && cam.displayDate) || p._dayDate || '—';
+    var pTime = (cam && cam.displayTime) || '';
+    var pUser = (cam && cam.author) || 'Ion Popescu';
+    var pGps = (cam && cam.gps) || '45.74894, 21.20866';
+    var pTemp = (cam && cam.temperature) || '17.3°C';
+    var pOrient = (cam && cam.orientation) || 'NE · 45°';
+    var parcela = (cam && cam.parcele && cam.parcele.length) ? cam.parcele.join(', ') : (p.label || '—');
+    var note = overrides[p._key] || (cam && cam.comment) || p.comment || '';
+    var ai = (cam && cam.aiDetections && cam.aiDetections.length) ? cam.aiDetections : mockAIDetections(p.search || p.label || '');
+    html += '<div class="foto-pdf-item">';
+    // Poza mare
+    html += '<div class="foto-pdf-photo" style="background:' + (p.bg || '#333') + ';">';
+    html += '<span class="foto-pdf-item-no">#' + (i+1) + '</span>';
+    html += (p.icon || '&#128247;');
+    html += '<div class="foto-pdf-photo-badge"><span style="font-size:13px;">&#127806;</span> ' + parcela + '</div>';
+    html += '</div>';
+    // Metadate
+    html += '<div class="foto-pdf-meta">';
+    html += '<div class="foto-pdf-meta-row"><span class="k">Data:</span><span>' + pDate + (pTime ? ' · ' + pTime : '') + '</span></div>';
+    html += '<div class="foto-pdf-meta-row"><span class="k">Operator:</span><span>' + pUser + '</span></div>';
+    html += '<div class="foto-pdf-meta-row"><span class="k">Coordonate:</span><span>X ' + (pGps.split(/[,;]\s*/)[0] || '—') + ' &middot; Y ' + (pGps.split(/[,;]\s*/)[1] || '—') + '</span></div>';
+    html += '<div class="foto-pdf-meta-row"><span class="k">Direcție:</span><span>' + pOrient + ' &middot; ' + pTemp + '</span></div>';
+    // AI ca pills
+    if (ai && ai.length) {
+      var aiHtml = ai.map(function(d){ return '<span class="foto-pdf-ai-pill ' + (d.level||'ok') + '">' + d.name + ' ' + d.conf + '%</span>'; }).join('');
+      html += '<div class="foto-pdf-meta-row"><span class="k">Analiză AI:</span><span>' + aiHtml + '</span></div>';
+    }
+    if (note) {
+      html += '<div class="foto-pdf-note">&#128172; ' + _escHtml(note) + '</div>';
+    }
+    html += '</div>';
+    html += '</div>';
+  });
+  html += '<div class="foto-pdf-ftr">ConnAgri &middot; Raport generat automat &middot; pag. 1 / 1</div>';
+  preview.innerHTML = html;
+  document.getElementById('foto-pdf-sheet').classList.add('on');
+};
+window.closePdfSheet = function() {
+  document.getElementById('foto-pdf-sheet').classList.remove('on');
+};
+window.pdfAction = function(kind) {
+  closePdfSheet();
+  if (kind === 'send') {
+    setTimeout(function(){ openShareSheet('Trimite raport PDF', 'Alege unde vrei să trimiți raportul'); }, 180);
+  } else {
+    showFotoToast('\u2713 PDF generat și descărcat');
+  }
+};
+
+function openAddDrawer() {
+  var formHTML = buildForm([
+    { label: 'Titlu fotografie', type: 'text', placeholder: 'ex: Parcela Nord - stare cultura', required: true },
+    { label: 'Teren asociat', type: 'select', options: ['Parcela Nord-Est', 'Parcela Sud', 'Lotul 3 Vest'], required: true },
+    { label: 'Categorie', type: 'select', options: ['Stare cultura', 'Problema identificata', 'Lucrare efectuata', 'Altele'] },
+    { label: 'Data', type: 'date' },
+    { label: 'Observatii', type: 'textarea', placeholder: 'Descriere...' }
+  ]);
+  openDrawer('Adauga Fotografie', formHTML, [
+    { label: 'Anuleaza', class: 'btn-secondary', action: closeDrawer },
+    { label: 'Salveaza', class: 'btn-primary', action: function() { closeDrawer(); showToast('success', 'Fotografie adaugata cu succes.'); } }
+  ]);
+}
+</script>
+</body>
+</html>

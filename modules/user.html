@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset=”UTF-8” />
+  <link rel=”manifest” href=”manifest.json”>
+  <title>Profil Utilizator â€” UI Preview</title>
+  <style>
+    :root {
+      --brand-primary:        #00686A;
+      --brand-primary-80:     #338687;
+      --brand-primary-60:     #66A4A5;
+      --brand-primary-40:     #99C2C3;
+      --brand-primary-20:     #CCE1E1;
+      --brand-primary-hover:  #005557;
+      --brand-hover-bg:       #E6F3F3;
+      --brand-accent:         #00686A;
+      --brand-background:     #FFFFFF;
+      --brand-surface:        #F7FAFA;
+      --brand-border:         #D0E5E5;
+      --brand-text-primary:   #0D2626;
+      --brand-text-muted:     #4A6E6E;
+      --brand-danger:         #C0392B;
+      --brand-danger-bg:      #FDECEA;
+      --brand-success:        #00686A;
+      --brand-success-bg:     #E6F3F3;
+      --brand-warning:        #B7791F;
+      --brand-warning-bg:     #FEFCE8;
+      --brand-radius:         8px;
+      --brand-radius-lg:      12px;
+      --brand-font-sans:      'Inter', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--brand-font-sans); background: #f0f0f0; color: var(--brand-text-primary); }
+    .preview-root { display: flex; height: calc(100vh - 40px); gap: 0; margin-top: 40px; }
+    .panel-mobile { width: 420px; flex-shrink: 0; padding: 24px 16px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; display: flex; flex-direction: column; align-items: center; }
+    .panel-desktop { flex: 1; padding: 24px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; }
+    .panel-spec { width: 340px; flex-shrink: 0; padding: 24px 20px; overflow-y: auto; background: #fafafa; font-size: 15px; line-height: 1.6; }
+    .toggle-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 8px 16px; display: flex; gap: 8px; align-items: center; height: 40px; }
+    .toggle-bar button { padding: 4px 14px; border-radius: 6px; border: 1px solid #d4d4d4; cursor: pointer; font-size: 15px; background: transparent; color: var(--brand-text-primary); }
+    .toggle-bar button.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+    .phone-chrome { border: 8px solid #1a1a1a; border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.15); width: 370px; }
+    .phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 24px; background: #1a1a1a; border-radius: 0 0 16px 16px; z-index: 10; }
+    .phone-screen { background: var(--brand-background); height: 780px; overflow: hidden; padding-top: 28px; display: flex; flex-direction: column; }
+    .phone-scroll { flex: 1; overflow-y: auto; }
+    .phone-bottom-nav { flex-shrink: 0; }
+    .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
+    .browser-dots { display: flex; gap: 6px; }
+    .browser-dots span { width: 12px; height: 12px; border-radius: 50%; }
+    .browser-dots span:nth-child(1) { background: #FF5F57; }
+    .browser-dots span:nth-child(2) { background: #FFBD2E; }
+    .browser-dots span:nth-child(3) { background: #28CA41; }
+    .browser-url { flex: 1; background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; padding: 4px 10px; font-size: 14px; color: #888; }
+    .browser-screen { background: var(--brand-background); min-height: 600px; overflow-y: auto; }
+    .spec-section { margin-bottom: 20px; }
+    .spec-section h3 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 8px; }
+    .card { background: #fff; border: 1px solid var(--brand-border); border-radius: var(--brand-radius-lg); padding: 16px; }
+    .btn-primary { background: var(--brand-primary); color: #fff; border: none; padding: 8px 16px; border-radius: var(--brand-radius); font-size: 15px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-outline { background: transparent; color: var(--brand-primary); border: 1px solid var(--brand-border); padding: 8px 16px; border-radius: var(--brand-radius); font-size: 15px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-ghost { background: transparent; color: var(--brand-text-muted); border: none; padding: 6px 10px; border-radius: var(--brand-radius); font-size: 15px; cursor: pointer; }
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 14px; font-weight: 600; }
+    .badge-success { background: var(--brand-success-bg); color: var(--brand-success); }
+    .badge-warning { background: var(--brand-warning-bg); color: var(--brand-warning); }
+    .badge-neutral { background: #f0f0f0; color: #666; }
+    .badge-primary { background: var(--brand-hover-bg); color: var(--brand-primary); }
+    .input { border: 1px solid var(--brand-border); border-radius: var(--brand-radius); padding: 8px 12px; font-size: 15px; width: 100%; outline: none; }
+    .select { border: 1px solid var(--brand-border); border-radius: var(--brand-radius); padding: 8px 12px; font-size: 15px; background: #fff; outline: none; appearance: auto; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { font-size: 14px; font-weight: 600; color: var(--brand-text-muted); margin-bottom: 6px; display: block; text-transform: uppercase; letter-spacing: 0.04em; }
+    .toggle-switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 22px; transition: 0.2s; }
+    .toggle-slider::before { content: ""; position: absolute; height: 16px; width: 16px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: 0.2s; }
+    .toggle-switch input:checked + .toggle-slider { background: var(--brand-primary); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-info { display: flex; flex-direction: column; gap: 2px; }
+    .toggle-label { font-size: 15px; font-weight: 500; color: var(--brand-text-primary); }
+    .toggle-desc { font-size: 14px; color: var(--brand-text-muted); }
+    .role-owner { background: var(--brand-hover-bg); color: var(--brand-primary); font-weight: 700; }
+    .role-manager { background: var(--brand-warning-bg); color: var(--brand-warning); }
+    .settings-nav-item { padding: 10px 16px; font-size: 15px; cursor: pointer; border-left: 3px solid transparent; color: var(--brand-text-muted); display: flex; align-items: center; gap: 10px; }
+    .settings-nav-item.active { border-left-color: var(--brand-primary); color: var(--brand-primary); font-weight: 600; background: var(--brand-hover-bg); }
+    .desktop-layout { display: flex; min-height: 600px; }
+    .desktop-sidebar { width: 220px; border-right: 1px solid var(--brand-border); background: var(--brand-surface); flex-shrink: 0; }
+    .desktop-content { flex: 1; padding: 24px 32px; overflow-y: auto; }
+    .section-divider { height: 1px; background: var(--brand-border); margin: 20px 0; }
+    .device-card { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--brand-border); border-radius: var(--brand-radius); margin-bottom: 8px; }
+    .device-icon { width: 36px; height: 36px; background: var(--brand-surface); border-radius: var(--brand-radius); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .device-info { flex: 1; }
+    .device-name { font-size: 15px; font-weight: 600; }
+    .device-meta { font-size: 14px; color: var(--brand-text-muted); }
+    .audit-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+    .audit-row:last-child { border-bottom: none; }
+    .audit-action { font-weight: 600; min-width: 140px; }
+    .audit-time { color: var(--brand-text-muted); min-width: 120px; }
+    .audit-ip { color: var(--brand-text-muted); font-family: monospace; font-size: 14px; }
+    .entity-field { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+    .entity-field:last-child { border-bottom: none; }
+    .field-type { color: #888; font-family: monospace; font-size: 14px; }
+    .story-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; padding: 8px 10px; margin-bottom: 6px; }
+    .story-id { font-size: 14px; color: #aaa; }
+    .priority-must { color: #d85a30; font-size: 14px; font-weight: 600; }
+    .priority-should { color: #ba7517; font-size: 14px; font-weight: 600; }
+    .priority-could { color: #639922; font-size: 14px; font-weight: 600; }
+    .annotation { display: flex; gap: 8px; margin-bottom: 6px; font-size: 14px; color: #555; }
+    .annotation::before { content: "\2192"; color: #888; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<div class="toggle-bar">
+  <span style="font-size:15px; font-weight:600; color:var(--brand-text-primary); margin-right:8px;">Profil Utilizator</span>
+  <button class="active" onclick="setView('both', this)">Both</button>
+  <button onclick="setView('mobile', this)">Mobile</button>
+  <button onclick="setView('desktop', this)">Desktop</button>
+  <span style="margin-left:auto; font-size:14px; color:#aaa;">ConnAgri &middot; FeatureForge Preview</span>
+</div>
+
+<div class="preview-root">
+  <div class="panel-mobile" id="panel-mobile">
+    <p style="font-size:14px; color:#aaa; margin-bottom:16px; text-align:center;">Mobile &mdash; 370px</p>
+    <div class="phone-chrome">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div id="app-topbar" data-title="Profil Utilizator"></div>
+        <div class="phone-scroll">
+        <!-- Profile Header -->
+        <div style="padding: 16px 16px 0; display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:40px; height:40px; border-radius:50%; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:700;">IP</div>
+            <div>
+              <div style="font-size:14px; color:var(--brand-text-muted);">Cont</div>
+              <div style="font-size:20px; font-weight:700; color:var(--brand-text-primary);">Ion Popescu</div>
+            </div>
+          </div>
+          <button class="btn-ghost" style="font-size:22px;">&#9998;</button>
+        </div>
+        <div style="padding:16px;">
+          <div class="card" style="margin-bottom:12px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#128100; Profil</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9650;</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+              <div style="width:64px; height:64px; border-radius:50%; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; flex-shrink:0;">IP</div>
+              <div>
+                <div style="font-size:18px; font-weight:700;">Ion Popescu</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);">ion.popescu@agrovest.ro</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);">+40 742 123 456</div>
+              </div>
+            </div>
+            <div class="form-group"><label class="form-label">Nume</label><input class="input" value="Popescu" /></div>
+            <div class="form-group"><label class="form-label">Prenume</label><input class="input" value="Ion" /></div>
+            <div class="form-group"><label class="form-label">Email</label><input class="input" value="ion.popescu@agrovest.ro" disabled style="background:#f5f5f5;" /></div>
+            <div class="form-group"><label class="form-label">Telefon</label><input class="input" value="+40 742 123 456" disabled style="background:#f5f5f5;" /></div>
+            <div class="form-group" style="margin-bottom:0;"><label class="form-label">Limba</label><select class="select" style="width:100%;"><option selected>RO</option><option>EN</option></select></div>
+          </div>
+          <div class="card" style="margin-bottom:12px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#128274; Securitate</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0;"><span style="font-size:15px;">Metoda autentificare</span><span class="badge badge-primary">Email + Parola</span></div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0;"><span style="font-size:15px;">Autentificare 2FA</span><span class="badge badge-success">Activ</span></div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0;"><span style="font-size:15px;">Ultima schimbare parola</span><span style="font-size:14px; color:var(--brand-text-muted);">15 Mar 2026</span></div>
+            <div style="padding-top:12px; display:flex; gap:8px;">
+              <button class="btn-outline" style="flex:1; justify-content:center; min-height:44px;">Schimba Parola</button>
+              <button class="btn-outline" style="flex:1; justify-content:center; min-height:44px;">Recuperare</button>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:12px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#128276; Notificari</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Canal</label><select class="select" style="width:100%;"><option selected>PUSH</option><option>EMAIL</option><option>SMS</option></select></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Frecventa</label><select class="select" style="width:100%;"><option selected>INSTANT</option><option>DIGEST ZILNIC</option></select></div>
+            </div>
+            <div class="toggle-row"><div class="toggle-info"><span class="toggle-label">Alerte meteo</span><span class="toggle-desc">Avertizari vreme severa</span></div><label class="toggle-switch"><input type="checkbox" checked /><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div class="toggle-info"><span class="toggle-label">Alerte boli</span><span class="toggle-desc">Detectie boli culturi</span></div><label class="toggle-switch"><input type="checkbox" checked /><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div class="toggle-info"><span class="toggle-label">Alerte scadente</span><span class="toggle-desc">Documente si plati</span></div><label class="toggle-switch"><input type="checkbox" checked /><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div class="toggle-info"><span class="toggle-label">Alerte lucrari</span><span class="toggle-desc">Lucrari agricole programate</span></div><label class="toggle-switch"><input type="checkbox" /><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div class="toggle-info"><span class="toggle-label">Alerte satelitare</span><span class="toggle-desc">Imagini noi disponibile</span></div><label class="toggle-switch"><input type="checkbox" checked /><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div class="toggle-info"><span class="toggle-label">Alerte stocuri</span><span class="toggle-desc">Nivel minim atins</span></div><label class="toggle-switch"><input type="checkbox" checked /><span class="toggle-slider"></span></label></div>
+          </div>
+          <div class="card" style="margin-bottom:12px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#127970; Workspace-uri</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f0f0f0;">
+              <div style="width:36px; height:36px; border-radius:var(--brand-radius); background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; flex-shrink:0;">AV</div>
+              <div style="flex:1;"><div style="font-size:15px; font-weight:600;">Agro Vest Holdings</div><div style="font-size:14px; color:var(--brand-text-muted);">Membru din 12 Ian 2025</div></div>
+              <span class="badge role-owner">Owner</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f0f0f0;">
+              <div style="width:36px; height:36px; border-radius:var(--brand-radius); background:var(--brand-primary-60); color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; flex-shrink:0;">FC</div>
+              <div style="flex:1;"><div style="font-size:15px; font-weight:600;">Ferma Constanta SRL</div><div style="font-size:14px; color:var(--brand-text-muted);">Membru din 3 Mar 2025</div></div>
+              <span class="badge role-manager">Manager</span>
+            </div>
+            <div style="margin-top:10px; padding:12px; border:1px solid var(--brand-warning); border-radius:var(--brand-radius); background:var(--brand-warning-bg);">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                <div style="width:28px; height:28px; border-radius:var(--brand-radius); background:var(--brand-warning); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;">BD</div>
+                <div><div style="font-size:15px; font-weight:600;">Bio Dobrogea</div><div style="font-size:14px; color:var(--brand-text-muted);">Invitatie de la Maria Ionescu</div></div>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="btn-primary" style="flex:1; justify-content:center; min-height:44px;">Accepta</button>
+                <button class="btn-ghost" style="flex:1; justify-content:center; min-height:44px; border:1px solid var(--brand-border);">Refuza</button>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:12px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#9881; Preferinte</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Suprafata</label><select class="select" style="width:100%;"><option selected>Hectare (HA)</option><option>Acri</option></select></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Greutate</label><select class="select" style="width:100%;"><option selected>Kilograme (KG)</option><option>Tone (TO)</option></select></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Moneda</label><select class="select" style="width:100%;"><option selected>RON</option><option>EUR</option></select></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Format data</label><select class="select" style="width:100%;"><option selected>DD/MM/YYYY</option><option>YYYY-MM-DD</option></select></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Fus orar</label><select class="select" style="width:100%;"><option selected>Europe/Bucharest</option></select></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Harta</label><select class="select" style="width:100%;"><option selected>Satelit</option><option>Teren</option></select></div>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:12px;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#128241; Dispozitive <span class="badge badge-neutral" style="margin-left:4px;">3</span></div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:16px;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#128203; Activitate</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div id="app-bottombar"></div>
+        <script src="../bars.js"></script>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-desktop" id="panel-desktop">
+    <p style="font-size:14px; color:#aaa; margin-bottom:16px;">Desktop &mdash; full width</p>
+    <div class="browser-chrome">
+      <div class="browser-bar">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">connagri.app/user</div>
+      </div>
+      <div class="browser-screen" style="min-height:600px; display:flex; align-items:center; justify-content:center;">
+        <div style="text-align:center;">
+          <div style="font-size:66px; margin-bottom:16px; opacity:0.3;">&#128100;</div>
+          <div style="font-size:22px; font-weight:600; color:var(--brand-text-muted); margin-bottom:8px;">Profil Utilizator</div>
+          <div style="font-size:16px; color:var(--brand-text-muted); opacity:0.6;">Continut in curs de dezvoltare</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-spec" id="panel-spec">
+    <div style="font-size:17px; font-weight:700; margin-bottom:4px; color:var(--brand-text-primary);">Profil Utilizator</div>
+    <div style="font-size:14px; color:#aaa; margin-bottom:20px;">Profil utilizator &middot; Spec Panel</div>
+    <div class="spec-section">
+      <h3>Descriere</h3>
+      <p style="font-size:14px; color:#555;">Gestionarea profilului, setarilor si securitatii contului.</p>
+    </div>
+    <div class="spec-section">
+      <h3>Status</h3>
+      <p style="font-size:14px; color:var(--brand-warning); font-weight:600;">In curs de definire</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function setView(view, btn) {
+  document.querySelectorAll('.toggle-bar button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  var m = document.getElementById('panel-mobile');
+  var d = document.getElementById('panel-desktop');
+  var s = document.getElementById('panel-spec');
+  m.style.display = (view === 'desktop') ? 'none' : 'flex';
+  d.style.display = (view === 'mobile') ? 'none' : 'block';
+  s.style.display = 'block';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="manifest" href="../manifest.json">
+  <title>Jurnal de câmp — UI Preview</title>
+  <link rel="stylesheet" href="../design-system.css">
+  <style>
+    .preview-root { display: flex; height: calc(100vh - 40px); gap: 0; margin-top: 40px; }
+    .panel-mobile { width: 420px; flex-shrink: 0; padding: 24px 16px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; display: flex; flex-direction: column; align-items: center; }
+    .panel-desktop { flex: 1; padding: 24px; overflow-y: auto; background: #f5f5f5; border-right: 1px solid #e5e5e5; }
+    .panel-spec { width: 340px; flex-shrink: 0; padding: 24px 20px; overflow-y: auto; background: #fafafa; font-size: 14px; line-height: 1.6; }
+    .toggle-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 8px 16px; display: flex; gap: 8px; align-items: center; height: 40px; }
+    .toggle-bar button { padding: 4px 14px; border-radius: 6px; border: 1px solid #d4d4d4; cursor: pointer; font-size: 14px; background: transparent; color: var(--brand-text-primary); }
+    .toggle-bar button.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+    .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
+    .browser-dots { display: flex; gap: 6px; }
+    .browser-dots span { width: 12px; height: 12px; border-radius: 50%; }
+    .browser-dots span:nth-child(1) { background: #FF5F57; }
+    .browser-dots span:nth-child(2) { background: #FFBD2E; }
+    .browser-dots span:nth-child(3) { background: #28CA41; }
+    .browser-url { flex: 1; background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; padding: 4px 10px; font-size: 13px; color: #888; }
+    .browser-screen { background: var(--brand-background); min-height: 600px; overflow-y: auto; }
+    .spec-section { margin-bottom: 20px; }
+    .spec-section h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 8px; }
+
+    /* Tab + badge "Manager" */
+    .view-tab .tab-badge { display: inline-block; margin-left: 6px; padding: 1px 6px; font-size: 10px; font-weight: 700; background: var(--brand-primary-20); color: var(--brand-primary); border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+    .view-tab.active .tab-badge { background: rgba(0,104,106,0.15); }
+
+    /* Activity feed (Tab 2) */
+    .act-period { display: flex; gap: 6px; padding: 10px 8px 6px; background: #fff; border-bottom: 1px solid var(--brand-border); }
+    .act-period-pill { flex: 1; padding: 7px 10px; border: 1px solid var(--brand-border); background: #fff; color: var(--brand-text-muted); border-radius: 8px; font-size: 13px; font-weight: 600; text-align: center; cursor: pointer; }
+    .act-period-pill.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+    .act-day { margin: 8px 5px; background: #fff; border: 1px solid var(--brand-border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .act-day-hd { padding: 10px 12px; background: var(--brand-hover-bg); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .act-day-title { font-size: 15px; font-weight: 800; color: var(--brand-primary); text-transform: uppercase; letter-spacing: 0.3px; }
+    .act-day-date { font-size: 12px; font-weight: 600; color: var(--brand-text-muted); }
+    .act-day-stats { margin-left: auto; display: flex; gap: 4px; flex-wrap: wrap; }
+    .act-day-stat { background: #fff; padding: 3px 8px; border-radius: 8px; font-size: 12px; font-weight: 700; color: var(--brand-primary); border: 1px solid var(--brand-border); }
+    .act-sec { padding: 8px 12px; border-top: 1px solid var(--brand-border); }
+    .act-sec-hd { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .act-sec-lbl { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--brand-text-muted); letter-spacing: 0.6px; }
+    .act-sec-ico { font-size: 13px; color: var(--brand-primary); }
+    .act-item { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; }
+    .act-ava { width: 26px; height: 26px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+    .act-ava.sys { background: var(--brand-text-muted); }
+    .act-ico { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; background: var(--brand-hover-bg); color: var(--brand-primary); }
+    .act-ico.in { background: var(--brand-success-bg); color: var(--brand-success); }
+    .act-ico.out { background: var(--brand-danger-bg); color: var(--brand-danger); }
+    .act-txt { flex: 1; min-width: 0; font-size: 13px; line-height: 1.35; color: var(--brand-text-primary); }
+    .act-who { font-weight: 700; }
+    .act-what { color: var(--brand-text-muted); }
+    .act-when { font-size: 11px; color: var(--brand-text-muted); flex-shrink: 0; font-weight: 600; white-space: nowrap; }
+    .act-amt { font-size: 12px; font-weight: 800; white-space: nowrap; flex-shrink: 0; }
+    .act-amt.in { color: var(--brand-success); }
+    .act-amt.out { color: var(--brand-danger); }
+
+    /* Detail view */
+    .d-actions { padding: 8px 12px; background: var(--brand-surface); border-bottom: 1px solid var(--brand-border); display: flex; gap: 6px; }
+    .d-actions .icon-btn { width: 38px; height: 38px; font-size: 16px; }
+    .d-sec { background: #fff; border: 1px solid var(--brand-border); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+    .d-sec-h { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--brand-text-muted); letter-spacing: 0.5px; margin-bottom: 8px; }
+    .d-row { display: flex; padding: 4px 0; gap: 10px; font-size: 14px; }
+    .d-row-lbl { width: 105px; color: var(--brand-text-muted); flex-shrink: 0; font-size: 13px; }
+    .d-row-val { flex: 1; color: var(--brand-text-primary); font-weight: 600; }
+    .d-chips { display: flex; gap: 4px; flex-wrap: wrap; }
+    .d-chip { padding: 3px 9px; background: var(--brand-primary-20); color: var(--brand-primary); border-radius: 10px; font-size: 12px; font-weight: 600; }
+    .d-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .d-photo { aspect-ratio: 1; background: linear-gradient(135deg, #D0E5E5, #A3CFCF); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--brand-primary); }
+    .d-cond-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .d-cond { padding: 8px 10px; background: var(--brand-surface); border-radius: 8px; border: 1px solid var(--brand-border); display: flex; align-items: center; gap: 8px; }
+    .d-cond-ico { font-size: 18px; flex-shrink: 0; }
+    .d-cond-txt { min-width: 0; }
+    .d-cond-lbl { font-size: 10px; font-weight: 700; color: var(--brand-text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+    .d-cond-val { font-size: 14px; font-weight: 700; color: var(--brand-text-primary); }
+    .d-comm { padding: 8px 0; border-bottom: 1px solid var(--brand-border); display: flex; gap: 8px; }
+    .d-comm:last-child { border-bottom: none; }
+    .d-comm-ava { width: 30px; height: 30px; border-radius: 50%; background: var(--brand-primary-60); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+    .d-comm-bd { flex: 1; min-width: 0; }
+    .d-comm-hd { display: flex; align-items: baseline; gap: 6px; }
+    .d-comm-who { font-size: 13px; font-weight: 700; color: var(--brand-text-primary); }
+    .d-comm-when { font-size: 11px; color: var(--brand-text-muted); }
+    .d-comm-txt { font-size: 13px; color: var(--brand-text-primary); margin-top: 2px; line-height: 1.4; }
+    .d-comm-input { display: flex; gap: 6px; padding: 8px 0 0; }
+    .d-comm-input input { flex: 1; padding: 8px 12px; border: 1px solid var(--brand-border); border-radius: 20px; font-size: 14px; outline: none; background: #fff; }
+    .d-comm-input button { padding: 8px 14px; border: none; background: var(--brand-primary); color: #fff; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; }
+
+    /* Add drawer: type picker */
+    .kind-seg { display: flex; gap: 6px; margin-bottom: 14px; }
+    .kind-seg-btn { flex: 1; padding: 10px; border: 2px solid var(--brand-border); background: #fff; border-radius: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 13px; font-weight: 600; color: var(--brand-text-muted); }
+    .kind-seg-btn.active { border-color: var(--brand-primary); background: var(--brand-hover-bg); color: var(--brand-primary); }
+    .kind-seg-btn .ico { font-size: 22px; }
+    .kind-only-lucrare { display: block; }
+    .kind-evaluare .kind-only-lucrare { display: none; }
+    .multi-chips { display: flex; flex-wrap: wrap; gap: 4px; min-height: 44px; padding: 6px; border: 1px solid var(--brand-border); border-radius: 8px; background: #fff; cursor: pointer; align-items: center; }
+    .multi-chip { padding: 4px 10px; background: var(--brand-primary); color: #fff; border-radius: 12px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+    .multi-chip-x { cursor: pointer; opacity: 0.7; font-weight: 700; }
+    .multi-chip-placeholder { color: var(--brand-text-muted); font-size: 14px; padding: 4px 8px; }
+
+    /* Activity spec panel */
+    .spec-section ul { list-style: none; padding: 0; margin: 0; }
+    .spec-section ul li { font-size: 13px; color: #555; padding: 3px 0; }
+  </style>
+</head>
+<body>
+
+<div class="toggle-bar">
+  <span style="font-size:14px; font-weight:600; color:var(--brand-text-primary); margin-right:8px;">Jurnal de câmp</span>
+  <button class="active" onclick="setView('both', this)">Both</button>
+  <button onclick="setView('mobile', this)">Mobile</button>
+  <button onclick="setView('desktop', this)">Desktop</button>
+  <span style="margin-left:auto; font-size:13px; color:#aaa;">ConnAgri &middot; FeatureForge Preview</span>
+</div>
+
+<div class="preview-root">
+  <div class="panel-mobile" id="panel-mobile">
+    <p style="font-size:13px; color:#aaa; margin-bottom:16px; text-align:center;">Mobile &mdash; 370px</p>
+    <div class="phone-chrome">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div id="app-topbar" data-title="Jurnal de câmp"></div>
+
+        <!-- TABS -->
+        <div class="view-tabs">
+          <button class="view-tab active" onclick="switchTab('crono', this)">Cronologic</button>
+          <button class="view-tab" onclick="switchTab('activ', this)">Activitate<span class="tab-badge">Mgr</span></button>
+        </div>
+
+        <!-- ========== TAB 1: CRONOLOGIC ========== -->
+        <div id="tab-crono" style="display:flex; flex-direction:column; flex:1; min-height:0;">
+          <div class="toolbar">
+            <div style="padding:8px 12px;background:var(--brand-primary-20);border-radius:10px;display:flex;gap:5px;align-items:baseline;flex-shrink:0;">
+              <span id="stat-total" style="font-size:16px;font-weight:800;color:var(--brand-primary);line-height:1;">0</span>
+              <span id="stat-label" style="font-size:11px;font-weight:600;color:var(--brand-primary);text-transform:uppercase;letter-spacing:0.3px;">intrari</span>
+            </div>
+            <div class="toolbar-search"><span class="toolbar-search-icon">&#128269;</span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow">&#9660;</span></div>
+            <div class="filter-dropdown" id="filter-dd"></div>
+          </div>
+
+          <div class="phone-scroll" id="card-list" style="padding-bottom:150px;"><div style="padding-top:4px;"></div></div>
+        </div>
+
+        <!-- ========== TAB 2: ACTIVITATE (Manageri) ========== -->
+        <div id="tab-activ" style="display:none; flex-direction:column; flex:1; min-height:0;">
+          <div class="act-period">
+            <div class="act-period-pill active" onclick="selectPeriod(this, 'azi')" style="flex:0 0 auto;min-width:80px;">Azi</div>
+            <div class="act-period-pill" onclick="openDateRange(this)" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;">
+              <span style="font-size:16px;">&#128197;</span>
+              <span id="date-range-label">Selecteaza interval</span>
+            </div>
+          </div>
+          <div class="phone-scroll" id="activity-list" style="padding:6px 0 150px;"></div>
+        </div>
+
+        <button class="fab"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="4" y1="8" x2="16" y2="8"/><line x1="4" y1="14" x2="14" y2="14"/><line x1="19" y1="11" x2="19" y2="17"/><line x1="16" y1="14" x2="22" y2="14"/></svg></button>
+        <div id="app-bottombar"></div>
+        <script src="../bars.js"></script>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-desktop" id="panel-desktop">
+    <p style="font-size:13px; color:#aaa; margin-bottom:16px;">Desktop &mdash; full width</p>
+    <div class="browser-chrome">
+      <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">connagri.app/agenda</div></div>
+      <div class="browser-screen" style="min-height:600px; display:flex; align-items:center; justify-content:center;">
+        <div style="text-align:center;"><div style="font-size:65px; margin-bottom:16px; opacity:0.3;">&#127806;</div><div style="font-size:21px; font-weight:600; color:var(--brand-text-muted); margin-bottom:8px;">Jurnal de câmp</div><div style="font-size:15px; color:var(--brand-text-muted); opacity:0.6;">Versiune desktop &mdash; in curs</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-spec" id="panel-spec">
+    <div style="font-size:16px; font-weight:700; margin-bottom:4px; color:var(--brand-text-primary);">Jurnal de câmp</div>
+    <div style="font-size:13px; color:#aaa; margin-bottom:20px;">Lucrari &amp; Evaluari &middot; Spec Panel</div>
+    <div class="spec-section"><h3>Descriere</h3><p style="font-size:13px; color:#555;">Jurnal cronologic al lucrarilor agricole si evaluarilor de cultura. Fiecare intrare apartine autorului (doar el poate edita / sterge). Ceilalti utilizatori pot comenta.</p></div>
+    <div class="spec-section"><h3>Tab 1 &mdash; Cronologic</h3>
+      <ul>
+        <li>&bull; Carduri grupate pe zi (Azi / Ieri / data)</li>
+        <li>&bull; Lucrare agricola (verde) sau Evaluare cultura (albastru)</li>
+        <li>&bull; Thumbnails foto + contor comentarii</li>
+        <li>&bull; Click &rarr; detaliu cu conditii auto-colectate</li>
+      </ul>
+    </div>
+    <div class="spec-section"><h3>Tab 2 &mdash; Activitate (Manager)</h3>
+      <ul>
+        <li>&bull; Sinteza zilnica / saptamanala</li>
+        <li>&bull; In camp: lucrari efectuate, ore, ha</li>
+        <li>&bull; In aplicatie: logari, modificari, comentarii</li>
+        <li>&bull; Stocuri: intrari (+) / iesiri (-)</li>
+      </ul>
+    </div>
+    <div class="spec-section"><h3>Conditii auto-colectate</h3>
+      <ul>
+        <li>&bull; Temperatura min / max</li>
+        <li>&bull; Viteza deplasare utilaj</li>
+        <li>&bull; Viteza vant</li>
+        <li>&bull; Temperatura sol</li>
+        <li>&bull; Distanta pana la prima precipitatie</li>
+      </ul>
+    </div>
+    <div class="spec-section"><h3>Status</h3><p style="font-size:13px; color:var(--brand-primary); font-weight:600;">Preview activ</p></div>
+  </div>
+</div>
+
+<script src="../components.js"></script>
+<script>
+// ===== PREVIEW CONTROLS =====
+function setView(view, btn) {
+  document.querySelectorAll('.toggle-bar button').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('panel-mobile').style.display = (view === 'desktop') ? 'none' : 'flex';
+  document.getElementById('panel-desktop').style.display = (view === 'mobile') ? 'none' : 'block';
+  document.getElementById('panel-spec').style.display = 'block';
+}
+
+// ===== TAB SWITCHING =====
+function switchTab(tab, btn) {
+  document.querySelectorAll('.view-tabs .view-tab').forEach(function(t){ t.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('tab-crono').style.display = tab === 'crono' ? 'flex' : 'none';
+  document.getElementById('tab-activ').style.display = tab === 'activ' ? 'flex' : 'none';
+}
+
+// ===== PERIOD SELECTOR (Tab 2): Azi + Calendar range =====
+function selectPeriod(el, type) {
+  document.querySelectorAll('.act-period-pill').forEach(function(p){ p.classList.remove('active'); });
+  el.classList.add('active');
+  if (type === 'azi') {
+    var lbl = document.getElementById('date-range-label');
+    if (lbl) lbl.textContent = 'Selecteaza interval';
+  }
+}
+
+window.openDateRange = function(triggerEl) {
+  var html = '';
+  html += '<div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;">';
+  html += '<button class="dr-quick" onclick="setQuickRange(this, \'ieri\')" style="flex:1;min-width:60px;padding:10px 12px;border:1px solid var(--brand-border);background:#fff;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;">Ieri</button>';
+  html += '<button class="dr-quick" onclick="setQuickRange(this, \'7z\')" style="flex:1;min-width:60px;padding:10px 12px;border:1px solid var(--brand-border);background:#fff;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;">Ultimele 7 zile</button>';
+  html += '<button class="dr-quick" onclick="setQuickRange(this, \'luna\')" style="flex:1;min-width:60px;padding:10px 12px;border:1px solid var(--brand-border);background:#fff;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;">Luna</button>';
+  html += '<button class="dr-quick" onclick="setQuickRange(this, \'lp\')" style="flex:1;min-width:60px;padding:10px 12px;border:1px solid var(--brand-border);background:#fff;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;">Luna trecuta</button>';
+  html += '</div>';
+  html += '<div style="display:flex;gap:8px;">';
+  html += '<div class="form-group" style="flex:1;"><label class="form-label">De la</label><input type="date" id="dr-start" class="form-input" value="2026-04-01"></div>';
+  html += '<div class="form-group" style="flex:1;"><label class="form-label">Pana la</label><input type="date" id="dr-end" class="form-input" value="2026-04-19"></div>';
+  html += '</div>';
+  openDrawer('Alege interval', html, [
+    { label: 'Anuleaza', class: 'btn-secondary', action: closeDrawer },
+    { label: 'Aplica', class: 'btn-primary', action: function() {
+      var s = document.getElementById('dr-start').value;
+      var e = document.getElementById('dr-end').value;
+      var lbl = document.getElementById('date-range-label');
+      if (lbl) lbl.textContent = formatRangeLabel(s, e);
+      document.querySelectorAll('.act-period-pill').forEach(function(p){ p.classList.remove('active'); });
+      if (triggerEl) triggerEl.classList.add('active');
+      closeDrawer();
+      showToast('success', 'Interval aplicat: ' + formatRangeLabel(s, e));
+    }}
+  ]);
+};
+
+window.setQuickRange = function(btn, code) {
+  var today = new Date(2026, 3, 19);
+  var s, e;
+  if (code === 'ieri') { s = new Date(2026, 3, 18); e = new Date(2026, 3, 18); }
+  else if (code === '7z') { s = new Date(2026, 3, 13); e = today; }
+  else if (code === 'luna') { s = new Date(2026, 3, 1); e = today; }
+  else if (code === 'lp') { s = new Date(2026, 2, 1); e = new Date(2026, 2, 31); }
+  document.getElementById('dr-start').value = toISO(s);
+  document.getElementById('dr-end').value = toISO(e);
+  // Highlight
+  document.querySelectorAll('.dr-quick').forEach(function(b){ b.style.background = '#fff'; b.style.color = ''; b.style.borderColor = 'var(--brand-border)'; });
+  btn.style.background = 'var(--brand-primary)';
+  btn.style.color = '#fff';
+  btn.style.borderColor = 'var(--brand-primary)';
+};
+
+function toISO(d) {
+  var y = d.getFullYear(), m = ('0'+(d.getMonth()+1)).slice(-2), dd = ('0'+d.getDate()).slice(-2);
+  return y + '-' + m + '-' + dd;
+}
+
+function formatRangeLabel(s, e) {
+  if (!s || !e) return 'Selecteaza interval';
+  var sd = new Date(s), ed = new Date(e);
+  var months = ['ian','feb','mar','apr','mai','iun','iul','aug','sep','oct','nov','dec'];
+  if (s === e) return sd.getDate() + ' ' + months[sd.getMonth()];
+  return sd.getDate() + ' ' + months[sd.getMonth()] + ' - ' + ed.getDate() + ' ' + months[ed.getMonth()];
+}
+
+// ===== MOCK USER =====
+var CURRENT_USER = 'Ion Popescu';
+
+// ===== FILTERS (tip lucrare a fost scos - prea multe optiuni pentru pills) =====
+initFilterDropdown([
+  { key: 'kind', label: 'TIP INTRARE', pills: [{ icon: '&#127806;', text: 'Lucrare' }, { icon: '&#128269;', text: 'Evaluare' }] },
+  { key: 'autor', label: 'AUTOR', pills: [{ text: 'Ion Popescu' }, { text: 'Gheorghe Marin' }, { text: 'Vasile Lungu' }, { text: 'Maria Ionescu' }] }
+]);
+
+// ===== LIVE STATS (numar total carduri vizibile, se recalculeaza la filtre) =====
+function recomputeStats() {
+  var cards = document.querySelectorAll('.ucard-fb');
+  var visible = 0;
+  cards.forEach(function(c) {
+    if (c.style.display === 'none') return;
+    visible++;
+  });
+  var elTotal = document.getElementById('stat-total');
+  var elLabel = document.getElementById('stat-label');
+  if (elTotal) elTotal.textContent = visible;
+  if (elLabel) elLabel.textContent = visible === 1 ? 'intrare' : 'intrari';
+}
+
+// Wrap filter badge update sa trigger-uiasca si recomputeStats
+(function () {
+  var tryWrap = function () {
+    if (typeof window.updateFilterBadge === 'function' && !window.updateFilterBadge._wrapped) {
+      var orig = window.updateFilterBadge;
+      window.updateFilterBadge = function () { orig(); recomputeStats(); };
+      window.updateFilterBadge._wrapped = true;
+    } else {
+      setTimeout(tryWrap, 50);
+    }
+  };
+  tryWrap();
+})();
+
+initFabActions([
+  { icon: '&#10010;', label: 'Lucrare noua', action: function(){ openLucrareNoua(); } },
+  { icon: '&#128196;', label: 'Exporta agenda', action: function(){ showToast('success', 'Export initiat.'); } },
+  { icon: '&#128269;', label: 'Cauta detalii', action: function(){ showToast('success', 'Cautare avansata (demo).'); } }
+]);
+
+// ===== SETTINGS DATA (pentru auto-fill la lucrare noua) =====
+var LN_PARCELE = [
+  { name: 'Parcela 12 Nord', ha: 25.5 }, { name: 'Parcela 9 Centru', ha: 42.3 },
+  { name: 'Parcela 18 Sud', ha: 28.4 }, { name: 'Parcela 22 Nord', ha: 55.0 },
+  { name: 'Parcela 11 Centru', ha: 21.8 }, { name: 'Parcela 7 Vest', ha: 18.2 },
+  { name: 'Parcela 4 Est', ha: 19.6 }, { name: 'Parcela 15 Est', ha: 14.8 },
+  { name: 'Parcela 6 Vest', ha: 12.1 }, { name: 'Lotul 3 Vest', ha: 8.7 }
+];
+// Agregat -> { tipLucrare, utilajImplicit, normativMotorina L/ha }
+var LN_AGREGATE = {
+  'Plug Lemken 4F':        { tipLucrare: 'Arat',            utilaj: 'John Deere 6130R',   norma: 22 },
+  'Disc Amazone Catros':   { tipLucrare: 'Discuit',         utilaj: 'Fendt 724 Vario',    norma: 9 },
+  'Semanatoare Gaspardo':  { tipLucrare: 'Semanat',         utilaj: 'John Deere 6130R',   norma: 8 },
+  'Stropitoare Berthoud':  { tipLucrare: 'Tratament',       utilaj: 'New Holland T7.270', norma: 3 },
+  'Imprastietor NPK':      { tipLucrare: 'Fertilizat',      utilaj: 'John Deere 6130R',   norma: 5 },
+  'Tavalug Kverneland':    { tipLucrare: 'Tavalugit',       utilaj: 'Fendt 724 Vario',    norma: 4 },
+  'Combinator Amazone':    { tipLucrare: 'Combinator',      utilaj: 'New Holland T7.270', norma: 11 },
+  'Balotiera Claas':       { tipLucrare: 'Balotat',         utilaj: 'John Deere 6130R',   norma: 6 },
+  'Cositoare Krone':       { tipLucrare: 'Cosit',           utilaj: 'Fendt 724 Vario',    norma: 7 },
+  'Remorca Pronar':        { tipLucrare: 'Transport',       utilaj: 'New Holland T7.270', norma: 3 }
+};
+// Utilaj -> mecanizator implicit
+var LN_UTILAJE_MEC = {
+  'John Deere 6130R':   'Ion Popescu',
+  'New Holland T7.270': 'Andrei Popa',
+  'New Holland CR9.80': 'Gheorghe Marin',
+  'Fendt 724 Vario':    'Vasile Lungu'
+};
+// Produse disponibile (pe categorii + culoare pt card-ul final)
+var LN_PRODUSE = [
+  { name: 'Grau Genesi',           cat: 'Seminte',      um: 'k.b./ha',  color: '#2D8E5F' },
+  { name: 'Porumb P9074',          cat: 'Seminte',      um: 'k.b./ha',  color: '#2D8E5F' },
+  { name: 'Floarea soarelui LG',   cat: 'Seminte',      um: 'k.b./ha',  color: '#2D8E5F' },
+  { name: 'Rapita ES Neptune',     cat: 'Seminte',      um: 'sem/m²',   color: '#2D8E5F' },
+  { name: 'NPK 20-20-0',           cat: 'Ingrasaminte', um: 'kg/ha',    color: '#0369A1' },
+  { name: 'Azotat de amoniu',      cat: 'Ingrasaminte', um: 'kg/ha',    color: '#0369A1' },
+  { name: 'Uree',                  cat: 'Ingrasaminte', um: 'kg/ha',    color: '#0369A1' },
+  { name: 'Roundup',               cat: 'Pesticide',    um: 'L/ha',     color: '#C0392B' },
+  { name: 'Adengo',                cat: 'Pesticide',    um: 'L/ha',     color: '#C0392B' },
+  { name: 'Falcon Pro',            cat: 'Pesticide',    um: 'L/ha',     color: '#F57C00' },
+  { name: 'Biscaya',               cat: 'Pesticide',    um: 'L/ha',     color: '#8B0000' },
+  { name: 'Adjuvant Wetting',      cat: 'Adjuvanti',    um: 'L/ha',     color: '#708090' }
+];
+var LN_MOTORINA_COLOR = '#8B4789';
+
+// ===== OPEN LUCRARE NOUA (drawer complet) =====
+var _ln = { parcele: [], inputuri: [], agregate: [], utilaj: null, mecanizator: null, tipLucrare: null };
+
+window.openLucrareNoua = function () {
+  // Reset state
+  _ln = { parcele: [], inputuri: [], agregate: [], utilaj: null, mecanizator: null, tipLucrare: null };
+  var html = '';
+  // Data + ora
+  html += '<div style="display:flex;gap:8px;">';
+  html += '<div class="form-group" style="flex:1;"><label class="form-label">Data *</label><input id="ln-data" type="date" class="form-input" value="2026-04-19"></div>';
+  html += '<div class="form-group" style="flex:1;"><label class="form-label">Ora</label><input id="ln-ora" type="time" class="form-input" value="08:00"></div>';
+  html += '</div>';
+  // Parcele (multi-chip)
+  html += '<div class="form-group"><label class="form-label">Parcele *</label>';
+  html += '<div id="ln-parcele-chips" style="min-height:48px;padding:8px;border:1.5px solid var(--brand-border);border-radius:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;cursor:pointer;" onclick="lnPickParcela(event)"></div>';
+  html += '<div id="ln-parcele-dd" style="display:none;position:relative;margin-top:4px;background:#fff;border:1px solid var(--brand-border);border-radius:8px;max-height:220px;overflow-y:auto;z-index:3;"></div>';
+  html += '</div>';
+  // Agregat (single for now - cel principal; extindem la multi dupa)
+  html += '<div class="form-group"><label class="form-label">Agregat *</label>';
+  html += '<select id="ln-agregat" class="form-select" onchange="lnAgregatChange()"><option value="">Selecteaza...</option>';
+  Object.keys(LN_AGREGATE).forEach(function(a){ html += '<option>' + a + '</option>'; });
+  html += '</select></div>';
+  // Auto-info box (afisaj tip lucrare + utilaj + mecanizator + motorina estimata)
+  html += '<div id="ln-auto-box" style="display:none;padding:12px;background:var(--brand-hover-bg);border-radius:10px;margin-bottom:14px;font-size:13px;line-height:1.6;">';
+  html += '<div><strong>Tip lucrare:</strong> <span id="ln-tip">&mdash;</span></div>';
+  html += '<div><strong>Utilaj:</strong> <span id="ln-utilaj">&mdash;</span> <span style="color:var(--brand-text-muted);font-size:11px;">(editabil mai jos)</span></div>';
+  html += '<div><strong>Mecanizator:</strong> <span id="ln-mec">&mdash;</span></div>';
+  html += '<div style="color:var(--brand-primary);font-weight:700;margin-top:4px;">⛽ Motorina estimata: <span id="ln-motorina">0</span> L</div>';
+  html += '</div>';
+  // Override utilaj / mecanizator
+  html += '<div style="display:flex;gap:8px;">';
+  html += '<div class="form-group" style="flex:1;"><label class="form-label">Utilaj (override)</label>';
+  html += '<select id="ln-utilaj-sel" class="form-select" onchange="lnUtilajChange()"><option value="">Auto</option>';
+  Object.keys(LN_UTILAJE_MEC).forEach(function(u){ html += '<option>' + u + '</option>'; });
+  html += '</select></div>';
+  html += '<div class="form-group" style="flex:1;"><label class="form-label">Mecanizator (override)</label>';
+  html += '<select id="ln-mec-sel" class="form-select"><option value="">Auto</option>';
+  ['Ion Popescu','Maria Ionescu','Vasile Lungu','Andrei Popa','Elena Vasile','Gheorghe Marin','Alexandru Romanescu','Cristinel Parvulescu'].forEach(function(n){ html += '<option>' + n + '</option>'; });
+  html += '</select></div>';
+  html += '</div>';
+  // Inputuri (repeatable)
+  html += '<div class="form-group"><label class="form-label">Inputuri (seminte / pesticide / ingrasaminte)</label>';
+  html += '<div id="ln-inputuri-list"></div>';
+  html += '<button type="button" onclick="lnAddInput()" style="width:100%;padding:10px;margin-top:6px;border:1.5px dashed var(--brand-primary);background:transparent;color:var(--brand-primary);border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;">+ Adauga input</button>';
+  html += '</div>';
+  // Observatii
+  html += '<div class="form-group"><label class="form-label">Observatii</label><textarea id="ln-note" class="form-textarea" placeholder="Note..."></textarea></div>';
+  // Status
+  html += '<div class="form-group"><label class="form-label">Status</label>';
+  html += '<div style="display:flex;gap:6px;">';
+  html += '<label style="flex:1;padding:10px;border:1.5px solid var(--brand-primary);background:var(--brand-hover-bg);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;"><input type="radio" name="ln-status" value="derulare" checked> &#9658; In derulare (task catre operatori)</label>';
+  html += '<label style="flex:1;padding:10px;border:1.5px solid var(--brand-border);background:#fff;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;"><input type="radio" name="ln-status" value="finalizat"> &#10003; Finalizat (retro)</label>';
+  html += '</div></div>';
+
+  openDrawer('Lucrare noua', html, [
+    { label: 'Anuleaza', class: 'btn-secondary', action: closeDrawer },
+    { label: 'Salveaza', class: 'btn-primary', action: lnSave }
+  ]);
+  // init
+  lnRenderParcele();
+  lnAddInput(); // start with 1 empty row
+};
+
+// ===== PARCELE (multi-chip) =====
+window.lnRenderParcele = function() {
+  var box = document.getElementById('ln-parcele-chips');
+  if (!box) return;
+  var html = '';
+  _ln.parcele.forEach(function(p, i) {
+    html += '<span style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px;background:#FFF0E6;color:#E6853D;border-radius:100px;font-size:13px;font-weight:700;">' + p.name + ' &middot; ' + p.ha + ' ha <span onclick="event.stopPropagation();lnRemoveParcela(' + i + ')" style="cursor:pointer;opacity:0.7;font-weight:900;">&times;</span></span>';
+  });
+  if (!_ln.parcele.length) html += '<span style="color:var(--brand-text-muted);font-size:13px;padding:4px 8px;">Apasa pentru a alege parcele...</span>';
+  else html += '<span style="color:var(--brand-primary);font-size:12px;font-weight:700;margin-left:4px;">+</span>';
+  box.innerHTML = html;
+  // Update motorina
+  lnUpdateMotorina();
+};
+
+window.lnPickParcela = function(e) {
+  var dd = document.getElementById('ln-parcele-dd');
+  if (!dd) return;
+  var remaining = LN_PARCELE.filter(function(p) { return !_ln.parcele.find(function(x){ return x.name === p.name; }); });
+  if (!remaining.length) { dd.style.display = 'none'; return; }
+  var html = '';
+  remaining.forEach(function(p) {
+    html += '<div onclick="lnAddParcela(\'' + p.name + '\')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:13px;display:flex;justify-content:space-between;"><span>&#127806; ' + p.name + '</span><span style="color:#E6853D;font-weight:700;">' + p.ha + ' ha</span></div>';
+  });
+  dd.innerHTML = html;
+  dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
+};
+
+window.lnAddParcela = function(name) {
+  var p = LN_PARCELE.find(function(x){ return x.name === name; });
+  if (p && !_ln.parcele.find(function(x){ return x.name === name; })) _ln.parcele.push(p);
+  document.getElementById('ln-parcele-dd').style.display = 'none';
+  lnRenderParcele();
+};
+
+window.lnRemoveParcela = function(i) {
+  _ln.parcele.splice(i, 1);
+  lnRenderParcele();
+};
+
+// ===== AGREGAT / UTILAJ / MECANIZATOR AUTO-FILL =====
+window.lnAgregatChange = function() {
+  var ag = document.getElementById('ln-agregat').value;
+  var s = LN_AGREGATE[ag];
+  if (!s) { document.getElementById('ln-auto-box').style.display = 'none'; return; }
+  _ln.tipLucrare = s.tipLucrare;
+  _ln.utilaj = s.utilaj;
+  _ln.mecanizator = LN_UTILAJE_MEC[s.utilaj] || '—';
+  document.getElementById('ln-tip').textContent = s.tipLucrare;
+  document.getElementById('ln-utilaj').textContent = s.utilaj;
+  document.getElementById('ln-mec').textContent = _ln.mecanizator;
+  document.getElementById('ln-auto-box').style.display = 'block';
+  lnUpdateMotorina();
+};
+
+window.lnUtilajChange = function() {
+  var u = document.getElementById('ln-utilaj-sel').value;
+  if (!u) return;
+  _ln.utilaj = u;
+  _ln.mecanizator = LN_UTILAJE_MEC[u] || '—';
+  document.getElementById('ln-utilaj').textContent = u;
+  document.getElementById('ln-mec').textContent = _ln.mecanizator;
+};
+
+window.lnUpdateMotorina = function() {
+  var ag = document.getElementById('ln-agregat');
+  var el = document.getElementById('ln-motorina');
+  if (!el) return;
+  var agVal = ag ? ag.value : '';
+  var norma = (LN_AGREGATE[agVal] || {}).norma || 0;
+  var totalHa = 0;
+  _ln.parcele.forEach(function(p){ totalHa += p.ha; });
+  var total = (norma * totalHa).toFixed(1);
+  el.textContent = total;
+};
+
+// ===== INPUTURI (repeatable rows) =====
+window.lnAddInput = function() {
+  var list = document.getElementById('ln-inputuri-list');
+  if (!list) return;
+  var idx = list.children.length;
+  var row = document.createElement('div');
+  row.style.cssText = 'display:flex;gap:6px;align-items:center;margin-bottom:6px;';
+  row.innerHTML =
+    '<select class="form-select ln-in-prod" style="flex:2;" onchange="lnInputChanged(this)">' +
+      '<option value="">Selecteaza produs...</option>' +
+      (function() {
+        var html = '';
+        ['Seminte','Ingrasaminte','Pesticide','Adjuvanti'].forEach(function(cat) {
+          html += '<optgroup label="' + cat + '">';
+          LN_PRODUSE.filter(function(p){ return p.cat === cat; }).forEach(function(p) {
+            html += '<option value="' + p.name + '">' + p.name + '</option>';
+          });
+          html += '</optgroup>';
+        });
+        return html;
+      })() +
+    '</select>' +
+    '<input type="number" step="0.01" class="form-input ln-in-cant" placeholder="Cant." style="flex:1;" />' +
+    '<span class="ln-in-um" style="font-size:12px;color:var(--brand-text-muted);min-width:48px;font-weight:600;">—</span>' +
+    '<button type="button" onclick="this.parentElement.remove();" style="width:32px;height:32px;border:none;background:var(--brand-danger-bg);color:var(--brand-danger);border-radius:8px;cursor:pointer;font-size:16px;font-weight:700;">&times;</button>';
+  list.appendChild(row);
+};
+
+window.lnInputChanged = function(sel) {
+  var prod = LN_PRODUSE.find(function(p){ return p.name === sel.value; });
+  var row = sel.parentElement;
+  var umEl = row.querySelector('.ln-in-um');
+  if (umEl) umEl.textContent = prod ? prod.um : '—';
+};
+
+// ===== SAVE =====
+window.lnSave = function() {
+  // Validate
+  if (!_ln.parcele.length) { showToast('error', 'Selecteaza cel putin o parcela.'); return; }
+  if (!_ln.tipLucrare) { showToast('error', 'Selecteaza un agregat.'); return; }
+  // Collect inputuri
+  var inpRows = document.querySelectorAll('#ln-inputuri-list > div');
+  var inputuri = [];
+  inpRows.forEach(function(r) {
+    var name = r.querySelector('.ln-in-prod').value;
+    var cant = r.querySelector('.ln-in-cant').value;
+    var prod = LN_PRODUSE.find(function(p){ return p.name === name; });
+    if (name && cant && prod) inputuri.push({ name: name, value: cant + ' ' + prod.um, color: prod.color });
+  });
+  // Add motorina automat
+  var norma = (LN_AGREGATE[document.getElementById('ln-agregat').value] || {}).norma || 0;
+  if (norma > 0) inputuri.unshift({ name: 'Motorina', value: norma + ' L/ha', color: LN_MOTORINA_COLOR });
+  // Collect total ha
+  var totalHa = 0;
+  _ln.parcele.forEach(function(p){ totalHa += p.ha; });
+  // Data + ora
+  var data = document.getElementById('ln-data').value;
+  var ora = document.getElementById('ln-ora').value;
+  var mec = document.getElementById('ln-mec-sel').value || _ln.mecanizator || CURRENT_USER;
+  var note = document.getElementById('ln-note').value;
+  var status = document.querySelector('input[name="ln-status"]:checked').value;
+  // Build date format
+  var dateObj = new Date(data);
+  var monthNames = ['ian','feb','mar','apr','mai','iun','iul','aug','sep','oct','nov','dec'];
+  var dateStr = dateObj.getDate() + ' ' + monthNames[dateObj.getMonth()] + ' ' + (dateObj.getFullYear()%100) + ' &middot; ' + ora;
+  var today = new Date('2026-04-19');
+  var dateGroup = (data === '2026-04-19') ? 'Azi' : ((data === '2026-04-18') ? 'Ieri' : dateStr.split(' &middot;')[0]);
+  // Build new AGENDA entry
+  var newId = Math.max.apply(null, AGENDA.map(function(a){return a.id;})) + 1;
+  var entry = {
+    id: newId,
+    kind: 'lucrare',
+    date: dateStr,
+    dateGroup: dateGroup,
+    author: CURRENT_USER,
+    title: _ln.tipLucrare,
+    soles: _ln.parcele.map(function(p){ return { name: p.name, ha: p.ha }; }),
+    ha: totalHa,
+    photos: 0,
+    comments: 0,
+    operators: [mec],
+    inputuri: inputuri,
+    notes: note || undefined,
+    alert: false
+  };
+  AGENDA.unshift(entry);
+  BRAVOS_BY_ID[newId] = [];
+  closeDrawer();
+  renderAgenda();
+  recomputeStats();
+  showToast('success', (status === 'finalizat' ? 'Lucrare finalizata inregistrata.' : 'Lucrare in derulare — task trimis catre operator.'));
+};
+
+// ===== MOCK DATA (FB-style: soles ca obiecte {name,ha}, inputuri cu culoare, operatori, preview comentarii) =====
+// Culori inputuri: motorina #8B4789 (mov), seminte #2D8E5F (verde),
+// ingrasaminte #0369A1 (albastru), erbicid #C0392B (rosu), fungicid #F57C00 (portocaliu),
+// insecticid #8B0000 (visiniu), adjuvant #708090 (gri)
+var AGENDA = [
+  { id: 11, kind: 'lucrare', date: '18 apr 26 &middot; 08:15', dateGroup: 'Azi', author: 'Gheorghe Marin',
+    title: 'Tratament fungicid',
+    alert: false,
+    soles: [ {name:'Parcela 12 Nord', ha:25.5}, {name:'Parcela 9 Centru', ha:42.3},
+             {name:'Parcela 18 Sud', ha:28.4}, {name:'Parcela 22 Nord', ha:55.0},
+             {name:'Parcela 11 Centru', ha:21.8}, {name:'Parcela 3 Sud', ha:32.0},
+             {name:'Parcela 7 Vest', ha:18.2}, {name:'Parcela 4 Est', ha:19.6},
+             {name:'Parcela 6 Vest', ha:12.1}, {name:'Parcela 15 Est', ha:14.8},
+             {name:'Lotul 3 Vest', ha:8.7}, {name:'Lotul 7 Nord', ha:15.2},
+             {name:'Lotul 12 Sud', ha:22.1}, {name:'Tarlaua A1', ha:17.5},
+             {name:'Tarlaua A2', ha:19.3}, {name:'Tarlaua B3', ha:14.0},
+             {name:'Sola 14 Vest', ha:12.8}, {name:'Sola 21 Nord', ha:18.6},
+             {name:'Sola 28 Est', ha:11.4}, {name:'Sola 33 Sud', ha:13.3} ],
+    ha: 412.6, photos: 3, comments: 3,
+    operators: ['Gheorghe Marin', 'Andrei Popa'],
+    inputuri: [ {name:'Motorina', value:'11 litri/ha', color:'#8B4789'},
+                {name:'Falcon Pro', value:'0,6 L/ha', color:'#F57C00'},
+                {name:'Adjuvant Wetting', value:'0,2 L/ha', color:'#708090'} ],
+    conditions: { tmin:'7\u00B0', tmax:'15\u00B0', vUtilaj:'10 km/h', vVant:'5 km/h', tSol:'9\u00B0', precip:'48h' },
+    commentsPreview: [ {author:'Maria Ionescu', txt:'Conform evaluarii mele — momentul optim.'},
+                       {author:'Ion Popescu', txt:'Reevaluam in 2 saptamani?'} ] },
+
+  { id: 1, kind: 'lucrare', date: '18 apr 26 &middot; 09:40', dateGroup: 'Azi', author: 'Ion Popescu',
+    title: 'Erbicidare',
+    alert: true, alertMsg: 'Viteza vant aproape de limita la momentul aplicarii',
+    notes: 'Vantul era la limita &mdash; am aplicat pe portiunea vestica la prima ora, pe cea estica dupa pranz cand s-a calmat.',
+    soles: [ {name:'Parcela 12 Nord', ha:25.5}, {name:'Parcela 9 Centru', ha:42.3} ],
+    ha: 67.8, photos: 0, comments: 2,
+    operators: ['Ion Popescu'],
+    inputuri: [ {name:'Motorina', value:'9 litri/ha', color:'#8B4789'},
+                {name:'Roundup', value:'3 L/ha', color:'#C0392B'},
+                {name:'Adjuvant', value:'0,1 L/ha', color:'#708090'} ],
+    conditions: { tmin:'8\u00B0', tmax:'14\u00B0', vUtilaj:'8 km/h', vVant:'6 km/h', tSol:'10\u00B0', precip:'72h' },
+    commentsPreview: [ {author:'Gheorghe Marin', txt:'Uniformitate buna, bravo!'},
+                       {author:'Maria Ionescu', txt:'Verific rezultatul peste 5 zile.'} ] },
+
+  { id: 2, kind: 'evaluare', date: '18 apr 26 &middot; 11:20', dateGroup: 'Azi', author: 'Maria Ionescu',
+    title: 'Evaluare',
+    soles: [ {name:'Parcela 7 Vest', ha:18.2}, {name:'Parcela 15 Est', ha:14.8} ],
+    photos: 5, comments: 0,
+    notes: 'Rasariri neregulate pe 2 zone &mdash; posibil stres hidric.' },
+
+  { id: 3, kind: 'lucrare', date: '17 apr 26 &middot; 08:10', dateGroup: 'Ieri', author: 'Gheorghe Marin',
+    title: 'Semanat',
+    soles: [ {name:'Parcela 22 Nord', ha:55.0} ],
+    ha: 55, photos: 0, comments: 4,
+    operators: ['Gheorghe Marin'],
+    inputuri: [ {name:'Motorina', value:'8 litri/ha', color:'#8B4789'},
+                {name:'P9074', value:'70k/ha', color:'#2D8E5F'},
+                {name:'NPK 20-20-0', value:'250 kg/ha', color:'#0369A1'} ],
+    conditions: { tmin:'6\u00B0', tmax:'16\u00B0', vUtilaj:'9 km/h', vVant:'4 km/h', tSol:'9\u00B0', precip:'n/a' },
+    commentsPreview: [ {author:'Ion Popescu', txt:'Viteza optima, 9 km/h e maxim pe tarlaua asta.'},
+                       {author:'Vasile Lungu', txt:'Am vazut cateva goluri pe marginea estica.'} ] },
+
+  { id: 4, kind: 'lucrare', date: '17 apr 26 &middot; 14:30', dateGroup: 'Ieri', author: 'Ion Popescu',
+    title: 'Fertilizat',
+    soles: [ {name:'Parcela 15 Est', ha:14.8} ],
+    ha: 14.8, photos: 0, comments: 1,
+    operators: ['Ion Popescu'],
+    inputuri: [ {name:'Motorina', value:'6 litri/ha', color:'#8B4789'},
+                {name:'Azotat de amoniu', value:'180 kg/ha', color:'#0369A1'} ],
+    conditions: { tmin:'5\u00B0', tmax:'13\u00B0', vUtilaj:'12 km/h', vVant:'7 km/h', tSol:'8\u00B0', precip:'24h' },
+    commentsPreview: [ {author:'Maria Ionescu', txt:'Doza corecta, conform recomandarii agronomice.'} ] },
+
+  { id: 5, kind: 'lucrare', date: '16 apr 26 &middot; 10:00', dateGroup: '16 apr 26', author: 'Vasile Lungu',
+    title: 'Pregatire sol',
+    soles: [ {name:'Parcela 4 Est', ha:19.6} ],
+    ha: 19.6, photos: 0, comments: 0,
+    operators: ['Vasile Lungu'],
+    inputuri: [ {name:'Motorina', value:'14 litri/ha', color:'#8B4789'} ],
+    conditions: { tmin:'4\u00B0', tmax:'12\u00B0', vUtilaj:'10 km/h', vVant:'3 km/h', tSol:'7\u00B0', precip:'48h' } },
+
+  { id: 6, kind: 'evaluare', date: '16 apr 26 &middot; 15:20', dateGroup: '16 apr 26', author: 'Maria Ionescu',
+    title: 'Evaluare',
+    soles: [ {name:'Parcela 9 Centru', ha:42.3} ],
+    photos: 8, comments: 3,
+    notes: 'Infestare incipienta cu septorioza &mdash; recomandam tratament fungicid.',
+    commentsPreview: [ {author:'Ion Popescu', txt:'Fac tratamentul saptamana viitoare.'},
+                       {author:'Gheorghe Marin', txt:'Adaug Falcon Pro in comanda.'} ] },
+
+  { id: 7, kind: 'lucrare', date: '15 apr 26 &middot; 07:45', dateGroup: '15 apr 26', author: 'Gheorghe Marin',
+    title: 'Tratament fungicid',
+    soles: [ {name:'Parcela 11 Centru', ha:21.8}, {name:'Parcela 18 Sud', ha:28.4} ],
+    ha: 50.2, photos: 0, comments: 2,
+    operators: ['Gheorghe Marin'],
+    inputuri: [ {name:'Motorina', value:'10 litri/ha', color:'#8B4789'},
+                {name:'Falcon Pro', value:'0,6 L/ha', color:'#F57C00'},
+                {name:'Adjuvant', value:'0,2 L/ha', color:'#708090'} ],
+    conditions: { tmin:'7\u00B0', tmax:'15\u00B0', vUtilaj:'8 km/h', vVant:'5 km/h', tSol:'9\u00B0', precip:'36h' },
+    commentsPreview: [ {author:'Maria Ionescu', txt:'Conform evaluarii mele de 16 apr.'} ] },
+
+  { id: 8, kind: 'lucrare', date: '15 apr 26 &middot; 13:15', dateGroup: '15 apr 26', author: 'Ion Popescu',
+    title: 'Insecticid',
+    soles: [ {name:'Parcela 15 Est', ha:14.8} ],
+    ha: 14.8, photos: 0, comments: 5,
+    operators: ['Ion Popescu'],
+    inputuri: [ {name:'Motorina', value:'7 litri/ha', color:'#8B4789'},
+                {name:'Biscaya', value:'0,3 L/ha', color:'#8B0000'} ],
+    conditions: { tmin:'6\u00B0', tmax:'14\u00B0', vUtilaj:'8 km/h', vVant:'6 km/h', tSol:'8\u00B0', precip:'18h' },
+    commentsPreview: [ {author:'Gheorghe Marin', txt:'Bine ales momentul.'},
+                       {author:'Maria Ionescu', txt:'Fara efecte colaterale asupra albinelor, OK.'} ] },
+
+  { id: 9, kind: 'lucrare', date: '14 apr 26 &middot; 06:30', dateGroup: '14 apr 26', author: 'Vasile Lungu',
+    title: 'Arat',
+    alert: true, alertMsg: 'Prima precipitatie la doar 6h dupa lucrare',
+    notes: 'A plouat la 6h dupa. Terenul s-a tasat pe zona joasa &mdash; verific daca trebuie reluat.',
+    soles: [ {name:'Parcela 6 Vest', ha:12.1} ],
+    ha: 12.1, photos: 0, comments: 0,
+    operators: ['Vasile Lungu'],
+    inputuri: [ {name:'Motorina', value:'22 litri/ha', color:'#8B4789'} ],
+    conditions: { tmin:'3\u00B0', tmax:'10\u00B0', vUtilaj:'7 km/h', vVant:'8 km/h', tSol:'5\u00B0', precip:'6h' } },
+
+  { id: 10, kind: 'lucrare', date: '14 apr 26 &middot; 16:00', dateGroup: '14 apr 26', author: 'Ion Popescu',
+    title: 'Recoltat',
+    notes: 'Umiditate la recoltare 13,2% &mdash; optima. Randament ~7,8 t/ha, peste media anului trecut.',
+    soles: [ {name:'Parcela 18 Sud', ha:28.4} ],
+    ha: 28.4, photos: 4, comments: 5,
+    operators: ['Ion Popescu'],
+    inputuri: [ {name:'Motorina', value:'18 litri/ha', color:'#8B4789'} ],
+    conditions: { tmin:'12\u00B0', tmax:'26\u00B0', vUtilaj:'5 km/h', vVant:'4 km/h', tSol:'18\u00B0', precip:'96h' },
+    commentsPreview: [ {author:'Gheorghe Marin', txt:'Randament excelent!'},
+                       {author:'Maria Ionescu', txt:'7,8 t/ha, peste media anului trecut.'} ] }
+];
+
+// Mock bravos per-item (cine a dat Bravo la fiecare intrare)
+var BRAVOS_BY_ID = {
+  1:  ['Gheorghe Marin', 'Maria Ionescu'],
+  2:  ['Ion Popescu'],
+  3:  ['Ion Popescu', 'Vasile Lungu', 'Maria Ionescu', 'Andrei Popa'],
+  4:  [],
+  5:  [],
+  6:  ['Ion Popescu', 'Gheorghe Marin'],
+  7:  [],
+  8:  ['Andrei Popa'],
+  9:  [],
+  10: ['Gheorghe Marin', 'Maria Ionescu', 'Vasile Lungu', 'Andrei Popa', 'Cristinel Parvulescu'],
+  11: ['Ion Popescu', 'Maria Ionescu', 'Vasile Lungu']
+};
+
+// Mock comments per-item (random selections)
+var COMMENTS_BY_ID = {
+  1: [
+    { author: 'Gheorghe Marin', when: 'acum 2h', txt: 'Uniformitate buna, bravo!' },
+    { author: 'Maria Ionescu', when: 'acum 1h', txt: 'Verific rezultatul peste 5 zile.' }
+  ],
+  3: [
+    { author: 'Ion Popescu', when: 'ieri', txt: 'Viteza optima, 9 km/h e maxim pe tarlaua asta.' },
+    { author: 'Vasile Lungu', when: 'ieri', txt: 'Am vazut cateva golurit pe marginea estica.' },
+    { author: 'Maria Ionescu', when: 'ieri', txt: 'Adancime OK la verificare cu ruletei.' },
+    { author: 'Gheorghe Marin', when: 'ieri', txt: 'Confirm, inchid misiunea.' }
+  ],
+  4: [{ author: 'Maria Ionescu', when: 'ieri', txt: 'Doza corecta, conform recomandarii agronomice.' }],
+  6: [
+    { author: 'Ion Popescu', when: 'acum 2 zile', txt: 'Fac tratamentul saptamana viitoare.' },
+    { author: 'Gheorghe Marin', when: 'acum 2 zile', txt: 'Adaug Falcon Pro in comanda.' },
+    { author: 'Vasile Lungu', when: 'acum 2 zile', txt: 'OK.' }
+  ],
+  7: [
+    { author: 'Maria Ionescu', when: 'acum 3 zile', txt: 'Conform evaluarii mele de 16 apr.' },
+    { author: 'Ion Popescu', when: 'acum 3 zile', txt: 'Reevaluam in 2 saptamani.' }
+  ],
+  8: [
+    { author: 'Gheorghe Marin', when: 'acum 3 zile', txt: 'Bine ales momentul.' },
+    { author: 'Maria Ionescu', when: 'acum 3 zile', txt: 'Viespea fara efecte colaterale, OK.' },
+    { author: 'Vasile Lungu', when: 'acum 3 zile', txt: 'Intrebare: trebuie repetat?' },
+    { author: 'Ion Popescu', when: 'acum 3 zile', txt: 'Nu, un singur tratament ajunge.' },
+    { author: 'Maria Ionescu', when: 'acum 2 zile', txt: 'Confirm, monitorizam.' }
+  ],
+  10: [
+    { author: 'Gheorghe Marin', when: 'acum 4 zile', txt: 'Randament excelent!' },
+    { author: 'Maria Ionescu', when: 'acum 4 zile', txt: '7.8 t/ha, peste media anului trecut.' },
+    { author: 'Vasile Lungu', when: 'acum 4 zile', txt: 'Umiditate la recoltare?' },
+    { author: 'Ion Popescu', when: 'acum 4 zile', txt: '13.2%, optima.' },
+    { author: 'Gheorghe Marin', when: 'acum 4 zile', txt: 'Perfect.' }
+  ]
+};
+
+// ===== RENDER LIST (grouped by day) =====
+function renderAgenda() {
+  var list = document.getElementById('card-list');
+  var groups = {};
+  var order = [];
+  AGENDA.forEach(function(it) {
+    if (!groups[it.dateGroup]) { groups[it.dateGroup] = []; order.push(it.dateGroup); }
+    groups[it.dateGroup].push(it);
+  });
+  var html = '<div style="padding-top:6px;"></div>';
+  order.forEach(function(g) {
+    html += '<div class="day-sep"><div class="day-sep-label">' + g + '</div>';
+    html += '<div class="day-sep-count">' + groups[g].length + '</div>';
+    html += '<div class="day-sep-line"></div></div>';
+    groups[g].forEach(function(it) {
+      var brv = BRAVOS_BY_ID[it.id] || [];
+      html += buildCardAgenda({
+        itemId: it.id,
+        kind: it.kind, date: it.date, author: it.author, title: it.title,
+        soles: it.soles, ha: it.ha, photos: it.photos, comments: it.comments,
+        inputuri: it.inputuri, operators: it.operators, conditions: it.conditions,
+        notes: it.notes, commentsPreview: it.commentsPreview,
+        alert: it.alert, alertMsg: it.alertMsg,
+        bravos: brv, liked: brv.indexOf(CURRENT_USER) >= 0
+      });
+    });
+  });
+  list.innerHTML = html;
+}
+
+// ===== COMMENTS DRAWER =====
+window.openComments = function(id) {
+  var item = AGENDA.find(function(x){ return x.id === id; });
+  if (!item) return;
+  var comms = COMMENTS_BY_ID[item.id] || [];
+  var html = '';
+  if (comms.length === 0) {
+    html += '<div style="text-align:center;padding:24px 0;color:var(--brand-text-muted);font-size:14px;">Nu exista comentarii inca. Fii primul care comenteaza!</div>';
+  } else {
+    comms.forEach(function(c) {
+      var init = c.author.split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
+      html += '<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--brand-border);">';
+      html += '<div style="width:34px;height:34px;border-radius:50%;background:var(--brand-primary-60);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">' + init + '</div>';
+      html += '<div style="flex:1;min-width:0;">';
+      html += '<div style="font-size:14px;line-height:1.3;"><strong>' + c.author + '</strong> <span style="color:var(--brand-text-muted);font-size:12px;">&middot; ' + c.when + '</span></div>';
+      html += '<div style="font-size:15px;color:var(--brand-text-primary);margin-top:3px;line-height:1.4;">' + c.txt + '</div>';
+      html += '</div></div>';
+    });
+  }
+  html += '<div style="display:flex;gap:6px;padding:14px 0 4px;margin-top:8px;border-top:2px solid var(--brand-border);">';
+  html += '<input id="new-comment-input" class="form-input" placeholder="Scrie un comentariu..." style="flex:1;">';
+  html += '<button class="btn btn-primary" style="min-height:48px;padding:12px 16px;font-size:14px;" onclick="sendComment()">Trimite</button>';
+  html += '</div>';
+  openDrawer(item.title + ' &middot; ' + item.author, html, []);
+  setTimeout(function() { var i = document.getElementById('new-comment-input'); if (i) i.focus(); }, 250);
+};
+
+window.sendComment = function() {
+  var inp = document.getElementById('new-comment-input');
+  if (!inp || !inp.value.trim()) return;
+  closeDrawer();
+  showToast('success', 'Comentariu publicat.');
+};
+
+// ===== SOLES LIST DRAWER (vezi toate parcelele) =====
+window.openSolesList = function(id) {
+  var item = AGENDA.find(function(x){ return x.id === id; });
+  if (!item || !item.soles) return;
+  var totalHa = 0;
+  item.soles.forEach(function(s) { if (s.ha) totalHa += s.ha; });
+  var html = '<div style="padding:2px 0;">';
+  html += '<div style="padding:8px 10px;background:var(--brand-hover-bg);border-radius:10px;margin-bottom:10px;display:flex;justify-content:space-between;font-size:13px;font-weight:700;">';
+  html += '<span style="color:var(--brand-primary);">' + item.soles.length + ' parcele</span>';
+  html += '<span style="color:var(--brand-primary);">TOTAL: ' + totalHa.toFixed(1) + ' ha</span>';
+  html += '</div>';
+  item.soles.forEach(function(s) {
+    var name = typeof s === 'object' ? s.name : s;
+    var ha = typeof s === 'object' ? s.ha : null;
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 4px;border-bottom:1px solid var(--brand-border);">';
+    html += '<div style="display:flex;align-items:center;gap:10px;"><span style="font-size:18px;">&#127806;</span><span style="font-size:15px;font-weight:600;color:var(--brand-text-primary);">' + name + '</span></div>';
+    if (ha) html += '<span style="font-size:14px;font-weight:700;color:#E6853D;background:#FFF0E6;padding:4px 12px;border-radius:100px;">' + ha + ' ha</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+  openDrawer('Parcele &middot; ' + item.title, html, []);
+};
+
+// ===== PHOTO GALLERY (fullscreen lightbox) =====
+var _gallery = { idx: 0, max: 0, title: '', author: '' };
+
+window.openPhotoGallery = function(id) {
+  var item = AGENDA.find(function(x){ return x.id === id; });
+  if (!item || !item.photos) return;
+  _gallery.idx = 0;
+  _gallery.max = item.photos;
+  _gallery.title = item.title;
+  _gallery.author = item.author;
+
+  var screen = document.querySelector('.phone-screen');
+  if (!screen) return;
+
+  var overlay = document.createElement('div');
+  overlay.id = 'photo-gallery';
+  overlay.style.cssText = 'position:absolute;inset:0;background:#0A0A0A;z-index:80;display:flex;flex-direction:column;animation:fadeIn 0.2s ease-out;';
+  overlay.innerHTML =
+    '<div style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;color:#fff;flex-shrink:0;">' +
+      '<div>' +
+        '<div id="g-counter" style="font-size:14px;font-weight:700;">1 / ' + item.photos + '</div>' +
+        '<div style="font-size:12px;opacity:0.7;margin-top:2px;">' + item.title + ' &middot; ' + item.author + '</div>' +
+      '</div>' +
+      '<button onclick="closeGallery()" style="background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:18px;width:38px;height:38px;border-radius:50%;cursor:pointer;line-height:1;">&times;</button>' +
+    '</div>' +
+    '<div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">' +
+      '<div id="g-img" style="font-size:140px;color:rgba(255,255,255,0.3);">&#128247;</div>' +
+      (item.photos > 1 ?
+        '<button onclick="navGallery(-1)" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer;line-height:1;">&lsaquo;</button>' +
+        '<button onclick="navGallery(1)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer;line-height:1;">&rsaquo;</button>'
+        : '') +
+    '</div>' +
+    '<div id="g-strip" style="padding:10px;display:flex;gap:6px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;"></div>';
+  screen.appendChild(overlay);
+
+  // Build thumbnails
+  var strip = overlay.querySelector('#g-strip');
+  for (var i = 0; i < item.photos; i++) {
+    var th = document.createElement('div');
+    th.className = 'g-th';
+    th.dataset.idx = i;
+    th.onclick = (function(idx){ return function(){ jumpGallery(idx); }; })(i);
+    th.style.cssText = 'width:54px;height:54px;flex-shrink:0;background:rgba(255,255,255,0.1);border:2px solid ' + (i === 0 ? '#E6853D' : 'transparent') + ';border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);cursor:pointer;font-size:18px;';
+    th.innerHTML = '&#128247;';
+    strip.appendChild(th);
+  }
+};
+
+window.closeGallery = function() {
+  var ov = document.getElementById('photo-gallery');
+  if (ov) ov.remove();
+};
+
+window.navGallery = function(dir) {
+  _gallery.idx = (_gallery.idx + dir + _gallery.max) % _gallery.max;
+  updateGalleryUI();
+};
+
+window.jumpGallery = function(idx) {
+  _gallery.idx = idx;
+  updateGalleryUI();
+};
+
+function updateGalleryUI() {
+  var c = document.getElementById('g-counter');
+  if (c) c.textContent = (_gallery.idx + 1) + ' / ' + _gallery.max;
+  document.querySelectorAll('.g-th').forEach(function(t) {
+    t.style.border = '2px solid ' + (parseInt(t.dataset.idx) === _gallery.idx ? '#E6853D' : 'transparent');
+  });
+}
+
+// ===== BRAVO TOGGLE + LIST =====
+window.toggleLike = function(btn, id) {
+  var bravos = BRAVOS_BY_ID[id] || [];
+  var wasLiked = bravos.indexOf(CURRENT_USER) >= 0;
+  if (wasLiked) {
+    bravos = bravos.filter(function(n){ return n !== CURRENT_USER; });
+  } else {
+    bravos.push(CURRENT_USER);
+  }
+  BRAVOS_BY_ID[id] = bravos;
+  var nowLiked = !wasLiked;
+
+  // Rebuild button label - mereu thumbs-up, distinctia se face prin .liked class (styling CSS)
+  btn.innerHTML = '<span class="ufb-action-btn-ico">&#128077;</span> ' + (bravos.length > 0 ? bravos.length + ' ' : '') + 'Bravo';
+  btn.classList.toggle('liked', nowLiked);
+
+  // Update / insert / remove bravos preview row
+  var card = btn.closest('.ucard-fb');
+  if (!card) return;
+  var preview = card.querySelector('.ufb-bravos');
+  if (bravos.length === 0) {
+    if (preview) preview.remove();
+  } else {
+    if (preview) {
+      preview.querySelector('.ufb-bravos-txt').textContent = formatBravosText(bravos);
+    } else {
+      var actions = card.querySelector('.ufb-actions');
+      var row = document.createElement('div');
+      row.className = 'ufb-bravos';
+      row.onclick = function(e) { e.stopPropagation(); openBravos(id); };
+      row.innerHTML = '<span class="ufb-bravos-ico">&#10084;&#65039;</span><span class="ufb-bravos-txt">' + formatBravosText(bravos) + '</span>';
+      actions.parentNode.insertBefore(row, actions);
+    }
+  }
+  if (nowLiked) showToast('success', 'Ai marcat ca "Bravo".');
+};
+
+window.openBravos = function(id) {
+  var bravos = BRAVOS_BY_ID[id] || [];
+  var html = '';
+  if (bravos.length === 0) {
+    html = '<div style="text-align:center;padding:24px 0;color:var(--brand-text-muted);font-size:14px;">Nimeni nu a dat Bravo inca.</div>';
+  } else {
+    bravos.forEach(function(n) {
+      var init = n.split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
+      html += '<div style="display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--brand-border);">';
+      html += '<div style="width:38px;height:38px;border-radius:50%;background:var(--brand-primary-60);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">' + init + '</div>';
+      html += '<span style="flex:1;font-size:15px;font-weight:600;color:var(--brand-text-primary);">' + n + (n === CURRENT_USER ? ' <span style="font-size:12px;font-weight:500;color:var(--brand-text-muted);">(tu)</span>' : '') + '</span>';
+      html += '<span style="font-size:20px;">&#10084;&#65039;</span>';
+      html += '</div>';
+    });
+  }
+  openDrawer('Bravo &middot; ' + bravos.length + ' ' + (bravos.length === 1 ? 'persoana' : 'persoane'), html, []);
+};
+
+// ===== KEBAB MENU =====
+window.openCardMenu = function(id) {
+  var item = AGENDA.find(function(x){ return x.id === id; });
+  if (!item) return;
+  var isAuthor = item.author === CURRENT_USER;
+  var html = '<div style="padding:2px 0;">';
+  var opts = [];
+  opts.push({ ico:'&#128065;', txt:'Vezi detalii complete', act:'openComments('+id+')' });
+  opts.push({ ico:'&#128279;', txt:'Copiaza link', act:'showToast(\'success\',\'Link copiat\');closeDrawer();' });
+  opts.push({ ico:'&#128229;', txt:'Distribuie', act:'showToast(\'success\',\'Distribuire (demo)\');closeDrawer();' });
+  if (isAuthor) {
+    opts.push({ ico:'&#9998;', txt:'Editeaza', act:'showToast(\'success\',\'Editare (demo)\');closeDrawer();' });
+    opts.push({ ico:'&#128465;', txt:'Sterge', act:'closeDrawer();confirmDelete(\''+item.title+'\',function(){});' });
+  } else {
+    opts.push({ ico:'&#9888;', txt:'Raporteaza', act:'showToast(\'success\',\'Raportat\');closeDrawer();' });
+  }
+  opts.forEach(function(o) {
+    html += '<div onclick="' + o.act + '" style="display:flex;align-items:center;gap:14px;padding:14px 4px;border-bottom:1px solid var(--brand-border);cursor:pointer;font-size:15px;color:var(--brand-text-primary);">';
+    html += '<span style="font-size:18px;width:24px;text-align:center;">' + o.ico + '</span>' + o.txt;
+    html += '</div>';
+  });
+  html += '</div>';
+  openDrawer('Optiuni', html, []);
+};
+
+// ===== ACTIVITY FEED (Tab 2) =====
+var ACTIVITY = [
+  { day: 'Azi', date: '18 apr 26', stats: { lucr: 2, useri: 4, ha: 82.6 },
+    camp: [
+      { who: 'Ion Popescu', init: 'IP', what: 'Erbicidare finalizata', where: 'Parcela 12 Nord + Parcela 9 Centru', amt: '67.8 ha', when: '09:40' },
+      { who: 'Maria Ionescu', init: 'MI', what: 'Evaluare cultura', where: 'Parcela 7 Vest + Parcela 15 Est', amt: '', when: '11:20' }
+    ],
+    app: [
+      { who: 'Ion Popescu', init: 'IP', what: 'a logat intrare la 06:32', when: '06:32' },
+      { who: 'Gheorghe Marin', init: 'GM', what: 'a adaugat 2 comentarii pe Erbicidare', when: '10:15' },
+      { who: 'Maria Ionescu', init: 'MI', what: 'a editat evaluare cultura (foto)', when: '11:45' },
+      { who: 'Vasile Lungu', init: 'VL', what: 'a pornit utilaj Tractor JD 6130R', when: '12:05' }
+    ],
+    stoc: [
+      { who: 'Ion Popescu', init: 'IP', dir: 'out', what: 'Roundup consumat', amt: '-84 L', when: '09:40' },
+      { who: 'Ion Popescu', init: 'IP', dir: 'out', what: 'Adjuvant Wetting consumat', amt: '-6.8 L', when: '09:40' },
+      { who: 'Gheorghe Marin', init: 'GM', dir: 'in', what: 'Motorina receptie', amt: '+500 L', when: '07:30' }
+    ]
+  },
+  { day: 'Ieri', date: '17 apr 26', stats: { lucr: 2, useri: 3, ha: 69.8 },
+    camp: [
+      { who: 'Gheorghe Marin', init: 'GM', what: 'Semanat Porumb', where: 'Parcela 22 Nord', amt: '55 ha', when: '08:10' },
+      { who: 'Ion Popescu', init: 'IP', what: 'Fertilizare', where: 'Parcela 15 Est', amt: '14.8 ha', when: '14:30' }
+    ],
+    app: [
+      { who: 'Vasile Lungu', init: 'VL', what: 'a adaugat utilaj nou in stoc', when: '13:00' },
+      { who: 'Maria Ionescu', init: 'MI', what: 'a modificat norma la P9074 (70k/ha)', when: '08:05' }
+    ],
+    stoc: [
+      { who: 'Gheorghe Marin', init: 'GM', dir: 'out', what: 'P9074 consumat', amt: '-3850 k.b.', when: '08:10' },
+      { who: 'Gheorghe Marin', init: 'GM', dir: 'out', what: 'NPK 20-20-0 consumat', amt: '-13750 kg', when: '08:10' },
+      { who: 'Ion Popescu', init: 'IP', dir: 'out', what: 'Azotat de amoniu consumat', amt: '-2664 kg', when: '14:30' }
+    ]
+  },
+  { day: '16 apr 26', date: '16 apr 26', stats: { lucr: 2, useri: 2, ha: 19.6 },
+    camp: [
+      { who: 'Vasile Lungu', init: 'VL', what: 'Pregatire sol', where: 'Parcela 4 Est', amt: '19.6 ha', when: '10:00' },
+      { who: 'Maria Ionescu', init: 'MI', what: 'Evaluare cultura (septorioza)', where: 'Parcela 9 Centru', amt: '', when: '15:20' }
+    ],
+    app: [
+      { who: 'Maria Ionescu', init: 'MI', what: 'a adaugat 8 fotografii la evaluare', when: '15:35' },
+      { who: 'Ion Popescu', init: 'IP', what: 'a comentat pe evaluare', when: '16:10' }
+    ],
+    stoc: [
+      { who: 'Vasile Lungu', init: 'VL', dir: 'in', what: 'Piese schimb tractor', amt: '+3 buc', when: '11:00' }
+    ]
+  }
+];
+
+function renderActivity() {
+  var wrap = document.getElementById('activity-list');
+  var html = '';
+  ACTIVITY.forEach(function(d) {
+    html += '<div class="act-day">';
+    html += '<div class="act-day-hd">';
+    html += '<div class="act-day-title">' + d.day + '</div>';
+    html += '<div class="act-day-date">' + d.date + '</div>';
+    html += '<div class="act-day-stats">';
+    html += '<div class="act-day-stat">' + d.stats.lucr + ' lucrari</div>';
+    html += '<div class="act-day-stat">' + d.stats.useri + ' useri</div>';
+    html += '<div class="act-day-stat">' + d.stats.ha + ' ha</div>';
+    html += '</div>';
+    html += '</div>';
+
+    // In camp
+    html += '<div class="act-sec"><div class="act-sec-hd"><span class="act-sec-ico">&#127806;</span><span class="act-sec-lbl">In camp</span></div>';
+    d.camp.forEach(function(ev) {
+      html += '<div class="act-item">';
+      html += '<div class="act-ava">' + ev.init + '</div>';
+      html += '<div class="act-txt"><span class="act-who">' + ev.who + '</span> &mdash; ' + ev.what + '<br><span class="act-what">' + ev.where + '</span></div>';
+      if (ev.amt) html += '<div class="act-amt">' + ev.amt + '</div>';
+      html += '<div class="act-when">' + ev.when + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+    // In aplicatie
+    html += '<div class="act-sec"><div class="act-sec-hd"><span class="act-sec-ico">&#128241;</span><span class="act-sec-lbl">In aplicatie</span></div>';
+    d.app.forEach(function(ev) {
+      html += '<div class="act-item">';
+      html += '<div class="act-ava">' + ev.init + '</div>';
+      html += '<div class="act-txt"><span class="act-who">' + ev.who + '</span> <span class="act-what">' + ev.what + '</span></div>';
+      html += '<div class="act-when">' + ev.when + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+    // Stocuri
+    html += '<div class="act-sec"><div class="act-sec-hd"><span class="act-sec-ico">&#128230;</span><span class="act-sec-lbl">Stocuri</span></div>';
+    d.stoc.forEach(function(ev) {
+      html += '<div class="act-item">';
+      html += '<div class="act-ico ' + ev.dir + '">' + (ev.dir === 'in' ? '&#8679;' : '&#8681;') + '</div>';
+      html += '<div class="act-txt"><span class="act-who">' + ev.who + '</span> &mdash; <span class="act-what">' + ev.what + '</span></div>';
+      html += '<div class="act-amt ' + ev.dir + '">' + ev.amt + '</div>';
+      html += '<div class="act-when">' + ev.when + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+    html += '</div>';
+  });
+  wrap.innerHTML = html;
+}
+
+// ===== INJECTARE FOTO din Camera (localStorage 'camphotos') =====
+// Apar in Jurnal de camp ca evaluari cu detalii complete: autor, data, parcele, comentariu, AI
+(function injectCameraPhotos() {
+  try {
+    var cam = JSON.parse(localStorage.getItem('camphotos') || '[]');
+    // Map pt parcele din PARCELE_LIST (fallback)
+    var parceleDetails = {
+      'Parcela 12 Nord': { ha: 25.5, cultura: 'Grau' }, 'Parcela 9 Centru': { ha: 42.3, cultura: 'Grau' },
+      'Parcela 22 Nord': { ha: 55, cultura: 'Porumb' }, 'Parcela 7 Vest': { ha: 18.2, cultura: 'Porumb' },
+      'Parcela 15 Est': { ha: 14.8, cultura: 'Rapita' }, 'Parcela 3 Sud': { ha: 32, cultura: 'Floarea soarelui' },
+      'Parcela 4 Est': { ha: 19.6, cultura: 'Soia' }, 'Parcela 6 Vest': { ha: 12.1, cultura: 'Porumb' },
+      'Parcela 11 Centru': { ha: 21.8, cultura: 'Rapita' }, 'Parcela 18 Sud': { ha: 28.4, cultura: 'Grau' },
+      'Lotul 3 Vest': { ha: 8.7, cultura: 'Orz' }
+    };
+    cam.forEach(function(p) {
+      var soles = (p.parcele || []).map(function(name) {
+        var d = parceleDetails[name] || { ha: 0 };
+        return { name: name, ha: d.ha };
+      });
+
+      // Note: parcela auto/manual + comentariu + metadate + AI detections
+      var note = '';
+      note += '<div style="font-size:12px;color:var(--brand-text-muted);margin-bottom:6px;">';
+      note += (p.parcelaAuto
+        ? '<span style="color:var(--brand-success);font-weight:700;">&#10003; Parcelă auto-detectată din GPS</span>'
+        : '<span style="color:var(--brand-warning);font-weight:700;">&#9998; Parcelă modificată manual</span>');
+      note += '</div>';
+      if (p.comment) note += '<div style="font-size:14px;color:var(--brand-text-primary);margin-bottom:8px;">' + p.comment + '</div>';
+      // Metadate rând
+      var metaParts = [];
+      if (p.gps) metaParts.push('&#128205; ' + p.gps);
+      if (p.orientation) metaParts.push('&#129517; ' + p.orientation);
+      if (p.temperature) metaParts.push('&#127777; ' + p.temperature);
+      if (metaParts.length) {
+        note += '<div style="font-size:12px;color:var(--brand-text-muted);margin-bottom:8px;">' + metaParts.join(' &middot; ') + '</div>';
+      }
+      // AI detections — stil card-uri mici
+      if (p.aiDetections && p.aiDetections.length) {
+        note += '<div style="background:linear-gradient(135deg,#F3E8FF,#FEE2E2);padding:10px;border-radius:10px;margin-top:8px;">';
+        note += '<div style="font-size:10px;font-weight:800;color:#6D28D9;text-transform:uppercase;margin-bottom:6px;letter-spacing:0.5px;">&#129302; Analiză AI</div>';
+        p.aiDetections.forEach(function(d) {
+          var bg = d.level === 'danger' ? 'var(--brand-danger-bg)' : (d.level === 'warning' ? 'var(--brand-warning-bg)' : 'var(--brand-success-bg)');
+          var clr = d.level === 'danger' ? 'var(--brand-danger)' : (d.level === 'warning' ? 'var(--brand-warning)' : 'var(--brand-success)');
+          note += '<div style="background:#fff;border-radius:8px;padding:8px 10px;margin-bottom:4px;display:flex;gap:8px;align-items:flex-start;">';
+          note += '<div style="width:28px;height:28px;border-radius:6px;background:' + bg + ';color:' + clr + ';display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">' + d.icon + '</div>';
+          note += '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:700;color:var(--brand-text-primary);">' + d.name + ' <span style="font-size:10px;color:var(--brand-text-muted);font-weight:700;">' + d.conf + '%</span></div>';
+          note += '<div style="font-size:11px;color:var(--brand-text-muted);margin-top:2px;line-height:1.4;">' + d.desc + '</div></div></div>';
+        });
+        note += '</div>';
+      }
+
+      AGENDA.unshift({
+        id: 'photo_' + p.id,
+        kind: 'evaluare',
+        date: (p.displayDate || '') + (p.displayTime ? ' &middot; ' + p.displayTime : ''),
+        dateGroup: p.dateGroup || 'Azi',
+        author: p.author || 'Ion Popescu',
+        title: 'Foto evaluare',
+        notes: note,
+        soles: soles,
+        photos: 1,
+        comments: 0
+      });
+    });
+  } catch (e) { /* ignore */ }
+})();
+
+// ===== INIT =====
+renderAgenda();
+renderActivity();
+recomputeStats();
+</script>
+</body>
+</html>
