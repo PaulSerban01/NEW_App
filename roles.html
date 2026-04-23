@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <title>Roluri</title>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .roles-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+      margin-top: 60px;
+    }
+    .role-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      width: 260px;
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #00686A;
+      text-decoration: none;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .role-card:hover {
+      box-shadow: 0 4px 24px rgba(0,104,106,0.18);
+      transform: translateY(-4px) scale(1.03);
+      color: #005557;
+    }
+    .role-label {
+      font-size: 1.1rem;
+      color: #4A6E6E;
+      font-weight: 400;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Roluri disponibile</h1>
+  <div class="roles-container">
+    <a class="role-card" href="modules/newdash.html">
+      <span>Administrator</span>
+      <div class="role-label">Andrei Popescu</div>
+    </a>
+    <a class="role-card" href="modules/dashboard.html">
+      <span>User</span>
+      <div class="role-label">Maria Ionescu</div>
+    </a>
+    <a class="role-card" href="modules/dash_ops.html">
+      <span>Ops</span>
+      <div class="role-label">Ion Dumitrescu</div>
+    </a>
+    <a class="role-card" href="modules/operator.html">
+      <span>Operator</span>
+      <div class="role-label">Elena Stan</div>
+    </a>
+  </div>
+</body>
+</html>
