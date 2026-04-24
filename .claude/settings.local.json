@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(where python *)",
+      "Bash(where python3 *)",
+      "Bash(python strip_panels.py)",
+      "Bash(C:/Users/Paul-PC/AppData/Local/Microsoft/WindowsApps/python.exe \"d:/Projects/Rurio/App/version 1.0/NEW_App/strip_panels.py\")",
+      "Bash(node \"d:/Projects/Rurio/App/version 1.0/NEW_App/strip_panels.js\")",
+      "Bash(node -e ' *)",
+      "Bash(node \"d:/Projects/Rurio/App/version 1.0/NEW_App/strip_panel_spec.js\")",
+      "Bash(node \"d:/Projects/Rurio/App/version 1.0/NEW_App/strip_panel_desktop.js\")",
+      "Bash(node \"d:/Projects/Rurio/App/version 1.0/NEW_App/strip_toggle_bar.js\")",
+      "Bash(node \"d:/Projects/Rurio/App/version 1.0/NEW_App/strip_phone_chrome.js\")"
+    ]
+  }
+}

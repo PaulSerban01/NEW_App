@@ -1,6 +1,6 @@
 {
-  "name": "My Prototype Name",
-  "short_name": "Prototype",
+  "name": "Rurio Prototype",
+  "short_name": "Rurio Prototype",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",

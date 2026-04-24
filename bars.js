@@ -130,9 +130,9 @@
           </div>
         </div>
         <div style="padding:12px 20px; border-top:1px solid var(--brand-border);">
-          <div onclick="alert('Exit')" style="display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer; font-size:15px; font-weight:600; color:var(--brand-danger); background:var(--brand-danger-bg); border-radius:var(--brand-radius);">
+          <button onclick="window.location.href='../roles.html'" style="display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer; font-size:15px; font-weight:600; color:var(--brand-danger); background:var(--brand-danger-bg); border-radius:var(--brand-radius); border:none; width:100%; text-align:left;">
             <span style="font-size:19px;">&#128682;</span> Iesire din cont
-          </div>
+          </button>
         </div>
       </div>
     </div>`;
@@ -257,13 +257,7 @@
         <div style="font-size:19px; margin-bottom:2px;">&#128247;</div>Camera
       </div>
     </div>
-
-    <!-- Android Navigation Bar -->
-    <div class="phone-android-bar" style="display:flex; align-items:center; justify-content:center; gap:40px; padding:4px 0 14px; font-size:15px; color:#666; background:#f0f0f0; flex-shrink:0; margin-top:auto;">
-      <span onclick="androidBack()" role="button" aria-label="Înapoi" title="Înapoi" style="cursor:pointer;padding:6px 10px;border-radius:50%;transition:background 0.15s;user-select:none;" onmousedown="this.style.background='rgba(0,0,0,0.08)'" onmouseup="this.style.background=''" onmouseout="this.style.background=''">&#9665;</span>
-      <span onclick="androidHome()" role="button" aria-label="Acasă" title="Acasă" style="cursor:pointer;padding:6px 10px;border-radius:50%;transition:background 0.15s;user-select:none;" onmousedown="this.style.background='rgba(0,0,0,0.08)'" onmouseup="this.style.background=''" onmouseout="this.style.background=''">&#9675;</span>
-      <span onclick="androidRecent()" role="button" aria-label="Aplicații recente" title="Recente" style="cursor:pointer;padding:6px 10px;border-radius:50%;transition:background 0.15s;user-select:none;" onmousedown="this.style.background='rgba(0,0,0,0.08)'" onmouseup="this.style.background=''" onmouseout="this.style.background=''">&#9723;</span>
-    </div>`;
+    `;
 
   // ===== JavaScript functions =====
   window.fabOpen = false;
@@ -344,12 +338,10 @@
     var viewTabs = document.querySelector('.view-tabs');
     var toggle = document.getElementById('shortcuts-toggle');
     var nav = document.querySelector('.phone-bottom-nav');
-    var androidBar = document.querySelector('.phone-android-bar');
     var navOpen = nav && nav.style.display === 'flex';
     var navHeight = 0;
     if (toggle && !toggle.classList.contains('hidden')) navHeight += toggle.offsetHeight;
     if (navOpen) navHeight += nav.offsetHeight;
-    if (androidBar) navHeight += androidBar.offsetHeight;
 
     // View-tabs (daca exista si sunt vizibile) stau exact deasupra autohide nav
     var tabsHeight = 0;
@@ -430,7 +422,7 @@
   var TEXT_SIZE_OFFSET = 0; // -2, 0 sau +2
   var SKIP_TAGS = { SCRIPT: 1, STYLE: 1, LINK: 1, META: 1, HEAD: 1, BR: 1 };
   // Zonele excluse: topbar, toolbar, summary-bar, bottom bar/nav, taburi
-  var SKIP_SELECTORS = '.app-topbar, .toolbar, .summary-bar, .phone-bottom-nav, .shortcuts-toggle, .phone-android-bar, .view-tabs, .detail-tabs, .msg-tabs';
+  var SKIP_SELECTORS = '.app-topbar, .toolbar, .summary-bar, .phone-bottom-nav, .shortcuts-toggle, .view-tabs, .detail-tabs, .msg-tabs';
 
   function applyBump(el) {
     if (!el || el.nodeType !== 1 || SKIP_TAGS[el.tagName]) return;

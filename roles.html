@@ -2,74 +2,227 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8" />
-  <title>Roluri</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <title>Autentificare — ConnAgri</title>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background: #f0f0f0;
-      margin: 0;
-      padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-    }
-    .roles-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 32px;
       justify-content: center;
-      margin-top: 60px;
     }
-    .role-card {
+
+    .card {
       background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      width: 260px;
-      height: 180px;
-      display: flex;
-      flex-direction: column;
+      width: 100%;
+      max-width: 400px;
+      height: 100vh;
+      padding: 32px 16px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .logo-mark {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
+      gap: 2px;
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      background: #00686A;
+      padding: 8px 18px;
+      border-radius: 10px;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+    .logo-sub {
+      font-size: 13px;
+      color: #4A6E6E;
+      margin-top: 6px;
+    }
+
+    /* Form */
+    .form-group { margin-bottom: 16px; }
+    label {
+      display: block;
+      font-size: 13px;
       font-weight: 600;
+      color: #0D2626;
+      margin-bottom: 6px;
+    }
+    input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid #D0E5E5;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+      color: #0D2626;
+      background: #F7FAFA;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus { border-color: #00686A; background: #fff; }
+
+    .forgot {
+      display: block;
+      text-align: right;
+      font-size: 13px;
       color: #00686A;
       text-decoration: none;
-      transition: box-shadow 0.2s, transform 0.2s;
+      margin-top: 6px;
+    }
+    .forgot:hover { text-decoration: underline; }
+
+    .btn-login {
+      width: 100%;
+      padding: 13px;
+      background: #00686A;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
       cursor: pointer;
+      margin-top: 24px;
+      transition: background 0.15s;
     }
-    .role-card:hover {
-      box-shadow: 0 4px 24px rgba(0,104,106,0.18);
-      transform: translateY(-4px) scale(1.03);
-      color: #005557;
+    .btn-login:hover { background: #005557; }
+
+    /* Separator */
+    .separator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0 24px;
     }
-    .role-label {
-      font-size: 1.1rem;
+    .separator::before, .separator::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #D0E5E5;
+    }
+    .separator span {
+      font-size: 13px;
       color: #4A6E6E;
-      font-weight: 400;
-      margin-top: 10px;
+      white-space: nowrap;
     }
+
+    /* Role buttons */
+    .roles-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #4A6E6E;
+      margin-bottom: 12px;
+    }
+    .role-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 16px;
+      background: #F7FAFA;
+      border: 1px solid #D0E5E5;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #0D2626;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .role-btn:last-child { margin-bottom: 0; }
+    .role-btn:hover { background: #E6F3F3; border-color: #00686A; color: #00686A; }
+    .role-btn .role-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: #CCE1E1;
+      color: #00686A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .role-btn .role-info { flex: 1; text-align: left; }
+    .role-btn .role-name { font-size: 15px; font-weight: 600; color: inherit; }
+    .role-btn .role-user { font-size: 13px; font-weight: 400; color: #4A6E6E; margin-top: 1px; }
+    .role-btn .role-arrow { font-size: 16px; color: #99C2C3; }
   </style>
 </head>
 <body>
-  <h1>Roluri disponibile</h1>
-  <div class="roles-container">
-    <a class="role-card" href="modules/newdash.html">
-      <span>Administrator</span>
-      <div class="role-label">Andrei Popescu</div>
+  <div class="card">
+
+    <div class="logo">
+      <div class="logo-mark">CONNAGRI</div>
+      <div class="logo-sub">Platforma agricola integrata</div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="nume@exemplu.ro" autocomplete="username" />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Parola</label>
+      <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
+      <a href="#" class="forgot">Am uitat parola</a>
+    </div>
+
+    <button class="btn-login" onclick="alert('Login')">Autentificare</button>
+
+    <div class="separator"><span>sau continua ca</span></div>
+
+    <div class="roles-label">Conturi demo</div>
+
+    <a class="role-btn" href="modules/newdash.html">
+      <div class="role-icon">&#128100;</div>
+      <div class="role-info">
+        <div class="role-name">Administrator</div>
+        <div class="role-user">Andrei Popescu</div>
+      </div>
+      <span class="role-arrow">&#8250;</span>
     </a>
-    <a class="role-card" href="modules/dashboard.html">
-      <span>User</span>
-      <div class="role-label">Maria Ionescu</div>
+
+    <a class="role-btn" href="modules/dashboard.html">
+      <div class="role-icon">&#128101;</div>
+      <div class="role-info">
+        <div class="role-name">User</div>
+        <div class="role-user">Maria Ionescu</div>
+      </div>
+      <span class="role-arrow">&#8250;</span>
     </a>
-    <a class="role-card" href="modules/dash_ops.html">
-      <span>Ops</span>
-      <div class="role-label">Ion Dumitrescu</div>
+
+    <a class="role-btn" href="modules/dash_ops.html">
+      <div class="role-icon">&#9881;</div>
+      <div class="role-info">
+        <div class="role-name">Ops</div>
+        <div class="role-user">Ion Dumitrescu</div>
+      </div>
+      <span class="role-arrow">&#8250;</span>
     </a>
-    <a class="role-card" href="modules/operator.html">
-      <span>Operator</span>
-      <div class="role-label">Elena Stan</div>
+
+    <a class="role-btn" href="modules/operator.html">
+      <div class="role-icon">&#128736;</div>
+      <div class="role-info">
+        <div class="role-name">Operator</div>
+        <div class="role-user">Elena Stan</div>
+      </div>
+      <span class="role-arrow">&#8250;</span>
     </a>
+
   </div>
 </body>
 </html>
