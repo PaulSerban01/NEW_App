@@ -7,7 +7,9 @@
   <title>Ecran operator — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
     .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
     .browser-dots { display: flex; gap: 6px; }
@@ -72,6 +74,7 @@
     .op-empty-ico { font-size: 52px; opacity: 0.4; margin-bottom: 10px; }
     .op-empty-txt { font-size: 15px; line-height: 1.5; }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -83,19 +86,19 @@
         <!-- Prompt matin: task rămas de ieri -->
         <div class="op-prompt" id="op-prompt">
           <div class="op-prompt-card">
-            <div class="op-prompt-ico">&#9200;</div>
+            <div class="op-prompt-ico"><i data-lucide="alarm-clock"></i></div>
             <div class="op-prompt-title">Ai terminat Erbicidarea de ieri?</div>
             <div class="op-prompt-sub">Parcela 12 Nord &middot; rămas deschis la 18:45</div>
             <div class="op-prompt-buttons">
-              <button class="op-prompt-btn primary" onclick="promptResolve('done')">&#10003; DA, am terminat</button>
-              <button class="op-prompt-btn secondary" onclick="promptResolve('continue')">&#9654; Mai continui azi</button>
+              <button class="op-prompt-btn primary" onclick="promptResolve('done')"><i data-lucide="check"></i> DA, am terminat</button>
+              <button class="op-prompt-btn secondary" onclick="promptResolve('continue')"><i data-lucide="chevron-right"></i> Mai continui azi</button>
             </div>
           </div>
         </div>
 
         <div class="phone-scroll" style="padding-bottom:100px;">
           <div class="op-greeting">
-            <div class="op-greeting-hi">&#127780; Bună dimineața,</div>
+            <div class="op-greeting-hi"><i data-lucide="cloud-sun"></i> Bună dimineața,</div>
             <div class="op-greeting-name">Ion Popescu</div>
             <div class="op-greeting-sub">Ai <strong>3 lucrări</strong> de făcut astăzi</div>
           </div>
@@ -130,22 +133,22 @@ function renderTasks() {
     var badgeLabel = t.state === 'active' ? 'In lucru' : (t.state === 'done' ? 'Gata pe azi' : 'De facut');
     html += '<div class="op-task ' + t.state + '" id="task-' + t.id + '">';
     html += '<div class="op-task-hd"><div class="op-task-type">' + t.type + '</div><div class="op-task-badge ' + t.state + '">' + badgeLabel + '</div></div>';
-    html += '<div class="op-task-parcel"><span class="op-task-parcel-ico">&#127806;</span> ' + t.parcel + ' &middot; ' + t.ha + ' ha</div>';
+    html += '<div class="op-task-parcel"><span class="op-task-parcel-ico"><i data-lucide="wheat"></i></span> ' + t.parcel + ' &middot; ' + t.ha + ' ha</div>';
     html += '<div class="op-task-info">';
-    html += '<div class="op-task-info-item">&#128668; ' + t.utilaj + '</div>';
-    html += '<div class="op-task-info-item">&#9881; ' + t.agregat + '</div>';
+    html += '<div class="op-task-info-item"><i data-lucide="tractor"></i> ' + t.utilaj + '</div>';
+    html += '<div class="op-task-info-item"><i data-lucide="settings"></i> ' + t.agregat + '</div>';
     html += '</div>';
     if (t.state === 'pending') {
-      html += '<button class="op-task-btn start" onclick="startTask(' + t.id + ')">&#9654;&nbsp; &Icirc;NCEP</button>';
+      html += '<button class="op-task-btn start" onclick="startTask(' + t.id + ')"><i data-lucide="chevron-right"></i>&nbsp; &Icirc;NCEP</button>';
     } else if (t.state === 'active') {
       html += '<div class="op-task-timer"><span class="op-task-timer-dot"></span> <span id="timer-' + t.id + '">&Icirc;n lucru de 0 min</span></div>';
-      html += '<button class="op-task-btn stop" onclick="stopTask(' + t.id + ')">&#10004;&nbsp; GATA PE AZI</button>';
+      html += '<button class="op-task-btn stop" onclick="stopTask(' + t.id + ')"><i data-lucide="check"></i>&nbsp; GATA PE AZI</button>';
     } else if (t.state === 'done') {
-      html += '<div class="op-task-timer" style="background:#E6F4E8;color:#27AE60;"><span style="color:#27AE60;font-size:16px;">&#10003;</span> Finalizat &middot; trimis la manager</div>';
+      html += '<div class="op-task-timer" style="background:#E6F4E8;color:#27AE60;"><span style="color:#27AE60;font-size:16px;"><i data-lucide="check"></i></span> Finalizat &middot; trimis la manager</div>';
     }
     html += '</div>';
   });
-  if (!html) html = '<div class="op-empty"><div class="op-empty-ico">&#127793;</div><div class="op-empty-txt">Azi n-ai task-uri.<br>Bună zi!</div></div>';
+  if (!html) html = '<div class="op-empty"><div class="op-empty-ico"><i data-lucide="sprout"></i></div><div class="op-empty-txt">Azi n-ai task-uri.<br>Bună zi!</div></div>';
   wrap.innerHTML = html;
 }
 
@@ -204,5 +207,7 @@ function promptResolve(action) {
 
 renderTasks();
 </script>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

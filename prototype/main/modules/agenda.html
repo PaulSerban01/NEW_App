@@ -7,7 +7,9 @@
   <title>Jurnal de câmp — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
     .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
     .browser-dots { display: flex; gap: 6px; }
@@ -98,6 +100,7 @@
     .spec-section ul { list-style: none; padding: 0; margin: 0; }
     .spec-section ul li { font-size: 13px; color: #555; padding: 3px 0; }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -119,7 +122,7 @@
               <span id="stat-total" style="font-size:16px;font-weight:800;color:var(--brand-primary);line-height:1;">0</span>
               <span id="stat-label" style="font-size:11px;font-weight:600;color:var(--brand-primary);text-transform:uppercase;letter-spacing:0.3px;">intrari</span>
             </div>
-            <div class="toolbar-search"><span class="toolbar-search-icon">&#128269;</span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow">&#9660;</span></div>
+            <div class="toolbar-search"><span class="toolbar-search-icon"><i data-lucide="search"></i></span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow"><i data-lucide="chevron-down"></i></span></div>
             <div class="filter-dropdown" id="filter-dd"></div>
           </div>
 
@@ -131,7 +134,7 @@
           <div class="act-period">
             <div class="act-period-pill active" onclick="selectPeriod(this, 'azi')" style="flex:0 0 auto;min-width:80px;">Azi</div>
             <div class="act-period-pill" onclick="openDateRange(this)" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;">
-              <span style="font-size:16px;">&#128197;</span>
+              <span style="font-size:16px;"><i data-lucide="calendar"></i></span>
               <span id="date-range-label">Selecteaza interval</span>
             </div>
           </div>
@@ -228,7 +231,7 @@ var CURRENT_USER = 'Ion Popescu';
 
 // ===== FILTERS (tip lucrare a fost scos - prea multe optiuni pentru pills) =====
 initFilterDropdown([
-  { key: 'kind', label: 'TIP INTRARE', pills: [{ icon: '&#127806;', text: 'Lucrare' }, { icon: '&#128269;', text: 'Evaluare' }] },
+  { key: 'kind', label: 'TIP INTRARE', pills: [{ icon: '<i data-lucide="wheat"></i>', text: 'Lucrare' }, { icon: '<i data-lucide="search"></i>', text: 'Evaluare' }] },
   { key: 'autor', label: 'AUTOR', pills: [{ text: 'Ion Popescu' }, { text: 'Gheorghe Marin' }, { text: 'Vasile Lungu' }, { text: 'Maria Ionescu' }] }
 ]);
 
@@ -261,9 +264,9 @@ function recomputeStats() {
 })();
 
 initFabActions([
-  { icon: '&#10010;', label: 'Lucrare noua', action: function(){ openLucrareNoua(); } },
-  { icon: '&#128196;', label: 'Exporta agenda', action: function(){ showToast('success', 'Export initiat.'); } },
-  { icon: '&#128269;', label: 'Cauta detalii', action: function(){ showToast('success', 'Cautare avansata (demo).'); } }
+  { icon: '<i data-lucide="plus"></i>', label: 'Lucrare noua', action: function(){ openLucrareNoua(); } },
+  { icon: '<i data-lucide="file"></i>', label: 'Exporta agenda', action: function(){ showToast('success', 'Export initiat.'); } },
+  { icon: '<i data-lucide="search"></i>', label: 'Cauta detalii', action: function(){ showToast('success', 'Cautare avansata (demo).'); } }
 ]);
 
 // ===== SETTINGS DATA (pentru auto-fill la lucrare noua) =====
@@ -361,8 +364,8 @@ window.openLucrareNoua = function () {
   // Status
   html += '<div class="form-group"><label class="form-label">Status</label>';
   html += '<div style="display:flex;gap:6px;">';
-  html += '<label style="flex:1;padding:10px;border:1.5px solid var(--brand-primary);background:var(--brand-hover-bg);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;"><input type="radio" name="ln-status" value="derulare" checked> &#9658; In derulare (task catre operatori)</label>';
-  html += '<label style="flex:1;padding:10px;border:1.5px solid var(--brand-border);background:#fff;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;"><input type="radio" name="ln-status" value="finalizat"> &#10003; Finalizat (retro)</label>';
+  html += '<label style="flex:1;padding:10px;border:1.5px solid var(--brand-primary);background:var(--brand-hover-bg);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;"><input type="radio" name="ln-status" value="derulare" checked> <i data-lucide="chevron-right"></i> In derulare (task catre operatori)</label>';
+  html += '<label style="flex:1;padding:10px;border:1.5px solid var(--brand-border);background:#fff;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;"><input type="radio" name="ln-status" value="finalizat"> <i data-lucide="check"></i> Finalizat (retro)</label>';
   html += '</div></div>';
 
   openDrawer('Lucrare noua', html, [
@@ -396,7 +399,7 @@ window.lnPickParcela = function(e) {
   if (!remaining.length) { dd.style.display = 'none'; return; }
   var html = '';
   remaining.forEach(function(p) {
-    html += '<div onclick="lnAddParcela(\'' + p.name + '\')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:13px;display:flex;justify-content:space-between;"><span>&#127806; ' + p.name + '</span><span style="color:#E6853D;font-weight:700;">' + p.ha + ' ha</span></div>';
+    html += '<div onclick="lnAddParcela(\'' + p.name + '\')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:13px;display:flex;justify-content:space-between;"><span><i data-lucide="wheat"></i> ' + p.name + '</span><span style="color:#E6853D;font-weight:700;">' + p.ha + ' ha</span></div>';
   });
   dd.innerHTML = html;
   dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
@@ -804,7 +807,7 @@ window.openSolesList = function(id) {
     var name = typeof s === 'object' ? s.name : s;
     var ha = typeof s === 'object' ? s.ha : null;
     html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 4px;border-bottom:1px solid var(--brand-border);">';
-    html += '<div style="display:flex;align-items:center;gap:10px;"><span style="font-size:18px;">&#127806;</span><span style="font-size:15px;font-weight:600;color:var(--brand-text-primary);">' + name + '</span></div>';
+    html += '<div style="display:flex;align-items:center;gap:10px;"><span style="font-size:18px;"><i data-lucide="wheat"></i></span><span style="font-size:15px;font-weight:600;color:var(--brand-text-primary);">' + name + '</span></div>';
     if (ha) html += '<span style="font-size:14px;font-weight:700;color:#E6853D;background:#FFF0E6;padding:4px 12px;border-radius:100px;">' + ha + ' ha</span>';
     html += '</div>';
   });
@@ -838,7 +841,7 @@ window.openPhotoGallery = function(id) {
       '<button onclick="closeGallery()" style="background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:18px;width:38px;height:38px;border-radius:50%;cursor:pointer;line-height:1;">&times;</button>' +
     '</div>' +
     '<div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">' +
-      '<div id="g-img" style="font-size:140px;color:rgba(255,255,255,0.3);">&#128247;</div>' +
+      '<div id="g-img" style="font-size:140px;color:rgba(255,255,255,0.3);"><i data-lucide="camera"></i></div>' +
       (item.photos > 1 ?
         '<button onclick="navGallery(-1)" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer;line-height:1;">&lsaquo;</button>' +
         '<button onclick="navGallery(1)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer;line-height:1;">&rsaquo;</button>'
@@ -855,7 +858,7 @@ window.openPhotoGallery = function(id) {
     th.dataset.idx = i;
     th.onclick = (function(idx){ return function(){ jumpGallery(idx); }; })(i);
     th.style.cssText = 'width:54px;height:54px;flex-shrink:0;background:rgba(255,255,255,0.1);border:2px solid ' + (i === 0 ? '#E6853D' : 'transparent') + ';border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);cursor:pointer;font-size:18px;';
-    th.innerHTML = '&#128247;';
+    th.innerHTML = '<i data-lucide="camera"></i>';
     strip.appendChild(th);
   }
 };
@@ -896,7 +899,7 @@ window.toggleLike = function(btn, id) {
   var nowLiked = !wasLiked;
 
   // Rebuild button label - mereu thumbs-up, distinctia se face prin .liked class (styling CSS)
-  btn.innerHTML = '<span class="ufb-action-btn-ico">&#128077;</span> ' + (bravos.length > 0 ? bravos.length + ' ' : '') + 'Bravo';
+  btn.innerHTML = '<span class="ufb-action-btn-ico"><i data-lucide="thumbs-up"></i></span> ' + (bravos.length > 0 ? bravos.length + ' ' : '') + 'Bravo';
   btn.classList.toggle('liked', nowLiked);
 
   // Update / insert / remove bravos preview row
@@ -913,7 +916,7 @@ window.toggleLike = function(btn, id) {
       var row = document.createElement('div');
       row.className = 'ufb-bravos';
       row.onclick = function(e) { e.stopPropagation(); openBravos(id); };
-      row.innerHTML = '<span class="ufb-bravos-ico">&#10084;&#65039;</span><span class="ufb-bravos-txt">' + formatBravosText(bravos) + '</span>';
+      row.innerHTML = '<span class="ufb-bravos-ico"><i data-lucide="heart"></i></span><span class="ufb-bravos-txt">' + formatBravosText(bravos) + '</span>';
       actions.parentNode.insertBefore(row, actions);
     }
   }
@@ -931,7 +934,7 @@ window.openBravos = function(id) {
       html += '<div style="display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--brand-border);">';
       html += '<div style="width:38px;height:38px;border-radius:50%;background:var(--brand-primary-60);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">' + init + '</div>';
       html += '<span style="flex:1;font-size:15px;font-weight:600;color:var(--brand-text-primary);">' + n + (n === CURRENT_USER ? ' <span style="font-size:12px;font-weight:500;color:var(--brand-text-muted);">(tu)</span>' : '') + '</span>';
-      html += '<span style="font-size:20px;">&#10084;&#65039;</span>';
+      html += '<span style="font-size:20px;"><i data-lucide="heart"></i></span>';
       html += '</div>';
     });
   }
@@ -945,14 +948,14 @@ window.openCardMenu = function(id) {
   var isAuthor = item.author === CURRENT_USER;
   var html = '<div style="padding:2px 0;">';
   var opts = [];
-  opts.push({ ico:'&#128065;', txt:'Vezi detalii complete', act:'openComments('+id+')' });
-  opts.push({ ico:'&#128279;', txt:'Copiaza link', act:'showToast(\'success\',\'Link copiat\');closeDrawer();' });
-  opts.push({ ico:'&#128229;', txt:'Distribuie', act:'showToast(\'success\',\'Distribuire (demo)\');closeDrawer();' });
+  opts.push({ ico:'<i data-lucide="eye"></i>', txt:'Vezi detalii complete', act:'openComments('+id+')' });
+  opts.push({ ico:'<i data-lucide="link"></i>', txt:'Copiaza link', act:'showToast(\'success\',\'Link copiat\');closeDrawer();' });
+  opts.push({ ico:'<i data-lucide="inbox"></i>', txt:'Distribuie', act:'showToast(\'success\',\'Distribuire (demo)\');closeDrawer();' });
   if (isAuthor) {
-    opts.push({ ico:'&#9998;', txt:'Editeaza', act:'showToast(\'success\',\'Editare (demo)\');closeDrawer();' });
-    opts.push({ ico:'&#128465;', txt:'Sterge', act:'closeDrawer();confirmDelete(\''+item.title+'\',function(){});' });
+    opts.push({ ico:'<i data-lucide="pencil"></i>', txt:'Editeaza', act:'showToast(\'success\',\'Editare (demo)\');closeDrawer();' });
+    opts.push({ ico:'<i data-lucide="trash-2"></i>', txt:'Sterge', act:'closeDrawer();confirmDelete(\''+item.title+'\',function(){});' });
   } else {
-    opts.push({ ico:'&#9888;', txt:'Raporteaza', act:'showToast(\'success\',\'Raportat\');closeDrawer();' });
+    opts.push({ ico:'<i data-lucide="alert-triangle"></i>', txt:'Raporteaza', act:'showToast(\'success\',\'Raportat\');closeDrawer();' });
   }
   opts.forEach(function(o) {
     html += '<div onclick="' + o.act + '" style="display:flex;align-items:center;gap:14px;padding:14px 4px;border-bottom:1px solid var(--brand-border);cursor:pointer;font-size:15px;color:var(--brand-text-primary);">';
@@ -1028,7 +1031,7 @@ function renderActivity() {
     html += '</div>';
 
     // In camp
-    html += '<div class="act-sec"><div class="act-sec-hd"><span class="act-sec-ico">&#127806;</span><span class="act-sec-lbl">In camp</span></div>';
+    html += '<div class="act-sec"><div class="act-sec-hd"><span class="act-sec-ico"><i data-lucide="wheat"></i></span><span class="act-sec-lbl">In camp</span></div>';
     d.camp.forEach(function(ev) {
       html += '<div class="act-item">';
       html += '<div class="act-ava">' + ev.init + '</div>';
@@ -1040,7 +1043,7 @@ function renderActivity() {
     html += '</div>';
 
     // In aplicatie
-    html += '<div class="act-sec"><div class="act-sec-hd"><span class="act-sec-ico">&#128241;</span><span class="act-sec-lbl">In aplicatie</span></div>';
+    html += '<div class="act-sec"><div class="act-sec-hd"><span class="act-sec-ico"><i data-lucide="smartphone"></i></span><span class="act-sec-lbl">In aplicatie</span></div>';
     d.app.forEach(function(ev) {
       html += '<div class="act-item">';
       html += '<div class="act-ava">' + ev.init + '</div>';
@@ -1051,10 +1054,10 @@ function renderActivity() {
     html += '</div>';
 
     // Stocuri
-    html += '<div class="act-sec"><div class="act-sec-hd"><span class="act-sec-ico">&#128230;</span><span class="act-sec-lbl">Stocuri</span></div>';
+    html += '<div class="act-sec"><div class="act-sec-hd"><span class="act-sec-ico"><i data-lucide="package"></i></span><span class="act-sec-lbl">Stocuri</span></div>';
     d.stoc.forEach(function(ev) {
       html += '<div class="act-item">';
-      html += '<div class="act-ico ' + ev.dir + '">' + (ev.dir === 'in' ? '&#8679;' : '&#8681;') + '</div>';
+      html += '<div class="act-ico ' + ev.dir + '">' + (ev.dir === 'in' ? '<i data-lucide="arrow-up"></i>' : '<i data-lucide="arrow-down"></i>') + '</div>';
       html += '<div class="act-txt"><span class="act-who">' + ev.who + '</span> &mdash; <span class="act-what">' + ev.what + '</span></div>';
       html += '<div class="act-amt ' + ev.dir + '">' + ev.amt + '</div>';
       html += '<div class="act-when">' + ev.when + '</div>';
@@ -1091,22 +1094,22 @@ function renderActivity() {
       var note = '';
       note += '<div style="font-size:12px;color:var(--brand-text-muted);margin-bottom:6px;">';
       note += (p.parcelaAuto
-        ? '<span style="color:var(--brand-success);font-weight:700;">&#10003; Parcelă auto-detectată din GPS</span>'
-        : '<span style="color:var(--brand-warning);font-weight:700;">&#9998; Parcelă modificată manual</span>');
+        ? '<span style="color:var(--brand-success);font-weight:700;"><i data-lucide="check"></i> Parcelă auto-detectată din GPS</span>'
+        : '<span style="color:var(--brand-warning);font-weight:700;"><i data-lucide="pencil"></i> Parcelă modificată manual</span>');
       note += '</div>';
       if (p.comment) note += '<div style="font-size:14px;color:var(--brand-text-primary);margin-bottom:8px;">' + p.comment + '</div>';
       // Metadate rând
       var metaParts = [];
-      if (p.gps) metaParts.push('&#128205; ' + p.gps);
-      if (p.orientation) metaParts.push('&#129517; ' + p.orientation);
-      if (p.temperature) metaParts.push('&#127777; ' + p.temperature);
+      if (p.gps) metaParts.push('<i data-lucide="map-pin"></i> ' + p.gps);
+      if (p.orientation) metaParts.push('<i data-lucide="compass"></i> ' + p.orientation);
+      if (p.temperature) metaParts.push('<i data-lucide="thermometer"></i> ' + p.temperature);
       if (metaParts.length) {
         note += '<div style="font-size:12px;color:var(--brand-text-muted);margin-bottom:8px;">' + metaParts.join(' &middot; ') + '</div>';
       }
       // AI detections — stil card-uri mici
       if (p.aiDetections && p.aiDetections.length) {
         note += '<div style="background:linear-gradient(135deg,#F3E8FF,#FEE2E2);padding:10px;border-radius:10px;margin-top:8px;">';
-        note += '<div style="font-size:10px;font-weight:800;color:#6D28D9;text-transform:uppercase;margin-bottom:6px;letter-spacing:0.5px;">&#129302; Analiză AI</div>';
+        note += '<div style="font-size:10px;font-weight:800;color:#6D28D9;text-transform:uppercase;margin-bottom:6px;letter-spacing:0.5px;"><i data-lucide="bot"></i> Analiză AI</div>';
         p.aiDetections.forEach(function(d) {
           var bg = d.level === 'danger' ? 'var(--brand-danger-bg)' : (d.level === 'warning' ? 'var(--brand-warning-bg)' : 'var(--brand-success-bg)');
           var clr = d.level === 'danger' ? 'var(--brand-danger)' : (d.level === 'warning' ? 'var(--brand-warning)' : 'var(--brand-success)');
@@ -1139,5 +1142,7 @@ renderAgenda();
 renderActivity();
 recomputeStats();
 </script>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

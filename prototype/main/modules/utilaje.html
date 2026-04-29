@@ -7,7 +7,9 @@
   <title>Utilaje — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
     .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
     .browser-dots { display: flex; gap: 6px; }
@@ -65,6 +67,7 @@
     .photo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
     .photo-thumb { aspect-ratio: 1; border-radius: var(--brand-radius); background: var(--brand-surface); border: 1px solid var(--brand-border); display: flex; align-items: center; justify-content: center; font-size: 26px; color: var(--brand-primary-40); cursor: pointer; }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -77,19 +80,19 @@
           <button class="view-tab">Harta</button>
         </div>
         <div class="toolbar">
-          <div class="toolbar-pill" onclick="selectAllVisible()">&#9744; Toate</div>
-          <div class="toolbar-icon-btn" id="sort-btn" onclick="event.stopPropagation();toggleSortDD()">&#8645;</div>
+          <div class="toolbar-pill" onclick="selectAllVisible()"><i data-lucide="square"></i> Toate</div>
+          <div class="toolbar-icon-btn" id="sort-btn" onclick="event.stopPropagation();toggleSortDD()"><i data-lucide="arrows-up-down"></i></div>
           <div class="sort-dropdown" id="sort-dd">
-            <div class="sort-option" data-field="name" onclick="sortCards('name')"><span class="sort-arrow">&#8595;</span> Nume</div>
-            <div class="sort-option" data-field="categorie" onclick="sortUtilajeByCat()"><span class="sort-arrow">&#8593;</span> Categorie</div>
-            <div class="sort-option" data-field="type" onclick="sortCards('type')"><span class="sort-arrow">&#8593;</span> Tip</div>
-            <div class="sort-option" data-field="status" onclick="sortCards('status')"><span class="sort-arrow">&#8593;</span> Status</div>
-            <div class="sort-option" data-field="updated" onclick="sortCards('updated')"><span class="sort-arrow">&#8593;</span> Ultima actualizare</div>
+            <div class="sort-option" data-field="name" onclick="sortCards('name')"><span class="sort-arrow"><i data-lucide="arrow-down"></i></span> Nume</div>
+            <div class="sort-option" data-field="categorie" onclick="sortUtilajeByCat()"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Categorie</div>
+            <div class="sort-option" data-field="type" onclick="sortCards('type')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Tip</div>
+            <div class="sort-option" data-field="status" onclick="sortCards('status')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Status</div>
+            <div class="sort-option" data-field="updated" onclick="sortCards('updated')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Ultima actualizare</div>
           </div>
           <div class="toolbar-search">
-            <span class="toolbar-search-icon">&#128269;</span>
+            <span class="toolbar-search-icon"><i data-lucide="search"></i></span>
             <span class="toolbar-search-text">Cauta / filtreaza</span>
-            <span class="toolbar-search-arrow">&#9660;</span>
+            <span class="toolbar-search-arrow"><i data-lucide="chevron-down"></i></span>
           </div>
           <button class="toolbar-add" onclick="openAddDrawer()">+</button>
           <div class="filter-dropdown" id="filter-dd"></div>
@@ -97,14 +100,14 @@
         <div class="phone-scroll" id="card-list" style="padding-bottom:150px;"><div style="padding-top:8px;"></div></div>
         <div id="detail-view" class="detail-view">
           <div class="detail-header">
-            <div onclick="closeDetail()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;">&#8592;</div>
+            <div onclick="closeDetail()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;"><i data-lucide="arrow-left"></i></div>
             <div style="font-size:17px; font-weight:600; color:#fff;" id="detail-title">John Deere 6130R</div>
           </div>
 
           <div class="detail-scroll">
             <!-- Hero -->
             <div class="detail-hero">
-              <div class="detail-hero-icon">&#128668;</div>
+              <div class="detail-hero-icon"><i data-lucide="tractor"></i></div>
               <div>
                 <div class="equip-detail-name" style="font-size:20px; font-weight:700; color:var(--brand-text-primary);">John Deere 6130R</div>
                 <div class="equip-detail-plate" style="font-size:16px; color:var(--brand-text-muted);">TM-42-AGR &middot; Tractor</div>
@@ -131,7 +134,7 @@
             <!-- Category Cards Grid -->
             <div class="cat-grid">
               <div class="cat-card" style="background:linear-gradient(135deg, #2E86AB, #1B6A8A);" onclick="openSubPage('istoric')">
-                <span class="cat-card-icon">&#128203;</span>
+                <span class="cat-card-icon"><i data-lucide="clipboard-list"></i></span>
                 <div>
                   <div class="cat-card-name">Istoric Lucrari</div>
                   <div class="cat-card-line"></div>
@@ -139,7 +142,7 @@
                 <div class="cat-card-count">14 inregistrari</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg, #3B82A0, #2A6B85);" onclick="openSubPage('detalii')">
-                <span class="cat-card-icon">&#9881;</span>
+                <span class="cat-card-icon"><i data-lucide="settings"></i></span>
                 <div>
                   <div class="cat-card-name">Detalii Tehnice</div>
                   <div class="cat-card-line"></div>
@@ -147,7 +150,7 @@
                 <div class="cat-card-count">12 campuri</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg, #4A9BBF, #357FA3);" onclick="openSubPage('documente')">
-                <span class="cat-card-icon">&#128196;</span>
+                <span class="cat-card-icon"><i data-lucide="file"></i></span>
                 <div>
                   <div class="cat-card-name">Documente</div>
                   <div class="cat-card-line"></div>
@@ -155,7 +158,7 @@
                 <div class="cat-card-count">4 documente</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg, #00686A, #005557);" onclick="openSubPage('service')">
-                <span class="cat-card-icon">&#128295;</span>
+                <span class="cat-card-icon"><i data-lucide="wrench"></i></span>
                 <div>
                   <div class="cat-card-name">Fisa Service</div>
                   <div class="cat-card-line"></div>
@@ -163,7 +166,7 @@
                 <div class="cat-card-count">6 operatii</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg, #338687, #1E6B6C);" onclick="openSubPage('fotografii')">
-                <span class="cat-card-icon">&#128247;</span>
+                <span class="cat-card-icon"><i data-lucide="camera"></i></span>
                 <div>
                   <div class="cat-card-name">Fotografii</div>
                   <div class="cat-card-line"></div>
@@ -171,7 +174,7 @@
                 <div class="cat-card-count">7 / 10 poze</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg, #2D8E5F, #1E7A4D);" onclick="openSubPage('gps')">
-                <span class="cat-card-icon">&#128225;</span>
+                <span class="cat-card-icon"><i data-lucide="radio-tower"></i></span>
                 <div>
                   <div class="cat-card-name">GPS</div>
                   <div class="cat-card-line"></div>
@@ -179,7 +182,7 @@
                 <div class="cat-card-count">Activ</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg, #C0392B, #A93226);" onclick="openSubPage('alerte')">
-                <span class="cat-card-icon">&#9888;</span>
+                <span class="cat-card-icon"><i data-lucide="alert-triangle"></i></span>
                 <div>
                   <div class="cat-card-name">Alerte</div>
                   <div class="cat-card-line"></div>
@@ -187,7 +190,7 @@
                 <div class="cat-card-count" style="color:#FDECEA;">3 active</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg, #6D28D9, #5B21B6);" onclick="openSubPage('tasks')">
-                <span class="cat-card-icon">&#9745;</span>
+                <span class="cat-card-icon"><i data-lucide="check-square"></i></span>
                 <div>
                   <div class="cat-card-name">Sarcini & Remindere</div>
                   <div class="cat-card-line"></div>
@@ -196,7 +199,7 @@
               </div>
               <!-- Normativ - doar agregate/echipamente -->
               <div class="cat-card" id="card-normativ" style="background:linear-gradient(135deg, #8B5E3C, #6B4226); display:none;" onclick="openSubPage('normativ')">
-                <span class="cat-card-icon">&#128202;</span>
+                <span class="cat-card-icon"><i data-lucide="bar-chart-2"></i></span>
                 <div>
                   <div class="cat-card-name">Normativ Consum</div>
                   <div class="cat-card-line"></div>
@@ -210,19 +213,19 @@
         <!-- ===== SUB-PAGE: Alerte ===== -->
         <div id="sub-alerte" class="sub-page">
           <div class="sub-header" style="background:linear-gradient(135deg, #C0392B, #A93226);">
-            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;">&#8592;</div>
-            <span style="font-size:16px; font-weight:600; flex:1;">&#9888; Alerte</span>
+            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;"><i data-lucide="arrow-left"></i></div>
+            <span style="font-size:16px; font-weight:600; flex:1;"><i data-lucide="alert-triangle"></i> Alerte</span>
           </div>
           <div class="sub-scroll">
             <!-- Alerte urgente -->
-            <div style="font-size:11px; font-weight:700; color:var(--brand-danger); text-transform:uppercase; letter-spacing:0.5px; padding:4px 0 6px;">&#128308; Urgente</div>
+            <div style="font-size:11px; font-weight:700; color:var(--brand-danger); text-transform:uppercase; letter-spacing:0.5px; padding:4px 0 6px;"><i data-lucide="notebook"></i> Urgente</div>
             <div class="sub-card" style="border-left:3px solid var(--brand-danger);">
               <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
                 <span style="font-size:15px; font-weight:700; color:var(--brand-danger);">ITP Expirat</span>
                 <span style="padding:2px 8px; border-radius:6px; font-size:12px; font-weight:600; background:var(--brand-danger-bg); color:var(--brand-danger);">Expirat</span>
               </div>
               <div style="font-size:14px; color:var(--brand-text-muted); margin-bottom:4px;">Inspectia tehnica periodica a expirat pe 28 Mar 2026</div>
-              <div style="font-size:13px; color:var(--brand-danger); font-weight:600;">&#9888; Depasit cu 17 zile</div>
+              <div style="font-size:13px; color:var(--brand-danger); font-weight:600;"><i data-lucide="alert-triangle"></i> Depasit cu 17 zile</div>
             </div>
             <div class="sub-card" style="border-left:3px solid var(--brand-danger);">
               <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
@@ -230,18 +233,18 @@
                 <span style="padding:2px 8px; border-radius:6px; font-size:12px; font-weight:600; background:var(--brand-danger-bg); color:var(--brand-danger);">Critic</span>
               </div>
               <div style="font-size:14px; color:var(--brand-text-muted); margin-bottom:4px;">Revizie la 500h &mdash; ore curente: 537h</div>
-              <div style="font-size:13px; color:var(--brand-danger); font-weight:600;">&#9888; Depasit cu 37 ore</div>
+              <div style="font-size:13px; color:var(--brand-danger); font-weight:600;"><i data-lucide="alert-triangle"></i> Depasit cu 37 ore</div>
             </div>
 
             <!-- Alerte warning -->
-            <div style="font-size:11px; font-weight:700; color:var(--brand-warning); text-transform:uppercase; letter-spacing:0.5px; padding:10px 0 6px;">&#128992; Atentie</div>
+            <div style="font-size:11px; font-weight:700; color:var(--brand-warning); text-transform:uppercase; letter-spacing:0.5px; padding:10px 0 6px;"><i data-lucide="circle"></i> Atentie</div>
             <div class="sub-card" style="border-left:3px solid var(--brand-warning);">
               <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
                 <span style="font-size:15px; font-weight:700; color:var(--brand-warning);">RCA expira curand</span>
                 <span style="padding:2px 8px; border-radius:6px; font-size:12px; font-weight:600; background:var(--brand-warning-bg); color:var(--brand-warning);">12 zile</span>
               </div>
               <div style="font-size:14px; color:var(--brand-text-muted); margin-bottom:4px;">Polita RCA expira pe 26 Apr 2026</div>
-              <div style="font-size:13px; color:var(--brand-warning); font-weight:600;">&#128197; Reinnoieste pana la 26 Apr</div>
+              <div style="font-size:13px; color:var(--brand-warning); font-weight:600;"><i data-lucide="calendar"></i> Reinnoieste pana la 26 Apr</div>
             </div>
             <div class="sub-card" style="border-left:3px solid var(--brand-warning);">
               <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
@@ -249,7 +252,7 @@
                 <span style="padding:2px 8px; border-radius:6px; font-size:12px; font-weight:600; background:var(--brand-warning-bg); color:var(--brand-warning);">23 ore</span>
               </div>
               <div style="font-size:14px; color:var(--brand-text-muted); margin-bottom:4px;">Schimb ulei motor la 250h &mdash; ore curente: 227h</div>
-              <div style="font-size:13px; color:var(--brand-warning); font-weight:600;">&#128260; Mai sunt 23 ore pana la schimb</div>
+              <div style="font-size:13px; color:var(--brand-warning); font-weight:600;"><i data-lucide="refresh-cw"></i> Mai sunt 23 ore pana la schimb</div>
             </div>
             <div class="sub-card" style="border-left:3px solid var(--brand-warning);">
               <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
@@ -260,7 +263,7 @@
             </div>
 
             <!-- Alerte info -->
-            <div style="font-size:11px; font-weight:700; color:#0369A1; text-transform:uppercase; letter-spacing:0.5px; padding:10px 0 6px;">&#128309; Informare</div>
+            <div style="font-size:11px; font-weight:700; color:#0369A1; text-transform:uppercase; letter-spacing:0.5px; padding:10px 0 6px;"><i data-lucide="book"></i> Informare</div>
             <div class="sub-card" style="border-left:3px solid #0369A1;">
               <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
                 <span style="font-size:15px; font-weight:700; color:#0369A1;">Schimb filtre aer</span>
@@ -281,9 +284,9 @@
         <!-- ===== SUB-PAGE: Istoric Lucrari ===== -->
         <div id="sub-istoric" class="sub-page">
           <div class="sub-header" style="background:linear-gradient(135deg, #2E86AB, #1B6A8A);">
-            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;">&#8592;</div>
-            <span style="font-size:16px; font-weight:600; flex:1;">&#128203; Istoric Lucrari</span>
-            <div onclick="alert('Export PDF / Excel')" style="padding:4px 12px; border-radius:6px; background:rgba(255,255,255,0.2); color:#fff; font-size:14px; font-weight:600; cursor:pointer;">&#128228; Export</div>
+            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;"><i data-lucide="arrow-left"></i></div>
+            <span style="font-size:16px; font-weight:600; flex:1;"><i data-lucide="clipboard-list"></i> Istoric Lucrari</span>
+            <div onclick="alert('Export PDF / Excel')" style="padding:4px 12px; border-radius:6px; background:rgba(255,255,255,0.2); color:#fff; font-size:14px; font-weight:600; cursor:pointer;"><i data-lucide="send"></i> Export</div>
           </div>
           <div class="sub-scroll">
             <!-- Calendar perioada -->
@@ -309,51 +312,51 @@
             <div id="istoric-list">
               <div class="sub-card istoric-item" data-date="2026-04-06">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Arat profund</span><span style="font-size:13px; color:var(--brand-text-muted);">06 Apr 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Parcela 12 Nord &middot; Ion Popescu &middot; 24.5 ha</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 12 Nord &middot; Ion Popescu &middot; 24.5 ha</div>
               </div>
               <div class="sub-card istoric-item" data-date="2026-04-03">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Transport material</span><span style="font-size:13px; color:var(--brand-text-muted);">03 Apr 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Parcela 7 Vest &middot; Andrei Popa &middot; —</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 7 Vest &middot; Andrei Popa &middot; —</div>
               </div>
               <div class="sub-card istoric-item" data-date="2026-03-28">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Discuit</span><span style="font-size:13px; color:var(--brand-text-muted);">28 Mar 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Parcela 3 Sud &middot; Mihai Stancu &middot; 18.0 ha</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 3 Sud &middot; Mihai Stancu &middot; 18.0 ha</div>
               </div>
               <div class="sub-card istoric-item" data-date="2026-03-22">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Semanat porumb</span><span style="font-size:13px; color:var(--brand-text-muted);">22 Mar 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Parcela 15 Est &middot; Ion Popescu &middot; 32.0 ha</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 15 Est &middot; Ion Popescu &middot; 32.0 ha</div>
               </div>
               <div class="sub-card istoric-item" data-date="2026-03-15">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Erbicidat</span><span style="font-size:13px; color:var(--brand-text-muted);">15 Mar 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Parcela 9 Central &middot; Vasile Marin &middot; 15.8 ha</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 9 Central &middot; Vasile Marin &middot; 15.8 ha</div>
               </div>
               <div class="sub-card istoric-item" data-date="2026-03-10">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Fertilizat NPK</span><span style="font-size:13px; color:var(--brand-text-muted);">10 Mar 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Parcela 4 Sud &middot; Mihai Stancu &middot; 28.3 ha</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 4 Sud &middot; Mihai Stancu &middot; 28.3 ha</div>
               </div>
               <div class="sub-card istoric-item" data-date="2026-03-02">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Gricat</span><span style="font-size:13px; color:var(--brand-text-muted);">02 Mar 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Parcela 12 Nord &middot; Ion Popescu &middot; 24.5 ha</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 12 Nord &middot; Ion Popescu &middot; 24.5 ha</div>
               </div>
               <div class="sub-card istoric-item" data-date="2026-02-20">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Transport cereale</span><span style="font-size:13px; color:var(--brand-text-muted);">20 Feb 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Siloz Central &middot; Andrei Popa &middot; —</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Siloz Central &middot; Andrei Popa &middot; —</div>
               </div>
               <div class="sub-card istoric-item" data-date="2026-02-12">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Arat de toamna</span><span style="font-size:13px; color:var(--brand-text-muted);">12 Feb 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Parcela 6 Vest &middot; Vasile Marin &middot; 19.2 ha</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 6 Vest &middot; Vasile Marin &middot; 19.2 ha</div>
               </div>
               <div class="sub-card istoric-item" data-date="2026-02-01">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Scarificat</span><span style="font-size:13px; color:var(--brand-text-muted);">01 Feb 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Parcela 2 Nord &middot; Mihai Stancu &middot; 22.0 ha</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 2 Nord &middot; Mihai Stancu &middot; 22.0 ha</div>
               </div>
               <div class="sub-card istoric-item" data-date="2026-01-18">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Imprastiat gunoi</span><span style="font-size:13px; color:var(--brand-text-muted);">18 Ian 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Parcela 11 Est &middot; Ion Popescu &middot; 30.0 ha</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 11 Est &middot; Ion Popescu &middot; 30.0 ha</div>
               </div>
               <div class="sub-card istoric-item" data-date="2026-01-05">
                 <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:15px; font-weight:600;">Intretinere drumuri</span><span style="font-size:13px; color:var(--brand-text-muted);">05 Ian 2026</span></div>
-                <div style="font-size:14px; color:var(--brand-text-muted);">&#127758; Drum acces Parcela 7 &middot; Andrei Popa &middot; —</div>
+                <div style="font-size:14px; color:var(--brand-text-muted);"><i data-lucide="globe"></i> Drum acces Parcela 7 &middot; Andrei Popa &middot; —</div>
               </div>
             </div>
           </div>
@@ -362,9 +365,9 @@
         <!-- ===== SUB-PAGE: Detalii Tehnice ===== -->
         <div id="sub-detalii" class="sub-page">
           <div class="sub-header" style="background:linear-gradient(135deg, #3B82A0, #2A6B85);">
-            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;">&#8592;</div>
-            <span style="font-size:16px; font-weight:600; flex:1;">&#9881; Detalii Tehnice</span>
-            <div onclick="openEditPopup()" style="padding:4px 12px; border-radius:6px; background:rgba(255,255,255,0.2); color:#fff; font-size:14px; font-weight:600; cursor:pointer;">&#9998; Editeaza</div>
+            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;"><i data-lucide="arrow-left"></i></div>
+            <span style="font-size:16px; font-weight:600; flex:1;"><i data-lucide="settings"></i> Detalii Tehnice</span>
+            <div onclick="openEditPopup()" style="padding:4px 12px; border-radius:6px; background:rgba(255,255,255,0.2); color:#fff; font-size:14px; font-weight:600; cursor:pointer;"><i data-lucide="pencil"></i> Editeaza</div>
           </div>
           <div class="sub-scroll">
             <div class="sub-card">
@@ -387,7 +390,7 @@
             <div style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:85%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out;">
               <!-- Popup Header -->
               <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 16px 12px; border-bottom:1px solid var(--brand-border);">
-                <div style="font-size:18px; font-weight:700; color:var(--brand-text-primary);">&#9998; Editare Detalii Tehnice</div>
+                <div style="font-size:18px; font-weight:700; color:var(--brand-text-primary);"><i data-lucide="pencil"></i> Editare Detalii Tehnice</div>
                 <div onclick="closeEditPopup()" style="width:28px; height:28px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; color:#888;">&times;</div>
               </div>
               <!-- Popup Body -->
@@ -445,7 +448,7 @@
               <!-- Popup Footer -->
               <div style="padding:12px 16px; border-top:1px solid var(--brand-border); display:flex; gap:8px;">
                 <div onclick="closeEditPopup()" style="flex:1; padding:10px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;">Anuleaza</div>
-                <div onclick="closeEditPopup()" style="flex:1; padding:10px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; cursor:pointer;">&#10003; Salveaza</div>
+                <div onclick="closeEditPopup()" style="flex:1; padding:10px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; cursor:pointer;"><i data-lucide="check"></i> Salveaza</div>
               </div>
             </div>
           </div>
@@ -454,8 +457,8 @@
         <!-- ===== SUB-PAGE: Documente ===== -->
         <div id="sub-documente" class="sub-page">
           <div class="sub-header" style="background:linear-gradient(135deg, #4A9BBF, #357FA3);">
-            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;">&#8592;</div>
-            <span style="font-size:16px; font-weight:600; flex:1;">&#128196; Documente Legale</span>
+            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;"><i data-lucide="arrow-left"></i></div>
+            <span style="font-size:16px; font-weight:600; flex:1;"><i data-lucide="file"></i> Documente Legale</span>
             <div onclick="openDocPopup()" style="padding:4px 12px; border-radius:6px; background:rgba(255,255,255,0.2); color:#fff; font-size:14px; font-weight:600; cursor:pointer;">+ Adauga</div>
           </div>
           <div class="sub-scroll">
@@ -463,23 +466,23 @@
             <!-- RCA -->
             <div class="sub-card" style="padding:0; overflow:hidden;">
               <div style="display:flex; align-items:center; gap:10px; padding:12px; cursor:pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
-                <div class="doc-icon" style="background:var(--brand-success-bg); color:var(--brand-success);">&#128179;</div>
+                <div class="doc-icon" style="background:var(--brand-success-bg); color:var(--brand-success);"><i data-lucide="credit-card"></i></div>
                 <div style="flex:1;">
                   <div style="font-size:15px; font-weight:600;">RCA</div>
                   <div style="font-size:13px; color:var(--brand-text-muted);">Expira: 15 Nov 2026</div>
                 </div>
                 <span style="padding:3px 8px; border-radius:10px; font-size:12px; font-weight:600; background:var(--brand-success-bg); color:var(--brand-success);">Valid</span>
-                <span style="font-size:16px; color:var(--brand-text-muted);">&#9660;</span>
+                <span style="font-size:16px; color:var(--brand-text-muted);"><i data-lucide="chevron-down"></i></span>
               </div>
               <div style="display:none; padding:0 12px 12px; border-top:1px solid #f0f0f0;">
                 <!-- Document preview -->
                 <div style="margin-top:10px; height:140px; border-radius:var(--brand-radius); background:var(--brand-surface); border:1px solid var(--brand-border); display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative;" onclick="alert('Deschide document RCA')">
                   <div style="text-align:center; color:var(--brand-text-muted);">
-                    <div style="font-size:38px; margin-bottom:4px;">&#128196;</div>
+                    <div style="font-size:38px; margin-bottom:4px;"><i data-lucide="file"></i></div>
                     <div style="font-size:13px;">RCA_TM42AGR_2026.pdf</div>
                     <div style="font-size:12px; color:var(--brand-primary); margin-top:4px;">Apasa pentru vizualizare</div>
                   </div>
-                  <div style="position:absolute; top:6px; right:6px; width:24px; height:24px; border-radius:4px; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer;" onclick="event.stopPropagation(); alert('Descarca RCA')">&#11015;</div>
+                  <div style="position:absolute; top:6px; right:6px; width:24px; height:24px; border-radius:4px; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer;" onclick="event.stopPropagation(); alert('Descarca RCA')"><i data-lucide="arrow-down"></i></div>
                 </div>
                 <!-- Edit fields -->
                 <div style="margin-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
@@ -493,7 +496,7 @@
                   </div>
                 </div>
                 <div style="margin-top:8px; display:flex; gap:6px;">
-                  <div onclick="alert('Incarca document nou')" style="flex:1; padding:8px; border:1px dashed var(--brand-primary); border-radius:var(--brand-radius); text-align:center; font-size:13px; color:var(--brand-primary); font-weight:600; cursor:pointer;">&#128206; Incarca doc nou</div>
+                  <div onclick="alert('Incarca document nou')" style="flex:1; padding:8px; border:1px dashed var(--brand-primary); border-radius:var(--brand-radius); text-align:center; font-size:13px; color:var(--brand-primary); font-weight:600; cursor:pointer;"><i data-lucide="paperclip"></i> Incarca doc nou</div>
                   <div onclick="alert('Salvat!')" style="padding:8px 16px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center;">Salveaza</div>
                 </div>
               </div>
@@ -502,22 +505,22 @@
             <!-- ITP -->
             <div class="sub-card" style="padding:0; overflow:hidden;">
               <div style="display:flex; align-items:center; gap:10px; padding:12px; cursor:pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
-                <div class="doc-icon" style="background:var(--brand-warning-bg); color:var(--brand-warning);">&#128203;</div>
+                <div class="doc-icon" style="background:var(--brand-warning-bg); color:var(--brand-warning);"><i data-lucide="clipboard-list"></i></div>
                 <div style="flex:1;">
                   <div style="font-size:15px; font-weight:600;">ITP</div>
                   <div style="font-size:13px; color:var(--brand-text-muted);">Expira: 22 Mai 2026</div>
                 </div>
                 <span style="padding:3px 8px; border-radius:10px; font-size:12px; font-weight:600; background:var(--brand-warning-bg); color:var(--brand-warning);">44 zile</span>
-                <span style="font-size:16px; color:var(--brand-text-muted);">&#9660;</span>
+                <span style="font-size:16px; color:var(--brand-text-muted);"><i data-lucide="chevron-down"></i></span>
               </div>
               <div style="display:none; padding:0 12px 12px; border-top:1px solid #f0f0f0;">
                 <div style="margin-top:10px; height:140px; border-radius:var(--brand-radius); background:var(--brand-surface); border:1px solid var(--brand-border); display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative;" onclick="alert('Deschide document ITP')">
                   <div style="text-align:center; color:var(--brand-text-muted);">
-                    <div style="font-size:38px; margin-bottom:4px;">&#128247;</div>
+                    <div style="font-size:38px; margin-bottom:4px;"><i data-lucide="camera"></i></div>
                     <div style="font-size:13px;">ITP_TM42AGR_2025.jpg</div>
                     <div style="font-size:12px; color:var(--brand-primary); margin-top:4px;">Apasa pentru vizualizare</div>
                   </div>
-                  <div style="position:absolute; top:6px; right:6px; width:24px; height:24px; border-radius:4px; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer;" onclick="event.stopPropagation(); alert('Descarca ITP')">&#11015;</div>
+                  <div style="position:absolute; top:6px; right:6px; width:24px; height:24px; border-radius:4px; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer;" onclick="event.stopPropagation(); alert('Descarca ITP')"><i data-lucide="arrow-down"></i></div>
                 </div>
                 <div style="margin-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                   <div>
@@ -530,7 +533,7 @@
                   </div>
                 </div>
                 <div style="margin-top:8px; display:flex; gap:6px;">
-                  <div onclick="alert('Incarca document nou')" style="flex:1; padding:8px; border:1px dashed var(--brand-primary); border-radius:var(--brand-radius); text-align:center; font-size:13px; color:var(--brand-primary); font-weight:600; cursor:pointer;">&#128206; Incarca doc nou</div>
+                  <div onclick="alert('Incarca document nou')" style="flex:1; padding:8px; border:1px dashed var(--brand-primary); border-radius:var(--brand-radius); text-align:center; font-size:13px; color:var(--brand-primary); font-weight:600; cursor:pointer;"><i data-lucide="paperclip"></i> Incarca doc nou</div>
                   <div onclick="alert('Salvat!')" style="padding:8px 16px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center;">Salveaza</div>
                 </div>
               </div>
@@ -539,24 +542,24 @@
             <!-- Talon -->
             <div class="sub-card" style="padding:0; overflow:hidden;">
               <div style="display:flex; align-items:center; gap:10px; padding:12px; cursor:pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
-                <div class="doc-icon" style="background:var(--brand-success-bg); color:var(--brand-success);">&#128196;</div>
+                <div class="doc-icon" style="background:var(--brand-success-bg); color:var(--brand-success);"><i data-lucide="file"></i></div>
                 <div style="flex:1;">
                   <div style="font-size:15px; font-weight:600;">Talon</div>
                   <div style="font-size:13px; color:var(--brand-text-muted);">Emis: 10 Ian 2024</div>
                 </div>
                 <span style="padding:3px 8px; border-radius:10px; font-size:12px; font-weight:600; background:var(--brand-success-bg); color:var(--brand-success);">Valid</span>
-                <span style="font-size:16px; color:var(--brand-text-muted);">&#9660;</span>
+                <span style="font-size:16px; color:var(--brand-text-muted);"><i data-lucide="chevron-down"></i></span>
               </div>
               <div style="display:none; padding:0 12px 12px; border-top:1px solid #f0f0f0;">
                 <div style="margin-top:10px; height:140px; border-radius:var(--brand-radius); background:var(--brand-surface); border:1px solid var(--brand-border); display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="alert('Deschide Talon')">
                   <div style="text-align:center; color:var(--brand-text-muted);">
-                    <div style="font-size:38px; margin-bottom:4px;">&#128196;</div>
+                    <div style="font-size:38px; margin-bottom:4px;"><i data-lucide="file"></i></div>
                     <div style="font-size:13px;">Talon_TM42AGR.pdf</div>
                     <div style="font-size:12px; color:var(--brand-primary); margin-top:4px;">Apasa pentru vizualizare</div>
                   </div>
                 </div>
                 <div style="margin-top:8px; display:flex; gap:6px;">
-                  <div onclick="alert('Incarca document nou')" style="flex:1; padding:8px; border:1px dashed var(--brand-primary); border-radius:var(--brand-radius); text-align:center; font-size:13px; color:var(--brand-primary); font-weight:600; cursor:pointer;">&#128206; Incarca doc nou</div>
+                  <div onclick="alert('Incarca document nou')" style="flex:1; padding:8px; border:1px dashed var(--brand-primary); border-radius:var(--brand-radius); text-align:center; font-size:13px; color:var(--brand-primary); font-weight:600; cursor:pointer;"><i data-lucide="paperclip"></i> Incarca doc nou</div>
                   <div onclick="alert('Salvat!')" style="padding:8px 16px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center;">Salveaza</div>
                 </div>
               </div>
@@ -565,18 +568,18 @@
             <!-- CASCO -->
             <div class="sub-card" style="padding:0; overflow:hidden;">
               <div style="display:flex; align-items:center; gap:10px; padding:12px; cursor:pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
-                <div class="doc-icon" style="background:var(--brand-success-bg); color:var(--brand-success);">&#128737;</div>
+                <div class="doc-icon" style="background:var(--brand-success-bg); color:var(--brand-success);"><i data-lucide="shield"></i></div>
                 <div style="flex:1;">
                   <div style="font-size:15px; font-weight:600;">CASCO</div>
                   <div style="font-size:13px; color:var(--brand-text-muted);">Expira: 01 Feb 2027</div>
                 </div>
                 <span style="padding:3px 8px; border-radius:10px; font-size:12px; font-weight:600; background:var(--brand-success-bg); color:var(--brand-success);">Valid</span>
-                <span style="font-size:16px; color:var(--brand-text-muted);">&#9660;</span>
+                <span style="font-size:16px; color:var(--brand-text-muted);"><i data-lucide="chevron-down"></i></span>
               </div>
               <div style="display:none; padding:0 12px 12px; border-top:1px solid #f0f0f0;">
                 <div style="margin-top:10px; height:140px; border-radius:var(--brand-radius); background:var(--brand-surface); border:1px solid var(--brand-border); display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="alert('Deschide CASCO')">
                   <div style="text-align:center; color:var(--brand-text-muted);">
-                    <div style="font-size:38px; margin-bottom:4px;">&#128196;</div>
+                    <div style="font-size:38px; margin-bottom:4px;"><i data-lucide="file"></i></div>
                     <div style="font-size:13px;">CASCO_TM42AGR_2026.pdf</div>
                     <div style="font-size:12px; color:var(--brand-primary); margin-top:4px;">Apasa pentru vizualizare</div>
                   </div>
@@ -592,7 +595,7 @@
                   </div>
                 </div>
                 <div style="margin-top:8px; display:flex; gap:6px;">
-                  <div onclick="alert('Incarca document nou')" style="flex:1; padding:8px; border:1px dashed var(--brand-primary); border-radius:var(--brand-radius); text-align:center; font-size:13px; color:var(--brand-primary); font-weight:600; cursor:pointer;">&#128206; Incarca doc nou</div>
+                  <div onclick="alert('Incarca document nou')" style="flex:1; padding:8px; border:1px dashed var(--brand-primary); border-radius:var(--brand-radius); text-align:center; font-size:13px; color:var(--brand-primary); font-weight:600; cursor:pointer;"><i data-lucide="paperclip"></i> Incarca doc nou</div>
                   <div onclick="alert('Salvat!')" style="padding:8px 16px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center;">Salveaza</div>
                 </div>
               </div>
@@ -605,7 +608,7 @@
             <div onclick="closeDocPopup()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5);"></div>
             <div style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:90%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out;">
               <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 16px 12px; border-bottom:1px solid var(--brand-border);">
-                <div style="font-size:18px; font-weight:700; color:var(--brand-text-primary);">&#128196; Adauga Document</div>
+                <div style="font-size:18px; font-weight:700; color:var(--brand-text-primary);"><i data-lucide="file"></i> Adauga Document</div>
                 <div onclick="closeDocPopup()" style="width:28px; height:28px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; color:#888;">&times;</div>
               </div>
               <div style="flex:1; overflow-y:auto; padding:16px;">
@@ -673,15 +676,15 @@
                   <div style="font-size:12px; font-weight:600; color:var(--brand-text-muted); text-transform:uppercase; margin-bottom:8px;">Incarca document (foto sau PDF)</div>
                   <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
                     <div style="aspect-ratio:1; border:2px dashed var(--brand-primary); border-radius:var(--brand-radius); display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; color:var(--brand-primary);">
-                      <div style="font-size:26px;">&#128247;</div>
+                      <div style="font-size:26px;"><i data-lucide="camera"></i></div>
                       <div style="font-size:11px; font-weight:600; margin-top:2px;">Camera</div>
                     </div>
                     <div style="aspect-ratio:1; border:2px dashed var(--brand-border); border-radius:var(--brand-radius); display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; color:var(--brand-text-muted);">
-                      <div style="font-size:26px;">&#128206;</div>
+                      <div style="font-size:26px;"><i data-lucide="paperclip"></i></div>
                       <div style="font-size:11px; font-weight:600; margin-top:2px;">Galerie</div>
                     </div>
                     <div style="aspect-ratio:1; border:2px dashed var(--brand-border); border-radius:var(--brand-radius); display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; color:var(--brand-text-muted);">
-                      <div style="font-size:26px;">&#128196;</div>
+                      <div style="font-size:26px;"><i data-lucide="file"></i></div>
                       <div style="font-size:11px; font-weight:600; margin-top:2px;">PDF / Fisier</div>
                     </div>
                   </div>
@@ -694,7 +697,7 @@
               </div>
               <div style="padding:12px 16px; border-top:1px solid var(--brand-border); display:flex; gap:8px;">
                 <div onclick="closeDocPopup()" style="flex:1; padding:10px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;">Anuleaza</div>
-                <div onclick="closeDocPopup()" style="flex:1; padding:10px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; cursor:pointer;">&#10003; Salveaza</div>
+                <div onclick="closeDocPopup()" style="flex:1; padding:10px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; cursor:pointer;"><i data-lucide="check"></i> Salveaza</div>
               </div>
             </div>
           </div>
@@ -703,8 +706,8 @@
         <!-- ===== SUB-PAGE: Fisa Service ===== -->
         <div id="sub-service" class="sub-page">
           <div class="sub-header" style="background:linear-gradient(135deg, #00686A, #005557);">
-            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;">&#8592;</div>
-            <span style="font-size:16px; font-weight:600; flex:1;">&#128295; Fisa Service</span>
+            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;"><i data-lucide="arrow-left"></i></div>
+            <span style="font-size:16px; font-weight:600; flex:1;"><i data-lucide="wrench"></i> Fisa Service</span>
             <div onclick="openServicePopup()" style="padding:4px 12px; border-radius:6px; background:rgba(255,255,255,0.2); color:#fff; font-size:14px; font-weight:600; cursor:pointer;">+ Adauga</div>
           </div>
           <div class="sub-scroll">
@@ -719,7 +722,7 @@
                   </div>
                   <div style="font-size:13px; color:var(--brand-text-muted);">Interval: 500h &middot; Ultimul: 3.800h &middot; Acum: 4.250h</div>
                 </div>
-                <span style="font-size:16px; color:var(--brand-text-muted);">&#9660;</span>
+                <span style="font-size:16px; color:var(--brand-text-muted);"><i data-lucide="chevron-down"></i></span>
               </div>
               <div style="display:none; padding:0 12px 12px; border-top:1px solid #f0f0f0;">
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; font-size:13px;">
@@ -745,7 +748,7 @@
                   <div>Schimb ulei motor 15W40 (10L), filtru ulei, filtru motorina. Verificat nivele.</div>
                 </div>
                 <div style="margin-top:8px; padding:8px; background:var(--brand-danger-bg); border-radius:var(--brand-radius); font-size:13px; display:flex; align-items:center; gap:6px;">
-                  <span style="font-size:16px;">&#9888;</span>
+                  <span style="font-size:16px;"><i data-lucide="alert-triangle"></i></span>
                   <div>
                     <div style="font-weight:600; color:var(--brand-danger);">Alerta: Depasit cu 450h!</div>
                     <div style="color:var(--brand-text-muted); margin-top:1px;">Programati urgent schimb ulei + filtre</div>
@@ -765,7 +768,7 @@
                   </div>
                   <div style="font-size:13px; color:var(--brand-text-muted);">Interval: 1000h &middot; Ultimul: 3.300h &middot; Acum: 4.250h</div>
                 </div>
-                <span style="font-size:16px; color:var(--brand-text-muted);">&#9660;</span>
+                <span style="font-size:16px; color:var(--brand-text-muted);"><i data-lucide="chevron-down"></i></span>
               </div>
               <div style="display:none; padding:0 12px 12px; border-top:1px solid #f0f0f0;">
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; font-size:13px;">
@@ -791,7 +794,7 @@
                   <div>Inlocuit filtru aer principal + filtru secundar. Curatat carcasa.</div>
                 </div>
                 <div style="margin-top:8px; padding:8px; background:var(--brand-warning-bg); border-radius:var(--brand-radius); font-size:13px; display:flex; align-items:center; gap:6px;">
-                  <span style="font-size:16px;">&#9888;</span>
+                  <span style="font-size:16px;"><i data-lucide="alert-triangle"></i></span>
                   <div>
                     <div style="font-weight:600; color:var(--brand-warning);">Aproape de termen — mai sunt ~50h</div>
                     <div style="color:var(--brand-text-muted); margin-top:1px;">Pregatiti filtru aer de schimb</div>
@@ -811,7 +814,7 @@
                   </div>
                   <div style="font-size:13px; color:var(--brand-text-muted);">Interval: 2000h &middot; Ultimul: 4.000h &middot; Acum: 4.250h</div>
                 </div>
-                <span style="font-size:16px; color:var(--brand-text-muted);">&#9660;</span>
+                <span style="font-size:16px; color:var(--brand-text-muted);"><i data-lucide="chevron-down"></i></span>
               </div>
               <div style="display:none; padding:0 12px 12px; border-top:1px solid #f0f0f0;">
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; font-size:13px;">
@@ -850,7 +853,7 @@
                   </div>
                   <div style="font-size:13px; color:var(--brand-text-muted);">Interval: 2000h &middot; Ultimul: 3.500h &middot; Acum: 4.250h</div>
                 </div>
-                <span style="font-size:16px; color:var(--brand-text-muted);">&#9660;</span>
+                <span style="font-size:16px; color:var(--brand-text-muted);"><i data-lucide="chevron-down"></i></span>
               </div>
               <div style="display:none; padding:0 12px 12px; border-top:1px solid #f0f0f0;">
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; font-size:13px;">
@@ -876,7 +879,7 @@
                   <div>Golit circuit racire, spalat, inlocuit lichid racire cu antigel -40C. Verificat furtunuri si coliere.</div>
                 </div>
                 <div style="margin-top:8px; padding:8px; background:var(--brand-hover-bg); border-radius:var(--brand-radius); font-size:13px; display:flex; align-items:center; gap:6px;">
-                  <span style="font-size:16px;">&#128161;</span>
+                  <span style="font-size:16px;"><i data-lucide="lightbulb"></i></span>
                   <div style="color:var(--brand-text-muted);">Nota: verificati vizual furtunul superior — incepe sa se uzeze</div>
                 </div>
                 <div style="margin-top:6px; font-size:12px; color:var(--brand-text-muted);">Cost: 450 RON &middot; Piese: 15L antigel concentrat, colier furtun inferior</div>
@@ -893,7 +896,7 @@
                   </div>
                   <div style="font-size:13px; color:var(--brand-text-muted);">Interval: 3000h &middot; Ultimul: 3.000h &middot; Acum: 4.250h</div>
                 </div>
-                <span style="font-size:16px; color:var(--brand-text-muted);">&#9660;</span>
+                <span style="font-size:16px; color:var(--brand-text-muted);"><i data-lucide="chevron-down"></i></span>
               </div>
               <div style="display:none; padding:0 12px 12px; border-top:1px solid #f0f0f0;">
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; font-size:13px;">
@@ -932,7 +935,7 @@
                   </div>
                   <div style="font-size:13px; color:var(--brand-text-muted);">Verificare anuala &middot; Ultimul: Ian 2026 &middot; Urm: Ian 2027</div>
                 </div>
-                <span style="font-size:16px; color:var(--brand-text-muted);">&#9660;</span>
+                <span style="font-size:16px; color:var(--brand-text-muted);"><i data-lucide="chevron-down"></i></span>
               </div>
               <div style="display:none; padding:0 12px 12px; border-top:1px solid #f0f0f0;">
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; font-size:13px;">
@@ -950,7 +953,7 @@
                   <div>Verificat presiune, uzura banda de rulare, stare flancuri. Echilibrat roti fata. Presiune setata: fata 1.4 bar, spate 1.2 bar.</div>
                 </div>
                 <div style="margin-top:8px; padding:8px; background:var(--brand-hover-bg); border-radius:var(--brand-radius); font-size:13px; display:flex; align-items:center; gap:6px;">
-                  <span style="font-size:16px;">&#128161;</span>
+                  <span style="font-size:16px;"><i data-lucide="lightbulb"></i></span>
                   <div style="color:var(--brand-text-muted);">Nota: anvelopa stanga-spate uzura ~60% — planificati inlocuire la toamna</div>
                 </div>
                 <div style="margin-top:6px; font-size:12px; color:var(--brand-text-muted);">Cost: 0 RON (verificare interna)</div>
@@ -964,7 +967,7 @@
             <div style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:90%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out;">
               <!-- Header -->
               <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 16px 12px; border-bottom:1px solid var(--brand-border);">
-                <div style="font-size:18px; font-weight:700; color:var(--brand-text-primary);">&#128295; Adauga Servisare</div>
+                <div style="font-size:18px; font-weight:700; color:var(--brand-text-primary);"><i data-lucide="wrench"></i> Adauga Servisare</div>
                 <div onclick="closeServicePopup()" style="width:28px; height:28px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; color:#888;">&times;</div>
               </div>
               <!-- Body -->
@@ -1036,15 +1039,15 @@
 
                 <!-- Alerte -->
                 <div style="margin-bottom:12px; padding:12px; background:var(--brand-warning-bg); border:1px solid var(--brand-warning); border-radius:var(--brand-radius);">
-                  <div style="font-size:12px; font-weight:600; color:var(--brand-warning); text-transform:uppercase; margin-bottom:6px;">&#9888; Alerta / Nota</div>
+                  <div style="font-size:12px; font-weight:600; color:var(--brand-warning); text-transform:uppercase; margin-bottom:6px;"><i data-lucide="alert-triangle"></i> Alerta / Nota</div>
                   <div style="margin-bottom:8px;">
                     <div style="font-size:12px; font-weight:600; color:var(--brand-text-muted); text-transform:uppercase; margin-bottom:4px;">Tip alerta</div>
                     <select style="width:100%; padding:8px 12px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); font-size:15px; outline:none; background:#fff;">
                       <option>Fara alerta</option>
-                      <option>&#9888; Piesa de schimb necesara in curand</option>
-                      <option>&#9888; Uzura avansata — planificati inlocuire</option>
-                      <option>&#9888; Verificati la urmatoarea utilizare</option>
-                      <option>&#128161; Nota informativa</option>
+                      <option><i data-lucide="alert-triangle"></i> Piesa de schimb necesara in curand</option>
+                      <option><i data-lucide="alert-triangle"></i> Uzura avansata — planificati inlocuire</option>
+                      <option><i data-lucide="alert-triangle"></i> Verificati la urmatoarea utilizare</option>
+                      <option><i data-lucide="lightbulb"></i> Nota informativa</option>
                       <option>Altele (specificati)</option>
                     </select>
                   </div>
@@ -1059,15 +1062,15 @@
                   <div style="font-size:12px; font-weight:600; color:var(--brand-text-muted); text-transform:uppercase; margin-bottom:8px;">Fotografii servisare</div>
                   <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
                     <div style="aspect-ratio:1; border:2px dashed var(--brand-primary); border-radius:var(--brand-radius); display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; color:var(--brand-primary);">
-                      <div style="font-size:26px;">&#128247;</div>
+                      <div style="font-size:26px;"><i data-lucide="camera"></i></div>
                       <div style="font-size:11px; font-weight:600; margin-top:2px;">Camera</div>
                     </div>
                     <div style="aspect-ratio:1; border:2px dashed var(--brand-border); border-radius:var(--brand-radius); display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; color:var(--brand-text-muted);">
-                      <div style="font-size:26px;">&#128206;</div>
+                      <div style="font-size:26px;"><i data-lucide="paperclip"></i></div>
                       <div style="font-size:11px; font-weight:600; margin-top:2px;">Galerie</div>
                     </div>
                     <div style="aspect-ratio:1; border:2px dashed var(--brand-border); border-radius:var(--brand-radius); display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; color:var(--brand-text-muted);">
-                      <div style="font-size:26px;">&#128196;</div>
+                      <div style="font-size:26px;"><i data-lucide="file"></i></div>
                       <div style="font-size:11px; font-weight:600; margin-top:2px;">Document</div>
                     </div>
                   </div>
@@ -1076,7 +1079,7 @@
               <!-- Footer -->
               <div style="padding:12px 16px; border-top:1px solid var(--brand-border); display:flex; gap:8px;">
                 <div onclick="closeServicePopup()" style="flex:1; padding:10px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;">Anuleaza</div>
-                <div onclick="closeServicePopup()" style="flex:1; padding:10px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; cursor:pointer;">&#10003; Salveaza</div>
+                <div onclick="closeServicePopup()" style="flex:1; padding:10px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; cursor:pointer;"><i data-lucide="check"></i> Salveaza</div>
               </div>
             </div>
           </div>
@@ -1085,18 +1088,18 @@
         <!-- ===== SUB-PAGE: Fotografii ===== -->
         <div id="sub-fotografii" class="sub-page">
           <div class="sub-header" style="background:linear-gradient(135deg, #338687, #1E6B6C);">
-            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;">&#8592;</div>
-            <span style="font-size:16px; font-weight:600;">&#128247; Fotografii (7/10)</span>
+            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;"><i data-lucide="arrow-left"></i></div>
+            <span style="font-size:16px; font-weight:600;"><i data-lucide="camera"></i> Fotografii (7/10)</span>
           </div>
           <div class="sub-scroll">
             <div class="photo-grid">
-              <div class="photo-thumb">&#128668;</div>
-              <div class="photo-thumb">&#128668;</div>
-              <div class="photo-thumb">&#128668;</div>
-              <div class="photo-thumb">&#128668;</div>
-              <div class="photo-thumb">&#128668;</div>
-              <div class="photo-thumb">&#128668;</div>
-              <div class="photo-thumb">&#128668;</div>
+              <div class="photo-thumb"><i data-lucide="tractor"></i></div>
+              <div class="photo-thumb"><i data-lucide="tractor"></i></div>
+              <div class="photo-thumb"><i data-lucide="tractor"></i></div>
+              <div class="photo-thumb"><i data-lucide="tractor"></i></div>
+              <div class="photo-thumb"><i data-lucide="tractor"></i></div>
+              <div class="photo-thumb"><i data-lucide="tractor"></i></div>
+              <div class="photo-thumb"><i data-lucide="tractor"></i></div>
               <div class="photo-thumb" style="border:2px dashed var(--brand-primary); color:var(--brand-primary); font-size:30px;">+</div>
             </div>
           </div>
@@ -1105,9 +1108,9 @@
         <!-- ===== SUB-PAGE: GPS ===== -->
         <div id="sub-gps" class="sub-page">
           <div class="sub-header" style="background:linear-gradient(135deg, #2D8E5F, #1E7A4D);">
-            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;">&#8592;</div>
-            <span style="font-size:16px; font-weight:600; flex:1;">&#128225; GPS</span>
-            <div onclick="openGpsEdit()" style="padding:4px 12px; border-radius:6px; background:rgba(255,255,255,0.2); color:#fff; font-size:14px; font-weight:600; cursor:pointer;">&#9998; Editeaza</div>
+            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;"><i data-lucide="arrow-left"></i></div>
+            <span style="font-size:16px; font-weight:600; flex:1;"><i data-lucide="radio-tower"></i> GPS</span>
+            <div onclick="openGpsEdit()" style="padding:4px 12px; border-radius:6px; background:rgba(255,255,255,0.2); color:#fff; font-size:14px; font-weight:600; cursor:pointer;"><i data-lucide="pencil"></i> Editeaza</div>
           </div>
           <div class="sub-scroll">
             <div class="sub-card">
@@ -1120,7 +1123,7 @@
               <div class="sub-field"><span class="sub-field-label">Viteza</span><span class="sub-field-value">0 km/h (stationare)</span></div>
             </div>
             <div style="margin-top:8px; height:180px; border-radius:var(--brand-radius); background:var(--brand-surface); border:1px solid var(--brand-border); display:flex; align-items:center; justify-content:center; color:var(--brand-text-muted); font-size:15px;">
-              &#127758; Harta GPS — placeholder
+              <i data-lucide="globe"></i> Harta GPS — placeholder
             </div>
           </div>
 
@@ -1129,7 +1132,7 @@
             <div onclick="closeGpsEdit()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5);"></div>
             <div style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:80%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out;">
               <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 16px 12px; border-bottom:1px solid var(--brand-border);">
-                <div style="font-size:18px; font-weight:700; color:var(--brand-text-primary);">&#128225; Editare GPS</div>
+                <div style="font-size:18px; font-weight:700; color:var(--brand-text-primary);"><i data-lucide="radio-tower"></i> Editare GPS</div>
                 <div onclick="closeGpsEdit()" style="width:28px; height:28px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; color:#888;">&times;</div>
               </div>
               <div style="flex:1; overflow-y:auto; padding:16px;">
@@ -1171,7 +1174,7 @@
               </div>
               <div style="padding:12px 16px; border-top:1px solid var(--brand-border); display:flex; gap:8px;">
                 <div onclick="closeGpsEdit()" style="flex:1; padding:10px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;">Anuleaza</div>
-                <div onclick="closeGpsEdit()" style="flex:1; padding:10px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; cursor:pointer;">&#10003; Salveaza</div>
+                <div onclick="closeGpsEdit()" style="flex:1; padding:10px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; cursor:pointer;"><i data-lucide="check"></i> Salveaza</div>
               </div>
             </div>
           </div>
@@ -1180,9 +1183,9 @@
         <!-- ===== SUB-PAGE: Normativ Consum ===== -->
         <div id="sub-normativ" class="sub-page">
           <div class="sub-header" style="background:linear-gradient(135deg, #8B5E3C, #6B4226);">
-            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;">&#8592;</div>
-            <span style="font-size:16px; font-weight:600; flex:1;">&#128202; Normativ Consum / ha</span>
-            <div onclick="openNormativEdit()" style="padding:4px 12px; border-radius:6px; background:rgba(255,255,255,0.2); color:#fff; font-size:14px; font-weight:600; cursor:pointer;">&#9998; Editeaza</div>
+            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;"><i data-lucide="arrow-left"></i></div>
+            <span style="font-size:16px; font-weight:600; flex:1;"><i data-lucide="bar-chart-2"></i> Normativ Consum / ha</span>
+            <div onclick="openNormativEdit()" style="padding:4px 12px; border-radius:6px; background:rgba(255,255,255,0.2); color:#fff; font-size:14px; font-weight:600; cursor:pointer;"><i data-lucide="pencil"></i> Editeaza</div>
           </div>
           <div class="sub-scroll">
             <div class="sub-card">
@@ -1194,7 +1197,7 @@
               <div class="sub-field"><span class="sub-field-label">Putere necesara</span><span class="sub-field-value">min. 120 CP</span></div>
             </div>
             <div style="margin-top:10px; padding:10px; background:var(--brand-hover-bg); border-radius:var(--brand-radius); font-size:13px; color:var(--brand-text-muted);">
-              &#128161; Valorile sunt orientative si pot varia in functie de tipul solului, umiditate si conditii meteo.
+              <i data-lucide="lightbulb"></i> Valorile sunt orientative si pot varia in functie de tipul solului, umiditate si conditii meteo.
             </div>
           </div>
 
@@ -1203,7 +1206,7 @@
             <div onclick="closeNormativEdit()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5);"></div>
             <div style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:85%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out;">
               <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 16px 12px; border-bottom:1px solid var(--brand-border);">
-                <div style="font-size:18px; font-weight:700; color:var(--brand-text-primary);">&#128202; Editare Normativ</div>
+                <div style="font-size:18px; font-weight:700; color:var(--brand-text-primary);"><i data-lucide="bar-chart-2"></i> Editare Normativ</div>
                 <div onclick="closeNormativEdit()" style="width:28px; height:28px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; color:#888;">&times;</div>
               </div>
               <div style="flex:1; overflow-y:auto; padding:16px;">
@@ -1254,7 +1257,7 @@
               </div>
               <div style="padding:12px 16px; border-top:1px solid var(--brand-border); display:flex; gap:8px;">
                 <div onclick="closeNormativEdit()" style="flex:1; padding:10px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;">Anuleaza</div>
-                <div onclick="closeNormativEdit()" style="flex:1; padding:10px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; cursor:pointer;">&#10003; Salveaza</div>
+                <div onclick="closeNormativEdit()" style="flex:1; padding:10px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:15px; font-weight:600; cursor:pointer;"><i data-lucide="check"></i> Salveaza</div>
               </div>
             </div>
           </div>
@@ -1263,69 +1266,69 @@
         <!-- ===== SUB-PAGE: Sarcini & Remindere ===== -->
         <div id="sub-tasks" class="sub-page">
           <div class="sub-header" style="background:linear-gradient(135deg, #6D28D9, #5B21B6);">
-            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;">&#8592;</div>
-            <span style="font-size:16px; font-weight:600; flex:1;">&#9745; Sarcini & Remindere</span>
+            <div onclick="closeSubPage()" style="cursor:pointer; color:#fff; font-size:20px; width:28px;"><i data-lucide="arrow-left"></i></div>
+            <span style="font-size:16px; font-weight:600; flex:1;"><i data-lucide="check-square"></i> Sarcini & Remindere</span>
             <div onclick="openAddTR()" style="padding:6px 14px; border-radius:6px; background:rgba(255,255,255,0.2); color:#fff; font-size:14px; font-weight:600; cursor:pointer;">+ Adauga</div>
           </div>
           <div class="sub-scroll" id="tr-list">
             <div style="font-size:12px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Task-uri active</div>
             <div class="sub-card" style="padding:0;overflow:hidden;" id="tr-tasks-list">
               <div class="tr-task-item" onclick="openTRAction('task','Schimba filtrele de ulei si motorina','Urgent','Azi','Ion Popescu',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-bottom:1px solid #f0f0f0;cursor:pointer;">
-                <div style="font-size:22px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div>
+                <div style="font-size:22px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div>
                 <div style="flex:1;">
                   <div style="font-size:15px;font-weight:600;color:var(--brand-text-primary);">Schimba filtrele de ulei si motorina</div>
                   <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
                     <span style="padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:var(--brand-danger-bg);color:var(--brand-danger);">Urgent</span>
-                    <span style="font-size:12px;color:var(--brand-text-muted);">&#128197; Azi</span>
+                    <span style="font-size:12px;color:var(--brand-text-muted);"><i data-lucide="calendar"></i> Azi</span>
                     <span style="font-size:12px;color:var(--brand-text-muted);">catre <strong>Ion Popescu</strong></span>
                   </div>
-                  <div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);">&#128668; JD 6130R</span></div>
+                  <div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);"><i data-lucide="tractor"></i> JD 6130R</span></div>
                 </div>
-                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span>
+                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span>
               </div>
               <div class="tr-task-item" onclick="openTRAction('task','Programeaza ITP la service autorizat','Normal','20 Apr','',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-bottom:1px solid #f0f0f0;cursor:pointer;">
-                <div style="font-size:22px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div>
+                <div style="font-size:22px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div>
                 <div style="flex:1;">
                   <div style="font-size:15px;font-weight:600;color:var(--brand-text-primary);">Programeaza ITP la service autorizat</div>
                   <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
                     <span style="padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:var(--brand-warning-bg);color:var(--brand-warning);">Normal</span>
-                    <span style="font-size:12px;color:var(--brand-text-muted);">&#128197; 20 Apr</span>
+                    <span style="font-size:12px;color:var(--brand-text-muted);"><i data-lucide="calendar"></i> 20 Apr</span>
                   </div>
-                  <div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);">&#128668; JD 6130R</span></div>
+                  <div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);"><i data-lucide="tractor"></i> JD 6130R</span></div>
                 </div>
-                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span>
+                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span>
               </div>
               <div class="tr-task-item" onclick="openTRAction('task','Verificat presiune anvelope','Normal','12 Apr','',true)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;cursor:pointer;">
-                <div style="font-size:22px;color:var(--brand-primary);flex-shrink:0;margin-top:-2px;">&#9745;</div>
+                <div style="font-size:22px;color:var(--brand-primary);flex-shrink:0;margin-top:-2px;"><i data-lucide="check-square"></i></div>
                 <div style="flex:1;">
                   <div style="font-size:15px;font-weight:600;color:var(--brand-text-muted);text-decoration:line-through;">Verificat presiune anvelope</div>
-                  <div style="display:flex;align-items:center;gap:6px;margin-top:4px;"><span style="font-size:12px;color:var(--brand-text-muted);">&#10003; Finalizat 12 Apr</span></div>
+                  <div style="display:flex;align-items:center;gap:6px;margin-top:4px;"><span style="font-size:12px;color:var(--brand-text-muted);"><i data-lucide="check"></i> Finalizat 12 Apr</span></div>
                 </div>
-                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span>
+                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span>
               </div>
             </div>
             <div style="font-size:12px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;">Remindere personale</div>
             <div class="sub-card tr-rem-item" onclick="openTRAction('reminder','Suna la DRPCIV pentru ITP','','Azi, 10:00','',false)" style="display:flex;align-items:flex-start;gap:10px;border-left:3px solid var(--brand-danger);cursor:pointer;">
-              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">&#128276;</div>
+              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;"><i data-lucide="bell"></i></div>
               <div style="flex:1;">
                 <div style="font-size:15px;font-weight:600;">Suna la DRPCIV pentru ITP</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="font-size:12px;color:var(--brand-danger);font-weight:600;">&#128197; Azi, 10:00 — intarziat</span>
-                  <span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);">&#128668; JD 6130R</span>
+                  <span style="font-size:12px;color:var(--brand-danger);font-weight:600;"><i data-lucide="calendar"></i> Azi, 10:00 — intarziat</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);"><i data-lucide="tractor"></i> JD 6130R</span>
                 </div>
               </div>
-              <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;">&#9654;</span>
+              <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;"><i data-lucide="chevron-right"></i></span>
             </div>
             <div class="sub-card tr-rem-item" onclick="openTRAction('reminder','Schimba uleiul la 550 ore','','~25 Apr','',false)" style="display:flex;align-items:flex-start;gap:10px;border-left:3px solid var(--brand-warning);cursor:pointer;">
-              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">&#128276;</div>
+              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;"><i data-lucide="bell"></i></div>
               <div style="flex:1;">
                 <div style="font-size:15px;font-weight:600;">Schimba uleiul la 550 ore</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="font-size:12px;color:var(--brand-warning);font-weight:600;">&#128197; ~25 Apr (est. 13 ore ramase)</span>
-                  <span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);">&#128668; JD 6130R</span>
+                  <span style="font-size:12px;color:var(--brand-warning);font-weight:600;"><i data-lucide="calendar"></i> ~25 Apr (est. 13 ore ramase)</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);"><i data-lucide="tractor"></i> JD 6130R</span>
                 </div>
               </div>
-              <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;">&#9654;</span>
+              <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;"><i data-lucide="chevron-right"></i></span>
             </div>
           </div>
         </div>
@@ -1342,12 +1345,12 @@
               <!-- Tip -->
               <div style="display:flex;gap:8px;margin-bottom:14px;">
                 <div onclick="trSetType('task',this)" id="tr-type-task" style="flex:1;padding:14px;border:2px solid var(--brand-primary);border-radius:var(--brand-radius-lg);text-align:center;cursor:pointer;background:var(--brand-hover-bg);">
-                  <div style="font-size:22px;margin-bottom:4px;">&#9745;</div>
+                  <div style="font-size:22px;margin-bottom:4px;"><i data-lucide="check-square"></i></div>
                   <div style="font-size:15px;font-weight:700;color:var(--brand-primary);">Task</div>
                   <div style="font-size:11px;color:var(--brand-text-muted);">Sarcina cu deadline</div>
                 </div>
                 <div onclick="trSetType('reminder',this)" id="tr-type-rem" style="flex:1;padding:14px;border:2px solid var(--brand-border);border-radius:var(--brand-radius-lg);text-align:center;cursor:pointer;">
-                  <div style="font-size:22px;margin-bottom:4px;">&#128276;</div>
+                  <div style="font-size:22px;margin-bottom:4px;"><i data-lucide="bell"></i></div>
                   <div style="font-size:15px;font-weight:700;color:var(--brand-text-primary);">Reminder</div>
                   <div style="font-size:11px;color:var(--brand-text-muted);">Notificare personala</div>
                 </div>
@@ -1390,7 +1393,7 @@
               </div>
               <!-- Resursa -->
               <div style="margin-top:12px;padding:10px;background:var(--brand-surface);border-radius:var(--brand-radius);display:flex;align-items:center;gap:8px;">
-                <span style="font-size:16px;">&#128668;</span>
+                <span style="font-size:16px;"><i data-lucide="tractor"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:12px;color:var(--brand-text-muted);font-weight:600;">Legat de utilaj</div>
                   <div style="font-size:14px;font-weight:700;color:var(--brand-primary);">JD 6130R</div>
@@ -1405,7 +1408,7 @@
             </div>
             <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;">
               <div onclick="closeAddTR()" style="flex:1;padding:14px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div>
-              <div onclick="saveTR()" style="flex:1;padding:14px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;">&#10003; Salveaza</div>
+              <div onclick="saveTR()" style="flex:1;padding:14px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;"><i data-lucide="check"></i> Salveaza</div>
             </div>
           </div>
         </div>
@@ -1495,23 +1498,23 @@ var ICONS = {
 
 var utilaje = [
   // Utilaje
-  { workPoint: 'PL ferma1', name: 'John Deere 6130R', value: '<span style="font-size:21px;">453</span>', unit: 'L Gas', number: 'TM-01-AGR', type: 'Tractor', icons: ['&#128276;','','&#128225;'], tags: 'GPS Utilaje', updated: 'Activ: 15-apr-26', status: 'A: 26 <span style="font-size:13px;font-weight:400;">km/h</span>', statusColor: '#27AE60', thumbIcon: ICONS.tractorMic, thumbBg: '#00686A', details: ['Parcela 12 Nord','','Ion Popescu'], onClick: "openDetail('utilaj','John Deere 6130R','&#128668;','TM-01-AGR')" },
-  { workPoint: 'PL ferma2', name: 'New Holland T7.270', value: '<span style="font-size:21px;">312</span>', unit: 'L Gas', number: 'TM-05-AGR', type: 'Tractor', icons: ['','','&#128225;'], tags: 'GPS Utilaje', updated: 'Activ: 15-apr-26', status: 'A: 18 <span style="font-size:13px;font-weight:400;">km/h</span>', statusColor: '#27AE60', thumbIcon: ICONS.tractorMare, thumbBg: '#00686A', details: ['Parcela 7 Vest','','Andrei Popa'], onClick: "openDetail('utilaj','New Holland T7.270','&#128668;','TM-05-AGR')" },
-  { workPoint: 'PL ferma2', name: 'New Holland CR9.80', number: 'TM-02-AGR', type: 'Combina', icons: ['','','&#128225;'], tags: 'GPS Utilaje', updated: 'Inactiv: 10-apr-26', status: 'Inactiv', statusColor: '#666', thumbIcon: ICONS.combina, thumbBg: '#00686A', details: ['','',''], onClick: "openDetail('utilaj','New Holland CR9.80','&#127806;','TM-02-AGR')" },
-  { workPoint: 'PL agricola', name: 'Fendt 724 Vario', value: '<span style="font-size:21px;">580</span>', unit: 'L Gas', number: 'TM-06-AGR', type: 'Tractor', icons: ['&#128276;','','&#128225;'], tags: 'GPS Utilaje', updated: 'Activ: 15-apr-26', status: 'A: 0 <span style="font-size:13px;font-weight:400;">km/h</span>', statusColor: '#27AE60', thumbIcon: ICONS.tractorMare, thumbBg: '#00686A', details: ['Parcela 3 Sud','','Vasile Lungu'], onClick: "openDetail('utilaj','Fendt 724 Vario','&#128668;','TM-06-AGR')" },
-  { workPoint: 'PL ferma1', name: 'DJI Agras T40', number: 'EQ-01', type: 'Drona', tags: 'Utilaje', icons: ['&#128276;'], updated: 'Activ: 15-apr-26', status: 'Activ', statusColor: '#27AE60', thumbIcon: ICONS.drona, thumbBg: '#00686A', details: ['Parcela 15 Est','','Elena Vasile'], onClick: "openDetail('utilaj','DJI Agras T40','&#128225;','EQ-01')" },
+  { workPoint: 'PL ferma1', name: 'John Deere 6130R', value: '<span style="font-size:21px;">453</span>', unit: 'L Gas', number: 'TM-01-AGR', type: 'Tractor', icons: ['<i data-lucide="bell"></i>','','<i data-lucide="radio-tower"></i>'], tags: 'GPS Utilaje', updated: 'Activ: 15-apr-26', status: 'A: 26 <span style="font-size:13px;font-weight:400;">km/h</span>', statusColor: '#27AE60', thumbIcon: ICONS.tractorMic, thumbBg: '#00686A', details: ['Parcela 12 Nord','','Ion Popescu'], onClick: "openDetail('utilaj','John Deere 6130R','<i data-lucide="tractor"></i>','TM-01-AGR')" },
+  { workPoint: 'PL ferma2', name: 'New Holland T7.270', value: '<span style="font-size:21px;">312</span>', unit: 'L Gas', number: 'TM-05-AGR', type: 'Tractor', icons: ['','','<i data-lucide="radio-tower"></i>'], tags: 'GPS Utilaje', updated: 'Activ: 15-apr-26', status: 'A: 18 <span style="font-size:13px;font-weight:400;">km/h</span>', statusColor: '#27AE60', thumbIcon: ICONS.tractorMare, thumbBg: '#00686A', details: ['Parcela 7 Vest','','Andrei Popa'], onClick: "openDetail('utilaj','New Holland T7.270','<i data-lucide="tractor"></i>','TM-05-AGR')" },
+  { workPoint: 'PL ferma2', name: 'New Holland CR9.80', number: 'TM-02-AGR', type: 'Combina', icons: ['','','<i data-lucide="radio-tower"></i>'], tags: 'GPS Utilaje', updated: 'Inactiv: 10-apr-26', status: 'Inactiv', statusColor: '#666', thumbIcon: ICONS.combina, thumbBg: '#00686A', details: ['','',''], onClick: "openDetail('utilaj','New Holland CR9.80','<i data-lucide="wheat"></i>','TM-02-AGR')" },
+  { workPoint: 'PL agricola', name: 'Fendt 724 Vario', value: '<span style="font-size:21px;">580</span>', unit: 'L Gas', number: 'TM-06-AGR', type: 'Tractor', icons: ['<i data-lucide="bell"></i>','','<i data-lucide="radio-tower"></i>'], tags: 'GPS Utilaje', updated: 'Activ: 15-apr-26', status: 'A: 0 <span style="font-size:13px;font-weight:400;">km/h</span>', statusColor: '#27AE60', thumbIcon: ICONS.tractorMare, thumbBg: '#00686A', details: ['Parcela 3 Sud','','Vasile Lungu'], onClick: "openDetail('utilaj','Fendt 724 Vario','<i data-lucide="tractor"></i>','TM-06-AGR')" },
+  { workPoint: 'PL ferma1', name: 'DJI Agras T40', number: 'EQ-01', type: 'Drona', tags: 'Utilaje', icons: ['<i data-lucide="bell"></i>'], updated: 'Activ: 15-apr-26', status: 'Activ', statusColor: '#27AE60', thumbIcon: ICONS.drona, thumbBg: '#00686A', details: ['Parcela 15 Est','','Elena Vasile'], onClick: "openDetail('utilaj','DJI Agras T40','<i data-lucide="radio-tower"></i>','EQ-01')" },
   // Agregate
-  { workPoint: 'PL agricola', name: 'Lemken 4F', number: 'AGR021', type: 'Plug', tags: 'Agregate', icons: ['&#128276;'], updated: 'Defect: 08-apr-26', status: 'Defect', statusColor: '#C0392B', thumbIcon: ICONS.plug, thumbBg: '#1B5E20', details: ['','',''], onClick: "openDetail('agregat','Lemken 4F','&#9881;','AGR021')" },
-  { workPoint: 'PL ferma1', name: 'Amazone Catros', number: 'AGR047', type: 'Disc', tags: 'Agregate', updated: 'Inactiv: 05-apr-26', status: 'Inactiv', statusColor: '#666', thumbIcon: ICONS.plug, thumbBg: '#1B5E20', details: ['','',''], onClick: "openDetail('agregat','Amazone Catros','&#9881;','AGR047')" },
-  { workPoint: 'PL ferma1', name: 'Gaspardo Directa', number: 'AGR089', type: 'Semanatoarice', tags: 'Agregate', icons: ['&#128276;'], updated: 'Activ: 14-apr-26', status: 'Activ', statusColor: '#27AE60', thumbIcon: ICONS.plug, thumbBg: '#1B5E20', details: ['Parcela 12 Nord','','Ion Popescu'], onClick: "openDetail('agregat','Gaspardo Directa','&#9881;','AGR089')" },
-  { workPoint: 'PL ferma2', name: 'Berthoud Tenor 24m', number: 'AGR112', type: 'Stropitoare', tags: 'Agregate', updated: 'Inactiv: 12-apr-26', status: 'Inactiv', statusColor: '#666', thumbIcon: ICONS.sprayer, thumbBg: '#1B5E20', details: ['','',''], onClick: "openDetail('agregat','Berthoud Tenor 24m','&#9881;','AGR112')" },
+  { workPoint: 'PL agricola', name: 'Lemken 4F', number: 'AGR021', type: 'Plug', tags: 'Agregate', icons: ['<i data-lucide="bell"></i>'], updated: 'Defect: 08-apr-26', status: 'Defect', statusColor: '#C0392B', thumbIcon: ICONS.plug, thumbBg: '#1B5E20', details: ['','',''], onClick: "openDetail('agregat','Lemken 4F','<i data-lucide="settings"></i>','AGR021')" },
+  { workPoint: 'PL ferma1', name: 'Amazone Catros', number: 'AGR047', type: 'Disc', tags: 'Agregate', updated: 'Inactiv: 05-apr-26', status: 'Inactiv', statusColor: '#666', thumbIcon: ICONS.plug, thumbBg: '#1B5E20', details: ['','',''], onClick: "openDetail('agregat','Amazone Catros','<i data-lucide="settings"></i>','AGR047')" },
+  { workPoint: 'PL ferma1', name: 'Gaspardo Directa', number: 'AGR089', type: 'Semanatoarice', tags: 'Agregate', icons: ['<i data-lucide="bell"></i>'], updated: 'Activ: 14-apr-26', status: 'Activ', statusColor: '#27AE60', thumbIcon: ICONS.plug, thumbBg: '#1B5E20', details: ['Parcela 12 Nord','','Ion Popescu'], onClick: "openDetail('agregat','Gaspardo Directa','<i data-lucide="settings"></i>','AGR089')" },
+  { workPoint: 'PL ferma2', name: 'Berthoud Tenor 24m', number: 'AGR112', type: 'Stropitoare', tags: 'Agregate', updated: 'Inactiv: 12-apr-26', status: 'Inactiv', statusColor: '#666', thumbIcon: ICONS.sprayer, thumbBg: '#1B5E20', details: ['','',''], onClick: "openDetail('agregat','Berthoud Tenor 24m','<i data-lucide="settings"></i>','AGR112')" },
   // Autovehicule
-  { workPoint: 'PL ferma1', name: 'Dacia Duster 4x4', value: '<span style="font-size:21px;">42</span>', unit: 'L Gas', number: 'TM-10-FRM', type: 'Autovehicul - SUV', icons: ['','','&#128225;'], tags: 'GPS Autovehicule', updated: 'Activ: 15-apr-26', status: 'A: 65 <span style="font-size:13px;font-weight:400;">km/h</span>', statusColor: '#27AE60', thumbIcon: ICONS.masina, thumbBg: '#0369A1', details: ['','','Mihai Stancu'], onClick: "openDetail('utilaj','Dacia Duster 4x4','&#128663;','TM-10-FRM')" },
-  { workPoint: 'PL ferma1', name: 'Iveco Daily Basculant', value: '<span style="font-size:21px;">85</span>', unit: 'L Gas', number: 'TM-11-FRM', type: 'Autovehicul - Camion', icons: ['&#128276;','','&#128225;'], tags: 'GPS Autovehicule', updated: 'Activ: 15-apr-26', status: 'A: 0 <span style="font-size:13px;font-weight:400;">km/h</span>', statusColor: '#27AE60', thumbIcon: ICONS.utilitar, thumbBg: '#0369A1', details: ['','','Andrei Popa'], onClick: "openDetail('utilaj','Iveco Daily Basculant','&#128666;','TM-11-FRM')" },
-  { workPoint: 'PL AgrSud', name: 'VW Transporter', number: 'TM-12-FRM', type: 'Autovehicul - Duba', icons: ['','','&#128225;'], tags: 'GPS Autovehicule', updated: 'Inactiv: 09-apr-26', status: 'Inactiv', statusColor: '#666', thumbIcon: ICONS.utilitar, thumbBg: '#0369A1', details: ['','',''], onClick: "openDetail('utilaj','VW Transporter','&#128656;','TM-12-FRM')" },
+  { workPoint: 'PL ferma1', name: 'Dacia Duster 4x4', value: '<span style="font-size:21px;">42</span>', unit: 'L Gas', number: 'TM-10-FRM', type: 'Autovehicul - SUV', icons: ['','','<i data-lucide="radio-tower"></i>'], tags: 'GPS Autovehicule', updated: 'Activ: 15-apr-26', status: 'A: 65 <span style="font-size:13px;font-weight:400;">km/h</span>', statusColor: '#27AE60', thumbIcon: ICONS.masina, thumbBg: '#0369A1', details: ['','','Mihai Stancu'], onClick: "openDetail('utilaj','Dacia Duster 4x4','<i data-lucide="car"></i>','TM-10-FRM')" },
+  { workPoint: 'PL ferma1', name: 'Iveco Daily Basculant', value: '<span style="font-size:21px;">85</span>', unit: 'L Gas', number: 'TM-11-FRM', type: 'Autovehicul - Camion', icons: ['<i data-lucide="bell"></i>','','<i data-lucide="radio-tower"></i>'], tags: 'GPS Autovehicule', updated: 'Activ: 15-apr-26', status: 'A: 0 <span style="font-size:13px;font-weight:400;">km/h</span>', statusColor: '#27AE60', thumbIcon: ICONS.utilitar, thumbBg: '#0369A1', details: ['','','Andrei Popa'], onClick: "openDetail('utilaj','Iveco Daily Basculant','<i data-lucide="truck"></i>','TM-11-FRM')" },
+  { workPoint: 'PL AgrSud', name: 'VW Transporter', number: 'TM-12-FRM', type: 'Autovehicul - Duba', icons: ['','','<i data-lucide="radio-tower"></i>'], tags: 'GPS Autovehicule', updated: 'Inactiv: 09-apr-26', status: 'Inactiv', statusColor: '#666', thumbIcon: ICONS.utilitar, thumbBg: '#0369A1', details: ['','',''], onClick: "openDetail('utilaj','VW Transporter','<i data-lucide="bus"></i>','TM-12-FRM')" },
   // Echipamente
-  { workPoint: 'PL ferma1', name: 'Davis Vantage Pro2', number: 'EQ-02', type: 'Statie meteo', icons: ['','','&#128225;'], tags: 'GPS Echipamente', updated: 'Activ: 15-apr-26', status: 'Activ', statusColor: '#27AE60', thumbIcon: ICONS.echipament, thumbBg: '#6D28D9', details: ['','',''], onClick: "openDetail('echipament','Davis Vantage Pro2','&#9925;','EQ-02')" },
-  { workPoint: 'PL agricola', name: 'Honda EU70is', number: 'EQ-03', type: 'Generator electric', tags: 'Echipamente', icons: [], updated: 'Defect: 28-mar-26', status: 'Defect', statusColor: '#C0392B', thumbIcon: ICONS.echipament, thumbBg: '#6D28D9', details: ['','',''], onClick: "openDetail('echipament','Honda EU70is','&#9889;','EQ-03')" }
+  { workPoint: 'PL ferma1', name: 'Davis Vantage Pro2', number: 'EQ-02', type: 'Statie meteo', icons: ['','','<i data-lucide="radio-tower"></i>'], tags: 'GPS Echipamente', updated: 'Activ: 15-apr-26', status: 'Activ', statusColor: '#27AE60', thumbIcon: ICONS.echipament, thumbBg: '#6D28D9', details: ['','',''], onClick: "openDetail('echipament','Davis Vantage Pro2','<i data-lucide="cloud-sun"></i>','EQ-02')" },
+  { workPoint: 'PL agricola', name: 'Honda EU70is', number: 'EQ-03', type: 'Generator electric', tags: 'Echipamente', icons: [], updated: 'Defect: 28-mar-26', status: 'Defect', statusColor: '#C0392B', thumbIcon: ICONS.echipament, thumbBg: '#6D28D9', details: ['','',''], onClick: "openDetail('echipament','Honda EU70is','<i data-lucide="zap"></i>','EQ-03')" }
 ];
 // Grupare pe 4 categorii: Utilaje / Autovehicule / Agregate / Echipamente
 function getUtilajCat(tip) {
@@ -1522,7 +1525,7 @@ function getUtilajCat(tip) {
   return 'Altele';
 }
 var CAT_COLORS = { 'Utilaje':'var(--brand-primary)', 'Autovehicule':'#0369A1', 'Agregate':'#1B5E20', 'Echipamente':'#6D28D9', 'Altele':'#666' };
-var CAT_ICONS = { 'Utilaje':'&#128668;', 'Autovehicule':'&#128663;', 'Agregate':'&#9881;', 'Echipamente':'&#128268;' };
+var CAT_ICONS = { 'Utilaje':'<i data-lucide="tractor"></i>', 'Autovehicule':'<i data-lucide="car"></i>', 'Agregate':'<i data-lucide="settings"></i>', 'Echipamente':'<i data-lucide="plug"></i>' };
 
 var groups = { 'Utilaje':[], 'Autovehicule':[], 'Agregate':[], 'Echipamente':[] };
 utilaje.forEach(function(u) {
@@ -1543,10 +1546,10 @@ groupOrder.forEach(function(g) {
 
 
 initFabActions([
-  { icon: '&#10010;', label: 'Adauga utilaj', action: function(){ openAddDrawer(); } },
-  { icon: '&#128465;', label: 'Sterge utilaj', action: function(){ tryFabDelete(); } },
-  { icon: '&#128196;', label: 'Exporta lista', action: function(){ alert('Exporta lista utilaje'); } },
-  { icon: '&#128438;', label: 'Importa utilaje', action: function(){ alert('Importa utilaje'); } }
+  { icon: '<i data-lucide="plus"></i>', label: 'Adauga utilaj', action: function(){ openAddDrawer(); } },
+  { icon: '<i data-lucide="trash-2"></i>', label: 'Sterge utilaj', action: function(){ tryFabDelete(); } },
+  { icon: '<i data-lucide="file"></i>', label: 'Exporta lista', action: function(){ alert('Exporta lista utilaje'); } },
+  { icon: '<i data-lucide="printer"></i>', label: 'Importa utilaje', action: function(){ alert('Importa utilaje'); } }
 ]);
 setupFabDelete({ cardSel: '.ucard', entityLabel: 'utilaj', entityLabelPl: 'utilaje', labelText: 'Sterge utilaj' });
 
@@ -1769,7 +1772,7 @@ function openDetail(type, name, icon, plate) {
   var ab = document.getElementById('add-btn'); if (ab) ab.style.display = 'none';
   // Update hero
   document.getElementById('detail-title').textContent = name || 'Detalii';
-  document.querySelector('.detail-hero-icon').innerHTML = icon || '&#128668;';
+  document.querySelector('.detail-hero-icon').innerHTML = icon || '<i data-lucide="tractor"></i>';
   document.querySelector('.detail-hero .equip-detail-name').textContent = name || '';
   document.querySelector('.detail-hero .equip-detail-plate').textContent = (plate ? plate + ' \u00B7 ' : '') + type;
   // Show/hide normativ card
@@ -1925,20 +1928,20 @@ function saveTR() {
   if (trCurrentType === 'task') {
     var list = document.getElementById('tr-tasks-list');
     var html = '<div class="tr-task-item" onclick="openTRAction(\'task\',\'' + title.replace(/'/g,"\\'") + '\',\'Normal\',\'Nou\',\'\',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-top:1px solid #f0f0f0;cursor:pointer;">'
-      + '<div style="font-size:22px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div>'
+      + '<div style="font-size:22px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div>'
       + '<div style="flex:1;"><div style="font-size:15px;font-weight:600;color:var(--brand-text-primary);">' + title + '</div>'
       + '<div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;"><span style="padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);">Nou</span></div>'
-      + '<div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);">&#128668; JD 6130R</span></div>'
-      + '</div><span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span></div>';
+      + '<div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);"><i data-lucide="tractor"></i> JD 6130R</span></div>'
+      + '</div><span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span></div>';
     list.insertAdjacentHTML('beforeend', html);
   } else {
     var scroll = document.getElementById('tr-list');
     var html = '<div class="sub-card tr-rem-item" onclick="openTRAction(\'reminder\',\'' + title.replace(/'/g,"\\'") + '\',\'\',\'Programat\',\'\',false)" style="display:flex;align-items:flex-start;gap:10px;border-left:3px solid var(--brand-primary);cursor:pointer;margin-top:8px;">'
-      + '<div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">&#128276;</div>'
+      + '<div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;"><i data-lucide="bell"></i></div>'
       + '<div style="flex:1;"><div style="font-size:15px;font-weight:600;">' + title + '</div>'
-      + '<div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;"><span style="font-size:12px;color:var(--brand-primary);font-weight:600;">&#128197; Programat</span>'
-      + '<span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);">&#128668; JD 6130R</span></div></div>'
-      + '<span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;">&#9654;</span></div>';
+      + '<div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;"><span style="font-size:12px;color:var(--brand-primary);font-weight:600;"><i data-lucide="calendar"></i> Programat</span>'
+      + '<span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);"><i data-lucide="tractor"></i> JD 6130R</span></div></div>'
+      + '<span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;"><i data-lucide="chevron-right"></i></span></div>';
     scroll.insertAdjacentHTML('beforeend', html);
   }
   document.getElementById('tr-add-title').value = '';
@@ -1960,19 +1963,19 @@ function openTRAction(type, title, priority, deadline, assignee, isDone) {
     } else {
       badge.textContent = 'Task'; badge.style.background = 'var(--brand-warning-bg)'; badge.style.color = 'var(--brand-warning)';
     }
-    meta.innerHTML = '&#128197; ' + deadline + (assignee ? ' &middot; ' + assignee : '');
+    meta.innerHTML = '<i data-lucide="calendar"></i> ' + deadline + (assignee ? ' &middot; ' + assignee : '');
 
     var html = '';
     // Edit
-    html += '<div onclick="openEditTR()" style="display:flex;align-items:center;gap:12px;padding:16px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;">&#9998;</span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-text-primary);">Editeaza task</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Modifica descriere, deadline, prioritate</div></div></div>';
+    html += '<div onclick="openEditTR()" style="display:flex;align-items:center;gap:12px;padding:16px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;"><i data-lucide="pencil"></i></span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-text-primary);">Editeaza task</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Modifica descriere, deadline, prioritate</div></div></div>';
     // Complete / Uncomplete
     if (isDone) {
-      html += '<div onclick="closeTRAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:24px;">&#9744;</span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-warning);">Marcheaza ca nefinalizat</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Redeschide task-ul</div></div></div>';
+      html += '<div onclick="closeTRAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:24px;"><i data-lucide="square"></i></span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-warning);">Marcheaza ca nefinalizat</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Redeschide task-ul</div></div></div>';
     } else {
-      html += '<div onclick="closeTRAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-success-bg);border:1px solid var(--brand-success);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:24px;">&#9745;</span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-success);">Marcheaza ca finalizat</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Task-ul va fi completat</div></div></div>';
+      html += '<div onclick="closeTRAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-success-bg);border:1px solid var(--brand-success);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:24px;"><i data-lucide="check-square"></i></span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-success);">Marcheaza ca finalizat</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Task-ul va fi completat</div></div></div>';
     }
     // Delete
-    html += '<div onclick="confirmDeleteTR()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-danger-bg);border:1px solid var(--brand-danger);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;">&#128465;</span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-danger);">Sterge task</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Necesita confirmare</div></div></div>';
+    html += '<div onclick="confirmDeleteTR()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-danger-bg);border:1px solid var(--brand-danger);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;"><i data-lucide="trash-2"></i></span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-danger);">Sterge task</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Necesita confirmare</div></div></div>';
     // Reasign
     html += '<div style="font-size:12px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.5px;margin:6px 0 8px;">Atribuie / Reatribuie</div>';
     html += '<div style="background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);overflow:hidden;margin-bottom:10px;">';
@@ -1995,17 +1998,17 @@ function openTRAction(type, title, priority, deadline, assignee, isDone) {
     // Reminder
     badge.textContent = 'Reminder — Personal';
     badge.style.background = '#EDE9FE'; badge.style.color = '#6D28D9';
-    meta.innerHTML = '&#128197; ' + deadline;
+    meta.innerHTML = '<i data-lucide="calendar"></i> ' + deadline;
 
     var html = '';
     // Edit
-    html += '<div onclick="openEditTR()" style="display:flex;align-items:center;gap:12px;padding:16px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;">&#9998;</span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-text-primary);">Editeaza reminder</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Modifica descriere, data, ora</div></div></div>';
+    html += '<div onclick="openEditTR()" style="display:flex;align-items:center;gap:12px;padding:16px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;"><i data-lucide="pencil"></i></span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-text-primary);">Editeaza reminder</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Modifica descriere, data, ora</div></div></div>';
     // Mark done
-    html += '<div onclick="closeTRAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-success-bg);border:1px solid var(--brand-success);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:24px;">&#9745;</span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-success);">Marcheaza ca rezolvat</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Reminder-ul dispare din lista</div></div></div>';
+    html += '<div onclick="closeTRAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-success-bg);border:1px solid var(--brand-success);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:24px;"><i data-lucide="check-square"></i></span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-success);">Marcheaza ca rezolvat</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Reminder-ul dispare din lista</div></div></div>';
     // Amana
-    html += '<div onclick="closeTRAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;">&#128337;</span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-warning);">Amana cu 1 zi</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Muta deadline-ul cu o zi</div></div></div>';
+    html += '<div onclick="closeTRAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;"><i data-lucide="clock"></i></span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-warning);">Amana cu 1 zi</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Muta deadline-ul cu o zi</div></div></div>';
     // Delete
-    html += '<div onclick="confirmDeleteTR()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-danger-bg);border:1px solid var(--brand-danger);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;">&#128465;</span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-danger);">Sterge reminder</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Necesita confirmare</div></div></div>';
+    html += '<div onclick="confirmDeleteTR()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-danger-bg);border:1px solid var(--brand-danger);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;"><i data-lucide="trash-2"></i></span><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:var(--brand-danger);">Sterge reminder</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Necesita confirmare</div></div></div>';
     actions.innerHTML = html;
   }
   document.getElementById('tr-action-popup').style.display = 'block';
@@ -2016,12 +2019,12 @@ function closeTRAction() { document.getElementById('tr-action-popup').style.disp
 function confirmDeleteTR() {
   var actions = document.getElementById('tra-actions');
   actions.innerHTML = '<div style="text-align:center;padding:20px 0;">'
-    + '<div style="width:48px;height:48px;border-radius:50%;background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px;">&#128465;</div>'
+    + '<div style="width:48px;height:48px;border-radius:50%;background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px;"><i data-lucide="trash-2"></i></div>'
     + '<div style="font-size:18px;font-weight:700;color:var(--brand-text-primary);margin-bottom:4px;">Esti sigur?</div>'
     + '<div style="font-size:14px;color:var(--brand-text-muted);margin-bottom:16px;">Aceasta actiune nu poate fi anulata.</div>'
     + '<div style="display:flex;gap:8px;padding:0 12px;">'
     + '<div onclick="closeTRAction()" style="flex:1;padding:14px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div>'
-    + '<div onclick="closeTRAction()" style="flex:1;padding:14px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;">&#128465; Da, sterge</div>'
+    + '<div onclick="closeTRAction()" style="flex:1;padding:14px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;"><i data-lucide="trash-2"></i> Da, sterge</div>'
     + '</div></div>';
 }
 
@@ -2122,5 +2125,7 @@ window.onUtilTipChange = function(val) {
   }
 };
 </script>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

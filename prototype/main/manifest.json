@@ -1,7 +1,7 @@
 {
   "name": "Rurio Prototype",
   "short_name": "Rurio Prototype",
-  "start_url": "/index.html",
+  "start_url": "./roles.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",

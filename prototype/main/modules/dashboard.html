@@ -6,6 +6,8 @@
   <link rel="manifest" href="../manifest.json">
   <title>Dashboard — UI Preview</title>
   <style>
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
     :root {
       --brand-primary:        #00686A;
       --brand-primary-80:     #338687;
@@ -36,7 +38,7 @@
     body { font-family: var(--brand-font-sans); background: #f0f0f0; color: var(--brand-text-primary); height: 100%; }
 
     /* Layout */
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
 
     /* Toggle bar */
 
@@ -77,6 +79,7 @@
     }
     .picker-item:hover { background: var(--brand-hover-bg); }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -90,7 +93,7 @@
         <div style="background:var(--brand-primary); display:flex; align-items:center; justify-content:space-between; padding:12px 16px; flex-shrink:0;">
           <div style="background:#F57C00; color:#1a1a1a; font-size:13px; font-weight:700; padding:6px 14px; border-radius:8px; cursor:pointer; letter-spacing:0.5px;">INF</div>
           <div style="display:flex; align-items:center; gap:2px; color:#fff; font-size:16px; font-weight:700; letter-spacing:3px;">CONN<span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; background:#fff; color:var(--brand-primary); font-weight:900; font-size:15px; border-radius:3px; margin:0 1px;">N</span>AGRI</div>
-          <div onclick="toggleMenu()" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; font-size:19px;">&#9776;</div>
+          <div onclick="toggleMenu()" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; font-size:19px;"><i data-lucide="menu"></i></div>
         </div>
         <!-- Workspace context switcher (sub bara verde) — PRIMARY ENTRY POINT -->
         <div onclick="openContextSwitcher()" style="display:flex; align-items:center; gap:10px; padding:12px 14px; background:linear-gradient(135deg, var(--brand-surface) 0%, var(--brand-hover-bg) 100%); border-bottom:2px solid var(--brand-primary-40); flex-shrink:0; cursor:pointer; position:relative;">
@@ -101,7 +104,7 @@
             <div id="ctx-sub" style="font-size:13px; color:var(--brand-text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px;">Firma A &rsaquo; PL ferma1</div>
           </div>
           <div style="display:flex; flex-direction:column; align-items:center; gap:2px; flex-shrink:0;">
-            <div style="padding:6px 10px; border-radius:6px; background:var(--brand-primary); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,104,106,0.25);">Schimba &#9660;</div>
+            <div style="padding:6px 10px; border-radius:6px; background:var(--brand-primary); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,104,106,0.25);">Schimba <i data-lucide="chevron-down"></i></div>
           </div>
         </div>
 
@@ -111,9 +114,9 @@
           <div onclick="event.stopPropagation()" style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:75%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out; z-index:2;">
             <!-- Header -->
             <div style="display:flex; align-items:center; padding:14px 16px; border-bottom:1px solid var(--brand-border); flex-shrink:0;">
-              <div id="ctx-back" onclick="ctxGoBack()" style="display:none; width:32px; height:32px; align-items:center; justify-content:center; cursor:pointer; font-size:19px; color:var(--brand-text-primary); margin-right:8px;">&#9664;</div>
+              <div id="ctx-back" onclick="ctxGoBack()" style="display:none; width:32px; height:32px; align-items:center; justify-content:center; cursor:pointer; font-size:19px; color:var(--brand-text-primary); margin-right:8px;"><i data-lucide="chevron-left"></i></div>
               <div id="ctx-title" style="flex:1; font-size:16px; font-weight:700; color:var(--brand-text-primary);">Spatiile mele de lucru</div>
-              <div id="ctx-manage-btn" onclick="toggleCtxManageMode()" style="padding:12px 14px; border-radius:var(--brand-radius); font-size:13px; font-weight:700; color:#fff; background:var(--brand-primary); cursor:pointer; margin-right:8px; box-shadow:0 2px 6px rgba(0,104,106,0.3); display:flex; align-items:center; gap:5px;"><span style="font-size:14px;">&#9881;</span> Gestioneaza</div>
+              <div id="ctx-manage-btn" onclick="toggleCtxManageMode()" style="padding:12px 14px; border-radius:var(--brand-radius); font-size:13px; font-weight:700; color:#fff; background:var(--brand-primary); cursor:pointer; margin-right:8px; box-shadow:0 2px 6px rgba(0,104,106,0.3); display:flex; align-items:center; gap:5px;"><span style="font-size:14px;"><i data-lucide="settings"></i></span> Gestioneaza</div>
               <div onclick="closeContextSwitcher()" class="close-btn">&times;</div>
             </div>
             <!-- Search (normal mode) -->
@@ -146,12 +149,12 @@
                 <div style="font-size:13px; font-weight:600; color:var(--brand-text-muted); text-transform:uppercase; margin-bottom:6px;">Tip spatiu</div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;" id="ws-type-grid">
                   <div onclick="selectWsType(this,'complex')" class="ws-type-opt" style="padding:12px; border:2px solid var(--brand-primary); border-radius:var(--brand-radius); text-align:center; cursor:pointer; background:var(--brand-hover-bg);">
-                    <div style="font-size:23px; margin-bottom:4px;">&#127963;</div>
+                    <div style="font-size:23px; margin-bottom:4px;"><i data-lucide="building-2"></i></div>
                     <div style="font-size:13px; font-weight:600; color:var(--brand-primary);">Organizatie</div>
                     <div style="font-size:13px; color:var(--brand-text-muted);">Grupuri, firme, puncte</div>
                   </div>
                   <div onclick="selectWsType(this,'simplu')" class="ws-type-opt" style="padding:12px; border:2px solid var(--brand-border); border-radius:var(--brand-radius); text-align:center; cursor:pointer;">
-                    <div style="font-size:23px; margin-bottom:4px;">&#127793;</div>
+                    <div style="font-size:23px; margin-bottom:4px;"><i data-lucide="sprout"></i></div>
                     <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Simplu</div>
                     <div style="font-size:13px; color:var(--brand-text-muted);">Ferma, gradina, stupina</div>
                   </div>
@@ -191,7 +194,7 @@
             <!-- Footer -->
             <div style="padding:12px 16px; border-top:1px solid var(--brand-border); display:flex; gap:8px;">
               <div onclick="closeCtxWsForm()" style="flex:1; padding:12px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); text-align:center; font-size:14px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;">Anuleaza</div>
-              <div onclick="saveCtxWs()" style="flex:1; padding:12px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:14px; font-weight:600; cursor:pointer;">&#10003; Salveaza</div>
+              <div onclick="saveCtxWs()" style="flex:1; padding:12px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:14px; font-weight:600; cursor:pointer;"><i data-lucide="check"></i> Salveaza</div>
             </div>
           </div>
         </div>
@@ -213,7 +216,7 @@
             <div style="flex:1; overflow-y:auto; padding:12px 16px; scrollbar-width:none;">
               <!-- Mark complete / uncomplete -->
               <div id="task-popup-toggle" onclick="alert('Status schimbat!');closeTaskPopup();" style="display:flex; align-items:center; gap:12px; padding:16px; background:var(--brand-success-bg); border:1px solid var(--brand-success); border-radius:var(--brand-radius-lg); margin-bottom:10px; cursor:pointer;">
-                <span style="font-size:23px;">&#9745;</span>
+                <span style="font-size:23px;"><i data-lucide="check-square"></i></span>
                 <div style="flex:1;">
                   <div id="task-toggle-label" style="font-size:15px; font-weight:700; color:var(--brand-success);">Marcheaza ca finalizat</div>
                   <div id="task-toggle-desc" style="font-size:13px; color:var(--brand-text-muted); margin-top:2px;">Task-ul va fi mutat in lista finalizate</div>
@@ -222,7 +225,7 @@
 
               <!-- Ia inapoi la mine (doar pt "de la mine") -->
               <div id="task-popup-takeback" onclick="takeBackTask()" style="display:none; align-items:center; gap:12px; padding:16px; background:var(--brand-hover-bg); border:1px solid var(--brand-primary); border-radius:var(--brand-radius-lg); margin-bottom:10px; cursor:pointer;">
-                <span style="font-size:23px;">&#128229;</span>
+                <span style="font-size:23px;"><i data-lucide="inbox"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:15px; font-weight:700; color:var(--brand-primary);">Ia inapoi la mine</div>
                   <div style="font-size:13px; color:var(--brand-text-muted); margin-top:2px;">Task-ul revine in lista ta "Pentru mine"</div>
@@ -231,7 +234,7 @@
 
               <!-- Sterge task (doar pt "de la mine") -->
               <div id="task-popup-delete" onclick="deleteTask()" style="display:none; align-items:center; gap:12px; padding:16px; background:var(--brand-danger-bg); border:1px solid var(--brand-danger); border-radius:var(--brand-radius-lg); margin-bottom:10px; cursor:pointer;">
-                <span style="font-size:23px;">&#128465;</span>
+                <span style="font-size:23px;"><i data-lucide="trash-2"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:15px; font-weight:700; color:var(--brand-danger);">Sterge task</div>
                   <div style="font-size:13px; color:var(--brand-text-muted); margin-top:2px;">Task-ul va fi sters definitiv</div>
@@ -339,7 +342,7 @@
           <div onclick="closeCtxDeleteConfirm()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1;"></div>
           <div onclick="event.stopPropagation()" style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out; z-index:2;">
             <div style="padding:24px 20px; text-align:center;">
-              <div style="width:48px; height:48px; border-radius:50%; background:var(--brand-danger-bg); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:23px;" id="ctx-delete-icon">&#128465;</div>
+              <div style="width:48px; height:48px; border-radius:50%; background:var(--brand-danger-bg); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:23px;" id="ctx-delete-icon"><i data-lucide="trash-2"></i></div>
               <div id="ctx-delete-heading" style="font-size:17px; font-weight:700; color:var(--brand-text-primary); margin-bottom:6px;">Sterge spatiul de lucru?</div>
               <div id="ctx-delete-name" style="font-size:14px; color:var(--brand-text-muted); margin-bottom:4px;">Agro Vest Holdings</div>
               <div id="ctx-delete-content"></div>
@@ -354,7 +357,7 @@
           <div onclick="event.stopPropagation()" style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:85%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out; z-index:2;">
             <!-- Header -->
             <div style="display:flex; align-items:center; padding:16px 16px 12px; border-bottom:1px solid var(--brand-border); flex-shrink:0;">
-              <div id="dp-back" onclick="dpPrevStep()" style="display:none; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:19px; color:var(--brand-text-primary); margin-right:8px;">&#9664;</div>
+              <div id="dp-back" onclick="dpPrevStep()" style="display:none; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:19px; color:var(--brand-text-primary); margin-right:8px;"><i data-lucide="chevron-left"></i></div>
               <div style="flex:1;">
                 <div id="dp-title" style="font-size:16px; font-weight:700; color:var(--brand-text-primary);">Sterge punct de lucru</div>
                 <div id="dp-subtitle" style="font-size:13px; color:var(--brand-text-muted); margin-top:2px;">Pasul 1 din 3</div>
@@ -381,7 +384,7 @@
           <div onclick="closeDeleteFirma()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1;"></div>
           <div onclick="event.stopPropagation()" style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out; z-index:2;">
             <div style="padding:24px 20px; text-align:center;">
-              <div id="df-icon" style="width:48px; height:48px; border-radius:50%; background:var(--brand-danger-bg); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:23px;">&#128465;</div>
+              <div id="df-icon" style="width:48px; height:48px; border-radius:50%; background:var(--brand-danger-bg); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:23px;"><i data-lucide="trash-2"></i></div>
               <div id="df-heading" style="font-size:17px; font-weight:700; color:var(--brand-text-primary); margin-bottom:6px;">Sterge firma?</div>
               <div id="df-name" style="font-size:14px; color:var(--brand-text-muted); margin-bottom:4px;"></div>
               <div id="df-content"></div>
@@ -414,11 +417,11 @@
           <!-- Salut + Meteo rapid -->
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
             <div>
-              <div style="font-size:16px;font-weight:700;color:var(--brand-text-primary);">Buna, Ion! &#128075;</div>
+              <div style="font-size:16px;font-weight:700;color:var(--brand-text-primary);">Buna, Ion! <i data-lucide="hand"></i></div>
               <div style="font-size:13px;color:var(--brand-text-muted);">14 Aprilie 2026 &middot; Partial insorit</div>
             </div>
             <a href="../meteo/PREVIEW.html" style="text-decoration:none;text-align:center;padding:6px 10px;background:var(--brand-surface);border-radius:var(--brand-radius);border:1px solid var(--brand-border);">
-              <div style="font-size:23px;">&#9925;</div>
+              <div style="font-size:23px;"><i data-lucide="cloud-sun"></i></div>
               <div style="font-size:17px;font-weight:800;color:var(--brand-primary);">22&deg;</div>
             </a>
           </div>
@@ -426,22 +429,22 @@
           <!-- Alerte urgente -->
           <a href="../mesagerie/PREVIEW.html" style="display:block;text-decoration:none;background:var(--brand-danger-bg);border:1px solid var(--brand-danger);border-radius:var(--brand-radius);padding:10px 12px;margin-bottom:8px;">
             <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:17px;">&#9888;</span>
+              <span style="font-size:17px;"><i data-lucide="alert-triangle"></i></span>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:700;color:var(--brand-danger);">Risc inghet — Ferma Constanta</div>
                 <div style="font-size:13px;color:var(--brand-text-muted);">70% sanse Tmin &lt;0&deg;C noaptea &middot; Acum 2h</div>
               </div>
-              <span style="font-size:13px;color:var(--brand-text-muted);">&#9654;</span>
+              <span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="chevron-right"></i></span>
             </div>
           </a>
           <a href="../mesagerie/PREVIEW.html" style="display:block;text-decoration:none;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius);padding:10px 12px;margin-bottom:12px;">
             <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:17px;">&#128668;</span>
+              <span style="font-size:17px;"><i data-lucide="tractor"></i></span>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:700;color:var(--brand-warning);">Tractor JD-4520 — Geofencing</div>
                 <div style="font-size:13px;color:var(--brand-text-muted);">A iesit din zona Parcela 7 &middot; Acum 4h</div>
               </div>
-              <span style="font-size:13px;color:var(--brand-text-muted);">&#9654;</span>
+              <span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="chevron-right"></i></span>
             </div>
           </a>
 
@@ -474,7 +477,7 @@
           <div style="font-size:13px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Utilaje active in camp</div>
           <div style="background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);overflow:hidden;margin-bottom:12px;">
             <a href="../utilaje/PREVIEW.html" style="display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #f0f0f0;text-decoration:none;color:var(--brand-text-primary);">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:17px;">&#128668;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:17px;"><i data-lucide="tractor"></i></div>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:600;">JD 6130R — Arat</div>
                 <div style="font-size:13px;color:var(--brand-text-muted);">Parcela 12 Nord &middot; Ion Popescu &middot; 4.2 km/h</div>
@@ -482,7 +485,7 @@
               <span style="padding:2px 6px;border-radius:6px;font-size:13px;font-weight:700;background:var(--brand-success-bg);color:var(--brand-success);">ACTIV</span>
             </a>
             <a href="../utilaje/PREVIEW.html" style="display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #f0f0f0;text-decoration:none;color:var(--brand-text-primary);">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:17px;">&#128668;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:17px;"><i data-lucide="tractor"></i></div>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:600;">NH T7.270 — Semanat</div>
                 <div style="font-size:13px;color:var(--brand-text-muted);">Parcela 15 Est &middot; Andrei Popa &middot; 6.8 km/h</div>
@@ -490,7 +493,7 @@
               <span style="padding:2px 6px;border-radius:6px;font-size:13px;font-weight:700;background:var(--brand-success-bg);color:var(--brand-success);">ACTIV</span>
             </a>
             <a href="../utilaje/PREVIEW.html" style="display:flex;align-items:center;gap:10px;padding:12px;text-decoration:none;color:var(--brand-text-primary);">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:17px;">&#128668;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:17px;"><i data-lucide="tractor"></i></div>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:600;">Berthoud 4240 — Stropire</div>
                 <div style="font-size:13px;color:var(--brand-text-muted);">Parcela 7 Vest &middot; Mihai Stancu &middot; Stationat</div>
@@ -527,90 +530,90 @@
           <!-- Task-uri -->
           <div style="font-size:13px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Task-uri</div>
           <div style="display:flex;gap:0;margin-bottom:10px;border-radius:var(--brand-radius-lg);overflow:hidden;border:2px solid var(--brand-primary);">
-            <div onclick="switchTaskTab('mine',this)" class="task-tab-btn" style="flex:1;padding:14px 0;text-align:center;font-size:14px;font-weight:700;cursor:pointer;background:var(--brand-primary);color:#fff;">&#128229; Pentru mine <span style="padding:2px 8px;border-radius:10px;background:rgba(255,255,255,0.3);font-size:13px;margin-left:2px;">3</span></div>
-            <div onclick="switchTaskTab('altii',this)" class="task-tab-btn" style="flex:1;padding:14px 0;text-align:center;font-size:14px;font-weight:700;cursor:pointer;background:#fff;color:var(--brand-primary);">&#128228; De la mine <span style="padding:2px 8px;border-radius:10px;background:var(--brand-hover-bg);font-size:13px;margin-left:2px;">2</span></div>
+            <div onclick="switchTaskTab('mine',this)" class="task-tab-btn" style="flex:1;padding:14px 0;text-align:center;font-size:14px;font-weight:700;cursor:pointer;background:var(--brand-primary);color:#fff;"><i data-lucide="inbox"></i> Pentru mine <span style="padding:2px 8px;border-radius:10px;background:rgba(255,255,255,0.3);font-size:13px;margin-left:2px;">3</span></div>
+            <div onclick="switchTaskTab('altii',this)" class="task-tab-btn" style="flex:1;padding:14px 0;text-align:center;font-size:14px;font-weight:700;cursor:pointer;background:#fff;color:var(--brand-primary);"><i data-lucide="send"></i> De la mine <span style="padding:2px 8px;border-radius:10px;background:var(--brand-hover-bg);font-size:13px;margin-left:2px;">2</span></div>
           </div>
           <!-- Task-uri pentru mine -->
           <div id="tasks-mine" style="background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);overflow:hidden;margin-bottom:12px;">
             <div id="task-m-0" onclick="openTaskPopup('task-m-0','Verifica starea culturii pe Parcela 12 Nord','Urgent','Azi','de la Vasile Lungu',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-bottom:1px solid #f0f0f0;cursor:pointer;">
-              <div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div>
+              <div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div>
               <div style="flex:1;">
                 <div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);">Verifica starea culturii pe Parcela 12 Nord</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
                   <span style="padding:2px 8px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-danger-bg);color:var(--brand-danger);">Urgent</span>
-                  <span style="font-size:13px;color:var(--brand-text-muted);">&#128197; Azi</span>
+                  <span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="calendar"></i> Azi</span>
                   <span style="font-size:13px;color:var(--brand-text-muted);">de la <strong>Vasile Lungu</strong></span>
                 </div>
                 <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);">&#127793; Parcela 12 Nord</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);"><i data-lucide="sprout"></i> Parcela 12 Nord</span>
                 </div>
               </div>
-              <span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span>
+              <span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span>
             </div>
             <div id="task-m-1" onclick="openTaskPopup('task-m-1','Preia mostre sol de la laboratorul din Timisoara','Normal','Maine','de la Maria Ionescu',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-bottom:1px solid #f0f0f0;cursor:pointer;">
-              <div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div>
+              <div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div>
               <div style="flex:1;">
                 <div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);">Preia mostre sol de la laboratorul din Timisoara</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
                   <span style="padding:2px 8px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-warning-bg);color:var(--brand-warning);">Normal</span>
-                  <span style="font-size:13px;color:var(--brand-text-muted);">&#128197; Maine</span>
+                  <span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="calendar"></i> Maine</span>
                   <span style="font-size:13px;color:var(--brand-text-muted);">de la <strong>Maria Ionescu</strong></span>
                 </div>
                 <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);">&#127793; Parcela 7 Vest</span>
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:#EDE9FE;color:#6D28D9;">&#128100; Maria Ionescu</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);"><i data-lucide="sprout"></i> Parcela 7 Vest</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:#EDE9FE;color:#6D28D9;"><i data-lucide="user"></i> Maria Ionescu</span>
                 </div>
               </div>
-              <span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span>
+              <span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span>
             </div>
             <div id="task-m-2" onclick="openTaskPopup('task-m-2','Reprogrameaza ITP pentru NH T7.245','Normal','Azi','de la Andrei Popa',true)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;cursor:pointer;">
-              <div style="font-size:21px;color:var(--brand-primary);flex-shrink:0;margin-top:-2px;">&#9745;</div>
+              <div style="font-size:21px;color:var(--brand-primary);flex-shrink:0;margin-top:-2px;"><i data-lucide="check-square"></i></div>
               <div style="flex:1;">
                 <div style="font-size:14px;font-weight:600;color:var(--brand-text-muted);text-decoration:line-through;">Reprogrameaza ITP pentru NH T7.245</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="font-size:13px;color:var(--brand-text-muted);">&#10003; Finalizat azi</span>
+                  <span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="check"></i> Finalizat azi</span>
                   <span style="font-size:13px;color:var(--brand-text-muted);">de la <strong>Andrei Popa</strong></span>
                 </div>
                 <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);">&#128668; NH T7.245</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);"><i data-lucide="tractor"></i> NH T7.245</span>
                 </div>
               </div>
-              <span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span>
+              <span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span>
             </div>
           </div>
           <!-- Task-uri de la mine -->
           <div id="tasks-altii" style="display:none;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);overflow:hidden;margin-bottom:12px;">
             <div id="task-a-0" onclick="openTaskPopup('task-a-0','Pregateste tractorul pentru semanat maine','Normal','Azi','catre Ion Popescu',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-bottom:1px solid #f0f0f0;cursor:pointer;">
-              <div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div>
+              <div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div>
               <div style="flex:1;">
                 <div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);">Pregateste tractorul pentru semanat maine</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
                   <span style="padding:2px 8px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-warning-bg);color:var(--brand-warning);">Normal</span>
-                  <span style="font-size:13px;color:var(--brand-text-muted);">&#128197; Azi</span>
+                  <span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="calendar"></i> Azi</span>
                   <span style="font-size:13px;color:var(--brand-text-muted);">catre <strong>Ion Popescu</strong></span>
                 </div>
                 <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);">&#128668; JD 6130R</span>
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:#EDE9FE;color:#6D28D9;">&#128100; Ion Popescu</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);"><i data-lucide="tractor"></i> JD 6130R</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:#EDE9FE;color:#6D28D9;"><i data-lucide="user"></i> Ion Popescu</span>
                 </div>
               </div>
-              <span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span>
+              <span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span>
             </div>
             <div id="task-a-1" onclick="openTaskPopup('task-a-1','Fotografiaza zona cu plante scunde P7 Vest','Urgent','Azi','catre Maria Ionescu',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;cursor:pointer;">
-              <div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div>
+              <div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div>
               <div style="flex:1;">
                 <div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);">Fotografiaza zona cu plante scunde P7 Vest</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
                   <span style="padding:2px 8px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-danger-bg);color:var(--brand-danger);">Urgent</span>
-                  <span style="font-size:13px;color:var(--brand-text-muted);">&#128197; Azi</span>
+                  <span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="calendar"></i> Azi</span>
                   <span style="font-size:13px;color:var(--brand-text-muted);">catre <strong>Maria Ionescu</strong></span>
                 </div>
                 <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);">&#127793; Parcela 7 Vest</span>
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:#EDE9FE;color:#6D28D9;">&#128100; Maria Ionescu</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);"><i data-lucide="sprout"></i> Parcela 7 Vest</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:#EDE9FE;color:#6D28D9;"><i data-lucide="user"></i> Maria Ionescu</span>
                 </div>
               </div>
-              <span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span>
+              <span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span>
             </div>
           </div>
 
@@ -618,48 +621,48 @@
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
             <div style="display:flex;align-items:center;gap:6px;">
               <div style="font-size:13px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.5px;">Reminderele mele</div>
-              <span style="padding:2px 8px;border-radius:6px;font-size:13px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);">&#128274; Personal</span>
+              <span style="padding:2px 8px;border-radius:6px;font-size:13px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);"><i data-lucide="lock"></i> Personal</span>
             </div>
             <div onclick="alert('Adauga reminder')" style="padding:10px 16px;border-radius:var(--brand-radius);font-size:14px;font-weight:700;cursor:pointer;background:var(--brand-primary);color:#fff;box-shadow:0 2px 6px rgba(0,104,106,0.3);">+ Nou</div>
           </div>
           <div style="background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);overflow:hidden;margin-bottom:12px;">
             <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;border-bottom:1px solid #f0f0f0;">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">&#128276;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;"><i data-lucide="bell"></i></div>
               <div style="flex:1;">
                 <div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);">Suna la DRPCIV pentru ITP tractor</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="font-size:13px;color:var(--brand-danger);font-weight:600;">&#128197; Azi, 10:00 — intarziat</span>
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);">&#128668; JD 6130R</span>
+                  <span style="font-size:13px;color:var(--brand-danger);font-weight:600;"><i data-lucide="calendar"></i> Azi, 10:00 — intarziat</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);"><i data-lucide="tractor"></i> JD 6130R</span>
                 </div>
               </div>
             </div>
             <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;border-bottom:1px solid #f0f0f0;">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">&#128276;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;"><i data-lucide="bell"></i></div>
               <div style="flex:1;">
                 <div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);">Comanda samanta floarea-soarelui</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="font-size:13px;color:var(--brand-warning);font-weight:600;">&#128197; Maine, 09:00</span>
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:#EDE9FE;color:#6D28D9;">&#128100; Andrei Popa</span>
+                  <span style="font-size:13px;color:var(--brand-warning);font-weight:600;"><i data-lucide="calendar"></i> Maine, 09:00</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:#EDE9FE;color:#6D28D9;"><i data-lucide="user"></i> Andrei Popa</span>
                 </div>
               </div>
             </div>
             <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;border-bottom:1px solid #f0f0f0;">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">&#128276;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;"><i data-lucide="bell"></i></div>
               <div style="flex:1;">
                 <div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);">Verifica contractul de arenda Parcela 3</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="font-size:13px;color:var(--brand-text-muted);font-weight:600;">&#128197; 18 Aprilie, 14:00</span>
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);">&#127793; Parcela 3 Sud</span>
+                  <span style="font-size:13px;color:var(--brand-text-muted);font-weight:600;"><i data-lucide="calendar"></i> 18 Aprilie, 14:00</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);"><i data-lucide="sprout"></i> Parcela 3 Sud</span>
                 </div>
               </div>
             </div>
             <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">&#128276;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;"><i data-lucide="bell"></i></div>
               <div style="flex:1;">
                 <div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);">Schimba uleiul la combina</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="font-size:13px;color:var(--brand-text-muted);font-weight:600;">&#128197; 20 Aprilie, 11:00</span>
-                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);">&#128668; Claas 570</span>
+                  <span style="font-size:13px;color:var(--brand-text-muted);font-weight:600;"><i data-lucide="calendar"></i> 20 Aprilie, 11:00</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:13px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);"><i data-lucide="tractor"></i> Claas 570</span>
                 </div>
               </div>
             </div>
@@ -669,36 +672,36 @@
           <div style="font-size:13px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Activitate recenta</div>
           <div style="background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);overflow:hidden;margin-bottom:12px;">
             <a href="../fotografii/PREVIEW.html" style="display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #f0f0f0;text-decoration:none;color:var(--brand-text-primary);">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:17px;">&#128247;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:17px;"><i data-lucide="camera"></i></div>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:600;">8 fotografii noi</div>
                 <div style="font-size:13px;color:var(--brand-text-muted);">Parcela 12 Nord &middot; Azi, 14:32</div>
               </div>
-              <span style="font-size:13px;color:var(--brand-text-muted);">&#9654;</span>
+              <span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="chevron-right"></i></span>
             </a>
             <a href="../utilaje/PREVIEW.html" style="display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #f0f0f0;text-decoration:none;color:var(--brand-text-primary);">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:17px;">&#128668;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:17px;"><i data-lucide="tractor"></i></div>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:600;">Service depasit — JD 6130R</div>
                 <div style="font-size:13px;color:var(--brand-text-muted);">537h / 500h &middot; Depasit cu 37h</div>
               </div>
-              <span style="font-size:13px;color:var(--brand-text-muted);">&#9654;</span>
+              <span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="chevron-right"></i></span>
             </a>
             <a href="../stocuri/PREVIEW.html" style="display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #f0f0f0;text-decoration:none;color:var(--brand-text-primary);">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;font-size:17px;">&#128137;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;font-size:17px;"><i data-lucide="syringe"></i></div>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:600;">Stoc expirat — Karate Zeon</div>
                 <div style="font-size:13px;color:var(--brand-text-muted);">12 L expirate &middot; Ferma Constanta</div>
               </div>
-              <span style="font-size:13px;color:var(--brand-text-muted);">&#9654;</span>
+              <span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="chevron-right"></i></span>
             </a>
             <a href="../personal/PREVIEW.html" style="display:flex;align-items:center;gap:10px;padding:12px;text-decoration:none;color:var(--brand-text-primary);">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:17px;">&#128197;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:17px;"><i data-lucide="calendar"></i></div>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:600;">Pontaj: 18 prezenti azi</div>
                 <div style="font-size:13px;color:var(--brand-text-muted);">2 absenti &middot; 156h luna asta</div>
               </div>
-              <span style="font-size:13px;color:var(--brand-text-muted);">&#9654;</span>
+              <span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="chevron-right"></i></span>
             </a>
           </div>
 
@@ -732,7 +735,7 @@ function openTaskPopup(taskId, title, priority, deadline, person, isDone) {
   currentTaskPriority = priority;
   currentTaskDeadline = deadline;
   document.getElementById('task-popup-title').textContent = title;
-  document.getElementById('task-popup-meta').innerHTML = '&#128197; ' + deadline + ' &middot; ' + person;
+  document.getElementById('task-popup-meta').innerHTML = '<i data-lucide="calendar"></i> ' + deadline + ' &middot; ' + person;
   var prEl = document.getElementById('task-popup-priority');
   if (priority === 'Urgent') {
     prEl.textContent = 'Urgent';
@@ -749,14 +752,14 @@ function openTaskPopup(taskId, title, priority, deadline, person, isDone) {
   if (isDone) {
     toggle.style.background = 'var(--brand-warning-bg)';
     toggle.style.borderColor = 'var(--brand-warning)';
-    toggle.querySelector('span').innerHTML = '&#9744;';
+    toggle.querySelector('span').innerHTML = '<i data-lucide="square"></i>';
     label.textContent = 'Marcheaza ca nefinalizat';
     label.style.color = 'var(--brand-warning)';
     desc.textContent = 'Task-ul va fi redeschis';
   } else {
     toggle.style.background = 'var(--brand-success-bg)';
     toggle.style.borderColor = 'var(--brand-success)';
-    toggle.querySelector('span').innerHTML = '&#9745;';
+    toggle.querySelector('span').innerHTML = '<i data-lucide="check-square"></i>';
     label.textContent = 'Marcheaza ca finalizat';
     label.style.color = 'var(--brand-success)';
     desc.textContent = 'Task-ul va fi mutat in lista finalizate';
@@ -795,15 +798,15 @@ function selectAssignee(el) {
     var prColor = currentTaskPriority === 'Urgent' ? 'var(--brand-danger)' : 'var(--brand-warning)';
     var newId = 'task-a-' + Date.now();
     var newHtml = '<div id="' + newId + '" onclick="openTaskPopup(\'' + newId + '\',\'' + currentTaskTitle.replace(/'/g,"\\'") + '\',\'' + currentTaskPriority + '\',\'' + currentTaskDeadline + '\',\'catre ' + name + '\',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-bottom:1px solid #f0f0f0;cursor:pointer;">'
-      + '<div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div>'
+      + '<div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div>'
       + '<div style="flex:1;">'
       + '<div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);">' + currentTaskTitle + '</div>'
       + '<div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">'
       + '<span style="padding:2px 8px;border-radius:4px;font-size:13px;font-weight:600;background:' + prBg + ';color:' + prColor + ';">' + currentTaskPriority + '</span>'
-      + '<span style="font-size:13px;color:var(--brand-text-muted);">&#128197; ' + currentTaskDeadline + '</span>'
+      + '<span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="calendar"></i> ' + currentTaskDeadline + '</span>'
       + '<span style="font-size:13px;color:var(--brand-text-muted);">catre <strong>' + name + '</strong></span>'
       + '</div></div>'
-      + '<span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span></div>';
+      + '<span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span></div>';
     altii.insertAdjacentHTML('beforeend', newHtml);
 
     // Update counters
@@ -822,13 +825,13 @@ function takeBackTask() {
     var prBg = currentTaskPriority === 'Urgent' ? 'var(--brand-danger-bg)' : 'var(--brand-warning-bg)';
     var prColor = currentTaskPriority === 'Urgent' ? 'var(--brand-danger)' : 'var(--brand-warning)';
     var newHtml = '<div id="' + newId + '" onclick="openTaskPopup(\'' + newId + '\',\'' + currentTaskTitle.replace(/'/g,"\\'") + '\',\'' + currentTaskPriority + '\',\'' + currentTaskDeadline + '\',\'inapoi la mine\',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-bottom:1px solid #f0f0f0;cursor:pointer;">'
-      + '<div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div>'
+      + '<div style="font-size:21px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div>'
       + '<div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);">' + currentTaskTitle + '</div>'
       + '<div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">'
       + '<span style="padding:2px 8px;border-radius:4px;font-size:13px;font-weight:600;background:' + prBg + ';color:' + prColor + ';">' + currentTaskPriority + '</span>'
-      + '<span style="font-size:13px;color:var(--brand-text-muted);">&#128197; ' + currentTaskDeadline + '</span>'
+      + '<span style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="calendar"></i> ' + currentTaskDeadline + '</span>'
       + '</div></div>'
-      + '<span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span></div>';
+      + '<span style="font-size:13px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span></div>';
     mine.insertAdjacentHTML('beforeend', newHtml);
     updateTaskCounts();
   }
@@ -865,8 +868,8 @@ function updateTaskCounts() {
   var mineCount = document.querySelectorAll('#tasks-mine > div[id^="task-"]').length;
   var altiiCount = document.querySelectorAll('#tasks-altii > div[id^="task-"]').length;
   var tabs = document.querySelectorAll('.task-tab-btn');
-  if (tabs[0]) tabs[0].innerHTML = '&#128229; Pentru mine <span style="padding:2px 8px;border-radius:10px;background:rgba(255,255,255,0.3);font-size:13px;margin-left:2px;">' + mineCount + '</span>';
-  if (tabs[1]) tabs[1].innerHTML = '&#128228; De la mine <span style="padding:2px 8px;border-radius:10px;background:var(--brand-hover-bg);font-size:13px;margin-left:2px;">' + altiiCount + '</span>';
+  if (tabs[0]) tabs[0].innerHTML = '<i data-lucide="inbox"></i> Pentru mine <span style="padding:2px 8px;border-radius:10px;background:rgba(255,255,255,0.3);font-size:13px;margin-left:2px;">' + mineCount + '</span>';
+  if (tabs[1]) tabs[1].innerHTML = '<i data-lucide="send"></i> De la mine <span style="padding:2px 8px;border-radius:10px;background:var(--brand-hover-bg);font-size:13px;margin-left:2px;">' + altiiCount + '</span>';
 }
 
 function switchTaskTab(tab, el) {
@@ -935,7 +938,7 @@ function openContextSwitcher() {
   // Reset manage mode
   ctxManageMode = false;
   var btn = document.getElementById('ctx-manage-btn');
-  btn.innerHTML = '<span style="font-size:14px;">&#9881;</span> Gestioneaza';
+  btn.innerHTML = '<span style="font-size:14px;"><i data-lucide="settings"></i></span> Gestioneaza';
   btn.style.background = 'var(--brand-primary)';
   btn.style.color = '#fff';
   btn.style.boxShadow = '0 2px 6px rgba(0,104,106,0.3)';
@@ -950,7 +953,7 @@ function closeContextSwitcher() {
   // Reset manage mode on close
   ctxManageMode = false;
   var btn = document.getElementById('ctx-manage-btn');
-  btn.innerHTML = '<span style="font-size:14px;">&#9881;</span> Gestioneaza';
+  btn.innerHTML = '<span style="font-size:14px;"><i data-lucide="settings"></i></span> Gestioneaza';
   btn.style.background = 'var(--brand-primary)';
   btn.style.color = '#fff';
   btn.style.boxShadow = '0 2px 6px rgba(0,104,106,0.3)';
@@ -985,15 +988,15 @@ function renderCtxStep(keepSearch) {
       html += '<div class="ctx-info"><div class="ctx-name">' + ws.name + '</div><div class="ctx-desc">' + desc + '</div></div>';
       if (ctxManageMode) {
         html += '<div class="ctx-manage-actions">';
-        html += '<div class="ctx-manage-btn edit" onclick="openCtxEditWs(\'' + ws.id + '\')" title="Editeaza">&#9998;</div>';
-        html += '<div class="ctx-manage-btn delete" onclick="openCtxDeleteConfirm(\'' + ws.id + '\')" title="Sterge">&#128465;</div>';
+        html += '<div class="ctx-manage-btn edit" onclick="openCtxEditWs(\'' + ws.id + '\')" title="Editeaza"><i data-lucide="pencil"></i></div>';
+        html += '<div class="ctx-manage-btn delete" onclick="openCtxDeleteConfirm(\'' + ws.id + '\')" title="Sterge"><i data-lucide="trash-2"></i></div>';
         html += '</div>';
       } else {
-        if (sel) html += '<span class="ctx-check">&#10003;</span>';
-        if (hasChildren && !ws.flat) html += '<span class="ctx-arrow">&#9654;</span>';
+        if (sel) html += '<span class="ctx-check"><i data-lucide="check"></i></span>';
+        if (hasChildren && !ws.flat) html += '<span class="ctx-arrow"><i data-lucide="chevron-right"></i></span>';
       }
       html += '</div>';
-      if (!ctxManageMode && !ws.flat) html += '<a href="firme.html" onclick="event.stopPropagation();closeContextSwitcher();" style="width:44px;height:44px;border-radius:10px;background:var(--brand-hover-bg);border:1px solid var(--brand-primary-40);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:var(--brand-primary);flex-shrink:0;text-decoration:none;box-shadow:0 1px 3px rgba(0,104,106,0.15);" title="Editeaza firme si puncte">&#9998;</a>';
+      if (!ctxManageMode && !ws.flat) html += '<a href="firme.html" onclick="event.stopPropagation();closeContextSwitcher();" style="width:44px;height:44px;border-radius:10px;background:var(--brand-hover-bg);border:1px solid var(--brand-primary-40);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:var(--brand-primary);flex-shrink:0;text-decoration:none;box-shadow:0 1px 3px rgba(0,104,106,0.15);" title="Editeaza firme si puncte"><i data-lucide="pencil"></i></a>';
       html += '</div>';
     });
   }
@@ -1004,10 +1007,10 @@ function renderCtxStep(keepSearch) {
       var sel = g.id === ctxState.grup;
       var nf = g.firme ? g.firme.length : 0;
       html += '<div class="ctx-item' + (sel ? ' selected' : '') + '" onclick="ctxSelectGrup(\'' + g.id + '\')">';
-      html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#128193;</div>';
+      html += '<div class="ctx-badge" style="background:' + ws.color + ';"><i data-lucide="folder"></i></div>';
       html += '<div class="ctx-info"><div class="ctx-name">' + g.name + '</div><div class="ctx-desc">' + nf + ' firme</div></div>';
-      if (sel) html += '<span class="ctx-check">&#10003;</span>';
-      html += '<span class="ctx-arrow">&#9654;</span>';
+      if (sel) html += '<span class="ctx-check"><i data-lucide="check"></i></span>';
+      html += '<span class="ctx-arrow"><i data-lucide="chevron-right"></i></span>';
       html += '</div>';
     });
   }
@@ -1022,10 +1025,10 @@ function renderCtxStep(keepSearch) {
       var sel = f.id === ctxState.firma;
       var np = f.puncte ? f.puncte.length : 0;
       html += '<div class="ctx-item' + (sel ? ' selected' : '') + '" onclick="ctxSelectFirma(\'' + f.id + '\')">';
-      html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#127963;</div>';
+      html += '<div class="ctx-badge" style="background:' + ws.color + ';"><i data-lucide="building-2"></i></div>';
       html += '<div class="ctx-info"><div class="ctx-name">' + f.name + '</div><div class="ctx-desc">' + np + ' puncte de lucru</div></div>';
-      if (sel) html += '<span class="ctx-check">&#10003;</span>';
-      if (np > 1) html += '<span class="ctx-arrow">&#9654;</span>';
+      if (sel) html += '<span class="ctx-check"><i data-lucide="check"></i></span>';
+      if (np > 1) html += '<span class="ctx-arrow"><i data-lucide="chevron-right"></i></span>';
       html += '</div>';
     });
     // Grupuri de lucru cu culori
@@ -1037,7 +1040,7 @@ function renderCtxStep(keepSearch) {
           grup.firme.forEach(function(f){if(f.puncte)f.puncte.forEach(function(p){if(gl.puncteIds.indexOf(p.id)!==-1)puncteNames.push(p.name);});});
         }
         html += '<div class="ctx-item" onclick="ctxSelectGrupLucru(\'' + gl.id + '\',\'' + gl.name + '\')">';
-        html += '<div class="ctx-badge" style="background:' + gl.color + ';">&#128101;</div>';
+        html += '<div class="ctx-badge" style="background:' + gl.color + ';"><i data-lucide="users"></i></div>';
         html += '<div class="ctx-info"><div class="ctx-name">' + gl.name + '</div>';
         html += '<div class="ctx-desc" style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">';
         puncteNames.forEach(function(pn){
@@ -1057,9 +1060,9 @@ function renderCtxStep(keepSearch) {
     title.textContent = firma.name + ' — Puncte de lucru';
     // Toate punctele
     html += '<div class="ctx-item" onclick="ctxSelectPunct(\'all\',\'Toate punctele\')">';
-    html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#127758;</div>';
+    html += '<div class="ctx-badge" style="background:' + ws.color + ';"><i data-lucide="globe"></i></div>';
     html += '<div class="ctx-info"><div class="ctx-name">Toate punctele</div><div class="ctx-desc">' + firma.puncte.length + ' puncte</div></div>';
-    if (ctxState.punct === 'all') html += '<span class="ctx-check">&#10003;</span>';
+    if (ctxState.punct === 'all') html += '<span class="ctx-check"><i data-lucide="check"></i></span>';
     html += '</div>';
     firma.puncte.forEach(function(p) {
       var sel = p.id === ctxState.punct;
@@ -1069,7 +1072,7 @@ function renderCtxStep(keepSearch) {
         if (gl.puncteIds && gl.puncteIds.indexOf(p.id) !== -1) punctGrupuri.push(gl);
       });
       html += '<div class="ctx-item' + (sel ? ' selected' : '') + '" onclick="ctxSelectPunct(\'' + p.id + '\',\'' + p.name + '\')">';
-      html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#128205;</div>';
+      html += '<div class="ctx-badge" style="background:' + ws.color + ';"><i data-lucide="map-pin"></i></div>';
       html += '<div class="ctx-info"><div class="ctx-name">' + p.name + '</div>';
       if (punctGrupuri.length > 0) {
         html += '<div class="ctx-desc" style="display:flex;gap:6px;align-items:center;margin-top:2px;">';
@@ -1079,7 +1082,7 @@ function renderCtxStep(keepSearch) {
         html += '</div>';
       }
       html += '</div>';
-      if (sel) html += '<span class="ctx-check">&#10003;</span>';
+      if (sel) html += '<span class="ctx-check"><i data-lucide="check"></i></span>';
       html += '</div>';
     });
   }
@@ -1214,40 +1217,40 @@ function ctxFilter(val) {
   ctxData.workspaces.forEach(function(ws) {
     // Match workspace
     if (ws.name.toLowerCase().indexOf(q) !== -1) {
-      results.push({type:'workspace', name:ws.name, path:'', wsId:ws.id, color:ws.color, initials:ws.initials, icon:'&#127963;'});
+      results.push({type:'workspace', name:ws.name, path:'', wsId:ws.id, color:ws.color, initials:ws.initials, icon:'<i data-lucide="building-2"></i>'});
     }
     // Search grups
     if (ws.grups) ws.grups.forEach(function(g) {
       if (g.name.toLowerCase().indexOf(q) !== -1) {
-        results.push({type:'grup', name:g.name, path:ws.name, wsId:ws.id, grupId:g.id, color:ws.color, icon:'&#128193;'});
+        results.push({type:'grup', name:g.name, path:ws.name, wsId:ws.id, grupId:g.id, color:ws.color, icon:'<i data-lucide="folder"></i>'});
       }
       // Search firme in grup
       if (g.firme) g.firme.forEach(function(f) {
         if (f.name.toLowerCase().indexOf(q) !== -1) {
-          results.push({type:'firma', name:f.name, path:ws.name+' \u203A '+g.name, wsId:ws.id, grupId:g.id, firmaId:f.id, color:ws.color, icon:'&#127963;'});
+          results.push({type:'firma', name:f.name, path:ws.name+' \u203A '+g.name, wsId:ws.id, grupId:g.id, firmaId:f.id, color:ws.color, icon:'<i data-lucide="building-2"></i>'});
         }
         // Search puncte
         if (f.puncte) f.puncte.forEach(function(p) {
           if (p.name.toLowerCase().indexOf(q) !== -1) {
-            results.push({type:'punct', name:p.name, path:ws.name+' \u203A '+g.name+' \u203A '+f.name, wsId:ws.id, grupId:g.id, firmaId:f.id, punctId:p.id, color:ws.color, icon:'&#128205;'});
+            results.push({type:'punct', name:p.name, path:ws.name+' \u203A '+g.name+' \u203A '+f.name, wsId:ws.id, grupId:g.id, firmaId:f.id, punctId:p.id, color:ws.color, icon:'<i data-lucide="map-pin"></i>'});
           }
         });
       });
       // Search grupuri lucru
       if (g.grupLucru) g.grupLucru.forEach(function(gl) {
         if (gl.name.toLowerCase().indexOf(q) !== -1) {
-          results.push({type:'grupLucru', name:gl.name, path:ws.name+' \u203A '+g.name, wsId:ws.id, grupId:g.id, glId:gl.id, glName:gl.name, color:gl.color, icon:'&#128101;'});
+          results.push({type:'grupLucru', name:gl.name, path:ws.name+' \u203A '+g.name, wsId:ws.id, grupId:g.id, glId:gl.id, glName:gl.name, color:gl.color, icon:'<i data-lucide="users"></i>'});
         }
       });
     });
     // Search firme direct on ws
     if (ws.firme) ws.firme.forEach(function(f) {
       if (f.name.toLowerCase().indexOf(q) !== -1) {
-        results.push({type:'firma', name:f.name, path:ws.name, wsId:ws.id, grupId:null, firmaId:f.id, color:ws.color, icon:'&#127963;'});
+        results.push({type:'firma', name:f.name, path:ws.name, wsId:ws.id, grupId:null, firmaId:f.id, color:ws.color, icon:'<i data-lucide="building-2"></i>'});
       }
       if (f.puncte) f.puncte.forEach(function(p) {
         if (p.name.toLowerCase().indexOf(q) !== -1) {
-          results.push({type:'punct', name:p.name, path:ws.name+' \u203A '+f.name, wsId:ws.id, grupId:null, firmaId:f.id, punctId:p.id, color:ws.color, icon:'&#128205;'});
+          results.push({type:'punct', name:p.name, path:ws.name+' \u203A '+f.name, wsId:ws.id, grupId:null, firmaId:f.id, punctId:p.id, color:ws.color, icon:'<i data-lucide="map-pin"></i>'});
         }
       });
     });
@@ -1283,14 +1286,14 @@ function toggleCtxManageMode() {
   var btn = document.getElementById('ctx-manage-btn');
   var footer = document.getElementById('ctx-add-header');
   if (ctxManageMode) {
-    btn.innerHTML = '&#10003; Gata';
+    btn.innerHTML = '<i data-lucide="check"></i> Gata';
     btn.style.background = 'var(--brand-text-muted)';
     btn.style.color = '#fff';
     btn.style.boxShadow = 'none';
     document.getElementById('ctx-search-bar').style.display = 'none';
     document.getElementById('ctx-add-header').style.display = ctxStep === 0 ? 'block' : 'none';
   } else {
-    btn.innerHTML = '<span style="font-size:14px;">&#9881;</span> Gestioneaza';
+    btn.innerHTML = '<span style="font-size:14px;"><i data-lucide="settings"></i></span> Gestioneaza';
     btn.style.background = 'var(--brand-primary)';
     btn.style.color = '#fff';
     btn.style.boxShadow = '0 2px 6px rgba(0,104,106,0.3)';
@@ -1399,7 +1402,7 @@ function openCtxDeleteConfirm(wsId) {
   content.innerHTML = '<div style="font-size:13px;color:var(--brand-danger);background:var(--brand-danger-bg);padding:8px 12px;border-radius:var(--brand-radius);margin-top:10px;">Aceasta actiune este permanenta.</div>';
   var actions = document.getElementById('ctx-delete-actions');
   actions.innerHTML = '<div onclick="closeCtxDeleteConfirm()" style="flex:1;padding:12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div>'
-    + '<div onclick="confirmCtxDelete()" style="flex:1;padding:12px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:pointer;">&#128465; Sterge</div>';
+    + '<div onclick="confirmCtxDelete()" style="flex:1;padding:12px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:pointer;"><i data-lucide="trash-2"></i> Sterge</div>';
   document.getElementById('ctx-delete-confirm').style.display = 'block';
 }
 
@@ -1475,7 +1478,7 @@ function openDeleteFirma(firmaId) {
     document.getElementById('df-heading').textContent = 'Sterge firma?';
     document.getElementById('df-content').innerHTML = '<div style="font-size:13px;color:var(--brand-danger);background:var(--brand-danger-bg);padding:8px 12px;border-radius:var(--brand-radius);margin-top:10px;">Aceasta actiune este permanenta. Datele firmei vor fi sterse.</div>';
     document.getElementById('df-actions').innerHTML = '<div onclick="closeDeleteFirma()" style="flex:1;padding:12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div>'
-      + '<div onclick="confirmDeleteFirma()" style="flex:1;padding:12px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:pointer;">&#128465; Sterge</div>';
+      + '<div onclick="confirmDeleteFirma()" style="flex:1;padding:12px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:pointer;"><i data-lucide="trash-2"></i> Sterge</div>';
   }
   document.getElementById('ctx-delete-firma').style.display = 'block';
 }
@@ -1553,23 +1556,23 @@ function renderDpStep() {
     // Step 1: Informatii — ce se va sterge si ce se pastreaza
     title.textContent = 'Sterge: ' + dpTargetName;
     html += '<div style="text-align:center;margin-bottom:16px;">';
-    html += '<div style="width:48px;height:48px;border-radius:50%;background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:23px;">&#9888;</div>';
+    html += '<div style="width:48px;height:48px;border-radius:50%;background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:23px;"><i data-lucide="alert-triangle"></i></div>';
     html += '<div style="font-size:15px;font-weight:700;color:var(--brand-text-primary);margin-bottom:4px;">Atentie — actiune ireversibila</div>';
     html += '<div style="font-size:13px;color:var(--brand-text-muted);">Verifica ce se va sterge</div>';
     html += '</div>';
 
     // Ce se sterge
     html += '<div style="background:var(--brand-danger-bg);border:1px solid var(--brand-danger);border-radius:var(--brand-radius-lg);padding:12px;margin-bottom:10px;">';
-    html += '<div style="font-size:13px;font-weight:700;color:var(--brand-danger);text-transform:uppercase;margin-bottom:8px;">&#128465; Se sterg permanent</div>';
+    html += '<div style="font-size:13px;font-weight:700;color:var(--brand-danger);text-transform:uppercase;margin-bottom:8px;"><i data-lucide="trash-2"></i> Se sterg permanent</div>';
     var items = [
-      {icon:'&#127963;', text:'Datele firmei asociate punctului'},
-      {icon:'&#128100;', text:'Utilizatorii si permisiunile'},
-      {icon:'&#128668;', text:'Utilajele inregistrate'},
-      {icon:'&#128230;', text:'Stocurile si articolele'},
-      {icon:'&#128196;', text:'Documentele incarcate'},
-      {icon:'&#128247;', text:'Fotografiile asociate'},
-      {icon:'&#127793;', text:'Datele legate de parcele (denumiri, configurari)'},
-      {icon:'&#128203;', text:'Istoricul de activitati si lucrari agricole'}
+      {icon:'<i data-lucide="building-2"></i>', text:'Datele firmei asociate punctului'},
+      {icon:'<i data-lucide="user"></i>', text:'Utilizatorii si permisiunile'},
+      {icon:'<i data-lucide="tractor"></i>', text:'Utilajele inregistrate'},
+      {icon:'<i data-lucide="package"></i>', text:'Stocurile si articolele'},
+      {icon:'<i data-lucide="file"></i>', text:'Documentele incarcate'},
+      {icon:'<i data-lucide="camera"></i>', text:'Fotografiile asociate'},
+      {icon:'<i data-lucide="sprout"></i>', text:'Datele legate de parcele (denumiri, configurari)'},
+      {icon:'<i data-lucide="clipboard-list"></i>', text:'Istoricul de activitati si lucrari agricole'}
     ];
     items.forEach(function(it){
       html += '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;color:var(--brand-danger);">';
@@ -1580,7 +1583,7 @@ function renderDpStep() {
     html += '</div>';
 
     footer.innerHTML = '<div onclick="closeDeletePunct()" style="flex:1;padding:12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div>'
-      + '<div onclick="dpNextStep()" style="flex:1;padding:12px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:pointer;">Am inteles &#10132;</div>';
+      + '<div onclick="dpNextStep()" style="flex:1;padding:12px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:pointer;">Am inteles <i data-lucide="arrow-right"></i></div>';
   }
 
   else if (dpStep === 2) {
@@ -1589,16 +1592,16 @@ function renderDpStep() {
     html += '<div style="font-size:14px;color:var(--brand-text-muted);margin-bottom:14px;">Bifeaza fiecare element pentru a confirma ca intelegi ce se sterge:</div>';
 
     var checks = [
-      {key:'users', label:'Sterg toti utilizatorii si permisiunile din ' + dpTargetName, icon:'&#128100;'},
-      {key:'utilaje', label:'Sterg toate utilajele, stocurile si documentele', icon:'&#128668;'},
-      {key:'stocuri', label:'Sterg datele parcelelor si configurarile asociate', icon:'&#127793;'},
-      {key:'documente', label:'Sterg istoricul de activitati si lucrari agricole', icon:'&#128203;'}
+      {key:'users', label:'Sterg toti utilizatorii si permisiunile din ' + dpTargetName, icon:'<i data-lucide="user"></i>'},
+      {key:'utilaje', label:'Sterg toate utilajele, stocurile si documentele', icon:'<i data-lucide="tractor"></i>'},
+      {key:'stocuri', label:'Sterg datele parcelelor si configurarile asociate', icon:'<i data-lucide="sprout"></i>'},
+      {key:'documente', label:'Sterg istoricul de activitati si lucrari agricole', icon:'<i data-lucide="clipboard-list"></i>'}
     ];
     checks.forEach(function(c){
       var checked = dpChecks[c.key];
       html += '<div onclick="toggleDpCheck(\'' + c.key + '\')" style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:#fff;border:1px solid ' + (checked ? 'var(--brand-danger)' : 'var(--brand-border)') + ';border-radius:var(--brand-radius);margin-bottom:8px;cursor:pointer;transition:all 0.15s;">';
       html += '<div style="width:22px;height:22px;border-radius:4px;border:2px solid ' + (checked ? 'var(--brand-danger)' : 'var(--brand-border)') + ';background:' + (checked ? 'var(--brand-danger)' : '#fff') + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">';
-      if (checked) html += '<span style="color:#fff;font-size:14px;font-weight:700;">&#10003;</span>';
+      if (checked) html += '<span style="color:#fff;font-size:14px;font-weight:700;"><i data-lucide="check"></i></span>';
       html += '</div>';
       html += '<div style="flex:1;">';
       html += '<div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">' + c.icon + ' ' + c.label + '</div>';
@@ -1607,15 +1610,15 @@ function renderDpStep() {
     });
 
     var allChecked = dpChecks.users && dpChecks.utilaje && dpChecks.stocuri && dpChecks.documente;
-    footer.innerHTML = '<div onclick="dpPrevStep()" style="flex:1;padding:12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">&#9664; Inapoi</div>'
-      + '<div onclick="' + (allChecked ? 'dpNextStep()' : '') + '" style="flex:1;padding:12px;background:' + (allChecked ? 'var(--brand-danger)' : '#ccc') + ';color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:' + (allChecked ? 'pointer' : 'not-allowed') + ';">Continua &#10132;</div>';
+    footer.innerHTML = '<div onclick="dpPrevStep()" style="flex:1;padding:12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;"><i data-lucide="chevron-left"></i> Inapoi</div>'
+      + '<div onclick="' + (allChecked ? 'dpNextStep()' : '') + '" style="flex:1;padding:12px;background:' + (allChecked ? 'var(--brand-danger)' : '#ccc') + ';color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:' + (allChecked ? 'pointer' : 'not-allowed') + ';">Continua <i data-lucide="arrow-right"></i></div>';
   }
 
   else if (dpStep === 3) {
     // Step 3: Confirmare finala — scrie numele
     title.textContent = 'Confirmare finala';
     html += '<div style="text-align:center;margin-bottom:16px;">';
-    html += '<div style="width:48px;height:48px;border-radius:50%;background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:23px;">&#128465;</div>';
+    html += '<div style="width:48px;height:48px;border-radius:50%;background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:23px;"><i data-lucide="trash-2"></i></div>';
     html += '<div style="font-size:15px;font-weight:700;color:var(--brand-danger);margin-bottom:4px;">Stergere permanenta</div>';
     html += '<div style="font-size:13px;color:var(--brand-text-muted);">Scrie numele punctului de lucru pentru a confirma</div>';
     html += '</div>';
@@ -1628,8 +1631,8 @@ function renderDpStep() {
     html += '<input id="dp-confirm-input" type="text" placeholder="Scrie numele aici..." oninput="dpCheckConfirmInput()" style="width:100%;padding:12px;border:2px solid var(--brand-border);border-radius:var(--brand-radius);font-size:15px;outline:none;text-align:center;font-weight:600;" />';
     html += '<div id="dp-match-msg" style="font-size:13px;text-align:center;margin-top:6px;color:var(--brand-text-muted);height:16px;"></div>';
 
-    footer.innerHTML = '<div onclick="dpPrevStep()" style="flex:1;padding:12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">&#9664; Inapoi</div>'
-      + '<div id="dp-final-btn" onclick="" style="flex:1;padding:12px;background:#ccc;color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:not-allowed;">&#128465; Sterge definitiv</div>';
+    footer.innerHTML = '<div onclick="dpPrevStep()" style="flex:1;padding:12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;"><i data-lucide="chevron-left"></i> Inapoi</div>'
+      + '<div id="dp-final-btn" onclick="" style="flex:1;padding:12px;background:#ccc;color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:not-allowed;"><i data-lucide="trash-2"></i> Sterge definitiv</div>';
   }
 
   content.innerHTML = html;
@@ -1651,8 +1654,8 @@ function dpCheckConfirmInput() {
     btn.style.background = 'var(--brand-danger)';
     btn.style.cursor = 'pointer';
     btn.setAttribute('onclick', 'confirmDeletePunct()');
-    msg.textContent = '&#10003; Numele se potriveste';
-    msg.innerHTML = '<span style="color:var(--brand-danger);font-weight:600;">&#10003; Numele se potriveste</span>';
+    msg.textContent = '<i data-lucide="check"></i> Numele se potriveste';
+    msg.innerHTML = '<span style="color:var(--brand-danger);font-weight:600;"><i data-lucide="check"></i> Numele se potriveste</span>';
   } else {
     inp.style.borderColor = val.length > 0 ? 'var(--brand-warning)' : 'var(--brand-border)';
     btn.style.background = '#ccc';
@@ -1704,5 +1707,7 @@ function ctxSearchSelect(type, wsId, grupId, firmaId, punctOrGlId, glName) {
 }
 </script>
 
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

@@ -56,6 +56,7 @@
     drawerContainer.appendChild(footer);
     drawerBackdrop.appendChild(drawerContainer);
     screen.appendChild(drawerBackdrop);
+    if (typeof lucide !== 'undefined') lucide.createIcons({ nodes: [drawerBackdrop] });
   };
 
   window.closeDrawer = function () {
@@ -70,7 +71,7 @@
   window.confirmDelete = function (itemName, onConfirm) {
     const content = `
       <div style="text-align:center; padding:16px 0;">
-        <div style="font-size:49px; margin-bottom:12px;">&#9888;&#65039;</div>
+        <div style="font-size:49px; margin-bottom:12px;"><i data-lucide="alert-triangle"></i></div>
         <div style="font-size:17px; font-weight:700; color:var(--brand-text-primary); margin-bottom:8px;">Esti sigur?</div>
         <div style="font-size:14px; color:var(--brand-text-muted);">Vrei sa stergi <strong>${itemName}</strong>? Aceasta actiune nu poate fi anulata.</div>
       </div>
@@ -281,7 +282,7 @@
     var html = '';
     for (var key in window.activeFilters) {
       window.activeFilters[key].forEach(function (v) {
-        html += '<div class="filter-pill active" style="font-size:13px;" onclick="removeFilter(\'' + key + '\',\'' + v + '\')">' + v + ' &#10005;</div>';
+        html += '<div class="filter-pill active" style="font-size:13px;" onclick="removeFilter(\'' + key + '\',\'' + v + '\')">' + v + ' <i data-lucide="x"></i></div>';
       });
     }
     cont.innerHTML = html;
@@ -387,7 +388,7 @@
     var hasThumb = cfg.thumbIcon && !cfg.thumbSmall;
     html += '<div class="ucard-thumb" style="' + (cfg.thumbBg ? 'background:' + cfg.thumbBg + ';' : '') + (!hasThumb ? 'width:36px;min-height:auto;' : '') + (!cfg.thumbBg && !hasThumb ? 'background:var(--brand-primary);' : '') + '">';
     if (cfg.thumbIcon) html += '<div class="ucard-thumb-icon">' + cfg.thumbIcon + '</div>';
-    html += '<div class="ucard-thumb-check" onclick="event.stopPropagation();toggleCardCheck(this)">&#10003;</div>';
+    html += '<div class="ucard-thumb-check" onclick="event.stopPropagation();toggleCardCheck(this)"><i data-lucide="check"></i></div>';
     html += '</div>';
 
     // Body
@@ -453,9 +454,9 @@
     '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M12,2C12,2 5,10 5,15C5,18.87 8.13,22 12,22C15.87,22 19,18.87 19,15C19,10 12,2 12,2Z" fill="#0369A1"/></svg>'
   ];
   var UCARD_V2_SEVERITY = [
-    { arrow: '&#9660;', color: '#2E7D32' }, // jos verde = ok
-    { arrow: '&#9654;', color: '#F59E0B' }, // dreapta portocaliu = atentie
-    { arrow: '&#9650;', color: '#C0392B' }  // sus rosu = alert
+    { arrow: '<i data-lucide="chevron-down"></i>', color: '#2E7D32' }, // jos verde = ok
+    { arrow: '<i data-lucide="chevron-right"></i>', color: '#F59E0B' }, // dreapta portocaliu = atentie
+    { arrow: '<i data-lucide="chevron-up"></i>', color: '#C0392B' }  // sus rosu = alert
   ];
 
   window.buildCardV2 = function (cfg) {
@@ -464,7 +465,7 @@
     var html = '<div class="ucard-v2" data-search="' + searchText + '"' + clickAttr + '>';
 
     // Checkbox absolut top-left
-    html += '<div class="ucard-v2-check" onclick="event.stopPropagation();this.parentElement.classList.toggle(\'selected\');">&#10003;</div>';
+    html += '<div class="ucard-v2-check" onclick="event.stopPropagation();this.parentElement.classList.toggle(\'selected\');"><i data-lucide="check"></i></div>';
 
     // IMG: verde degrade + poligon cultura (forma per card)
     var shape = UCARD_V2_SHAPES[ucardV2Index % UCARD_V2_SHAPES.length];
@@ -532,7 +533,7 @@
     };
     var stripeBg = typeGradients[cfg.type] || typeGradients['Arenda'];
     html += '<div class="ua-stripe" style="background:' + stripeBg + ';">';
-    html += '<div class="ua-check" onclick="event.stopPropagation();this.parentElement.parentElement.classList.toggle(\'selected\');">&#10003;</div>';
+    html += '<div class="ua-check" onclick="event.stopPropagation();this.parentElement.parentElement.classList.toggle(\'selected\');"><i data-lucide="check"></i></div>';
     html += '</div>';
 
     // Calcul stare pe baza datei de expirare (din details[0])
@@ -567,7 +568,7 @@
     html += '<div class="ua-top">';
     html += '<div class="ua-name">' + (cfg.name || '&nbsp;') + '</div>';
     if (aIsExpired || aIsWarning || cfg.alert) {
-      html += '<div class="ua-bell' + (aIsExpired ? ' ua-bell-alert' : '') + '">' + (aIsExpired ? '!' : '&#128276;') + '</div>';
+      html += '<div class="ua-bell' + (aIsExpired ? ' ua-bell-alert' : '') + '">' + (aIsExpired ? '!' : '<i data-lucide="bell"></i>') + '</div>';
     }
     html += '</div>';
 
@@ -630,7 +631,7 @@
     // Stripe cu gradient pe tip de produs
     var stripeBg = STOCURI_GRADIENTS[cfg.type] || 'linear-gradient(180deg, #338687 0%, #00686A 50%, #005557 100%)';
     html += '<div class="ua-stripe" style="background:' + stripeBg + ';">';
-    html += '<div class="ua-check" onclick="event.stopPropagation();this.parentElement.parentElement.classList.toggle(\'selected\');">&#10003;</div>';
+    html += '<div class="ua-check" onclick="event.stopPropagation();this.parentElement.parentElement.classList.toggle(\'selected\');"><i data-lucide="check"></i></div>';
     html += '</div>';
 
     // Body
@@ -670,7 +671,7 @@
     html += '<div class="ua-top">';
     html += '<div class="ua-name">' + (cfg.name || '&nbsp;') + '</div>';
     if (isExpired || isWarning || cfg.alert) {
-      html += '<div class="ua-bell' + (isExpired ? ' ua-bell-alert' : '') + '">' + (isExpired ? '!' : '&#128276;') + '</div>';
+      html += '<div class="ua-bell' + (isExpired ? ' ua-bell-alert' : '') + '">' + (isExpired ? '!' : '<i data-lucide="bell"></i>') + '</div>';
     }
     html += '</div>';
 
@@ -729,10 +730,10 @@
     // HERO: doar daca exista foto (fara pill tip - s-a mutat sub parcele)
     if (hasPhotos) {
       html += '<div class="ufb-hero" onclick="event.stopPropagation();openPhotoGallery(' + id + ')">';
-      var heroIcon = isEvaluare ? '&#128269;' : (cfg.title === 'Recoltat' ? '&#127806;' : '&#127793;');
+      var heroIcon = isEvaluare ? '<i data-lucide="search"></i>' : (cfg.title === 'Recoltat' ? '<i data-lucide="wheat"></i>' : '<i data-lucide="sprout"></i>');
       html += '<div class="ufb-hero-ph">' + heroIcon + '</div>';
       if (cfg.alert) html += '<div class="ufb-hero-alert" title="' + (cfg.alertMsg||'') + '">!</div>';
-      html += '<div class="ufb-hero-photos-count">&#128247; ' + photos + '</div>';
+      html += '<div class="ufb-hero-photos-count"><i data-lucide="camera"></i> ' + photos + '</div>';
       if (photos > 1) {
         html += '<div class="ufb-hero-dots">';
         var maxDots = Math.min(photos, 5);
@@ -752,7 +753,7 @@
     if (!hasPhotos && cfg.alert) {
       html += '<div class="ufb-meta-alert" title="' + (cfg.alertMsg||'') + '">!</div>';
     }
-    html += '<button class="ufb-more-btn" onclick="event.stopPropagation();openCardMenu(' + id + ')">&#8942;</button>';
+    html += '<button class="ufb-more-btn" onclick="event.stopPropagation();openCardMenu(' + id + ')"><i data-lucide="more-vertical"></i></button>';
     html += '</div>';
 
     // 2 linii: (1) titlu lucrare/evaluare + pastila ha    (2) parcela + "+N" + Vezi toate
@@ -800,7 +801,7 @@
       if (operators.length) {
         html += '<div class="ufb-operator-inline">';
         operators.forEach(function(op) {
-          html += '<div class="ufb-op-badge">&#128100; ' + op + '</div>';
+          html += '<div class="ufb-op-badge"><i data-lucide="user"></i> ' + op + '</div>';
         });
         html += '</div>';
       }
@@ -814,10 +815,10 @@
         var hasIssue = cfg.alert || vVantCls || precipCls;
         if (hasIssue) {
           html += '<div class="ufb-cond-inline">';
-          html += '<span class="ufb-cond-inline-item">&#127777; ' + c.tmin + '-' + c.tmax + '</span>';
-          html += '<span class="ufb-cond-inline-item">&#128668; ' + c.vUtilaj + '</span>';
-          html += '<span class="ufb-cond-inline-item ' + vVantCls + '">&#127788; ' + c.vVant + '</span>';
-          html += '<span class="ufb-cond-inline-item ' + precipCls + '">&#127783; ' + c.precip + '</span>';
+          html += '<span class="ufb-cond-inline-item"><i data-lucide="thermometer"></i> ' + c.tmin + '-' + c.tmax + '</span>';
+          html += '<span class="ufb-cond-inline-item"><i data-lucide="tractor"></i> ' + c.vUtilaj + '</span>';
+          html += '<span class="ufb-cond-inline-item ' + vVantCls + '"><i data-lucide="wind"></i> ' + c.vVant + '</span>';
+          html += '<span class="ufb-cond-inline-item ' + precipCls + '"><i data-lucide="cloud-rain"></i> ' + c.precip + '</span>';
           html += '</div>';
         }
       }
@@ -828,7 +829,7 @@
     var bravos = cfg.bravos || [];
     if (bravos.length > 0) {
       html += '<div class="ufb-bravos" onclick="event.stopPropagation();openBravos(' + id + ')">';
-      html += '<span class="ufb-bravos-ico">&#10084;&#65039;</span>';
+      html += '<span class="ufb-bravos-ico"><i data-lucide="heart"></i></span>';
       html += '<span class="ufb-bravos-txt">' + formatBravosText(bravos) + '</span>';
       html += '</div>';
     }
@@ -836,8 +837,8 @@
     // ACTIONS bar: Bravo (cu count) + Comenteaza - mereu thumbs-up, liked = background colorat
     var likedCls = cfg.liked ? ' liked' : '';
     html += '<div class="ufb-actions">';
-    html += '<button class="ufb-action-btn' + likedCls + '" onclick="event.stopPropagation();toggleLike(this,' + id + ')"><span class="ufb-action-btn-ico">&#128077;</span> ' + (bravos.length > 0 ? bravos.length + ' ' : '') + 'Bravo</button>';
-    html += '<button class="ufb-action-btn" onclick="event.stopPropagation();openComments(' + id + ')"><span class="ufb-action-btn-ico">&#128172;</span> Comenteaza</button>';
+    html += '<button class="ufb-action-btn' + likedCls + '" onclick="event.stopPropagation();toggleLike(this,' + id + ')"><span class="ufb-action-btn-ico"><i data-lucide="thumbs-up"></i></span> ' + (bravos.length > 0 ? bravos.length + ' ' : '') + 'Bravo</button>';
+    html += '<button class="ufb-action-btn" onclick="event.stopPropagation();openComments(' + id + ')"><span class="ufb-action-btn-ico"><i data-lucide="message-circle"></i></span> Comenteaza</button>';
     html += '</div>';
 
     // COMMENTS preview
@@ -868,8 +869,8 @@
 
     // Panou avatar (stanga): checkbox + emoji persoana
     html += '<div class="uec-avatar-col">';
-    html += '<div class="uec-check" onclick="event.stopPropagation();this.parentElement.parentElement.classList.toggle(\'selected\');">&#10003;</div>';
-    html += '<div class="uec-avatar">' + (cfg.thumbIcon || '&#128100;') + '</div>';
+    html += '<div class="uec-check" onclick="event.stopPropagation();this.parentElement.parentElement.classList.toggle(\'selected\');"><i data-lucide="check"></i></div>';
+    html += '<div class="uec-avatar">' + (cfg.thumbIcon || '<i data-lucide="user"></i>') + '</div>';
     html += '</div>';
 
     // Status logic
@@ -899,7 +900,7 @@
     if (cfg.type) html += '<div class="uec-role">' + cfg.type + '</div>';
     html += '</div>';
     html += '<div class="uec-icons">';
-    if (eIsWarning || eIsAlert || cfg.alert) html += '<div class="uec-bell">&#128276;</div>';
+    if (eIsWarning || eIsAlert || cfg.alert) html += '<div class="uec-bell"><i data-lucide="bell"></i></div>';
     if (eIsAlert) html += '<div class="uec-alert">!</div>';
     html += '</div>';
     html += '</div>';
@@ -919,7 +920,7 @@
   };
 
   // ===== FAB ACTIONS MENU =====
-  // Usage: initFabActions([ { icon: '&#11014;', label: 'Importa', action: function(){...} }, ... ])
+  // Usage: initFabActions([ { icon: '<i data-lucide="arrow-up"></i>', label: 'Importa', action: function(){...} }, ... ])
   window.initFabActions = function (actions) {
     var fab = document.querySelector('.fab');
     if (!fab) return;

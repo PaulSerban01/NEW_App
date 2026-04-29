@@ -14,127 +14,22 @@
 
   var title = topbar ? (topbar.getAttribute('data-title') || 'ConnAgri') : 'ConnAgri';
   var isLogo = topbar ? topbar.getAttribute('data-logo') === 'true' : false;
+  var backUrl = topbar ? topbar.getAttribute('data-back') : null;
   var titleHTML = isLogo
     ? '<div style="display:flex; align-items:center; gap:2px; color:#fff; font-size:16px; font-weight:700; letter-spacing:3px;">CONN<span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; background:#fff; color:var(--brand-primary); font-weight:900; font-size:15px; border-radius:3px; margin:0 1px;">N</span>AGRI</div>'
     : '<div style="font-size:18px; font-weight:600; color:#fff;">' + title + '</div>';
+  var leftBtn = backUrl
+    ? '<a href="' + backUrl + '" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:21px; text-decoration:none;"><i data-lucide="chevron-left"></i></a>'
+    : isLogo
+      ? '<div style="background:#F57C00; color:#1a1a1a; font-size:13px; font-weight:700; padding:6px 14px; border-radius:8px; cursor:pointer; letter-spacing:0.5px;">INF</div>'
+      : '<a href="newdash.html" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; font-size:19px; text-decoration:none;"><i data-lucide="home"></i></a>';
 
   // ===== TOP BAR =====
   if (topbar) topbar.outerHTML = `
     <div class="app-topbar" style="background:var(--brand-primary); display:flex; align-items:center; justify-content:space-between; padding:7px 16px; flex-shrink:0;">
-      ${isLogo ? '<div style="background:#F57C00; color:#1a1a1a; font-size:13px; font-weight:700; padding:6px 14px; border-radius:8px; cursor:pointer; letter-spacing:0.5px;">INF</div>' : '<a href="newdash.html" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; font-size:19px; text-decoration:none;">&#127968;</a>'}
+      ${leftBtn}
       ${titleHTML}
-      <div onclick="toggleBurgerMenu()" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; font-size:19px;">&#9776;</div>
-    </div>
-
-    <!-- Burger Menu Overlay -->
-    <div id="burger-menu" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; z-index:55;">
-      <div onclick="toggleBurgerMenu()" style="position:absolute; inset:0; background:rgba(0,0,0,0.4);"></div>
-      <div style="position:absolute; top:0; right:0; width:260px; height:100%; background:#fff; box-shadow:-4px 0 20px rgba(0,0,0,0.15); animation:slideIn 0.25s ease-out; display:flex; flex-direction:column;">
-        <div style="padding:36px 20px 16px; background:var(--brand-primary);">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-            <div style="font-size:16px; font-weight:700; color:#fff;">Meniu</div>
-            <div onclick="toggleBurgerMenu()" class="close-btn" style="background:rgba(255,255,255,0.3);">&times;</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div style="width:36px; height:36px; border-radius:50%; background:#fff; color:var(--brand-primary); display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700;">IP</div>
-            <div>
-              <div style="font-size:14px; font-weight:600; color:#fff;">Ion Popescu</div>
-              <div style="font-size:13px; color:rgba(255,255,255,0.7);">ion.popescu@agrovest.ro</div>
-            </div>
-          </div>
-        </div>
-        <div style="padding:16px 20px; border-bottom:3px solid var(--brand-primary); background:var(--brand-hover-bg);">
-          <div style="font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--brand-text-muted); margin-bottom:8px;">Spatiul de lucru activ</div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <div style="width:28px; height:28px; border-radius:6px; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700;">AV</div>
-            <div style="font-size:14px; font-weight:600; color:var(--brand-text-primary);">Agro Vest Holdings</div>
-          </div>
-          <a href="firme.html" style="display:block; margin-top:10px; padding:7px 0; background:var(--brand-primary); border-radius:var(--brand-radius); text-align:center; font-size:13px; font-weight:600; color:#fff; cursor:pointer; text-decoration:none;">&#9998; Editeaza firme</a>
-          <div id="ws-dd" style="display:none;margin-top:8px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius);box-shadow:0 4px 16px rgba(0,0,0,0.12);max-height:280px;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;">
-            <style>#ws-dd::-webkit-scrollbar{display:none;}</style>
-            <div onclick="selectWs('Agro Vest Holdings','AV',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;background:var(--brand-hover-bg);">
-              <div style="width:28px;height:28px;border-radius:6px;background:var(--brand-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AV</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">Agro Vest Holdings</div>
-              <span style="margin-left:auto;color:var(--brand-primary);font-size:15px;">&#10003;</span>
-            </div>
-            <div onclick="selectWs('Ferma Constanta','FC',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;">
-              <div style="width:28px;height:28px;border-radius:6px;background:#8B5E3C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">FC</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">Ferma Constanta</div>
-            </div>
-            <div onclick="selectWs('AgroTim SRL','AT',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;">
-              <div style="width:28px;height:28px;border-radius:6px;background:#2E86AB;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AT</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">AgroTim SRL</div>
-            </div>
-            <div onclick="selectWs('Cereale Banat','CB',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;">
-              <div style="width:28px;height:28px;border-radius:6px;background:#6D28D9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">CB</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">Cereale Banat</div>
-            </div>
-            <div onclick="selectWs('Bio Farm Arad','BF',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;">
-              <div style="width:28px;height:28px;border-radius:6px;background:#2D8E5F;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">BF</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">Bio Farm Arad</div>
-            </div>
-            <div onclick="selectWs('Pomicola Bistrita','PB',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;">
-              <div style="width:28px;height:28px;border-radius:6px;background:#B7791F;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">PB</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">Pomicola Bistrita</div>
-            </div>
-            <div onclick="selectWs('Vita de Vie Recas','VR',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;">
-              <div style="width:28px;height:28px;border-radius:6px;background:#C0392B;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">VR</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">Vita de Vie Recas</div>
-            </div>
-            <div onclick="selectWs('Legume Dolj','LD',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;">
-              <div style="width:28px;height:28px;border-radius:6px;background:#0369A1;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">LD</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">Legume Dolj</div>
-            </div>
-            <div onclick="selectWs('Sere Braila','SB',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;">
-              <div style="width:28px;height:28px;border-radius:6px;background:#4A4A6A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">SB</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">Sere Braila</div>
-            </div>
-            <div onclick="selectWs('Orizarii Ialomita','OI',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;">
-              <div style="width:28px;height:28px;border-radius:6px;background:#338687;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">OI</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">Orizarii Ialomita</div>
-            </div>
-            <div onclick="selectWs('Pajiisti Sibiu','PS',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;">
-              <div style="width:28px;height:28px;border-radius:6px;background:#1B5E20;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">PS</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">Pajiisti Sibiu</div>
-            </div>
-            <div onclick="selectWs('Apicola Maramures','AM',this)" class="ws-item" style="display:flex;align-items:center;gap:10px;padding:14px 14px;cursor:pointer;">
-              <div style="width:28px;height:28px;border-radius:6px;background:#B7791F;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AM</div>
-              <div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">Apicola Maramures</div>
-            </div>
-          </div>
-        </div>
-        <div style="flex:1; padding:8px 0;">
-          <div onclick="alert('Setari Aplicatie')" style="display:flex; align-items:center; gap:12px; padding:18px 20px; cursor:pointer; font-size:15px; color:var(--brand-text-primary);">
-            <span style="font-size:19px;">&#9881;</span> Setari Aplicatie
-          </div>
-          <a href="user.html" style="display:flex; align-items:center; gap:12px; padding:18px 20px; cursor:pointer; font-size:15px; color:var(--brand-text-primary); text-decoration:none;">
-            <span style="font-size:19px;">&#128100;</span> Profil Utilizator
-          </a>
-          <!-- Accessibility toggles -->
-          <div style="padding:8px 20px; border-top:1px solid var(--brand-border); border-bottom:1px solid var(--brand-border); margin:4px 0;">
-            <div style="display:flex; align-items:center; justify-content:space-between; padding:6px 0;">
-              <div style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--brand-text-primary);"><span style="font-size:17px;">&#128474;</span> Text mare</div>
-              <div style="display:flex; border:1px solid var(--brand-border); border-radius:8px; overflow:hidden; flex-shrink:0;">
-                <div id="ts-small" onclick="setTextSize(-2)" style="padding:5px 10px; cursor:pointer; font-size:12px; font-weight:700; line-height:1; background:#fff; color:var(--brand-text-primary); border-right:1px solid var(--brand-border);">A&#8722;</div>
-                <div id="ts-normal" onclick="setTextSize(0)" style="padding:5px 10px; cursor:pointer; font-size:14px; font-weight:700; line-height:1; background:#fff; color:var(--brand-text-primary); border-right:1px solid var(--brand-border);">A</div>
-                <div id="ts-large" onclick="setTextSize(2)" style="padding:5px 10px; cursor:pointer; font-size:16px; font-weight:700; line-height:1; background:#fff; color:var(--brand-text-primary);">A&#43;</div>
-              </div>
-            </div>
-            <div style="display:flex; align-items:center; justify-content:space-between; padding:6px 0;">
-              <div style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--brand-text-primary);"><span style="font-size:17px;">&#127769;</span> Dark mode</div>
-              <div onclick="toggleDarkMode()" id="dark-toggle" style="width:40px; height:22px; border-radius:11px; background:#ccc; position:relative; cursor:pointer; transition:0.2s;"><div id="dark-knob" style="width:18px; height:18px; border-radius:50%; background:#fff; position:absolute; top:2px; left:2px; transition:0.2s;"></div></div>
-            </div>
-          </div>
-          <div onclick="alert('Termeni si Conditii')" style="display:flex; align-items:center; gap:12px; padding:18px 20px; cursor:pointer; font-size:15px; color:var(--brand-text-primary);">
-            <span style="font-size:19px;">&#128196;</span> Termeni si Conditii
-          </div>
-        </div>
-        <div style="padding:12px 20px; border-top:1px solid var(--brand-border);">
-          <button onclick="window.location.href='../roles.html'" style="display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer; font-size:15px; font-weight:600; color:var(--brand-danger); background:var(--brand-danger-bg); border-radius:var(--brand-radius); border:none; width:100%; text-align:left;">
-            <span style="font-size:19px;">&#128682;</span> Iesire din cont
-          </button>
-        </div>
-      </div>
+      <div onclick="toggleBurgerMenu()" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; font-size:19px;"><i data-lucide="circle-user-round"></i></div>
     </div>`;
 
   // ===== BOTTOM BAR (FAB + nav + overlays) — copied from OLDAPP =====
@@ -144,23 +39,23 @@
       <div onclick="toggleFab()" style="position:absolute; inset:0; background:rgba(0,0,0,0.4);"></div>
       <div style="position:absolute; bottom:125px; left:50%; transform:translateX(-50%); display:flex; gap:16px;">
         <div style="display:flex; flex-direction:column; align-items:center; gap:4px; animation:fabPop 0.2s ease-out;">
-          <div onclick="quickStocIntrare()" style="width:52px; height:52px; border-radius:50%; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:23px; box-shadow:0 4px 12px rgba(0,0,0,0.2); cursor:pointer;">&#128230;</div>
+          <div onclick="quickStocIntrare()" style="width:52px; height:52px; border-radius:50%; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:23px; box-shadow:0 4px 12px rgba(0,0,0,0.2); cursor:pointer;"><i data-lucide="package"></i></div>
           <span style="font-size:13px; color:#fff; font-weight:600; text-align:center; line-height:1.3;">Intrare<br>stoc</span>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:4px; animation:fabPop 0.25s ease-out;">
-          <div onclick="quickEvaluare()" style="width:52px; height:52px; border-radius:50%; background:#E6853D; color:#fff; display:flex; align-items:center; justify-content:center; font-size:23px; box-shadow:0 4px 12px rgba(0,0,0,0.2); cursor:pointer;">&#128269;</div>
+          <div onclick="quickEvaluare()" style="width:52px; height:52px; border-radius:50%; background:#E6853D; color:#fff; display:flex; align-items:center; justify-content:center; font-size:23px; box-shadow:0 4px 12px rgba(0,0,0,0.2); cursor:pointer;"><i data-lucide="search"></i></div>
           <span style="font-size:13px; color:#fff; font-weight:600; text-align:center; line-height:1.3;">Evaluare<br>cultura</span>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:4px; animation:fabPop 0.3s ease-out;">
-          <div onclick="quickLucrare()" style="width:52px; height:52px; border-radius:50%; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:23px; box-shadow:0 4px 12px rgba(0,0,0,0.2); cursor:pointer;">&#127806;</div>
+          <div onclick="quickLucrare()" style="width:52px; height:52px; border-radius:50%; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:23px; box-shadow:0 4px 12px rgba(0,0,0,0.2); cursor:pointer;"><i data-lucide="wheat"></i></div>
           <span style="font-size:13px; color:#fff; font-weight:600; text-align:center; line-height:1.3;">Lucrare<br>agricola</span>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:4px; animation:fabPop 0.35s ease-out;">
-          <div onclick="quickArendaPickup()" style="width:52px; height:52px; border-radius:50%; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:23px; box-shadow:0 4px 12px rgba(0,0,0,0.2); cursor:pointer;">&#128220;</div>
+          <div onclick="quickArendaPickup()" style="width:52px; height:52px; border-radius:50%; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:23px; box-shadow:0 4px 12px rgba(0,0,0,0.2); cursor:pointer;"><i data-lucide="file-text"></i></div>
           <span style="font-size:13px; color:#fff; font-weight:600; text-align:center; line-height:1.3;">Ridicare<br>arenda</span>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:4px; animation:fabPop 0.4s ease-out;">
-          <div onclick="quickAlimentare()" style="width:52px; height:52px; border-radius:50%; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:23px; box-shadow:0 4px 12px rgba(0,0,0,0.2); cursor:pointer;">&#9981;</div>
+          <div onclick="quickAlimentare()" style="width:52px; height:52px; border-radius:50%; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:23px; box-shadow:0 4px 12px rgba(0,0,0,0.2); cursor:pointer;"><i data-lucide="fuel"></i></div>
           <span style="font-size:13px; color:#fff; font-weight:600; text-align:center; line-height:1.3;">Alimentare<br>utilaj</span>
         </div>
       </div>
@@ -177,19 +72,19 @@
         <div style="height:1px; background:var(--brand-border);"></div>
         <div style="max-height:350px; overflow-y:auto;">
           <div class="picker-item" onclick="closeCustomPicker();toggleFab();openQuickNote();" style="display:flex; align-items:center; gap:12px; padding:18px 20px; cursor:pointer; border-bottom:1px solid #f0f0f0;">
-            <span style="font-size:21px;">&#128221;</span>
+            <span style="font-size:21px;"><i data-lucide="file-pen"></i></span>
             <div><div style="font-size:15px; font-weight:500;">Notita noua</div><div style="font-size:13px; color:var(--brand-text-muted);">Memoreaza rapid o idee</div></div>
           </div>
           <div class="picker-item" onclick="closeCustomPicker();toggleFab();openQuickReport();" style="display:flex; align-items:center; gap:12px; padding:18px 20px; cursor:pointer; border-bottom:1px solid #f0f0f0;">
-            <span style="font-size:21px;">&#128203;</span>
+            <span style="font-size:21px;"><i data-lucide="clipboard-list"></i></span>
             <div><div style="font-size:15px; font-weight:500;">Cere raport de la echipa</div><div style="font-size:13px; color:var(--brand-text-muted);">Solicita update sau status</div></div>
           </div>
           <div class="picker-item" onclick="closeCustomPicker();toggleFab();openQuickReminder();" style="display:flex; align-items:center; gap:12px; padding:18px 20px; cursor:pointer; border-bottom:1px solid #f0f0f0;">
-            <span style="font-size:21px;">&#9200;</span>
+            <span style="font-size:21px;"><i data-lucide="alarm-clock"></i></span>
             <div><div style="font-size:15px; font-weight:500;">Reminder</div><div style="font-size:13px; color:var(--brand-text-muted);">Programeaza o notificare</div></div>
           </div>
           <div class="picker-item" onclick="closeCustomPicker();toggleFab();openQuickSOS();" style="display:flex; align-items:center; gap:12px; padding:18px 20px; cursor:pointer;">
-            <span style="font-size:21px;">&#128680;</span>
+            <span style="font-size:21px;"><i data-lucide="alert-octagon"></i></span>
             <div><div style="font-size:15px; font-weight:500;">SOS / Urgenta</div><div style="font-size:13px; color:var(--brand-text-muted);">Alerteaza toata echipa</div></div>
           </div>
         </div>
@@ -204,57 +99,57 @@
           <div style="font-size:13px; color:rgba(255,255,255,0.7);">ConnAgri &middot; Navigare rapida</div>
         </div>
         <div style="padding:6px 0 0;"><div style="padding:2px 14px; font-size:11px; font-weight:700; color:var(--brand-text-muted); text-transform:uppercase; letter-spacing:0.5px;">Principal</div>
-          <a href="newdash.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#128202;</span> Dash Admin</a>
-          <a href="dash_ops.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#128293;</span> Dash Ops</a>
-          <a href="operator.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#128736;</span> Ecran operator</a>
-          <a href="firme.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#9881;</span> Configurare firme</a>
+          <a href="newdash.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="bar-chart-2"></i></span> Dash Admin</a>
+          <a href="dash_ops.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="flame"></i></span> Dash Ops</a>
+          <a href="operator.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="wrench"></i></span> Ecran operator</a>
+          <a href="firme.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="settings"></i></span> Configurare firme</a>
         </div>
         <div style="height:1px; background:var(--brand-border); margin:4px 14px;"></div>
         <div style="padding:2px 0 0;"><div style="padding:2px 14px; font-size:11px; font-weight:700; color:var(--brand-text-muted); text-transform:uppercase; letter-spacing:0.5px;">Resurse</div>
-          <a href="angajati.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#128101;</span> Echipa</a>
-          <a href="stocuri.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#128230;</span> Stocuri</a>
-          <a href="utilaje.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#128668;</span> Utilaje</a>
-          <a href="terenuri.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#127793;</span> Terenuri lista</a>
-          <a href="harta-terenuri.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#127758;</span> Harta Terenuri</a>
+          <a href="angajati.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="users"></i></span> Echipa</a>
+          <a href="stocuri.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="package"></i></span> Stocuri</a>
+          <a href="utilaje.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="tractor"></i></span> Utilaje</a>
+          <a href="terenuri.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="sprout"></i></span> Terenuri lista</a>
+          <a href="harta-terenuri.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="globe"></i></span> Harta Terenuri</a>
         </div>
         <div style="height:1px; background:var(--brand-border); margin:4px 14px;"></div>
         <div style="padding:2px 0 0;"><div style="padding:2px 14px; font-size:11px; font-weight:700; color:var(--brand-text-muted); text-transform:uppercase; letter-spacing:0.5px;">Organizare</div>
-          <a href="agenda.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#127806;</span> Jurnal de c&acirc;mp</a>
-          <a href="arenda.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#128220;</span> Arenda</a>
+          <a href="agenda.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="wheat"></i></span> Jurnal de c&acirc;mp</a>
+          <a href="arenda.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="file-text"></i></span> Arenda</a>
         </div>
         <div style="height:1px; background:var(--brand-border); margin:4px 14px;"></div>
         <div style="padding:2px 0 8px;"><div style="padding:2px 14px; font-size:11px; font-weight:700; color:var(--brand-text-muted); text-transform:uppercase; letter-spacing:0.5px;">Media</div>
-          <a href="mesagerie.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#128172;</span> Mesagerie <span style="margin-left:auto; min-width:18px; height:18px; border-radius:9px; background:var(--brand-danger); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 5px;">3</span></a>
-          <a href="fotografii.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:15px;">&#128247;</span> Galerie foto</a>
+          <a href="mesagerie.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="message-circle"></i></span> Mesagerie <span style="margin-left:auto; min-width:18px; height:18px; border-radius:9px; background:var(--brand-danger); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 5px;">3</span></a>
+          <a href="fotografii.html" style="display:flex; align-items:center; gap:10px; padding:8px 14px; text-decoration:none; color:var(--brand-text-primary); font-size:13px;"><span style="font-size:20px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="camera"></i></span> Galerie foto</a>
         </div>
       </div>
     </div>
 
     <!-- Shortcuts Toggle (visible only when bar is closed) -->
     <div class="shortcuts-toggle" id="shortcuts-toggle" style="display:flex;" onclick="event.stopPropagation(); toggleShortcuts();">
-      <span class="chevron" id="shortcuts-chevron">&#9650;</span>
+      <span class="chevron" id="shortcuts-chevron"><i data-lucide="chevron-up"></i></span>
       <span class="trigger-label">Navigare rapida</span>
     </div>
 
     <!-- Bottom Navigation (hidden by default) -->
     <div class="phone-bottom-nav" style="background:#fff; border-top:1px solid var(--brand-border); display:none; align-items:flex-end; padding:10px 0 12px; position:relative; z-index:51;">
       <!-- Pin button -->
-      <div id="pin-btn" onclick="togglePin(event)" style="position:absolute; top:-12px; left:8px; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:13px; z-index:52;" title="Fixeaza bara">&#128204;</div>
+      <div id="pin-btn" onclick="togglePin(event)" style="position:absolute; top:-12px; left:8px; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:13px; z-index:52;" title="Fixeaza bara"><i data-lucide="pin"></i></div>
       <div onclick="toggleLeftMenu()" style="flex:1; text-align:center; padding:6px 0; font-size:13px; color:var(--brand-text-muted); cursor:pointer;">
-        <div style="font-size:19px; margin-bottom:2px;">&#9776;</div>Meniu
+        <div style="font-size:19px; margin-bottom:2px;"><i data-lucide="menu"></i></div>Meniu
       </div>
       <div onclick="openTaskAlert()" style="flex:1; text-align:center; padding:6px 0; font-size:13px; color:var(--brand-text-muted); cursor:pointer;">
-        <div style="font-size:19px; margin-bottom:2px;">&#128276;</div>Planifica
+        <div style="font-size:19px; margin-bottom:2px;"><i data-lucide="bell"></i></div>Planifica
       </div>
       <div style="flex:1; display:flex; justify-content:center; position:relative;">
-        <div id="fab-btn" onclick="toggleFab()" style="width:52px; height:52px; border-radius:50%; background:#fff; color:var(--brand-primary); border:2px solid var(--brand-primary); display:flex; align-items:center; justify-content:center; font-size:23px; font-weight:700; box-shadow:0 2px 8px rgba(0,104,106,0.2); cursor:pointer; position:absolute; bottom:4px; transition:transform 0.3s ease;">&#9889;</div>
+        <div id="fab-btn" onclick="toggleFab()" style="width:52px; height:52px; border-radius:50%; background:#fff; color:var(--brand-primary); border:2px solid var(--brand-primary); display:flex; align-items:center; justify-content:center; font-size:23px; font-weight:700; box-shadow:0 2px 8px rgba(0,104,106,0.2); cursor:pointer; position:absolute; bottom:4px; transition:transform 0.3s ease;"><i data-lucide="zap"></i></div>
       </div>
       <a href="mesaje.html" style="flex:1; text-align:center; padding:6px 0; font-size:13px; color:var(--brand-text-muted); cursor:pointer; text-decoration:none; position:relative;">
-        <div style="font-size:19px; margin-bottom:2px;">&#128172;</div>Mesaje
+        <div style="font-size:19px; margin-bottom:2px;"><i data-lucide="message-circle"></i></div>Mesaje
         <span style="position:absolute; top:2px; right:calc(50% - 24px); min-width:16px; height:16px; border-radius:8px; background:var(--brand-danger); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 4px;">4</span>
       </a>
       <div onclick="openCameraPopup()" style="flex:1; text-align:center; padding:6px 0; font-size:13px; color:var(--brand-text-muted); cursor:pointer;">
-        <div style="font-size:19px; margin-bottom:2px;">&#128247;</div>Camera
+        <div style="font-size:19px; margin-bottom:2px;"><i data-lucide="camera"></i></div>Camera
       </div>
     </div>
     `;
@@ -268,24 +163,8 @@
     updateFabPosition();
   };
 
-  window.burgerOpen = false;
   window.toggleBurgerMenu = function () {
-    window.burgerOpen = !window.burgerOpen;
-    document.getElementById('burger-menu').style.display = window.burgerOpen ? 'block' : 'none';
-  };
-
-  window.selectWs = function(name, initials, el) {
-    document.querySelectorAll('.ws-item').forEach(function(w) {
-      w.style.background = '#fff';
-      var check = w.querySelector('span[style*="margin-left:auto"]');
-      if (check) check.remove();
-    });
-    el.style.background = 'var(--brand-hover-bg)';
-    var checkSpan = document.createElement('span');
-    checkSpan.style.cssText = 'margin-left:auto;color:var(--brand-primary);font-size:15px;';
-    checkSpan.innerHTML = '&#10003;';
-    el.appendChild(checkSpan);
-    document.getElementById('ws-dd').style.display = 'none';
+    window.location.href = 'my-profile.html';
   };
 
   window.menuOpen = false;
@@ -323,7 +202,11 @@
     var pinInit = document.getElementById('pin-btn');
     if (navInit) navInit.style.display = 'flex';
     if (toggleInit) toggleInit.classList.add('hidden');
-    if (pinInit) pinInit.classList.add('pinned');
+    if (pinInit) {
+      pinInit.classList.add('pinned');
+      var pinIcon = pinInit.querySelector('i[data-lucide]');
+      if (pinIcon) { pinIcon.setAttribute('data-lucide', 'pin-off'); lucide.createIcons({ nodes: [pinIcon] }); }
+    }
     var addInit = document.getElementById('add-btn');
     if (addInit) addInit.style.bottom = '140px';
     var addMenuInit = document.getElementById('add-menu');
@@ -393,6 +276,11 @@
     if (pinBtn) {
       pinBtn.classList.toggle('pinned', window.shortcutsPinned);
       pinBtn.title = window.shortcutsPinned ? 'Deblocheaza bara' : 'Fixeaza bara';
+      var icon = pinBtn.querySelector('i[data-lucide]');
+      if (icon) {
+        icon.setAttribute('data-lucide', window.shortcutsPinned ? 'pin-off' : 'pin');
+        lucide.createIcons({ nodes: [icon] });
+      }
     }
   };
 
@@ -422,7 +310,7 @@
   var TEXT_SIZE_OFFSET = 0; // -2, 0 sau +2
   var SKIP_TAGS = { SCRIPT: 1, STYLE: 1, LINK: 1, META: 1, HEAD: 1, BR: 1 };
   // Zonele excluse: topbar, toolbar, summary-bar, bottom bar/nav, taburi
-  var SKIP_SELECTORS = '.app-topbar, .toolbar, .summary-bar, .phone-bottom-nav, .shortcuts-toggle, .view-tabs, .detail-tabs, .msg-tabs';
+  var SKIP_SELECTORS = '.app-topbar, .toolbar, .summary-bar, .phone-bottom-nav, .shortcuts-toggle, .view-tabs, .detail-tabs, .msg-tabs, #left-menu-overlay, #burger-menu';
 
   function applyBump(el) {
     if (!el || el.nodeType !== 1 || SKIP_TAGS[el.tagName]) return;
@@ -573,18 +461,18 @@
     var html = '';
     // TABS: Manual / Automat
     html += '<div style="display:flex;gap:6px;margin-bottom:16px;padding:4px;background:var(--brand-surface);border-radius:12px;">';
-    html += '<button type="button" id="stoc-tab-manual-btn" onclick="stocTab(\'manual\')" style="flex:1;padding:10px 12px;background:var(--brand-primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">&#9881; Manual</button>';
-    html += '<button type="button" id="stoc-tab-automat-btn" onclick="stocTab(\'automat\')" style="flex:1;padding:10px 12px;background:transparent;color:var(--brand-text-muted);border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">&#128247; Automat</button>';
+    html += '<button type="button" id="stoc-tab-manual-btn" onclick="stocTab(\'manual\')" style="flex:1;padding:10px 12px;background:var(--brand-primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;"><i data-lucide="settings"></i> Manual</button>';
+    html += '<button type="button" id="stoc-tab-automat-btn" onclick="stocTab(\'automat\')" style="flex:1;padding:10px 12px;background:transparent;color:var(--brand-text-muted);border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;"><i data-lucide="camera"></i> Automat</button>';
     html += '</div>';
 
     // TAB AUTOMAT (ascuns initial)
     html += '<div id="stoc-tab-automat" style="display:none;">';
     html += '<div style="padding:20px;text-align:center;background:linear-gradient(135deg,var(--brand-hover-bg),#fff);border:2px dashed var(--brand-primary);border-radius:12px;margin-bottom:14px;">';
-    html += '<div style="font-size:44px;margin-bottom:10px;">&#128247;</div>';
+    html += '<div style="font-size:44px;margin-bottom:10px;"><i data-lucide="camera"></i></div>';
     html += '<div style="font-size:15px;font-weight:700;color:var(--brand-text-primary);margin-bottom:6px;">Fa o poza la factura / aviz</div>';
     html += '<div style="font-size:13px;color:var(--brand-text-muted);margin-bottom:14px;line-height:1.4;">Datele se extrag automat<br>(produs, cantitate, pret, furnizor...)</div>';
     html += '<button type="button" onclick="scanInvoice()" style="width:100%;padding:14px;background:var(--brand-primary);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit;box-shadow:0 2px 8px rgba(0,104,106,0.25);">';
-    html += '<span style="font-size:20px;">&#128247;</span> Deschide camera';
+    html += '<span style="font-size:20px;"><i data-lucide="camera"></i></span> Deschide camera';
     html += '</button>';
     html += '<div style="display:flex;align-items:center;gap:8px;margin:14px 0 8px;">';
     html += '<div style="flex:1;height:1px;background:var(--brand-border);"></div>';
@@ -592,7 +480,7 @@
     html += '<div style="flex:1;height:1px;background:var(--brand-border);"></div>';
     html += '</div>';
     html += '<button type="button" onclick="scanInvoice()" style="width:100%;padding:12px;background:#fff;color:var(--brand-primary);border:2px solid var(--brand-primary);border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;">';
-    html += '<span style="font-size:18px;">&#128206;</span> Incarca din galerie (PDF/foto)';
+    html += '<span style="font-size:18px;"><i data-lucide="paperclip"></i></span> Incarca din galerie (PDF/foto)';
     html += '</button>';
     html += '</div>';
     html += '<div style="font-size:12px;color:var(--brand-text-muted);padding:10px 14px;background:var(--brand-warning-bg);border-left:3px solid var(--brand-warning);border-radius:6px;line-height:1.45;">';
@@ -729,7 +617,7 @@
     var qLow = q.toLowerCase();
     var matches = PRODUSE_DB.filter(function (p) { return p.name.toLowerCase().indexOf(qLow) >= 0; });
     if (matches.length === 0) {
-      results.innerHTML = '<div style="padding:12px;font-size:14px;"><span style="color:var(--brand-warning);font-weight:700;">&#9881; Produs nou</span> <span style="color:var(--brand-text-muted);">&mdash; completeaza categoria si tipul manual</span></div>';
+      results.innerHTML = '<div style="padding:12px;font-size:14px;"><span style="color:var(--brand-warning);font-weight:700;"><i data-lucide="settings"></i> Produs nou</span> <span style="color:var(--brand-text-muted);">&mdash; completeaza categoria si tipul manual</span></div>';
       results.style.display = 'block';
       return;
     }
@@ -858,7 +746,7 @@
     html += '<div onclick="furnizorPick(\'\')" style="padding:12px;cursor:pointer;border-bottom:1px solid #f0f0f0;color:var(--brand-text-muted);font-style:italic;font-size:14px;">&mdash; Nedefinit &mdash;</div>';
     var matches = FURNIZORI_DB.filter(function (f) { return !qLow || f.toLowerCase().indexOf(qLow) >= 0; });
     matches.slice(0, 10).forEach(function (f) {
-      html += '<div onclick="furnizorPick(\'' + f.replace(/'/g, "\\'") + '\')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:14px;display:flex;align-items:center;gap:8px;">&#127963; ' + f + '</div>';
+      html += '<div onclick="furnizorPick(\'' + f.replace(/'/g, "\\'") + '\')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:14px;display:flex;align-items:center;gap:8px;"><i data-lucide="building-2"></i> ' + f + '</div>';
     });
     if (qLow && matches.length === 0) {
       html += '<div style="padding:12px;font-size:13px;color:var(--brand-text-muted);"><span style="color:var(--brand-warning);font-weight:700;">Nu exista.</span> Apasa + pentru a adauga.</div>';
@@ -937,9 +825,9 @@
     // Fotografii (camera + galerie)
     html += '<div class="form-group"><label class="form-label">Fotografii</label>';
     html += '<div style="display:flex;gap:6px;">';
-    html += '<label for="eval-camera" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;border:1.5px dashed var(--brand-primary);background:var(--brand-hover-bg);color:var(--brand-primary);border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;"><span style="font-size:18px;">&#128247;</span> Fa poza</label>';
+    html += '<label for="eval-camera" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;border:1.5px dashed var(--brand-primary);background:var(--brand-hover-bg);color:var(--brand-primary);border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;"><span style="font-size:18px;"><i data-lucide="camera"></i></span> Fa poza</label>';
     html += '<input id="eval-camera" type="file" accept="image/*" capture="environment" multiple style="display:none;" onchange="evalFotoAdd(this)">';
-    html += '<label for="eval-gallery" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;border:1.5px dashed var(--brand-border);background:#fff;color:var(--brand-text-primary);border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;"><span style="font-size:18px;">&#128444;</span> Din galerie</label>';
+    html += '<label for="eval-gallery" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;border:1.5px dashed var(--brand-border);background:#fff;color:var(--brand-text-primary);border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;"><span style="font-size:18px;"><i data-lucide="image"></i></span> Din galerie</label>';
     html += '<input id="eval-gallery" type="file" accept="image/*" multiple style="display:none;" onchange="evalFotoAdd(this)">';
     html += '</div>';
     html += '<div id="eval-foto-preview" style="display:none;margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;"></div>';
@@ -989,8 +877,8 @@
         chip.innerHTML =
           '<div style="width:100%;height:70px;background:url(\'' + url + '\') center/cover;"></div>' +
           '<div style="padding:3px 4px;font-size:9px;line-height:1.3;background:var(--brand-hover-bg);">' +
-            '<div style="font-weight:700;color:var(--brand-primary);">&#128205; ' + (gps ? gps.lat.toFixed(3) + ',' + gps.lng.toFixed(3) : '—') + '</div>' +
-            '<div style="color:var(--brand-text-muted);">&#128336; ' + ts + ' &middot; &#128257; ' + orient + '</div>' +
+            '<div style="font-weight:700;color:var(--brand-primary);"><i data-lucide="map-pin"></i> ' + (gps ? gps.lat.toFixed(3) + ',' + gps.lng.toFixed(3) : '—') + '</div>' +
+            '<div style="color:var(--brand-text-muted);"><i data-lucide="clock"></i> ' + ts + ' &middot; <i data-lucide="repeat"></i> ' + orient + '</div>' +
           '</div>' +
           '<span onclick="this.parentElement.remove()" style="position:absolute;top:2px;right:2px;width:20px;height:20px;background:rgba(0,0,0,0.7);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;font-weight:700;">&times;</span>' +
           '<span onclick="evalFotoInfo(this)" data-meta=\'' + JSON.stringify(meta).replace(/"/g,'&quot;') + '\' style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:rgba(0,0,0,0.7);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;font-weight:700;">i</span>';
@@ -1005,12 +893,12 @@
     var gps = meta.gps || {};
     var html =
       '<div style="display:grid;grid-template-columns:auto 1fr;gap:8px 14px;padding:4px 0;font-size:13px;">' +
-      '<span style="color:var(--brand-text-muted);">&#128247; Fisier</span><span style="font-weight:700;word-break:break-all;">' + (meta.name || '—') + '</span>' +
-      '<span style="color:var(--brand-text-muted);">&#128336; Data / ora</span><span style="font-weight:700;">' + (meta.ts || '—') + '</span>' +
-      '<span style="color:var(--brand-text-muted);">&#128205; Latitudine</span><span style="font-weight:700;">' + (gps.lat !== undefined ? gps.lat.toFixed(5) : '—') + '</span>' +
-      '<span style="color:var(--brand-text-muted);">&#128205; Longitudine</span><span style="font-weight:700;">' + (gps.lng !== undefined ? gps.lng.toFixed(5) : '—') + '</span>' +
-      '<span style="color:var(--brand-text-muted);">&#127919; Acuratete</span><span style="font-weight:700;">' + (gps.acc !== undefined ? '±' + Math.round(gps.acc) + ' m' : '—') + '</span>' +
-      '<span style="color:var(--brand-text-muted);">&#128257; Orientare</span><span style="font-weight:700;">' + (meta.orient || '—') + '</span>' +
+      '<span style="color:var(--brand-text-muted);"><i data-lucide="camera"></i> Fisier</span><span style="font-weight:700;word-break:break-all;">' + (meta.name || '—') + '</span>' +
+      '<span style="color:var(--brand-text-muted);"><i data-lucide="clock"></i> Data / ora</span><span style="font-weight:700;">' + (meta.ts || '—') + '</span>' +
+      '<span style="color:var(--brand-text-muted);"><i data-lucide="map-pin"></i> Latitudine</span><span style="font-weight:700;">' + (gps.lat !== undefined ? gps.lat.toFixed(5) : '—') + '</span>' +
+      '<span style="color:var(--brand-text-muted);"><i data-lucide="map-pin"></i> Longitudine</span><span style="font-weight:700;">' + (gps.lng !== undefined ? gps.lng.toFixed(5) : '—') + '</span>' +
+      '<span style="color:var(--brand-text-muted);"><i data-lucide="target"></i> Acuratete</span><span style="font-weight:700;">' + (gps.acc !== undefined ? '±' + Math.round(gps.acc) + ' m' : '—') + '</span>' +
+      '<span style="color:var(--brand-text-muted);"><i data-lucide="repeat"></i> Orientare</span><span style="font-weight:700;">' + (meta.orient || '—') + '</span>' +
       (gps.demo ? '<span style="grid-column:1/-1;color:var(--brand-warning);font-size:11px;">(coordonate demo - in productie se iau din EXIF / GPS real)</span>' : '') +
       '</div>';
     if (typeof openDrawer === 'function') openDrawer('Metadata foto', html, []);
@@ -1042,7 +930,7 @@
     html += '<input id="' + id + '-search" class="form-input" placeholder="Tap pentru listă sau scrie..." oninput="psSearch(\'' + id + '\', this.value)" onfocus="psSearch(\'' + id + '\', this.value)" autocomplete="off">';
     html += '<div id="' + id + '-results" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--brand-border);border-radius:8px;max-height:220px;overflow-y:auto;overflow-x:hidden;z-index:6;box-shadow:0 4px 14px rgba(0,0,0,0.12);margin-top:2px;"></div>';
     html += '</div>';
-    html += '<button type="button" onclick="psOpenMap(\'' + id + '\')" title="Selectează de pe hartă" style="min-height:48px;min-width:48px;padding:0 12px;border:1px solid var(--brand-primary);background:var(--brand-hover-bg);color:var(--brand-primary);border-radius:8px;cursor:pointer;font-size:20px;flex-shrink:0;">&#127758;</button>';
+    html += '<button type="button" onclick="psOpenMap(\'' + id + '\')" title="Selectează de pe hartă" style="min-height:48px;min-width:48px;padding:0 12px;border:1px solid var(--brand-primary);background:var(--brand-hover-bg);color:var(--brand-primary);border-radius:8px;cursor:pointer;font-size:20px;flex-shrink:0;"><i data-lucide="globe"></i></button>';
     html += '</div>';
     html += '</div>';
     return html;
@@ -1064,7 +952,7 @@
     var html = '';
     matches.forEach(function (p) {
       html += '<div onclick="psPick(\'' + id + '\', \'' + p.name.replace(/'/g, "\\'") + '\')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;">';
-      html += '<div><div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);">&#127806; ' + p.name + '</div>' + (p.cultura ? '<div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">' + p.cultura + '</div>' : '') + '</div>';
+      html += '<div><div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);"><i data-lucide="wheat"></i> ' + p.name + '</div>' + (p.cultura ? '<div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">' + p.cultura + '</div>' : '') + '</div>';
       if (p.ha) html += '<div style="font-size:13px;font-weight:700;color:#E6853D;">' + p.ha + ' ha</div>';
       html += '</div>';
     });
@@ -1098,7 +986,7 @@
     wrap.innerHTML = names.map(function (name) {
       var p = source.find(function (x) { return x.name === name; });
       var label = name + (p && p.ha ? ' &middot; ' + p.ha + ' ha' : '');
-      return '<div style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#FFF0E6;color:#E6853D;border-radius:100px;font-size:13px;font-weight:700;">&#127806; ' + label + ' <span onclick="psRemove(\'' + id + '\', \'' + name.replace(/'/g, "\\'") + '\')" style="cursor:pointer;font-weight:900;opacity:0.7;">&times;</span></div>';
+      return '<div style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#FFF0E6;color:#E6853D;border-radius:100px;font-size:13px;font-weight:700;"><i data-lucide="wheat"></i> ' + label + ' <span onclick="psRemove(\'' + id + '\', \'' + name.replace(/'/g, "\\'") + '\')" style="cursor:pointer;font-weight:900;opacity:0.7;">&times;</span></div>';
     }).join('');
   };
   function psRender(id) { window.psRender(id); }
@@ -1116,7 +1004,7 @@
       var bg = bgs[i % bgs.length];
       var isUsed = used.indexOf(p.name) >= 0;
       var short = p.name.replace('Parcela ','P').replace('Lotul ','L').replace('Tarlaua ','T').replace('Sola ','S');
-      grid += '<div onclick="psMapToggle(\'' + id + '\', \'' + p.name.replace(/'/g, "\\'") + '\', this)" title="' + p.name + (p.ha ? ' · ' + p.ha + ' ha' : '') + (p.cultura ? ' · ' + p.cultura : '') + '" style="aspect-ratio:1;background:' + bg + ';color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:700;text-align:center;padding:6px 4px;border-radius:6px;cursor:pointer;line-height:1.2;border:3px solid ' + (isUsed ? '#E6853D' : 'rgba(255,255,255,0.3)') + ';position:relative;">' + short + (p.ha ? '<span style="font-size:10px;font-weight:500;opacity:0.9;margin-top:2px;">' + p.ha + ' ha</span>' : '') + (isUsed ? '<span style="position:absolute;top:3px;right:3px;background:#E6853D;color:#fff;width:16px;height:16px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;">&#10003;</span>' : '') + '</div>';
+      grid += '<div onclick="psMapToggle(\'' + id + '\', \'' + p.name.replace(/'/g, "\\'") + '\', this)" title="' + p.name + (p.ha ? ' · ' + p.ha + ' ha' : '') + (p.cultura ? ' · ' + p.cultura : '') + '" style="aspect-ratio:1;background:' + bg + ';color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:700;text-align:center;padding:6px 4px;border-radius:6px;cursor:pointer;line-height:1.2;border:3px solid ' + (isUsed ? '#E6853D' : 'rgba(255,255,255,0.3)') + ';position:relative;">' + short + (p.ha ? '<span style="font-size:10px;font-weight:500;opacity:0.9;margin-top:2px;">' + p.ha + ' ha</span>' : '') + (isUsed ? '<span style="position:absolute;top:3px;right:3px;background:#E6853D;color:#fff;width:16px;height:16px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;"><i data-lucide="check"></i></span>' : '') + '</div>';
     });
     var overlay = document.createElement('div');
     overlay.id = 'ps-map-overlay';
@@ -1152,7 +1040,7 @@
       el.style.border = '3px solid #E6853D';
       var c = document.createElement('span');
       c.style.cssText = 'position:absolute;top:3px;right:3px;background:#E6853D;color:#fff;width:16px;height:16px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;';
-      c.innerHTML = '&#10003;';
+      c.innerHTML = '<i data-lucide="check"></i>';
       el.appendChild(c);
     }
     psRender(id);
@@ -1279,8 +1167,8 @@
     var html = '';
     // TABS: Lucrare viitoare / Lucrare efectuată
     html += '<div style="display:flex;gap:6px;margin-bottom:16px;padding:4px;background:var(--brand-surface);border-radius:12px;">';
-    html += '<button type="button" id="cl-tab-viitoare-btn" onclick="clSetMode(\'viitoare\')" style="flex:1;padding:10px 10px;background:var(--brand-primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">&#128197; Lucrare viitoare</button>';
-    html += '<button type="button" id="cl-tab-efectuata-btn" onclick="clSetMode(\'efectuata\')" style="flex:1;padding:10px 10px;background:transparent;color:var(--brand-text-muted);border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">&#10003; Lucrare efectuată</button>';
+    html += '<button type="button" id="cl-tab-viitoare-btn" onclick="clSetMode(\'viitoare\')" style="flex:1;padding:10px 10px;background:var(--brand-primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;"><i data-lucide="calendar"></i> Lucrare viitoare</button>';
+    html += '<button type="button" id="cl-tab-efectuata-btn" onclick="clSetMode(\'efectuata\')" style="flex:1;padding:10px 10px;background:transparent;color:var(--brand-text-muted);border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;"><i data-lucide="check"></i> Lucrare efectuată</button>';
     html += '</div>';
 
     // PARCELE (componentă reutilizabilă)
@@ -1319,7 +1207,7 @@
 
     // FOTO / VIDEO (doar pentru efectuată)
     html += '<div id="cl-photo-section" class="form-group" style="display:none;"><label class="form-label">Foto / Video</label>';
-    html += '<label for="cl-media" style="display:flex;align-items:center;gap:8px;padding:12px;border:1.5px dashed var(--brand-border);border-radius:10px;cursor:pointer;font-size:14px;color:var(--brand-text-muted);justify-content:center;"><span style="font-size:18px;">&#128247;</span> <span id="cl-media-lbl">Adaugă foto / video</span></label>';
+    html += '<label for="cl-media" style="display:flex;align-items:center;gap:8px;padding:12px;border:1.5px dashed var(--brand-border);border-radius:10px;cursor:pointer;font-size:14px;color:var(--brand-text-muted);justify-content:center;"><span style="font-size:18px;"><i data-lucide="camera"></i></span> <span id="cl-media-lbl">Adaugă foto / video</span></label>';
     html += '<input id="cl-media" type="file" accept="image/*,video/*" multiple style="display:none;" onchange="clMediaChange(this)">';
     html += '</div>';
 
@@ -1628,7 +1516,7 @@
   window.clMediaChange = function (inp) {
     if (!inp.files || !inp.files.length) return;
     var lbl = document.getElementById('cl-media-lbl');
-    if (lbl) lbl.innerHTML = '&#10003; ' + inp.files.length + ' fișier' + (inp.files.length === 1 ? '' : 'e') + ' atașat' + (inp.files.length === 1 ? '' : 'e');
+    if (lbl) lbl.innerHTML = '<i data-lucide="check"></i> ' + inp.files.length + ' fișier' + (inp.files.length === 1 ? '' : 'e') + ' atașat' + (inp.files.length === 1 ? '' : 'e');
     var label = inp.previousElementSibling;
     if (label && label.tagName === 'LABEL') {
       label.style.borderStyle = 'solid';
@@ -1745,12 +1633,12 @@
     html += '<div class="form-group"><label class="form-label">Nr. &icirc;nmatriculare vehicul</label><input id="ar-vehicul" class="form-input" placeholder="ex: TM 12 ABC" style="text-transform:uppercase;"></div>';
     // 7c. Foto vehicul + placuta (optional)
     html += '<div class="form-group"><label class="form-label">Foto vehicul + placuta <span style="color:var(--brand-text-muted);font-weight:400;text-transform:none;">(optional)</span></label>';
-    html += '<label for="ar-foto-vehicul" style="display:flex;align-items:center;gap:8px;padding:14px;border:1.5px dashed var(--brand-border);border-radius:10px;cursor:pointer;font-size:14px;color:var(--brand-text-muted);justify-content:center;"><span style="font-size:20px;">&#128247;</span> <span id="ar-foto-vehicul-lbl">Fa o poza la vehicul</span></label>';
+    html += '<label for="ar-foto-vehicul" style="display:flex;align-items:center;gap:8px;padding:14px;border:1.5px dashed var(--brand-border);border-radius:10px;cursor:pointer;font-size:14px;color:var(--brand-text-muted);justify-content:center;"><span style="font-size:20px;"><i data-lucide="camera"></i></span> <span id="ar-foto-vehicul-lbl">Fa o poza la vehicul</span></label>';
     html += '<input id="ar-foto-vehicul" type="file" accept="image/*" capture="environment" style="display:none;" onchange="arFotoChange(this,\'vehicul\')">';
     html += '</div>';
     // 7d. Foto tichet cantar (optional)
     html += '<div class="form-group"><label class="form-label">Foto tichet cantar <span style="color:var(--brand-text-muted);font-weight:400;text-transform:none;">(optional)</span></label>';
-    html += '<label for="ar-foto-tichet" style="display:flex;align-items:center;gap:8px;padding:14px;border:1.5px dashed var(--brand-border);border-radius:10px;cursor:pointer;font-size:14px;color:var(--brand-text-muted);justify-content:center;"><span style="font-size:20px;">&#128247;</span> <span id="ar-foto-tichet-lbl">Fa o poza la tichetul de cantar</span></label>';
+    html += '<label for="ar-foto-tichet" style="display:flex;align-items:center;gap:8px;padding:14px;border:1.5px dashed var(--brand-border);border-radius:10px;cursor:pointer;font-size:14px;color:var(--brand-text-muted);justify-content:center;"><span style="font-size:20px;"><i data-lucide="camera"></i></span> <span id="ar-foto-tichet-lbl">Fa o poza la tichetul de cantar</span></label>';
     html += '<input id="ar-foto-tichet" type="file" accept="image/*" capture="environment" style="display:none;" onchange="arFotoChange(this,\'tichet\')">';
     html += '</div>';
     // 9. Observatii
@@ -1759,12 +1647,12 @@
     html += '<div class="form-group"><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:10px 12px;background:var(--brand-surface);border-radius:10px;font-size:13px;line-height:1.45;"><input type="checkbox" id="ar-gdpr" style="margin-top:2px;width:20px;height:20px;cursor:pointer;flex-shrink:0;accent-color:var(--brand-primary);"><span>Sunt de acord cu prelucrarea datelor cu caracter personal (CNP, semnatura, foto, GPS) conform <strong>GDPR</strong>, in scopul inregistrarii platii arendei.</span></label></div>';
     // 11. Semnatura digitala + GPS info (ULTIMUL)
     html += '<div class="form-group" style="margin-bottom:0;"><label class="form-label">Semnatura *</label>';
-    html += '<div style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--brand-hover-bg);border-radius:8px;font-size:12px;color:var(--brand-primary);margin-bottom:8px;font-weight:600;"><span style="font-size:14px;">&#128205;</span> <span id="ar-gps">Locatia se capteaza automat la semnare</span></div>';
+    html += '<div style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--brand-hover-bg);border-radius:8px;font-size:12px;color:var(--brand-primary);margin-bottom:8px;font-weight:600;"><span style="font-size:14px;"><i data-lucide="map-pin"></i></span> <span id="ar-gps">Locatia se capteaza automat la semnare</span></div>';
     html += '<div style="position:relative;">';
     html += '<canvas id="ar-signature" width="280" height="120" style="display:block;width:100%;height:120px;background:#fff;border:2px dashed var(--brand-border);border-radius:10px;touch-action:none;cursor:crosshair;"></canvas>';
     html += '<div id="ar-sig-placeholder" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--brand-text-muted);font-size:13px;pointer-events:none;">Semneaza cu degetul aici</div>';
     html += '</div>';
-    html += '<button type="button" onclick="arClearSignature()" style="margin-top:6px;padding:6px 14px;background:transparent;border:1px solid var(--brand-border);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:var(--brand-text-muted);font-family:inherit;">&#8634; Sterge semnatura</button>';
+    html += '<button type="button" onclick="arClearSignature()" style="margin-top:6px;padding:6px 14px;background:transparent;border:1px solid var(--brand-border);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:var(--brand-text-muted);font-family:inherit;"><i data-lucide="refresh-ccw"></i> Sterge semnatura</button>';
     html += '</div>';
 
     openDrawer('Ridicare arenda (produse)', html, [
@@ -1869,7 +1757,7 @@
         subtext = p.contracts.length + ' contract' + (p.contracts.length === 1 ? '' : 'e');
       }
       html += '<div onclick="arPersoanaPick(\'' + p.id + '\')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid #f0f0f0;">';
-      html += '<div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);display:flex;align-items:center;">&#128100; ' + p.name + roleBadge + '</div>';
+      html += '<div style="font-size:14px;font-weight:600;color:var(--brand-text-primary);display:flex;align-items:center;"><i data-lucide="user"></i> ' + p.name + roleBadge + '</div>';
       html += '<div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">' + subtext + '</div>';
       html += '</div>';
     });
@@ -2092,7 +1980,7 @@
     if (!inp || !inp.files || !inp.files[0]) return;
     var lbl = document.getElementById('ar-foto-' + tip + '-lbl');
     var name = inp.files[0].name;
-    if (lbl) lbl.innerHTML = '&#10003; ' + name;
+    if (lbl) lbl.innerHTML = '<i data-lucide="check"></i> ' + name;
     var container = inp.previousElementSibling;
     if (container && container.tagName === 'LABEL') {
       container.style.borderStyle = 'solid';
@@ -2129,9 +2017,9 @@
     var html = '';
     // Segmented: Task / Reminder / Alarma
     html += '<div style="display:flex;gap:6px;margin-bottom:16px;">';
-    html += '<div class="tf-seg-btn" data-type="task" onclick="tfSelectType(\'task\')" style="flex:1;padding:12px 6px;border:2px solid var(--brand-primary);background:var(--brand-hover-bg);border-radius:10px;cursor:pointer;text-align:center;font-weight:700;font-size:12px;color:var(--brand-primary);line-height:1.3;"><div style="font-size:22px;margin-bottom:4px;">&#128221;</div>Task</div>';
-    html += '<div class="tf-seg-btn" data-type="reminder" onclick="tfSelectType(\'reminder\')" style="flex:1;padding:12px 6px;border:2px solid var(--brand-border);background:#fff;border-radius:10px;cursor:pointer;text-align:center;font-weight:700;font-size:12px;color:var(--brand-text-muted);line-height:1.3;"><div style="font-size:22px;margin-bottom:4px;">&#9200;</div>Reminder</div>';
-    html += '<div class="tf-seg-btn" data-type="alarm" onclick="tfSelectType(\'alarm\')" style="flex:1;padding:12px 6px;border:2px solid var(--brand-border);background:#fff;border-radius:10px;cursor:pointer;text-align:center;font-weight:700;font-size:12px;color:var(--brand-text-muted);line-height:1.3;"><div style="font-size:22px;margin-bottom:4px;">&#128276;</div>Alarma</div>';
+    html += '<div class="tf-seg-btn" data-type="task" onclick="tfSelectType(\'task\')" style="flex:1;padding:12px 6px;border:2px solid var(--brand-primary);background:var(--brand-hover-bg);border-radius:10px;cursor:pointer;text-align:center;font-weight:700;font-size:12px;color:var(--brand-primary);line-height:1.3;"><div style="font-size:22px;margin-bottom:4px;"><i data-lucide="file-pen"></i></div>Task</div>';
+    html += '<div class="tf-seg-btn" data-type="reminder" onclick="tfSelectType(\'reminder\')" style="flex:1;padding:12px 6px;border:2px solid var(--brand-border);background:#fff;border-radius:10px;cursor:pointer;text-align:center;font-weight:700;font-size:12px;color:var(--brand-text-muted);line-height:1.3;"><div style="font-size:22px;margin-bottom:4px;"><i data-lucide="alarm-clock"></i></div>Reminder</div>';
+    html += '<div class="tf-seg-btn" data-type="alarm" onclick="tfSelectType(\'alarm\')" style="flex:1;padding:12px 6px;border:2px solid var(--brand-border);background:#fff;border-radius:10px;cursor:pointer;text-align:center;font-weight:700;font-size:12px;color:var(--brand-text-muted);line-height:1.3;"><div style="font-size:22px;margin-bottom:4px;"><i data-lucide="bell"></i></div>Alarma</div>';
     html += '</div>';
 
     // Titlu + descriere
@@ -2168,7 +2056,7 @@
     html += parcelaSelectorHTML('tf-teren', { label: 'Legat de teren', hint: '(optional)', required: false });
 
     // Atasamente
-    html += '<div class="form-group"><label class="form-label">Atasamente</label><div style="padding:12px;border:1px dashed var(--brand-border);border-radius:8px;text-align:center;color:var(--brand-text-muted);font-size:13px;cursor:pointer;">&#128206; Adauga foto / document</div></div>';
+    html += '<div class="form-group"><label class="form-label">Atasamente</label><div style="padding:12px;border:1px dashed var(--brand-border);border-radius:8px;text-align:center;color:var(--brand-text-muted);font-size:13px;cursor:pointer;"><i data-lucide="paperclip"></i> Adauga foto / document</div></div>';
 
     openDrawer('Planifica &mdash; Task / Reminder / Alarma', html, [
       { label: 'Anuleaza', class: 'btn-secondary', action: closeDrawer },
@@ -2270,26 +2158,26 @@
     overlay.style.cssText = 'position:absolute;inset:0;background:var(--brand-background);z-index:80;display:flex;flex-direction:column;animation:slideUp 0.25s ease-out;';
     overlay.innerHTML =
       '<div style="padding:12px 16px;background:var(--brand-primary);color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">' +
-        '<div style="font-size:16px;font-weight:700;">&#128247; Foto nouă</div>' +
+        '<div style="font-size:16px;font-weight:700;"><i data-lucide="camera"></i> Foto nouă</div>' +
         '<button onclick="closeCameraPopup()" style="width:34px;height:34px;background:rgba(255,255,255,0.2);border:none;color:#fff;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;">&times;</button>' +
       '</div>' +
       '<div style="flex:1;overflow-y:auto;padding:14px;">' +
         '<div id="cam-photo" onclick="alert(\'In producție: deschide camera foto nativă\')" style="aspect-ratio:4/3;background:linear-gradient(135deg,#334,#556);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);margin-bottom:14px;cursor:pointer;border:2px dashed rgba(255,255,255,0.25);">' +
-          '<div style="font-size:64px;">&#128247;</div>' +
+          '<div style="font-size:64px;"><i data-lucide="camera"></i></div>' +
           '<div style="font-size:13px;font-weight:600;margin-top:6px;">Apasă pentru a face poza</div>' +
         '</div>' +
         '<div style="margin-bottom:14px;padding:12px;background:var(--brand-hover-bg);border-radius:10px;border-left:3px solid var(--brand-primary);">' +
           '<div style="font-size:10px;font-weight:800;color:var(--brand-primary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Metadate auto (captate cu poza)</div>' +
           '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;font-size:12px;">' +
-            '<div style="display:flex;align-items:center;gap:4px;"><span>&#128205;</span><span id="cam-gps" style="font-weight:700;color:var(--brand-text-primary);">se încarcă...</span></div>' +
-            '<div style="display:flex;align-items:center;gap:4px;"><span>&#128197;</span><span style="font-weight:700;color:var(--brand-text-primary);">' + dateStr + '</span></div>' +
-            '<div style="display:flex;align-items:center;gap:4px;"><span>&#128368;</span><span style="font-weight:700;color:var(--brand-text-primary);">' + timeStr + '</span></div>' +
-            '<div style="display:flex;align-items:center;gap:4px;"><span>&#129517;</span><span style="font-weight:700;color:var(--brand-text-primary);">' + mockOrient + '</span></div>' +
-            '<div style="display:flex;align-items:center;gap:4px;"><span>&#127777;</span><span style="font-weight:700;color:var(--brand-text-primary);">' + mockTemp + '</span></div>' +
-            '<div style="display:flex;align-items:center;gap:4px;"><span>&#128100;</span><span style="font-weight:700;color:var(--brand-text-primary);">' + currentUser + '</span></div>' +
+            '<div style="display:flex;align-items:center;gap:4px;"><span><i data-lucide="map-pin"></i></span><span id="cam-gps" style="font-weight:700;color:var(--brand-text-primary);">se încarcă...</span></div>' +
+            '<div style="display:flex;align-items:center;gap:4px;"><span><i data-lucide="calendar"></i></span><span style="font-weight:700;color:var(--brand-text-primary);">' + dateStr + '</span></div>' +
+            '<div style="display:flex;align-items:center;gap:4px;"><span><i data-lucide="clock"></i></span><span style="font-weight:700;color:var(--brand-text-primary);">' + timeStr + '</span></div>' +
+            '<div style="display:flex;align-items:center;gap:4px;"><span><i data-lucide="compass"></i></span><span style="font-weight:700;color:var(--brand-text-primary);">' + mockOrient + '</span></div>' +
+            '<div style="display:flex;align-items:center;gap:4px;"><span><i data-lucide="thermometer"></i></span><span style="font-weight:700;color:var(--brand-text-primary);">' + mockTemp + '</span></div>' +
+            '<div style="display:flex;align-items:center;gap:4px;"><span><i data-lucide="user"></i></span><span style="font-weight:700;color:var(--brand-text-primary);">' + currentUser + '</span></div>' +
           '</div>' +
         '</div>' +
-        '<div id="cam-parcela-hint" style="margin-bottom:-4px;font-size:11px;font-weight:700;color:var(--brand-success);text-transform:uppercase;letter-spacing:0.3px;padding:0 2px;">&#10003; Auto-detectată din GPS</div>' +
+        '<div id="cam-parcela-hint" style="margin-bottom:-4px;font-size:11px;font-weight:700;color:var(--brand-success);text-transform:uppercase;letter-spacing:0.3px;padding:0 2px;"><i data-lucide="check"></i> Auto-detectată din GPS</div>' +
         parcelaSelectorHTML('cam-parcela', { label: 'Parcelă', required: true, initial: [autoParcela.name] }) +
         '<div class="form-group">' +
           '<label class="form-label">Cultură <span style="color:var(--brand-danger);">*</span></label>' +
@@ -2304,7 +2192,7 @@
               }).join('');
             })() +
           '</select>' +
-          '<div id="cam-cultura-hint" style="margin-top:4px;font-size:11px;font-weight:700;color:var(--brand-success);text-transform:uppercase;letter-spacing:0.3px;">&#10003; Auto (din parcelă)</div>' +
+          '<div id="cam-cultura-hint" style="margin-top:4px;font-size:11px;font-weight:700;color:var(--brand-success);text-transform:uppercase;letter-spacing:0.3px;"><i data-lucide="check"></i> Auto (din parcelă)</div>' +
         '</div>' +
         '<div class="form-group" style="margin-bottom:0;">' +
           '<label class="form-label">Comentariu</label>' +
@@ -2313,7 +2201,7 @@
       '</div>' +
       '<div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;flex-shrink:0;">' +
         '<button onclick="closeCameraPopup()" style="flex:1;min-height:48px;padding:12px;background:#fff;border:1px solid var(--brand-border);border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">Anulează</button>' +
-        '<button onclick="saveCameraPhoto()" style="flex:2;min-height:48px;padding:12px;background:var(--brand-primary);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;">&#10003; Salvează foto</button>' +
+        '<button onclick="saveCameraPhoto()" style="flex:2;min-height:48px;padding:12px;background:var(--brand-primary);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;"><i data-lucide="check"></i> Salvează foto</button>' +
       '</div>';
     screen.appendChild(overlay);
 
@@ -2335,7 +2223,7 @@
     window._camCulturaChanged = function () {
       window._camCulturaManual = true;
       var h = document.getElementById('cam-cultura-hint');
-      if (h) { h.innerHTML = '&#9998; Modificată manual'; h.style.color = 'var(--brand-warning)'; }
+      if (h) { h.innerHTML = '<i data-lucide="pencil"></i> Modificată manual'; h.style.color = 'var(--brand-warning)'; }
     };
     // Helper: aplică cultura din parcela selectată (doar dacă userul n-a modificat manual)
     function _applyCulturaFromParcela() {
@@ -2358,7 +2246,7 @@
       }
       selEl.value = parc.cultura;
       var h = document.getElementById('cam-cultura-hint');
-      if (h) { h.innerHTML = '&#10003; Auto (din parcelă)'; h.style.color = 'var(--brand-success)'; }
+      if (h) { h.innerHTML = '<i data-lucide="check"></i> Auto (din parcelă)'; h.style.color = 'var(--brand-success)'; }
     }
     // Callback la schimbare parcelă → actualizează hint-ul (auto vs manual) + auto-fill cultură
     window._psCallbacks['cam-parcela'] = function () {
@@ -2366,10 +2254,10 @@
       var sel = window._parcelaSelectors['cam-parcela'] || [];
       if (!hint) return;
       if (sel.length === 1 && sel[0] === autoParcela.name) {
-        hint.innerHTML = '&#10003; Auto-detectată din GPS';
+        hint.innerHTML = '<i data-lucide="check"></i> Auto-detectată din GPS';
         hint.style.color = 'var(--brand-success)';
       } else {
-        hint.innerHTML = '&#9998; Modificată manual';
+        hint.innerHTML = '<i data-lucide="pencil"></i> Modificată manual';
         hint.style.color = 'var(--brand-warning)';
       }
       // Auto-fill cultură (dacă user n-a modificat manual deja)
@@ -2414,24 +2302,24 @@
     function _computeAIDetections() {
       var hay = (parcele.join(' ') + ' ' + (commentEl ? commentEl.value : '') + ' ' + cultura).toLowerCase();
       if (hay.indexOf('grau') >= 0) return [
-        { level: 'danger', icon: '&#128030;', name: 'Rugină galbenă', conf: 91, desc: 'Pete galbene pe 3 zone identificate — tratament recomandat în 48h.' },
-        { level: 'ok', icon: '&#127793;', name: 'Densitate cultură', conf: 88, desc: 'Uniformă — ~450 plante/m² (peste pragul minim).' }
+        { level: 'danger', icon: '<i data-lucide="bug"></i>', name: 'Rugină galbenă', conf: 91, desc: 'Pete galbene pe 3 zone identificate — tratament recomandat în 48h.' },
+        { level: 'ok', icon: '<i data-lucide="sprout"></i>', name: 'Densitate cultură', conf: 88, desc: 'Uniformă — ~450 plante/m² (peste pragul minim).' }
       ];
       if (hay.indexOf('porumb') >= 0) return [
-        { level: 'warning', icon: '&#128027;', name: 'Sfredelitor porumb', conf: 76, desc: 'Ouă detectate pe 2 frunze — monitorizare activă.' },
-        { level: 'ok', icon: '&#127804;', name: 'Înălțime medie', conf: 95, desc: 'V6-V7 (optim pentru sezon).' }
+        { level: 'warning', icon: '<i data-lucide="bug"></i>', name: 'Sfredelitor porumb', conf: 76, desc: 'Ouă detectate pe 2 frunze — monitorizare activă.' },
+        { level: 'ok', icon: '<i data-lucide="flower-2"></i>', name: 'Înălțime medie', conf: 95, desc: 'V6-V7 (optim pentru sezon).' }
       ];
       if (hay.indexOf('rapit') >= 0) return [
-        { level: 'warning', icon: '&#128027;', name: 'Gărgăriță siliconică', conf: 82, desc: '5-7 exemplare / m² — aproape de prag.' }
+        { level: 'warning', icon: '<i data-lucide="bug"></i>', name: 'Gărgăriță siliconică', conf: 82, desc: '5-7 exemplare / m² — aproape de prag.' }
       ];
       if (hay.indexOf('floarea') >= 0) return [
-        { level: 'ok', icon: '&#127804;', name: 'Fenofază R3', conf: 93, desc: 'Optim pentru tratament.' }
+        { level: 'ok', icon: '<i data-lucide="flower-2"></i>', name: 'Fenofază R3', conf: 93, desc: 'Optim pentru tratament.' }
       ];
       if (hay.indexOf('soia') >= 0) return [
-        { level: 'ok', icon: '&#127793;', name: 'Nodozități active', conf: 87, desc: 'Fixare azot corespunzătoare.' }
+        { level: 'ok', icon: '<i data-lucide="sprout"></i>', name: 'Nodozități active', conf: 87, desc: 'Fixare azot corespunzătoare.' }
       ];
       return [
-        { level: 'ok', icon: '&#127807;', name: 'Cultură sănătoasă', conf: 84, desc: 'Nu s-au detectat boli sau dăunători la scanare.' }
+        { level: 'ok', icon: '<i data-lucide="leaf"></i>', name: 'Cultură sănătoasă', conf: 84, desc: 'Nu s-au detectat boli sau dăunători la scanare.' }
       ];
     }
 
@@ -2513,7 +2401,7 @@
     var info = document.getElementById('al-vehicle-info');
     if (info) {
       info.style.display = '';
-      info.innerHTML = '&#128220; Din fișa tehnică: combustibil <strong>' + (veh.combustibil || '—') + '</strong>';
+      info.innerHTML = '<i data-lucide="file-text"></i> Din fișa tehnică: combustibil <strong>' + (veh.combustibil || '—') + '</strong>';
     }
   };
 
@@ -2527,7 +2415,7 @@
       priceEl.value = fuel.pret;
       if (priceInfo) {
         priceInfo.style.display = '';
-        priceInfo.innerHTML = '&#128202; Preț curent din stoc: <strong>' + fuel.pret.toFixed(2) + ' lei/L</strong> &middot; stoc disponibil: ' + fuel.stoc + ' L';
+        priceInfo.innerHTML = '<i data-lucide="bar-chart-2"></i> Preț curent din stoc: <strong>' + fuel.pret.toFixed(2) + ' lei/L</strong> &middot; stoc disponibil: ' + fuel.stoc + ' L';
       }
     } else if (priceInfo) {
       priceInfo.style.display = 'none';
@@ -2594,9 +2482,9 @@
       lh += '<div style="font-size:10px;font-weight:800;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.4px;margin:10px 0 6px;">Furnizori salvați</div>';
       saved.forEach(function(f, i){
         lh += '<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--brand-surface);border:1px solid var(--brand-border);border-radius:8px;margin-bottom:4px;">';
-        lh += '<span style="flex:1;font-size:13px;font-weight:600;color:var(--brand-text-primary);">&#128205; ' + f + '</span>';
-        lh += '<button type="button" onclick="_alSupplierEdit(' + i + ')" style="width:28px;height:28px;border:none;background:rgba(0,104,106,0.12);color:var(--brand-primary);border-radius:6px;cursor:pointer;font-size:13px;" title="Editează">&#9998;</button>';
-        lh += '<button type="button" onclick="_alSupplierDel(' + i + ')" style="width:28px;height:28px;border:none;background:rgba(220,38,38,0.12);color:#DC2626;border-radius:6px;cursor:pointer;font-size:13px;" title="Șterge">&#128465;</button>';
+        lh += '<span style="flex:1;font-size:13px;font-weight:600;color:var(--brand-text-primary);"><i data-lucide="map-pin"></i> ' + f + '</span>';
+        lh += '<button type="button" onclick="_alSupplierEdit(' + i + ')" style="width:28px;height:28px;border:none;background:rgba(0,104,106,0.12);color:var(--brand-primary);border-radius:6px;cursor:pointer;font-size:13px;" title="Editează"><i data-lucide="pencil"></i></button>';
+        lh += '<button type="button" onclick="_alSupplierDel(' + i + ')" style="width:28px;height:28px;border:none;background:rgba(220,38,38,0.12);color:#DC2626;border-radius:6px;cursor:pointer;font-size:13px;" title="Șterge"><i data-lucide="trash-2"></i></button>';
         lh += '</div>';
       });
     }
@@ -2672,10 +2560,10 @@
     var html = '';
     // SCAN BON FISCAL — buton mare sus
     html += '<div style="padding:14px;margin-bottom:14px;background:linear-gradient(135deg,var(--brand-hover-bg),#fff);border:2px dashed var(--brand-primary);border-radius:12px;text-align:center;">';
-    html += '<div style="font-size:34px;margin-bottom:6px;">&#128247;</div>';
+    html += '<div style="font-size:34px;margin-bottom:6px;"><i data-lucide="camera"></i></div>';
     html += '<div style="font-size:13px;font-weight:700;color:var(--brand-text-primary);margin-bottom:10px;">Fa o poză la bonul fiscal <span style="font-weight:500;color:var(--brand-text-muted);">— datele se extrag automat</span></div>';
     html += '<button type="button" onclick="scanBonAlimentare()" style="width:100%;padding:12px;background:var(--brand-primary);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;box-shadow:0 2px 8px rgba(0,104,106,0.25);">';
-    html += '<span style="font-size:18px;">&#128247;</span> Scanează bonul fiscal';
+    html += '<span style="font-size:18px;"><i data-lucide="camera"></i></span> Scanează bonul fiscal';
     html += '</button>';
     html += '<div style="margin-top:8px;font-size:11px;color:var(--brand-text-muted);">Cantitate, preț, stație, nr. bon &mdash; toate completate automat</div>';
     html += '</div>';
@@ -2726,7 +2614,7 @@
     html += '<select id="al-supplier-select" class="form-select" onchange="_alSupplierChanged()">' + supHtml + '</select>';
     html += '<div id="al-supplier-custom-box" style="display:none;margin-top:8px;">';
     html += '<input id="al-supplier-custom" type="text" class="form-input" placeholder="Nume furnizor nou (ex: OMV Timișoara)">';
-    html += '<div style="margin-top:6px;font-size:12px;color:var(--brand-text-muted);display:flex;align-items:center;gap:6px;"><span>&#128190;</span> <span>Se salvează automat pentru data viitoare</span></div>';
+    html += '<div style="margin-top:6px;font-size:12px;color:var(--brand-text-muted);display:flex;align-items:center;gap:6px;"><span><i data-lucide="save"></i></span> <span>Se salvează automat pentru data viitoare</span></div>';
     html += '</div>';
     html += '<div id="al-supplier-list"></div>';
     html += '</div>';
@@ -2918,4 +2806,7 @@
       showToast('info', 'Aplicații recente — vizualizare demo.');
     }
   };
+
+  // Activate Lucide icons in injected HTML
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 })();

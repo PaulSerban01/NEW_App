@@ -7,7 +7,9 @@
   <title>Dash Admin — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
     .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
     .browser-dots { display: flex; gap: 6px; }
@@ -35,6 +37,7 @@
     .ctx-manage-btn.delete{background:var(--brand-danger-bg);color:var(--brand-danger);}
     @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -53,7 +56,7 @@
             <div style="font-size:13px; color:var(--brand-text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px;">Firma A &rsaquo; PL ferma1</div>
           </div>
           <div style="display:flex; flex-direction:column; align-items:center; gap:2px; flex-shrink:0;">
-            <div style="padding:6px 10px; border-radius:6px; background:var(--brand-primary); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,104,106,0.25);">Schimba &#9660;</div>
+            <div style="padding:6px 10px; border-radius:6px; background:var(--brand-primary); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,104,106,0.25);">Schimba <i data-lucide="chevron-down"></i></div>
           </div>
         </div>
 
@@ -62,9 +65,9 @@
           <div onclick="closeContextSwitcher()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1;"></div>
           <div onclick="event.stopPropagation()" style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:75%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out; z-index:2;">
             <div style="display:flex; align-items:center; padding:14px 16px; border-bottom:1px solid var(--brand-border); flex-shrink:0;">
-              <div id="ctx-back" onclick="ctxGoBack()" style="display:none; width:32px; height:32px; align-items:center; justify-content:center; cursor:pointer; font-size:19px; color:var(--brand-text-primary); margin-right:8px;">&#9664;</div>
+              <div id="ctx-back" onclick="ctxGoBack()" style="display:none; width:32px; height:32px; align-items:center; justify-content:center; cursor:pointer; font-size:19px; color:var(--brand-text-primary); margin-right:8px;"><i data-lucide="chevron-left"></i></div>
               <div id="ctx-title" style="flex:1; font-size:16px; font-weight:700; color:var(--brand-text-primary);">Spatiile mele de lucru</div>
-              <div id="ctx-manage-btn" onclick="toggleCtxManageMode()" style="padding:12px 14px; border-radius:var(--brand-radius); font-size:13px; font-weight:700; color:#fff; background:var(--brand-primary); cursor:pointer; margin-right:8px; box-shadow:0 2px 6px rgba(0,104,106,0.3); display:flex; align-items:center; gap:5px;"><span style="font-size:14px;">&#9881;</span> Gestioneaza</div>
+              <div id="ctx-manage-btn" onclick="toggleCtxManageMode()" style="padding:12px 14px; border-radius:var(--brand-radius); font-size:13px; font-weight:700; color:#fff; background:var(--brand-primary); cursor:pointer; margin-right:8px; box-shadow:0 2px 6px rgba(0,104,106,0.3); display:flex; align-items:center; gap:5px;"><span style="font-size:14px;"><i data-lucide="settings"></i></span> Gestioneaza</div>
               <div onclick="closeContextSwitcher()" style="width:32px; height:32px; border-radius:50%; background:var(--brand-primary); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:17px; color:#fff; box-shadow:0 2px 6px rgba(0,104,106,0.3);">&times;</div>
             </div>
             <div id="ctx-search-bar" style="padding:8px 16px; border-bottom:1px solid var(--brand-border); flex-shrink:0;">
@@ -90,12 +93,12 @@
                 <div style="font-size:13px; font-weight:600; color:var(--brand-text-muted); text-transform:uppercase; margin-bottom:6px;">Tip spatiu</div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;" id="ws-type-grid">
                   <div onclick="selectWsType(this,'complex')" class="ws-type-opt" style="padding:12px; border:2px solid var(--brand-primary); border-radius:var(--brand-radius); text-align:center; cursor:pointer; background:var(--brand-hover-bg);">
-                    <div style="font-size:23px; margin-bottom:4px;">&#127963;</div>
+                    <div style="font-size:23px; margin-bottom:4px;"><i data-lucide="building-2"></i></div>
                     <div style="font-size:13px; font-weight:600; color:var(--brand-primary);">Organizatie</div>
                     <div style="font-size:13px; color:var(--brand-text-muted);">Grupuri, firme, puncte</div>
                   </div>
                   <div onclick="selectWsType(this,'simplu')" class="ws-type-opt" style="padding:12px; border:2px solid var(--brand-border); border-radius:var(--brand-radius); text-align:center; cursor:pointer;">
-                    <div style="font-size:23px; margin-bottom:4px;">&#127793;</div>
+                    <div style="font-size:23px; margin-bottom:4px;"><i data-lucide="sprout"></i></div>
                     <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Simplu</div>
                     <div style="font-size:13px; color:var(--brand-text-muted);">Ferma, gradina, stupina</div>
                   </div>
@@ -131,7 +134,7 @@
             </div>
             <div style="padding:12px 16px; border-top:1px solid var(--brand-border); display:flex; gap:8px;">
               <div onclick="closeCtxWsForm()" style="flex:1; padding:12px; border:1px solid var(--brand-border); border-radius:var(--brand-radius); text-align:center; font-size:14px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;">Anuleaza</div>
-              <div onclick="saveCtxWs()" style="flex:1; padding:12px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:14px; font-weight:600; cursor:pointer;">&#10003; Salveaza</div>
+              <div onclick="saveCtxWs()" style="flex:1; padding:12px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:14px; font-weight:600; cursor:pointer;"><i data-lucide="check"></i> Salveaza</div>
             </div>
           </div>
         </div>
@@ -141,7 +144,7 @@
           <div onclick="closeCtxDeleteConfirm()" style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1;"></div>
           <div onclick="event.stopPropagation()" style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out; z-index:2;">
             <div style="padding:24px 20px; text-align:center;">
-              <div style="width:48px; height:48px; border-radius:50%; background:var(--brand-danger-bg); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:23px;" id="ctx-delete-icon">&#128465;</div>
+              <div style="width:48px; height:48px; border-radius:50%; background:var(--brand-danger-bg); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:23px;" id="ctx-delete-icon"><i data-lucide="trash-2"></i></div>
               <div id="ctx-delete-heading" style="font-size:17px; font-weight:700; color:var(--brand-text-primary); margin-bottom:6px;">Sterge spatiul de lucru?</div>
               <div id="ctx-delete-name" style="font-size:14px; color:var(--brand-text-muted); margin-bottom:4px;"></div>
               <div id="ctx-delete-content"></div>
@@ -219,7 +222,7 @@ function openContextSwitcher() {
   // Reset manage mode
   ctxManageMode = false;
   var btn = document.getElementById('ctx-manage-btn');
-  btn.innerHTML = '<span style="font-size:14px;">&#9881;</span> Gestioneaza';
+  btn.innerHTML = '<span style="font-size:14px;"><i data-lucide="settings"></i></span> Gestioneaza';
   btn.style.background = 'var(--brand-primary)';
   btn.style.color = '#fff';
   btn.style.boxShadow = '0 2px 6px rgba(0,104,106,0.3)';
@@ -234,7 +237,7 @@ function closeContextSwitcher() {
   // Reset manage mode on close
   ctxManageMode = false;
   var btn = document.getElementById('ctx-manage-btn');
-  btn.innerHTML = '<span style="font-size:14px;">&#9881;</span> Gestioneaza';
+  btn.innerHTML = '<span style="font-size:14px;"><i data-lucide="settings"></i></span> Gestioneaza';
   btn.style.background = 'var(--brand-primary)';
   btn.style.color = '#fff';
   btn.style.boxShadow = '0 2px 6px rgba(0,104,106,0.3)';
@@ -269,15 +272,15 @@ function renderCtxStep(keepSearch) {
       html += '<div class="ctx-info"><div class="ctx-name">' + ws.name + '</div><div class="ctx-desc">' + desc + '</div></div>';
       if (ctxManageMode) {
         html += '<div class="ctx-manage-actions">';
-        html += '<div class="ctx-manage-btn edit" onclick="openCtxEditWs(\'' + ws.id + '\')" title="Editeaza">&#9998;</div>';
-        html += '<div class="ctx-manage-btn delete" onclick="openCtxDeleteConfirm(\'' + ws.id + '\')" title="Sterge">&#128465;</div>';
+        html += '<div class="ctx-manage-btn edit" onclick="openCtxEditWs(\'' + ws.id + '\')" title="Editeaza"><i data-lucide="pencil"></i></div>';
+        html += '<div class="ctx-manage-btn delete" onclick="openCtxDeleteConfirm(\'' + ws.id + '\')" title="Sterge"><i data-lucide="trash-2"></i></div>';
         html += '</div>';
       } else {
-        if (sel) html += '<span class="ctx-check">&#10003;</span>';
-        if (hasChildren && !ws.flat) html += '<span class="ctx-arrow">&#9654;</span>';
+        if (sel) html += '<span class="ctx-check"><i data-lucide="check"></i></span>';
+        if (hasChildren && !ws.flat) html += '<span class="ctx-arrow"><i data-lucide="chevron-right"></i></span>';
       }
       html += '</div>';
-      if (!ctxManageMode && !ws.flat) html += '<a href="firme.html" onclick="event.stopPropagation();closeContextSwitcher();" style="width:44px;height:44px;border-radius:10px;background:var(--brand-hover-bg);border:1px solid var(--brand-primary-40);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:var(--brand-primary);flex-shrink:0;text-decoration:none;box-shadow:0 1px 3px rgba(0,104,106,0.15);" title="Editeaza firme si puncte">&#9998;</a>';
+      if (!ctxManageMode && !ws.flat) html += '<a href="firme.html" onclick="event.stopPropagation();closeContextSwitcher();" style="width:44px;height:44px;border-radius:10px;background:var(--brand-hover-bg);border:1px solid var(--brand-primary-40);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:var(--brand-primary);flex-shrink:0;text-decoration:none;box-shadow:0 1px 3px rgba(0,104,106,0.15);" title="Editeaza firme si puncte"><i data-lucide="pencil"></i></a>';
       html += '</div>';
     });
   }
@@ -288,10 +291,10 @@ function renderCtxStep(keepSearch) {
       var sel = g.id === ctxState.grup;
       var nf = g.firme ? g.firme.length : 0;
       html += '<div class="ctx-item' + (sel ? ' selected' : '') + '" onclick="ctxSelectGrup(\'' + g.id + '\')">';
-      html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#128193;</div>';
+      html += '<div class="ctx-badge" style="background:' + ws.color + ';"><i data-lucide="folder"></i></div>';
       html += '<div class="ctx-info"><div class="ctx-name">' + g.name + '</div><div class="ctx-desc">' + nf + ' firme</div></div>';
-      if (sel) html += '<span class="ctx-check">&#10003;</span>';
-      html += '<span class="ctx-arrow">&#9654;</span>';
+      if (sel) html += '<span class="ctx-check"><i data-lucide="check"></i></span>';
+      html += '<span class="ctx-arrow"><i data-lucide="chevron-right"></i></span>';
       html += '</div>';
     });
   }
@@ -306,10 +309,10 @@ function renderCtxStep(keepSearch) {
       var sel = f.id === ctxState.firma;
       var np = f.puncte ? f.puncte.length : 0;
       html += '<div class="ctx-item' + (sel ? ' selected' : '') + '" onclick="ctxSelectFirma(\'' + f.id + '\')">';
-      html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#127963;</div>';
+      html += '<div class="ctx-badge" style="background:' + ws.color + ';"><i data-lucide="building-2"></i></div>';
       html += '<div class="ctx-info"><div class="ctx-name">' + f.name + '</div><div class="ctx-desc">' + np + ' puncte de lucru</div></div>';
-      if (sel) html += '<span class="ctx-check">&#10003;</span>';
-      if (np > 1) html += '<span class="ctx-arrow">&#9654;</span>';
+      if (sel) html += '<span class="ctx-check"><i data-lucide="check"></i></span>';
+      if (np > 1) html += '<span class="ctx-arrow"><i data-lucide="chevron-right"></i></span>';
       html += '</div>';
     });
     // Grupuri de lucru cu culori
@@ -321,7 +324,7 @@ function renderCtxStep(keepSearch) {
           grup.firme.forEach(function(f){if(f.puncte)f.puncte.forEach(function(p){if(gl.puncteIds.indexOf(p.id)!==-1)puncteNames.push(p.name);});});
         }
         html += '<div class="ctx-item" onclick="ctxSelectGrupLucru(\'' + gl.id + '\',\'' + gl.name + '\')">';
-        html += '<div class="ctx-badge" style="background:' + gl.color + ';">&#128101;</div>';
+        html += '<div class="ctx-badge" style="background:' + gl.color + ';"><i data-lucide="users"></i></div>';
         html += '<div class="ctx-info"><div class="ctx-name">' + gl.name + '</div>';
         html += '<div class="ctx-desc" style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">';
         puncteNames.forEach(function(pn){
@@ -341,9 +344,9 @@ function renderCtxStep(keepSearch) {
     title.textContent = firma.name + ' — Puncte de lucru';
     // Toate punctele
     html += '<div class="ctx-item" onclick="ctxSelectPunct(\'all\',\'Toate punctele\')">';
-    html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#127758;</div>';
+    html += '<div class="ctx-badge" style="background:' + ws.color + ';"><i data-lucide="globe"></i></div>';
     html += '<div class="ctx-info"><div class="ctx-name">Toate punctele</div><div class="ctx-desc">' + firma.puncte.length + ' puncte</div></div>';
-    if (ctxState.punct === 'all') html += '<span class="ctx-check">&#10003;</span>';
+    if (ctxState.punct === 'all') html += '<span class="ctx-check"><i data-lucide="check"></i></span>';
     html += '</div>';
     firma.puncte.forEach(function(p) {
       var sel = p.id === ctxState.punct;
@@ -353,7 +356,7 @@ function renderCtxStep(keepSearch) {
         if (gl.puncteIds && gl.puncteIds.indexOf(p.id) !== -1) punctGrupuri.push(gl);
       });
       html += '<div class="ctx-item' + (sel ? ' selected' : '') + '" onclick="ctxSelectPunct(\'' + p.id + '\',\'' + p.name + '\')">';
-      html += '<div class="ctx-badge" style="background:' + ws.color + ';">&#128205;</div>';
+      html += '<div class="ctx-badge" style="background:' + ws.color + ';"><i data-lucide="map-pin"></i></div>';
       html += '<div class="ctx-info"><div class="ctx-name">' + p.name + '</div>';
       if (punctGrupuri.length > 0) {
         html += '<div class="ctx-desc" style="display:flex;gap:6px;align-items:center;margin-top:2px;">';
@@ -363,7 +366,7 @@ function renderCtxStep(keepSearch) {
         html += '</div>';
       }
       html += '</div>';
-      if (sel) html += '<span class="ctx-check">&#10003;</span>';
+      if (sel) html += '<span class="ctx-check"><i data-lucide="check"></i></span>';
       html += '</div>';
     });
   }
@@ -498,40 +501,40 @@ function ctxFilter(val) {
   ctxData.workspaces.forEach(function(ws) {
     // Match workspace
     if (ws.name.toLowerCase().indexOf(q) !== -1) {
-      results.push({type:'workspace', name:ws.name, path:'', wsId:ws.id, color:ws.color, initials:ws.initials, icon:'&#127963;'});
+      results.push({type:'workspace', name:ws.name, path:'', wsId:ws.id, color:ws.color, initials:ws.initials, icon:'<i data-lucide="building-2"></i>'});
     }
     // Search grups
     if (ws.grups) ws.grups.forEach(function(g) {
       if (g.name.toLowerCase().indexOf(q) !== -1) {
-        results.push({type:'grup', name:g.name, path:ws.name, wsId:ws.id, grupId:g.id, color:ws.color, icon:'&#128193;'});
+        results.push({type:'grup', name:g.name, path:ws.name, wsId:ws.id, grupId:g.id, color:ws.color, icon:'<i data-lucide="folder"></i>'});
       }
       // Search firme in grup
       if (g.firme) g.firme.forEach(function(f) {
         if (f.name.toLowerCase().indexOf(q) !== -1) {
-          results.push({type:'firma', name:f.name, path:ws.name+' \u203A '+g.name, wsId:ws.id, grupId:g.id, firmaId:f.id, color:ws.color, icon:'&#127963;'});
+          results.push({type:'firma', name:f.name, path:ws.name+' \u203A '+g.name, wsId:ws.id, grupId:g.id, firmaId:f.id, color:ws.color, icon:'<i data-lucide="building-2"></i>'});
         }
         // Search puncte
         if (f.puncte) f.puncte.forEach(function(p) {
           if (p.name.toLowerCase().indexOf(q) !== -1) {
-            results.push({type:'punct', name:p.name, path:ws.name+' \u203A '+g.name+' \u203A '+f.name, wsId:ws.id, grupId:g.id, firmaId:f.id, punctId:p.id, color:ws.color, icon:'&#128205;'});
+            results.push({type:'punct', name:p.name, path:ws.name+' \u203A '+g.name+' \u203A '+f.name, wsId:ws.id, grupId:g.id, firmaId:f.id, punctId:p.id, color:ws.color, icon:'<i data-lucide="map-pin"></i>'});
           }
         });
       });
       // Search grupuri lucru
       if (g.grupLucru) g.grupLucru.forEach(function(gl) {
         if (gl.name.toLowerCase().indexOf(q) !== -1) {
-          results.push({type:'grupLucru', name:gl.name, path:ws.name+' \u203A '+g.name, wsId:ws.id, grupId:g.id, glId:gl.id, glName:gl.name, color:gl.color, icon:'&#128101;'});
+          results.push({type:'grupLucru', name:gl.name, path:ws.name+' \u203A '+g.name, wsId:ws.id, grupId:g.id, glId:gl.id, glName:gl.name, color:gl.color, icon:'<i data-lucide="users"></i>'});
         }
       });
     });
     // Search firme direct on ws
     if (ws.firme) ws.firme.forEach(function(f) {
       if (f.name.toLowerCase().indexOf(q) !== -1) {
-        results.push({type:'firma', name:f.name, path:ws.name, wsId:ws.id, grupId:null, firmaId:f.id, color:ws.color, icon:'&#127963;'});
+        results.push({type:'firma', name:f.name, path:ws.name, wsId:ws.id, grupId:null, firmaId:f.id, color:ws.color, icon:'<i data-lucide="building-2"></i>'});
       }
       if (f.puncte) f.puncte.forEach(function(p) {
         if (p.name.toLowerCase().indexOf(q) !== -1) {
-          results.push({type:'punct', name:p.name, path:ws.name+' \u203A '+f.name, wsId:ws.id, grupId:null, firmaId:f.id, punctId:p.id, color:ws.color, icon:'&#128205;'});
+          results.push({type:'punct', name:p.name, path:ws.name+' \u203A '+f.name, wsId:ws.id, grupId:null, firmaId:f.id, punctId:p.id, color:ws.color, icon:'<i data-lucide="map-pin"></i>'});
         }
       });
     });
@@ -567,14 +570,14 @@ function toggleCtxManageMode() {
   var btn = document.getElementById('ctx-manage-btn');
   var footer = document.getElementById('ctx-add-header');
   if (ctxManageMode) {
-    btn.innerHTML = '&#10003; Gata';
+    btn.innerHTML = '<i data-lucide="check"></i> Gata';
     btn.style.background = 'var(--brand-text-muted)';
     btn.style.color = '#fff';
     btn.style.boxShadow = 'none';
     document.getElementById('ctx-search-bar').style.display = 'none';
     document.getElementById('ctx-add-header').style.display = ctxStep === 0 ? 'block' : 'none';
   } else {
-    btn.innerHTML = '<span style="font-size:14px;">&#9881;</span> Gestioneaza';
+    btn.innerHTML = '<span style="font-size:14px;"><i data-lucide="settings"></i></span> Gestioneaza';
     btn.style.background = 'var(--brand-primary)';
     btn.style.color = '#fff';
     btn.style.boxShadow = '0 2px 6px rgba(0,104,106,0.3)';
@@ -683,7 +686,7 @@ function openCtxDeleteConfirm(wsId) {
   content.innerHTML = '<div style="font-size:13px;color:var(--brand-danger);background:var(--brand-danger-bg);padding:8px 12px;border-radius:var(--brand-radius);margin-top:10px;">Aceasta actiune este permanenta.</div>';
   var actions = document.getElementById('ctx-delete-actions');
   actions.innerHTML = '<div onclick="closeCtxDeleteConfirm()" style="flex:1;padding:12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div>'
-    + '<div onclick="confirmCtxDelete()" style="flex:1;padding:12px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:pointer;">&#128465; Sterge</div>';
+    + '<div onclick="confirmCtxDelete()" style="flex:1;padding:12px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:600;cursor:pointer;"><i data-lucide="trash-2"></i> Sterge</div>';
   document.getElementById('ctx-delete-confirm').style.display = 'block';
 }
 
@@ -745,5 +748,7 @@ function ctxSearchSelect(type, wsId, grupId, firmaId, punctOrGlId, glName) {
 }
 </script>
 
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

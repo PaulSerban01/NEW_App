@@ -7,7 +7,9 @@
   <title>Echipa — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
     .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
     .browser-dots { display: flex; gap: 6px; }
@@ -60,6 +62,7 @@
     body.angajati-delete-mode .card.selected-for-delete { background: rgba(220,38,38,0.06); border: 2px solid #DC2626 !important; }
     body.angajati-delete-mode .card.selected-for-delete::after { content: '\\2713'; background: #DC2626; color: #fff; }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -75,18 +78,18 @@
         </div>
 
         <div class="toolbar">
-          <div class="toolbar-pill" onclick="selectAllVisible()">&#9744; Toate</div>
-          <div class="toolbar-icon-btn" id="sort-btn" onclick="event.stopPropagation();toggleSortDD()">&#8645;</div>
+          <div class="toolbar-pill" onclick="selectAllVisible()"><i data-lucide="square"></i> Toate</div>
+          <div class="toolbar-icon-btn" id="sort-btn" onclick="event.stopPropagation();toggleSortDD()"><i data-lucide="arrows-up-down"></i></div>
           <div class="sort-dropdown" id="sort-dd">
-            <div class="sort-option" data-field="name" onclick="sortCards('name')"><span class="sort-arrow">&#8595;</span> Nume</div>
-            <div class="sort-option" data-field="type" onclick="sortCards('type')"><span class="sort-arrow">&#8593;</span> Functie</div>
-            <div class="sort-option" data-field="status" onclick="sortCards('status')"><span class="sort-arrow">&#8593;</span> Status</div>
-            <div class="sort-option" data-field="updated" onclick="sortCards('updated')"><span class="sort-arrow">&#8593;</span> Ultima actualizare</div>
+            <div class="sort-option" data-field="name" onclick="sortCards('name')"><span class="sort-arrow"><i data-lucide="arrow-down"></i></span> Nume</div>
+            <div class="sort-option" data-field="type" onclick="sortCards('type')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Functie</div>
+            <div class="sort-option" data-field="status" onclick="sortCards('status')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Status</div>
+            <div class="sort-option" data-field="updated" onclick="sortCards('updated')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Ultima actualizare</div>
           </div>
           <div class="toolbar-search">
-            <span class="toolbar-search-icon">&#128269;</span>
+            <span class="toolbar-search-icon"><i data-lucide="search"></i></span>
             <span class="toolbar-search-text">Cauta / filtreaza</span>
-            <span class="toolbar-search-arrow">&#9660;</span>
+            <span class="toolbar-search-arrow"><i data-lucide="chevron-down"></i></span>
           </div>
           <button class="toolbar-add" onclick="openAddDrawer()">+</button>
           <div class="filter-dropdown" id="filter-dd"></div>
@@ -99,7 +102,7 @@
         <!-- ========== DETAIL VIEW (port din OLD_app personal) ========== -->
         <div id="detail-view" class="detail-view">
           <div class="detail-header">
-            <div onclick="closePD()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div>
+            <div onclick="closePD()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div>
             <div id="d-av" style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;"></div>
             <div id="d-title" style="font-size:17px;font-weight:600;color:#fff;"></div>
           </div>
@@ -110,79 +113,79 @@
             </div>
             <!-- ALOCARI UTILAJ / MASINA — deasupra butoanelor -->
             <div id="p-alloc" class="p-alloc-box">
-              <div class="p-alloc-title"><span style="font-size:15px;">&#128733;</span> Alocări</div>
+              <div class="p-alloc-title"><span style="font-size:15px;"><i data-lucide="refresh-cw"></i></span> Alocări</div>
               <div id="p-alloc-utilaj" class="p-alloc-row" style="display:none;">
-                <span class="p-alloc-ico" style="background:rgba(0,104,106,0.15);color:var(--brand-primary);">&#128668;</span>
+                <span class="p-alloc-ico" style="background:rgba(0,104,106,0.15);color:var(--brand-primary);"><i data-lucide="tractor"></i></span>
                 <div class="p-alloc-body">
                   <div class="p-alloc-k">Utilaj implicit</div>
                   <div class="p-alloc-v" id="p-alloc-utilaj-v" onclick="editAlloc('utilaj', this)">&mdash;</div>
                 </div>
-                <span class="p-alloc-edit">&#9998;</span>
+                <span class="p-alloc-edit"><i data-lucide="pencil"></i></span>
               </div>
               <div class="p-alloc-row">
-                <span class="p-alloc-ico" style="background:rgba(46,134,171,0.15);color:#2E86AB;">&#128663;</span>
+                <span class="p-alloc-ico" style="background:rgba(46,134,171,0.15);color:#2E86AB;"><i data-lucide="car"></i></span>
                 <div class="p-alloc-body">
                   <div class="p-alloc-k">Mașină de serviciu</div>
                   <div class="p-alloc-v" id="p-alloc-masina-v" onclick="editAlloc('masina', this)">&mdash;</div>
                 </div>
-                <span class="p-alloc-edit">&#9998;</span>
+                <span class="p-alloc-edit"><i data-lucide="pencil"></i></span>
               </div>
             </div>
             <div class="cat-grid">
-              <div class="cat-card" style="background:linear-gradient(135deg,#2E86AB,#1B6A8A);" onclick="openSP('p-date')"><span class="cat-card-icon">&#128100;</span><div><div class="cat-card-name">Date Personale</div><div class="cat-card-line"></div></div><div class="cat-card-count">Info de baza</div></div>
-              <div class="cat-card" style="background:linear-gradient(135deg,#3B82A0,#2A6B85);" onclick="openSP('p-contract')"><span class="cat-card-icon">&#128196;</span><div><div class="cat-card-name">Contract</div><div class="cat-card-line"></div></div><div class="cat-card-count">Detalii angajare</div></div>
-              <div class="cat-card" style="background:linear-gradient(135deg,#00686A,#005557);" onclick="openSP('p-comp')"><span class="cat-card-icon">&#127891;</span><div><div class="cat-card-name">Competente</div><div class="cat-card-line"></div></div><div class="cat-card-count">Calificari &amp; permise</div></div>
-              <div class="cat-card" style="background:linear-gradient(135deg,#338687,#1E6B6C);" onclick="openSP('p-util')"><span class="cat-card-icon">&#128668;</span><div><div class="cat-card-name">Utilaje Alocate</div><div class="cat-card-line"></div></div><div class="cat-card-count">Masini &amp; agregate</div></div>
-              <div class="cat-card" style="background:linear-gradient(135deg,#4A9BBF,#357FA3);" onclick="openSP('p-ist')"><span class="cat-card-icon">&#128203;</span><div><div class="cat-card-name">Istoric Lucrari</div><div class="cat-card-line"></div></div><div class="cat-card-count">Activitate teren</div></div>
-              <div class="cat-card" style="background:linear-gradient(135deg,#8B5E3C,#6B4226);" onclick="openSP('p-doc')"><span class="cat-card-icon">&#128196;</span><div><div class="cat-card-name">Documente</div><div class="cat-card-line"></div></div><div class="cat-card-count">Acte &amp; certificate</div></div>
-              <div class="cat-card" style="background:linear-gradient(135deg,#2D8E5F,#1E7A4D);" onclick="openSP('p-pontaj')"><span class="cat-card-icon">&#128197;</span><div><div class="cat-card-name">Pontaj</div><div class="cat-card-line"></div></div><div class="cat-card-count">Prezenta zilnica</div></div>
-              <div class="cat-card" style="background:linear-gradient(135deg,#C0392B,#A93226);" onclick="openSP('p-expire')"><span class="cat-card-icon">&#9888;</span><div><div class="cat-card-name">Expirare Acte</div><div class="cat-card-line"></div></div><div class="cat-card-count">Permis, SSM, medical</div></div>
-              <div class="cat-card" style="background:linear-gradient(135deg,#6D28D9,#5B21B6);" onclick="openSP('p-tasks')"><span class="cat-card-icon">&#9745;</span><div><div class="cat-card-name">Sarcini &amp; Remindere</div><div class="cat-card-line"></div></div><div class="cat-card-count">3 active</div></div>
+              <div class="cat-card" style="background:linear-gradient(135deg,#2E86AB,#1B6A8A);" onclick="openSP('p-date')"><span class="cat-card-icon"><i data-lucide="user"></i></span><div><div class="cat-card-name">Date Personale</div><div class="cat-card-line"></div></div><div class="cat-card-count">Info de baza</div></div>
+              <div class="cat-card" style="background:linear-gradient(135deg,#3B82A0,#2A6B85);" onclick="openSP('p-contract')"><span class="cat-card-icon"><i data-lucide="file"></i></span><div><div class="cat-card-name">Contract</div><div class="cat-card-line"></div></div><div class="cat-card-count">Detalii angajare</div></div>
+              <div class="cat-card" style="background:linear-gradient(135deg,#00686A,#005557);" onclick="openSP('p-comp')"><span class="cat-card-icon"><i data-lucide="graduation-cap"></i></span><div><div class="cat-card-name">Competente</div><div class="cat-card-line"></div></div><div class="cat-card-count">Calificari &amp; permise</div></div>
+              <div class="cat-card" style="background:linear-gradient(135deg,#338687,#1E6B6C);" onclick="openSP('p-util')"><span class="cat-card-icon"><i data-lucide="tractor"></i></span><div><div class="cat-card-name">Utilaje Alocate</div><div class="cat-card-line"></div></div><div class="cat-card-count">Masini &amp; agregate</div></div>
+              <div class="cat-card" style="background:linear-gradient(135deg,#4A9BBF,#357FA3);" onclick="openSP('p-ist')"><span class="cat-card-icon"><i data-lucide="clipboard-list"></i></span><div><div class="cat-card-name">Istoric Lucrari</div><div class="cat-card-line"></div></div><div class="cat-card-count">Activitate teren</div></div>
+              <div class="cat-card" style="background:linear-gradient(135deg,#8B5E3C,#6B4226);" onclick="openSP('p-doc')"><span class="cat-card-icon"><i data-lucide="file"></i></span><div><div class="cat-card-name">Documente</div><div class="cat-card-line"></div></div><div class="cat-card-count">Acte &amp; certificate</div></div>
+              <div class="cat-card" style="background:linear-gradient(135deg,#2D8E5F,#1E7A4D);" onclick="openSP('p-pontaj')"><span class="cat-card-icon"><i data-lucide="calendar"></i></span><div><div class="cat-card-name">Pontaj</div><div class="cat-card-line"></div></div><div class="cat-card-count">Prezenta zilnica</div></div>
+              <div class="cat-card" style="background:linear-gradient(135deg,#C0392B,#A93226);" onclick="openSP('p-expire')"><span class="cat-card-icon"><i data-lucide="alert-triangle"></i></span><div><div class="cat-card-name">Expirare Acte</div><div class="cat-card-line"></div></div><div class="cat-card-count">Permis, SSM, medical</div></div>
+              <div class="cat-card" style="background:linear-gradient(135deg,#6D28D9,#5B21B6);" onclick="openSP('p-tasks')"><span class="cat-card-icon"><i data-lucide="check-square"></i></span><div><div class="cat-card-name">Sarcini &amp; Remindere</div><div class="cat-card-line"></div></div><div class="cat-card-count">3 active</div></div>
             </div>
           </div>
         </div>
 
         <!-- SUB: Date Personale -->
-        <div id="sub-p-date" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#2E86AB,#1B6A8A);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128100; Date Personale</span><div onclick="alert('Editare')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">&#9998; Editeaza</div></div>
+        <div id="sub-p-date" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#2E86AB,#1B6A8A);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="user"></i> Date Personale</span><div onclick="alert('Editare')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;"><i data-lucide="pencil"></i> Editeaza</div></div>
           <div class="sub-scroll"><div class="sub-card"><div class="sub-field"><span class="sub-field-label">Nume</span><span class="sub-field-value">Popescu</span></div><div class="sub-field"><span class="sub-field-label">Prenume</span><span class="sub-field-value">Ion</span></div><div class="sub-field"><span class="sub-field-label">Telefon</span><span class="sub-field-value">+40 742 123 456</span></div><div class="sub-field"><span class="sub-field-label">Email</span><span class="sub-field-value">ion.popescu@agrovest.ro</span></div><div class="sub-field"><span class="sub-field-label">Adresa</span><span class="sub-field-value">Timisoara, Timis</span></div><div class="sub-field"><span class="sub-field-label">Data nasterii</span><span class="sub-field-value">15 Mar 1985</span></div><div class="sub-field"><span class="sub-field-label">CNP</span><span class="sub-field-value">******* (protejat)</span></div></div></div></div>
 
         <!-- SUB: Contract -->
-        <div id="sub-p-contract" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#3B82A0,#2A6B85);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128196; Contract</span><div onclick="alert('Editare')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">&#9998; Editeaza</div></div>
+        <div id="sub-p-contract" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#3B82A0,#2A6B85);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="file"></i> Contract</span><div onclick="alert('Editare')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;"><i data-lucide="pencil"></i> Editeaza</div></div>
           <div class="sub-scroll"><div class="sub-card"><div class="sub-field"><span class="sub-field-label">Tip contract</span><span class="sub-field-value">Permanent (nedeterminat)</span></div><div class="sub-field"><span class="sub-field-label">Nr. contract</span><span class="sub-field-value">CIM-2024-001</span></div><div class="sub-field"><span class="sub-field-label">Data angajare</span><span class="sub-field-value">12 Ian 2024</span></div><div class="sub-field"><span class="sub-field-label">Departament</span><span class="sub-field-value">Management</span></div><div class="sub-field"><span class="sub-field-label">Functie</span><span class="sub-field-value">Director General</span></div><div class="sub-field"><span class="sub-field-label">Norma</span><span class="sub-field-value">8h / zi</span></div><div class="sub-field"><span class="sub-field-label">Salariu brut</span><span class="sub-field-value">******* (confidential)</span></div><div class="sub-field"><span class="sub-field-label">Zile concediu</span><span class="sub-field-value">25 / an (ramase: 18)</span></div></div></div></div>
 
         <!-- SUB: Competente -->
-        <div id="sub-p-comp" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#00686A,#005557);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#127891; Competente</span><div onclick="alert('Adauga')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
+        <div id="sub-p-comp" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#00686A,#005557);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="graduation-cap"></i> Competente</span><div onclick="alert('Adauga')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
           <div class="sub-scroll">
-            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128663;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Permis B, C, T</div><div style="font-size:13px;color:var(--brand-text-muted);">Valabil: 2030</div></div><span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-success-bg);color:var(--brand-success);">Valid</span></div>
-            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128668;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Atestat operator utilaje</div><div style="font-size:13px;color:var(--brand-text-muted);">Emis: 2022</div></div><span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-success-bg);color:var(--brand-success);">Valid</span></div>
-            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128737;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">SSM - Protectia muncii</div><div style="font-size:13px;color:var(--brand-text-muted);">Expira: 20 Mai 2026</div></div><span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-warning-bg);color:var(--brand-warning);">41 zile</span></div>
+            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="car"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Permis B, C, T</div><div style="font-size:13px;color:var(--brand-text-muted);">Valabil: 2030</div></div><span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-success-bg);color:var(--brand-success);">Valid</span></div>
+            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="tractor"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Atestat operator utilaje</div><div style="font-size:13px;color:var(--brand-text-muted);">Emis: 2022</div></div><span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-success-bg);color:var(--brand-success);">Valid</span></div>
+            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="shield"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">SSM - Protectia muncii</div><div style="font-size:13px;color:var(--brand-text-muted);">Expira: 20 Mai 2026</div></div><span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-warning-bg);color:var(--brand-warning);">41 zile</span></div>
           </div></div>
 
         <!-- SUB: Utilaje Alocate -->
-        <div id="sub-p-util" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#338687,#1E6B6C);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;">&#128668; Utilaje Alocate</span></div>
+        <div id="sub-p-util" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#338687,#1E6B6C);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;"><i data-lucide="tractor"></i> Utilaje Alocate</span></div>
           <div class="sub-scroll">
-            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="font-size:30px;">&#128668;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">John Deere 6130R</div><div style="font-size:13px;color:var(--brand-text-muted);">TM-42-AGR &middot; Tractor</div></div><span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-success-bg);color:var(--brand-success);">Alocat</span></div>
-            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="font-size:30px;">&#9881;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Plug Kuhn Multimaster 183</div><div style="font-size:13px;color:var(--brand-text-muted);">Agregat atasat</div></div><span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-hover-bg);color:var(--brand-primary);">Activ</span></div>
+            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="font-size:30px;"><i data-lucide="tractor"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">John Deere 6130R</div><div style="font-size:13px;color:var(--brand-text-muted);">TM-42-AGR &middot; Tractor</div></div><span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-success-bg);color:var(--brand-success);">Alocat</span></div>
+            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="font-size:30px;"><i data-lucide="settings"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Plug Kuhn Multimaster 183</div><div style="font-size:13px;color:var(--brand-text-muted);">Agregat atasat</div></div><span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-hover-bg);color:var(--brand-primary);">Activ</span></div>
           </div></div>
 
         <!-- SUB: Istoric Lucrari -->
-        <div id="sub-p-ist" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#4A9BBF,#357FA3);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;">&#128203; Istoric Lucrari</span></div>
+        <div id="sub-p-ist" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#4A9BBF,#357FA3);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;"><i data-lucide="clipboard-list"></i> Istoric Lucrari</span></div>
           <div class="sub-scroll">
-            <div class="sub-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:15px;font-weight:600;">Arat profund</span><span style="font-size:13px;color:var(--brand-text-muted);">06 Apr 2026</span></div><div style="font-size:13px;color:var(--brand-text-muted);">&#127758; Parcela 12 Nord &middot; JD 6130R &middot; 24.5 ha</div></div>
-            <div class="sub-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:15px;font-weight:600;">Semanat porumb</span><span style="font-size:13px;color:var(--brand-text-muted);">22 Mar 2026</span></div><div style="font-size:13px;color:var(--brand-text-muted);">&#127758; Parcela 15 Est &middot; JD 6130R &middot; 32.0 ha</div></div>
-            <div class="sub-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:15px;font-weight:600;">Discuit</span><span style="font-size:13px;color:var(--brand-text-muted);">15 Mar 2026</span></div><div style="font-size:13px;color:var(--brand-text-muted);">&#127758; Parcela 3 Sud &middot; JD 6130R &middot; 18.0 ha</div></div>
+            <div class="sub-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:15px;font-weight:600;">Arat profund</span><span style="font-size:13px;color:var(--brand-text-muted);">06 Apr 2026</span></div><div style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 12 Nord &middot; JD 6130R &middot; 24.5 ha</div></div>
+            <div class="sub-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:15px;font-weight:600;">Semanat porumb</span><span style="font-size:13px;color:var(--brand-text-muted);">22 Mar 2026</span></div><div style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 15 Est &middot; JD 6130R &middot; 32.0 ha</div></div>
+            <div class="sub-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:15px;font-weight:600;">Discuit</span><span style="font-size:13px;color:var(--brand-text-muted);">15 Mar 2026</span></div><div style="font-size:13px;color:var(--brand-text-muted);"><i data-lucide="globe"></i> Parcela 3 Sud &middot; JD 6130R &middot; 18.0 ha</div></div>
           </div></div>
 
         <!-- SUB: Documente -->
-        <div id="sub-p-doc" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#8B5E3C,#6B4226);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128196; Documente</span><div onclick="alert('Adauga document')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
+        <div id="sub-p-doc" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#8B5E3C,#6B4226);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="file"></i> Documente</span><div onclick="alert('Adauga document')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
           <div class="sub-scroll">
-            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128179;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Contract de munca</div><div style="font-size:13px;color:var(--brand-text-muted);">CIM-2024-001.pdf</div></div></div>
-            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128196;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Fisa postului</div><div style="font-size:13px;color:var(--brand-text-muted);">FP_Director.pdf</div></div></div>
-            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128203;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Medicina muncii</div><div style="font-size:13px;color:var(--brand-text-muted);">Valabil: Dec 2026</div></div></div>
+            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="credit-card"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Contract de munca</div><div style="font-size:13px;color:var(--brand-text-muted);">CIM-2024-001.pdf</div></div></div>
+            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="file"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Fisa postului</div><div style="font-size:13px;color:var(--brand-text-muted);">FP_Director.pdf</div></div></div>
+            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="clipboard-list"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Medicina muncii</div><div style="font-size:13px;color:var(--brand-text-muted);">Valabil: Dec 2026</div></div></div>
           </div></div>
 
         <!-- SUB: Pontaj -->
-        <div id="sub-p-pontaj" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#2D8E5F,#1E7A4D);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128197; Pontaj Zilnic</span><div onclick="openAddPontaj()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
+        <div id="sub-p-pontaj" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#2D8E5F,#1E7A4D);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="calendar"></i> Pontaj Zilnic</span><div onclick="openAddPontaj()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
           <div class="sub-scroll">
             <!-- Filtre rapide -->
             <div style="padding:10px 0 6px;">
@@ -284,97 +287,97 @@
                 <div style="margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">Activitate</div><input type="text" placeholder="ex: Arat, Semanat, Transport..." style="width:100%;padding:10px 12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:16px;outline:none;"></div>
                 <div style="margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">Observatii</div><textarea style="width:100%;padding:10px 12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:16px;outline:none;min-height:50px;resize:vertical;font-family:var(--brand-font-sans);" placeholder="Note..."></textarea></div>
               </div>
-              <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;"><div onclick="closeAddPontaj()" style="flex:1;padding:12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:16px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div><div onclick="closeAddPontaj()" style="flex:1;padding:12px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:16px;font-weight:600;cursor:pointer;">&#10003; Salveaza</div></div>
+              <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;"><div onclick="closeAddPontaj()" style="flex:1;padding:12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:16px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div><div onclick="closeAddPontaj()" style="flex:1;padding:12px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:16px;font-weight:600;cursor:pointer;"><i data-lucide="check"></i> Salveaza</div></div>
             </div>
           </div>
         </div>
 
         <!-- SUB: Expirare Acte -->
-        <div id="sub-p-expire" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#C0392B,#A93226);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;">&#9888; Expirare Acte</span></div>
+        <div id="sub-p-expire" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#C0392B,#A93226);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;"><i data-lucide="alert-triangle"></i> Expirare Acte</span></div>
           <div class="sub-scroll">
             <div class="sub-card" style="display:flex;align-items:center;gap:10px;border-left:3px solid var(--brand-success);">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128663;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="car"></i></div>
               <div style="flex:1;"><div style="font-size:15px;font-weight:600;">Permis conducere B, C, T</div><div style="font-size:13px;color:var(--brand-text-muted);">Expira: 15 Mar 2030</div></div>
               <span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-success-bg);color:var(--brand-success);">OK</span>
             </div>
             <div class="sub-card" style="display:flex;align-items:center;gap:10px;border-left:3px solid var(--brand-success);">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128668;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="tractor"></i></div>
               <div style="flex:1;"><div style="font-size:15px;font-weight:600;">Autorizatie operator utilaje</div><div style="font-size:13px;color:var(--brand-text-muted);">Expira: 10 Dec 2027</div></div>
               <span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-success-bg);color:var(--brand-success);">OK</span>
             </div>
             <div class="sub-card" style="display:flex;align-items:center;gap:10px;border-left:3px solid var(--brand-warning);">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128737;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="shield"></i></div>
               <div style="flex:1;"><div style="font-size:15px;font-weight:600;">SSM - Protectia muncii</div><div style="font-size:13px;color:var(--brand-text-muted);">Expira: 20 Mai 2026</div></div>
               <span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-warning-bg);color:var(--brand-warning);">41 zile</span>
             </div>
             <div class="sub-card" style="display:flex;align-items:center;gap:10px;border-left:3px solid var(--brand-success);">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#129657;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="star"></i></div>
               <div style="flex:1;"><div style="font-size:15px;font-weight:600;">Medicina muncii</div><div style="font-size:13px;color:var(--brand-text-muted);">Expira: 01 Dec 2026</div></div>
               <span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--brand-success-bg);color:var(--brand-success);">OK</span>
             </div>
           </div></div>
 
         <!-- SUB: Sarcini & Remindere -->
-        <div id="sub-p-tasks" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#6D28D9,#5B21B6);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#9745; Sarcini &amp; Remindere</span><div onclick="openAddTRP()" style="padding:6px 14px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
+        <div id="sub-p-tasks" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#6D28D9,#5B21B6);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="check-square"></i> Sarcini &amp; Remindere</span><div onclick="openAddTRP()" style="padding:6px 14px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
           <div class="sub-scroll" id="trp-list">
             <div style="font-size:12px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Task-uri active</div>
             <div class="sub-card" style="padding:0;overflow:hidden;" id="trp-tasks-list">
               <div onclick="openTRPAction('task','Reinnoire permis conducere cat. C','Urgent','20 Apr','',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-bottom:1px solid #f0f0f0;cursor:pointer;">
-                <div style="font-size:22px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div>
+                <div style="font-size:22px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div>
                 <div style="flex:1;">
                   <div style="font-size:15px;font-weight:600;color:var(--brand-text-primary);">Reinnoire permis conducere cat. C</div>
                   <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
                     <span style="padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:var(--brand-danger-bg);color:var(--brand-danger);">Urgent</span>
-                    <span style="font-size:12px;color:var(--brand-text-muted);">&#128197; 20 Apr</span>
+                    <span style="font-size:12px;color:var(--brand-text-muted);"><i data-lucide="calendar"></i> 20 Apr</span>
                   </div>
-                  <div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:#EDE9FE;color:#6D28D9;">&#128100; Ion Popescu</span></div>
+                  <div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:#EDE9FE;color:#6D28D9;"><i data-lucide="user"></i> Ion Popescu</span></div>
                 </div>
-                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span>
+                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span>
               </div>
               <div onclick="openTRPAction('task','Cursul SSM &mdash; reinstruire periodica','Normal','25 Apr','Ion Popescu',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-bottom:1px solid #f0f0f0;cursor:pointer;">
-                <div style="font-size:22px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div>
+                <div style="font-size:22px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div>
                 <div style="flex:1;">
                   <div style="font-size:15px;font-weight:600;color:var(--brand-text-primary);">Cursul SSM &mdash; reinstruire periodica</div>
                   <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
                     <span style="padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:var(--brand-warning-bg);color:var(--brand-warning);">Normal</span>
-                    <span style="font-size:12px;color:var(--brand-text-muted);">&#128197; 25 Apr</span>
+                    <span style="font-size:12px;color:var(--brand-text-muted);"><i data-lucide="calendar"></i> 25 Apr</span>
                     <span style="font-size:12px;color:var(--brand-text-muted);">catre <strong>Ion Popescu</strong></span>
                   </div>
-                  <div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:#EDE9FE;color:#6D28D9;">&#128100; Ion Popescu</span></div>
+                  <div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:#EDE9FE;color:#6D28D9;"><i data-lucide="user"></i> Ion Popescu</span></div>
                 </div>
-                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span>
+                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span>
               </div>
               <div onclick="openTRPAction('task','Instruire utilizare GPS tracker','Normal','10 Apr','',true)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;cursor:pointer;">
-                <div style="font-size:22px;color:var(--brand-primary);flex-shrink:0;margin-top:-2px;">&#9745;</div>
+                <div style="font-size:22px;color:var(--brand-primary);flex-shrink:0;margin-top:-2px;"><i data-lucide="check-square"></i></div>
                 <div style="flex:1;">
                   <div style="font-size:15px;font-weight:600;color:var(--brand-text-muted);text-decoration:line-through;">Instruire utilizare GPS tracker</div>
-                  <div style="display:flex;align-items:center;gap:6px;margin-top:4px;"><span style="font-size:12px;color:var(--brand-text-muted);">&#10003; Finalizat 10 Apr</span></div>
+                  <div style="display:flex;align-items:center;gap:6px;margin-top:4px;"><span style="font-size:12px;color:var(--brand-text-muted);"><i data-lucide="check"></i> Finalizat 10 Apr</span></div>
                 </div>
-                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span>
+                <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span>
               </div>
             </div>
             <div style="font-size:12px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;">Remindere personale</div>
             <div class="sub-card" onclick="openTRPAction('reminder','Discutie evaluare performanta','','Azi, 14:00','',false)" style="display:flex;align-items:flex-start;gap:10px;border-left:3px solid var(--brand-danger);cursor:pointer;">
-              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">&#128276;</div>
+              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;"><i data-lucide="bell"></i></div>
               <div style="flex:1;">
                 <div style="font-size:15px;font-weight:600;">Discutie evaluare performanta</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="font-size:12px;color:var(--brand-danger);font-weight:600;">&#128197; Azi, 14:00 &mdash; intarziat</span>
-                  <span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:#EDE9FE;color:#6D28D9;">&#128100; Ion Popescu</span>
+                  <span style="font-size:12px;color:var(--brand-danger);font-weight:600;"><i data-lucide="calendar"></i> Azi, 14:00 &mdash; intarziat</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:#EDE9FE;color:#6D28D9;"><i data-lucide="user"></i> Ion Popescu</span>
                 </div>
               </div>
-              <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;">&#9654;</span>
+              <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;"><i data-lucide="chevron-right"></i></span>
             </div>
             <div class="sub-card" onclick="openTRPAction('reminder','Verifica fisa medicala noua','','18 Apr, 09:00','',false)" style="display:flex;align-items:flex-start;gap:10px;border-left:3px solid var(--brand-warning);cursor:pointer;">
-              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">&#128276;</div>
+              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-warning-bg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;"><i data-lucide="bell"></i></div>
               <div style="flex:1;">
                 <div style="font-size:15px;font-weight:600;">Verifica fisa medicala noua</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
-                  <span style="font-size:12px;color:var(--brand-warning);font-weight:600;">&#128197; 18 Apr, 09:00</span>
-                  <span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:#EDE9FE;color:#6D28D9;">&#128100; Ion Popescu</span>
+                  <span style="font-size:12px;color:var(--brand-warning);font-weight:600;"><i data-lucide="calendar"></i> 18 Apr, 09:00</span>
+                  <span style="padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;background:#EDE9FE;color:#6D28D9;"><i data-lucide="user"></i> Ion Popescu</span>
                 </div>
               </div>
-              <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;">&#9654;</span>
+              <span style="font-size:14px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;"><i data-lucide="chevron-right"></i></span>
             </div>
           </div>
         </div>
@@ -390,12 +393,12 @@
             <div style="flex:1;overflow-y:auto;padding:16px;scrollbar-width:none;">
               <div style="display:flex;gap:8px;margin-bottom:14px;">
                 <div onclick="trpSetType('task',this)" id="trp-type-task" style="flex:1;padding:14px;border:2px solid var(--brand-primary);border-radius:var(--brand-radius-lg);text-align:center;cursor:pointer;background:var(--brand-hover-bg);">
-                  <div style="font-size:20px;margin-bottom:4px;">&#9745;</div>
+                  <div style="font-size:20px;margin-bottom:4px;"><i data-lucide="check-square"></i></div>
                   <div style="font-size:13px;font-weight:700;color:var(--brand-primary);">Task</div>
                   <div style="font-size:9px;color:var(--brand-text-muted);">Sarcina cu deadline</div>
                 </div>
                 <div onclick="trpSetType('reminder',this)" id="trp-type-rem" style="flex:1;padding:14px;border:2px solid var(--brand-border);border-radius:var(--brand-radius-lg);text-align:center;cursor:pointer;">
-                  <div style="font-size:20px;margin-bottom:4px;">&#128276;</div>
+                  <div style="font-size:20px;margin-bottom:4px;"><i data-lucide="bell"></i></div>
                   <div style="font-size:13px;font-weight:700;color:var(--brand-text-primary);">Reminder</div>
                   <div style="font-size:9px;color:var(--brand-text-muted);">Notificare personala</div>
                 </div>
@@ -420,7 +423,7 @@
                 </select>
               </div>
               <div style="margin-top:12px;padding:10px;background:var(--brand-surface);border-radius:var(--brand-radius);display:flex;align-items:center;gap:8px;">
-                <span style="font-size:14px;">&#128100;</span>
+                <span style="font-size:14px;"><i data-lucide="user"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:10px;color:var(--brand-text-muted);font-weight:600;">Legat de angajat</div>
                   <div style="font-size:12px;font-weight:700;color:#6D28D9;">Ion Popescu</div>
@@ -431,7 +434,7 @@
             </div>
             <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;">
               <div onclick="closeAddTRP()" style="flex:1;padding:14px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:13px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div>
-              <div onclick="saveTRP()" style="flex:1;padding:14px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:13px;font-weight:600;cursor:pointer;">&#10003; Salveaza</div>
+              <div onclick="saveTRP()" style="flex:1;padding:14px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:13px;font-weight:600;cursor:pointer;"><i data-lucide="check"></i> Salveaza</div>
             </div>
           </div>
         </div>
@@ -477,14 +480,14 @@ initFilterDropdown([
 
 // Genereaza carduri echipa
 var echipa = [
-  { name: 'Ion Popescu', number: 'PL ferma1', type: 'Mecanizator', icons: ['&#128276;'], updated: 'Actualizat: 2026-apr-14', status: 'Activ', thumbIcon: '&#128100;', thumbBg: '#00686A', details: ['8h/zi'] },
-  { name: 'Maria Ionescu', number: 'PL ferma1', type: 'Agronom', icons: ['&#128276;'], updated: 'Actualizat: 2026-apr-14', status: 'Activ', thumbIcon: '&#128100;', thumbBg: '#2E86AB', details: ['6h/zi'] },
-  { name: 'Vasile Lungu', number: 'PL ferma2', type: 'Mecanic', updated: 'Actualizat: 2026-apr-13', status: 'Concediu', statusColor: '#B7791F', thumbIcon: '&#128100;', thumbBg: '#1B5E20', details: ['8h/zi'] },
-  { name: 'Andrei Popa', number: 'PL agricola', type: 'Sofer', icons: [], updated: 'Actualizat: 2026-apr-12', status: 'Activ', thumbIcon: '&#128100;', thumbBg: '#8B5E3C', details: ['10h/zi'] },
-  { name: 'Elena Vasile', number: 'PL ferma1', type: 'Agronom', icons: ['&#128276;'], updated: 'Actualizat: 2026-apr-11', status: 'Activ', thumbIcon: '&#128100;', thumbBg: '#6D28D9', details: ['6h/zi'] },
-  { name: 'Gheorghe Marin', number: 'PL AgrSud', type: 'Muncitor', updated: 'Actualizat: 2026-apr-10', status: 'Inactiv', statusColor: '#666', thumbIcon: '&#128100;', thumbBg: '#999', details: ['Zilier'] },
-  { name: 'Alexandru Romanescu', number: 'PL ferma2', type: 'Mecanizator', icons: ['&#128276;'], updated: 'Actualizat: 2026-apr-15', status: 'Activ', thumbIcon: '&#128100;', thumbBg: '#0D7377', details: ['8h/zi'] },
-  { name: 'Cristinel Parvulescu', number: 'PL agricola', type: 'Agronom', updated: 'Actualizat: 2026-apr-16', status: 'Activ', thumbIcon: '&#128100;', thumbBg: '#338687', details: ['8h/zi'] }
+  { name: 'Ion Popescu', number: 'PL ferma1', type: 'Mecanizator', icons: ['<i data-lucide="bell"></i>'], updated: 'Actualizat: 2026-apr-14', status: 'Activ', thumbIcon: '<i data-lucide="user"></i>', thumbBg: '#00686A', details: ['8h/zi'] },
+  { name: 'Maria Ionescu', number: 'PL ferma1', type: 'Agronom', icons: ['<i data-lucide="bell"></i>'], updated: 'Actualizat: 2026-apr-14', status: 'Activ', thumbIcon: '<i data-lucide="user"></i>', thumbBg: '#2E86AB', details: ['6h/zi'] },
+  { name: 'Vasile Lungu', number: 'PL ferma2', type: 'Mecanic', updated: 'Actualizat: 2026-apr-13', status: 'Concediu', statusColor: '#B7791F', thumbIcon: '<i data-lucide="user"></i>', thumbBg: '#1B5E20', details: ['8h/zi'] },
+  { name: 'Andrei Popa', number: 'PL agricola', type: 'Sofer', icons: [], updated: 'Actualizat: 2026-apr-12', status: 'Activ', thumbIcon: '<i data-lucide="user"></i>', thumbBg: '#8B5E3C', details: ['10h/zi'] },
+  { name: 'Elena Vasile', number: 'PL ferma1', type: 'Agronom', icons: ['<i data-lucide="bell"></i>'], updated: 'Actualizat: 2026-apr-11', status: 'Activ', thumbIcon: '<i data-lucide="user"></i>', thumbBg: '#6D28D9', details: ['6h/zi'] },
+  { name: 'Gheorghe Marin', number: 'PL AgrSud', type: 'Muncitor', updated: 'Actualizat: 2026-apr-10', status: 'Inactiv', statusColor: '#666', thumbIcon: '<i data-lucide="user"></i>', thumbBg: '#999', details: ['Zilier'] },
+  { name: 'Alexandru Romanescu', number: 'PL ferma2', type: 'Mecanizator', icons: ['<i data-lucide="bell"></i>'], updated: 'Actualizat: 2026-apr-15', status: 'Activ', thumbIcon: '<i data-lucide="user"></i>', thumbBg: '#0D7377', details: ['8h/zi'] },
+  { name: 'Cristinel Parvulescu', number: 'PL agricola', type: 'Agronom', updated: 'Actualizat: 2026-apr-16', status: 'Activ', thumbIcon: '<i data-lucide="user"></i>', thumbBg: '#338687', details: ['8h/zi'] }
 ];
 var list = document.getElementById('card-list');
 echipa.forEach(function(p) {
@@ -500,10 +503,10 @@ echipa.forEach(function(p) {
 });
 
 initFabActions([
-  { icon: '&#10010;',   label: 'Adauga angajat (avatar)', action: function(){ openAddDrawer(); } },
-  { icon: '&#128465;',  label: 'Sterge angajat',           action: function(){ tryFabDelete(); } },
-  { icon: '&#128196;',  label: 'Exporta lista',            action: function(){ alert('Exporta lista angajati'); } },
-  { icon: '&#128438;',  label: 'Importa angajati',         action: function(){ alert('Importa angajati'); } }
+  { icon: '<i data-lucide="plus"></i>',   label: 'Adauga angajat (avatar)', action: function(){ openAddDrawer(); } },
+  { icon: '<i data-lucide="trash-2"></i>',  label: 'Sterge angajat',           action: function(){ tryFabDelete(); } },
+  { icon: '<i data-lucide="file"></i>',  label: 'Exporta lista',            action: function(){ alert('Exporta lista angajati'); } },
+  { icon: '<i data-lucide="printer"></i>',  label: 'Importa angajati',         action: function(){ alert('Importa angajati'); } }
 ]);
 setupFabDelete({ cardSel: '.ucard-echipa', entityLabel: 'angajat', entityLabelPl: 'angajați', labelText: 'Sterge angajat' });
 
@@ -523,16 +526,16 @@ function openAddDrawer() {
   // Photo picker — avatar circular la top
   html += '<div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:4px 0 18px;margin-bottom:14px;border-bottom:1px solid var(--brand-border);">';
   html += '<div id="nap-avatar-wrap" style="position:relative;">';
-  html += '<div id="nap-avatar" style="width:92px;height:92px;border-radius:50%;background:var(--brand-hover-bg);border:2px dashed var(--brand-primary);display:flex;align-items:center;justify-content:center;font-size:36px;color:var(--brand-primary);background-size:cover;background-position:center;">&#128100;</div>';
+  html += '<div id="nap-avatar" style="width:92px;height:92px;border-radius:50%;background:var(--brand-hover-bg);border:2px dashed var(--brand-primary);display:flex;align-items:center;justify-content:center;font-size:36px;color:var(--brand-primary);background-size:cover;background-position:center;"><i data-lucide="user"></i></div>';
   html += '<button type="button" id="nap-remove" onclick="napRemovePhoto()" style="display:none;position:absolute;top:-4px;right:-4px;width:28px;height:28px;border-radius:50%;background:#DC2626;color:#fff;border:2px solid #fff;font-size:14px;cursor:pointer;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,0.2);">&times;</button>';
   html += '</div>';
   html += '<input type="file" id="nap-file" accept="image/*" onchange="napPickPhoto(this)" style="display:none;">';
   html += '<div style="display:flex;gap:8px;">';
   html += '<button type="button" onclick="document.getElementById(\'nap-file\').click()" style="padding:9px 14px;background:var(--brand-primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;">';
-  html += '<span>&#128247;</span> Alege din galerie';
+  html += '<span><i data-lucide="camera"></i></span> Alege din galerie';
   html += '</button>';
   html += '<button type="button" onclick="napCaptureCamera()" style="padding:9px 14px;background:#fff;color:var(--brand-primary);border:1.5px solid var(--brand-primary);border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;">';
-  html += '<span>&#128248;</span> Fă o poză';
+  html += '<span><i data-lucide="camera"></i></span> Fă o poză';
   html += '</button>';
   html += '</div>';
   html += '<div style="font-size:11px;color:var(--brand-text-muted);">JPG/PNG &middot; max 5 MB</div>';
@@ -594,7 +597,7 @@ window.napRemovePhoto = function() {
   if (av) {
     av.style.backgroundImage = '';
     av.style.border = '2px dashed var(--brand-primary)';
-    av.innerHTML = '&#128100;';
+    av.innerHTML = '<i data-lucide="user"></i>';
   }
   var inp = document.getElementById('nap-file');
   if (inp) inp.value = '';
@@ -617,7 +620,7 @@ window.openInviteDrawer = function() {
   // Header explicativ
   html += '<div style="padding:14px;margin-bottom:14px;background:linear-gradient(135deg,rgba(46,134,171,0.08),#fff);border:1px solid rgba(46,134,171,0.35);border-radius:12px;">';
   html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">';
-  html += '<span style="font-size:22px;">&#128101;</span>';
+  html += '<span style="font-size:22px;"><i data-lucide="users"></i></span>';
   html += '<div style="font-size:15px;font-weight:800;color:var(--brand-text-primary);">Invită un colaborator</div>';
   html += '</div>';
   html += '<div style="font-size:12px;color:var(--brand-text-muted);line-height:1.5;">Persoana primește invitație și acces la app cu rolul ales. Pentru adăugare manuală (doar date, fără cont), folosește <strong>FAB &rarr; Adaugă angajat</strong>.</div>';
@@ -626,10 +629,10 @@ window.openInviteDrawer = function() {
   html += '<div style="margin-bottom:12px;"><label class="form-label">Canal invitație</label>';
   html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:4px;">';
   [
-    { k: 'email',    i: '&#9993;',    l: 'Email' },
-    { k: 'whatsapp', i: '&#128241;',  l: 'WhatsApp' },
-    { k: 'sms',      i: '&#128172;',  l: 'SMS' },
-    { k: 'link',     i: '&#128279;',  l: 'Link' }
+    { k: 'email',    i: '<i data-lucide="mail"></i>',    l: 'Email' },
+    { k: 'whatsapp', i: '<i data-lucide="smartphone"></i>',  l: 'WhatsApp' },
+    { k: 'sms',      i: '<i data-lucide="message-circle"></i>',  l: 'SMS' },
+    { k: 'link',     i: '<i data-lucide="link"></i>',  l: 'Link' }
   ].forEach(function(t) {
     html += '<button type="button" id="inv-ch-' + t.k + '" onclick="invSetChannel(\'' + t.k + '\')" style="padding:10px 4px;background:#fff;border:1.5px solid var(--brand-border);border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--brand-text-muted);font-family:inherit;">';
     html += '<span style="font-size:18px;">' + t.i + '</span><span>' + t.l + '</span>';
@@ -725,10 +728,10 @@ window.invRolChanged = function() {
   var hint = document.getElementById('inv-rol-hint');
   if (!sel || !hint) return;
   var map = {
-    admin: '&#128272; Acces complet la toate modulele + invită alți utilizatori.',
-    manager: '&#128203; Vede toți angajații, aprobă pontaj, atribuie taskuri.',
-    operator: '&#128668; Vede propriile taskuri + pontaj propriu. Fără acces la date financiare.',
-    viewer: '&#128065; Citește date, nu poate edita. Util pentru contabili externi.'
+    admin: '<i data-lucide="key"></i> Acces complet la toate modulele + invită alți utilizatori.',
+    manager: '<i data-lucide="clipboard-list"></i> Vede toți angajații, aprobă pontaj, atribuie taskuri.',
+    operator: '<i data-lucide="tractor"></i> Vede propriile taskuri + pontaj propriu. Fără acces la date financiare.',
+    viewer: '<i data-lucide="eye"></i> Citește date, nu poate edita. Util pentru contabili externi.'
   };
   hint.innerHTML = map[sel.value] || '';
 };
@@ -750,7 +753,7 @@ window._unused_openDeleteConfirmDrawer = function(selCards) {
 
   var html = '';
   html += '<div style="padding:6px 0 10px;text-align:center;">';
-  html += '<div style="width:72px;height:72px;border-radius:50%;background:rgba(220,38,38,0.12);color:#DC2626;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 14px;">&#9888;</div>';
+  html += '<div style="width:72px;height:72px;border-radius:50%;background:rgba(220,38,38,0.12);color:#DC2626;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 14px;"><i data-lucide="alert-triangle"></i></div>';
   html += '<div style="font-size:17px;font-weight:800;color:var(--brand-text-primary);margin-bottom:6px;">Ești sigur?</div>';
   html += '<div style="font-size:13px;color:var(--brand-text-muted);line-height:1.5;">Vei șterge <strong style="color:#DC2626;">' + n + ' ' + (n === 1 ? 'angajat' : 'angajați') + '</strong> din listă. Acțiunea nu poate fi anulată.</div>';
   html += '</div>';
@@ -988,10 +991,10 @@ window.saveTRP = function() {
   if (!title) { document.getElementById('trp-add-title').style.borderColor = 'var(--brand-danger)'; return; }
   if (trpType === 'task') {
     var l = document.getElementById('trp-tasks-list');
-    l.insertAdjacentHTML('beforeend', '<div onclick="openTRPAction(\'task\',\'' + title.replace(/'/g,"\\'") + '\',\'Normal\',\'Nou\',\'\',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-top:1px solid #f0f0f0;cursor:pointer;"><div style="font-size:20px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;">&#9744;</div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">' + title + '</div><div style="display:flex;align-items:center;gap:6px;margin-top:4px;"><span style="padding:2px 8px;border-radius:4px;font-size:9px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);">Nou</span></div><div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:8px;font-weight:600;background:#EDE9FE;color:#6D28D9;">&#128100; Ion Popescu</span></div></div><span style="font-size:12px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;">&#9654;</span></div>');
+    l.insertAdjacentHTML('beforeend', '<div onclick="openTRPAction(\'task\',\'' + title.replace(/'/g,"\\'") + '\',\'Normal\',\'Nou\',\'\',false)" style="display:flex;align-items:flex-start;gap:10px;padding:14px;border-top:1px solid #f0f0f0;cursor:pointer;"><div style="font-size:20px;color:var(--brand-border);flex-shrink:0;margin-top:-2px;"><i data-lucide="square"></i></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--brand-text-primary);">' + title + '</div><div style="display:flex;align-items:center;gap:6px;margin-top:4px;"><span style="padding:2px 8px;border-radius:4px;font-size:9px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);">Nou</span></div><div style="display:flex;gap:4px;margin-top:4px;"><span style="padding:1px 6px;border-radius:4px;font-size:8px;font-weight:600;background:#EDE9FE;color:#6D28D9;"><i data-lucide="user"></i> Ion Popescu</span></div></div><span style="font-size:12px;color:var(--brand-text-muted);flex-shrink:0;margin-top:2px;"><i data-lucide="chevron-right"></i></span></div>');
   } else {
     var scroll = document.getElementById('trp-list');
-    scroll.insertAdjacentHTML('beforeend', '<div class="sub-card" onclick="openTRPAction(\'reminder\',\'' + title.replace(/'/g,"\\'") + '\',\'\',\'Programat\',\'\',false)" style="display:flex;align-items:flex-start;gap:10px;border-left:3px solid var(--brand-primary);cursor:pointer;margin-top:8px;"><div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">&#128276;</div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">' + title + '</div><div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;"><span style="font-size:10px;color:var(--brand-primary);font-weight:600;">&#128197; Programat</span><span style="padding:1px 6px;border-radius:4px;font-size:8px;font-weight:600;background:#EDE9FE;color:#6D28D9;">&#128100; Ion Popescu</span></div></div><span style="font-size:12px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;">&#9654;</span></div>');
+    scroll.insertAdjacentHTML('beforeend', '<div class="sub-card" onclick="openTRPAction(\'reminder\',\'' + title.replace(/'/g,"\\'") + '\',\'\',\'Programat\',\'\',false)" style="display:flex;align-items:flex-start;gap:10px;border-left:3px solid var(--brand-primary);cursor:pointer;margin-top:8px;"><div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;"><i data-lucide="bell"></i></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">' + title + '</div><div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;"><span style="font-size:10px;color:var(--brand-primary);font-weight:600;"><i data-lucide="calendar"></i> Programat</span><span style="padding:1px 6px;border-radius:4px;font-size:8px;font-weight:600;background:#EDE9FE;color:#6D28D9;"><i data-lucide="user"></i> Ion Popescu</span></div></div><span style="font-size:12px;color:var(--brand-text-muted);flex-shrink:0;margin-top:8px;"><i data-lucide="chevron-right"></i></span></div>');
   }
   document.getElementById('trp-add-title').value = '';
   closeAddTRP();
@@ -1010,15 +1013,15 @@ window.openTRPAction = function(type, title, priority, deadline, assignee, isDon
     badge.textContent = priority === 'Urgent' ? 'Task \u2014 Urgent' : 'Task';
     badge.style.background = priority === 'Urgent' ? 'var(--brand-danger-bg)' : 'var(--brand-warning-bg)';
     badge.style.color = priority === 'Urgent' ? 'var(--brand-danger)' : 'var(--brand-warning)';
-    meta.innerHTML = '&#128197; ' + deadline + (assignee ? ' &middot; catre ' + assignee : '');
+    meta.innerHTML = '<i data-lucide="calendar"></i> ' + deadline + (assignee ? ' &middot; catre ' + assignee : '');
     var html = '';
-    html += '<div onclick="openEditTRP()" style="display:flex;align-items:center;gap:12px;padding:16px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:20px;">&#9998;</span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-text-primary);">Editeaza task</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Modifica descriere, deadline, prioritate</div></div></div>';
+    html += '<div onclick="openEditTRP()" style="display:flex;align-items:center;gap:12px;padding:16px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:20px;"><i data-lucide="pencil"></i></span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-text-primary);">Editeaza task</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Modifica descriere, deadline, prioritate</div></div></div>';
     if (isDone) {
-      html += '<div onclick="closeTRPAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;">&#9744;</span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-warning);">Marcheaza ca nefinalizat</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Redeschide task-ul</div></div></div>';
+      html += '<div onclick="closeTRPAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;"><i data-lucide="square"></i></span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-warning);">Marcheaza ca nefinalizat</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Redeschide task-ul</div></div></div>';
     } else {
-      html += '<div onclick="closeTRPAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-success-bg);border:1px solid var(--brand-success);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;">&#9745;</span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-success);">Marcheaza ca finalizat</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Task-ul va fi completat</div></div></div>';
+      html += '<div onclick="closeTRPAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-success-bg);border:1px solid var(--brand-success);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;"><i data-lucide="check-square"></i></span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-success);">Marcheaza ca finalizat</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Task-ul va fi completat</div></div></div>';
     }
-    html += '<div onclick="confirmDeleteTRP()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-danger-bg);border:1px solid var(--brand-danger);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:20px;">&#128465;</span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-danger);">Sterge task</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Necesita confirmare</div></div></div>';
+    html += '<div onclick="confirmDeleteTRP()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-danger-bg);border:1px solid var(--brand-danger);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:20px;"><i data-lucide="trash-2"></i></span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-danger);">Sterge task</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Necesita confirmare</div></div></div>';
     html += '<div style="font-size:10px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;letter-spacing:0.5px;margin:6px 0 8px;">Atribuie / Reatribuie</div>';
     html += '<div style="background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);overflow:hidden;margin-bottom:10px;">';
     [{n:'Ion Popescu',r:'Operator (acest angajat)',i:'IP',c:'#F57C00'},{n:'Maria Ionescu',r:'Agronom',i:'MI',c:'#2E86AB'},{n:'Andrei Popa',r:'Mecanizator',i:'AP',c:'#8B5E3C'},{n:'Vasile Lungu',r:'Manager',i:'VL',c:'#1B5E20'},{n:'Mihai Stancu',r:'Mecanizator',i:'MS',c:'#0D7377'}].forEach(function(p,i,a){
@@ -1028,12 +1031,12 @@ window.openTRPAction = function(type, title, priority, deadline, assignee, isDon
     actions.innerHTML = html;
   } else {
     badge.textContent = 'Reminder \u2014 Personal'; badge.style.background = '#EDE9FE'; badge.style.color = '#6D28D9';
-    meta.innerHTML = '&#128197; ' + deadline;
+    meta.innerHTML = '<i data-lucide="calendar"></i> ' + deadline;
     var html = '';
-    html += '<div onclick="openEditTRP()" style="display:flex;align-items:center;gap:12px;padding:16px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:20px;">&#9998;</span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-text-primary);">Editeaza reminder</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Modifica descriere, data, ora</div></div></div>';
-    html += '<div onclick="closeTRPAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-success-bg);border:1px solid var(--brand-success);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;">&#9745;</span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-success);">Marcheaza ca rezolvat</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Reminder-ul dispare din lista</div></div></div>';
-    html += '<div onclick="closeTRPAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:20px;">&#128337;</span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-warning);">Amana cu 1 zi</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Muta deadline-ul cu o zi</div></div></div>';
-    html += '<div onclick="confirmDeleteTRP()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-danger-bg);border:1px solid var(--brand-danger);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:20px;">&#128465;</span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-danger);">Sterge reminder</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Necesita confirmare</div></div></div>';
+    html += '<div onclick="openEditTRP()" style="display:flex;align-items:center;gap:12px;padding:16px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:20px;"><i data-lucide="pencil"></i></span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-text-primary);">Editeaza reminder</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Modifica descriere, data, ora</div></div></div>';
+    html += '<div onclick="closeTRPAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-success-bg);border:1px solid var(--brand-success);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:22px;"><i data-lucide="check-square"></i></span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-success);">Marcheaza ca rezolvat</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Reminder-ul dispare din lista</div></div></div>';
+    html += '<div onclick="closeTRPAction()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:20px;"><i data-lucide="clock"></i></span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-warning);">Amana cu 1 zi</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Muta deadline-ul cu o zi</div></div></div>';
+    html += '<div onclick="confirmDeleteTRP()" style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--brand-danger-bg);border:1px solid var(--brand-danger);border-radius:var(--brand-radius-lg);margin-bottom:10px;cursor:pointer;"><span style="font-size:20px;"><i data-lucide="trash-2"></i></span><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--brand-danger);">Sterge reminder</div><div style="font-size:10px;color:var(--brand-text-muted);margin-top:2px;">Necesita confirmare</div></div></div>';
     actions.innerHTML = html;
   }
   document.getElementById('trp-action-popup').style.display = 'block';
@@ -1044,12 +1047,12 @@ window.closeTRPAction = function() { document.getElementById('trp-action-popup')
 window.confirmDeleteTRP = function() {
   var actions = document.getElementById('trpa-actions');
   actions.innerHTML = '<div style="text-align:center;padding:20px 0;">'
-    + '<div style="width:48px;height:48px;border-radius:50%;background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:22px;">&#128465;</div>'
+    + '<div style="width:48px;height:48px;border-radius:50%;background:var(--brand-danger-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:22px;"><i data-lucide="trash-2"></i></div>'
     + '<div style="font-size:16px;font-weight:700;color:var(--brand-text-primary);margin-bottom:4px;">Esti sigur?</div>'
     + '<div style="font-size:12px;color:var(--brand-text-muted);margin-bottom:16px;">Aceasta actiune nu poate fi anulata.</div>'
     + '<div style="display:flex;gap:8px;padding:0 12px;">'
     + '<div onclick="closeTRPAction()" style="flex:1;padding:14px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:13px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div>'
-    + '<div onclick="closeTRPAction()" style="flex:1;padding:14px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:13px;font-weight:600;cursor:pointer;">&#128465; Da, sterge</div>'
+    + '<div onclick="closeTRPAction()" style="flex:1;padding:14px;background:var(--brand-danger);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:13px;font-weight:600;cursor:pointer;"><i data-lucide="trash-2"></i> Da, sterge</div>'
     + '</div></div>';
 };
 
@@ -1060,5 +1063,7 @@ window.openEditTRP = function() {
   if (trpActionType === 'reminder') trpSetType('reminder');
 };
 </script>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

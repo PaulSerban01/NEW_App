@@ -43,7 +43,7 @@ body { font-family: var(--brand-font-sans); background: #f0f0f0; color: var(--br
 /* --- 3. PHONE CHROME --- */
 .phone-chrome { border: 8px solid #1a1a1a; border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.15); width: 370px; }
 .phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 24px; background: #1a1a1a; border-radius: 0 0 16px 16px; z-index: 10; }
-.phone-screen { background: var(--brand-background); height: 100vh; overflow: hidden; display: flex; flex-direction: column; position: relative; flex-shrink: 0; width: 100%; }
+.phone-screen { background: var(--brand-background); height: 100%; overflow: hidden; display: flex; flex-direction: column; position: relative; flex-shrink: 0; width: 100%; }
 .phone-scroll { flex: 1; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
 .phone-scroll::-webkit-scrollbar { display: none; }
 
@@ -57,9 +57,6 @@ body { font-family: var(--brand-font-sans); background: #f0f0f0; color: var(--br
 .view-tabs { position: absolute; left: 0; right: 0; bottom: 0; display: flex; background: #fff; border-top: 1px solid var(--brand-border); border-bottom: none; flex-shrink: 0; z-index: 51; transition: bottom 0.25s ease; box-shadow: 0 -2px 10px rgba(0,0,0,0.04); }
 .view-tab { flex: 1; text-align: center; padding: 12px 0 10px; font-size: 15px; font-weight: 600; color: var(--brand-text-muted); cursor: pointer; border-top: 3px solid transparent; border-bottom: none; border-left: none; border-right: none; transition: all 0.15s; background: none; }
 .view-tab.active { color: var(--brand-primary); border-top-color: var(--brand-primary); }
-/* Padding-bottom implicit pentru scroll-area ca continutul sa nu se ascunda sub taburi */
-.phone-scroll { padding-bottom: 150px; }
-
 /* --- 6. TOOLBAR --- */
 .toolbar { display: flex; align-items: center; gap: 6px; padding: 8px 5px; background: #fff; border-bottom: 1px solid var(--brand-border); flex-shrink: 0; position: relative; }
 .toolbar-pill { display: flex; align-items: center; gap: 4px; padding: 7px 7px; border-radius: var(--brand-radius); font-size: 15px; font-weight: 500; cursor: pointer; white-space: nowrap; background: var(--brand-primary); color: #fff; border: 1px solid var(--brand-primary); min-height: 40px; }
@@ -481,7 +478,7 @@ body.dark-mode .ufb-sole-count { background: #3D2B1F; }
 @keyframes slideLeft { 0% { transform: translateX(-100%); } 100% { transform: translateX(0); } }
 
 /* --- 22. PREVIEW LAYOUT --- */
-.preview-root { display: flex; height: 100vh; align-items: flex-start; overflow-y: auto; }
+.preview-root { display: flex; height: 100%; align-items: flex-start; overflow-y: hidden; }
 
 /* --- 23. DARK MODE --- */
 body.dark-mode { --brand-background: #0A1A1A; --brand-surface: #112222; --brand-border: #1E3A3A; --brand-text-primary: #E6F3F3; --brand-text-muted: #7AADAD; --brand-primary: #2DA8A8; --brand-primary-hover: #38BFBF; --brand-hover-bg: #0D2626; --brand-primary-20: #1A3838; --brand-danger-bg: #2D1111; --brand-success-bg: #0D2626; --brand-warning-bg: #2D2211; }

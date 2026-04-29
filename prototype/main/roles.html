@@ -6,6 +6,8 @@
   <link rel="manifest" href="manifest.json">
   <title>Autentificare — ConnAgri</title>
   <style>
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', system-ui, sans-serif;
@@ -160,7 +162,16 @@
     .role-btn .role-name { font-size: 15px; font-weight: 600; color: inherit; }
     .role-btn .role-user { font-size: 13px; font-weight: 400; color: #4A6E6E; margin-top: 1px; }
     .role-btn .role-arrow { font-size: 16px; color: #99C2C3; }
+    .role-btn:disabled, .role-btn[aria-disabled="true"] {
+      opacity: 0.45;
+      cursor: not-allowed;
+      pointer-events: none;
+      background: #F7FAFA;
+      border-color: #D0E5E5;
+      color: #0D2626;
+    }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
   <div class="card">
@@ -188,7 +199,7 @@
     <div class="roles-label">Conturi demo</div>
 
     <a class="role-btn" href="modules/newdash.html">
-      <div class="role-icon">&#128100;</div>
+      <div class="role-icon"><i data-lucide="user"></i></div>
       <div class="role-info">
         <div class="role-name">Administrator</div>
         <div class="role-user">Andrei Popescu</div>
@@ -196,8 +207,8 @@
       <span class="role-arrow">&#8250;</span>
     </a>
 
-    <a class="role-btn" href="modules/dashboard.html">
-      <div class="role-icon">&#128101;</div>
+    <a class="role-btn" aria-disabled="true">
+      <div class="role-icon"><i data-lucide="users"></i></div>
       <div class="role-info">
         <div class="role-name">User</div>
         <div class="role-user">Maria Ionescu</div>
@@ -205,8 +216,8 @@
       <span class="role-arrow">&#8250;</span>
     </a>
 
-    <a class="role-btn" href="modules/dash_ops.html">
-      <div class="role-icon">&#9881;</div>
+    <a class="role-btn" aria-disabled="true">
+      <div class="role-icon"><i data-lucide="settings"></i></div>
       <div class="role-info">
         <div class="role-name">Ops</div>
         <div class="role-user">Ion Dumitrescu</div>
@@ -214,8 +225,8 @@
       <span class="role-arrow">&#8250;</span>
     </a>
 
-    <a class="role-btn" href="modules/operator.html">
-      <div class="role-icon">&#128736;</div>
+    <a class="role-btn" aria-disabled="true">
+      <div class="role-icon"><i data-lucide="wrench"></i></div>
       <div class="role-info">
         <div class="role-name">Operator</div>
         <div class="role-user">Elena Stan</div>
@@ -224,5 +235,7 @@
     </a>
 
   </div>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');</script>
 </body>
 </html>

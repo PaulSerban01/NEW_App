@@ -7,7 +7,9 @@
   <title>Stocuri — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
     .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
     .browser-dots { display: flex; gap: 6px; }
@@ -41,6 +43,7 @@
     .sf-v { color: var(--brand-text-primary); font-weight: 500; }
     @keyframes slideUpStoc { 0%{transform:translateY(100%)} 100%{transform:translateY(0)} }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -50,15 +53,15 @@
         <div id="app-topbar" data-title="Stocuri"></div>
         <div class="view-tabs"><button class="view-tab active">Articole</button><button class="view-tab">Jurnal</button></div>
         <div class="toolbar">
-          <div class="toolbar-pill" onclick="selectAllVisible()">&#9744; Toate</div>
-          <div class="toolbar-icon-btn" id="sort-btn" onclick="event.stopPropagation();toggleSortDD()">&#8645;</div>
+          <div class="toolbar-pill" onclick="selectAllVisible()"><i data-lucide="square"></i> Toate</div>
+          <div class="toolbar-icon-btn" id="sort-btn" onclick="event.stopPropagation();toggleSortDD()"><i data-lucide="arrows-up-down"></i></div>
           <div class="sort-dropdown" id="sort-dd">
-            <div class="sort-option" data-field="name" onclick="sortCards('name')"><span class="sort-arrow">&#8595;</span> Nume</div>
-            <div class="sort-option" data-field="number" onclick="sortCards('number')"><span class="sort-arrow">&#8593;</span> Categorie</div>
-            <div class="sort-option" data-field="status" onclick="sortCards('status')"><span class="sort-arrow">&#8593;</span> Expirare</div>
-            <div class="sort-option" data-field="updated" onclick="sortCards('updated')"><span class="sort-arrow">&#8593;</span> Ultima actualizare</div>
+            <div class="sort-option" data-field="name" onclick="sortCards('name')"><span class="sort-arrow"><i data-lucide="arrow-down"></i></span> Nume</div>
+            <div class="sort-option" data-field="number" onclick="sortCards('number')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Categorie</div>
+            <div class="sort-option" data-field="status" onclick="sortCards('status')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Expirare</div>
+            <div class="sort-option" data-field="updated" onclick="sortCards('updated')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Ultima actualizare</div>
           </div>
-          <div class="toolbar-search"><span class="toolbar-search-icon">&#128269;</span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow">&#9660;</span></div>
+          <div class="toolbar-search"><span class="toolbar-search-icon"><i data-lucide="search"></i></span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow"><i data-lucide="chevron-down"></i></span></div>
           <button class="toolbar-add" onclick="openAddDrawer()">+</button>
           <div class="filter-dropdown" id="filter-dd"></div>
         </div>
@@ -66,26 +69,26 @@
 
         <!-- ========== DETAIL VIEW (copy din OLD_app) ========== -->
         <div id="detail-view" class="dv">
-          <div class="dh"><div onclick="closeProd()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><div id="d-title" style="font-size:17px;font-weight:600;color:#fff;"></div></div>
+          <div class="dh"><div onclick="closeProd()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><div id="d-title" style="font-size:17px;font-weight:600;color:#fff;"></div></div>
           <div class="ds">
             <div style="padding:16px;background:var(--brand-surface);border-bottom:1px solid var(--brand-border);display:flex;align-items:center;gap:14px;">
               <div id="h-icon" style="width:50px;height:50px;border-radius:var(--brand-radius-lg);display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--brand-primary-20);"></div>
               <div><div id="h-name" style="font-size:20px;font-weight:700;"></div><div id="h-lot" style="font-size:16px;color:var(--brand-text-muted);font-family:monospace;"></div><div id="h-stock" style="margin-top:4px;font-size:18px;font-weight:700;color:var(--brand-primary);"></div></div>
             </div>
             <div class="cg">
-              <div class="cc-card" style="background:linear-gradient(135deg,#2E86AB,#1B6A8A);" onclick="openSP('s-fisa')"><span class="cc-icon">&#128203;</span><div><div class="cc-name">Fisa Magazie</div><div class="cc-line"></div></div><div class="cc-count">Intrari &amp; iesiri</div></div>
-              <div class="cc-card" style="background:linear-gradient(135deg,#3B82A0,#2A6B85);" onclick="openSP('s-jurnal')"><span class="cc-icon">&#128196;</span><div><div class="cc-name">Jurnal Utilizare</div><div class="cc-line"></div></div><div class="cc-count">Detalii pe zile</div></div>
-              <div class="cc-card" style="background:linear-gradient(135deg,#1B5E20,#2E7D32);" onclick="openSP('s-ftech')"><span class="cc-icon">&#128218;</span><div><div class="cc-name">Fisa Tehnica</div><div class="cc-line"></div></div><div class="cc-count">Date produs (DB)</div></div>
-              <div class="cc-card" style="background:linear-gradient(135deg,#00686A,#005557);" onclick="openSP('s-detalii')"><span class="cc-icon">&#128230;</span><div><div class="cc-name">Detalii Stoc</div><div class="cc-line"></div></div><div class="cc-count">Loturi &amp; cantitati</div></div>
-              <div class="cc-card" style="background:linear-gradient(135deg,#338687,#1E6B6C);" onclick="openSP('s-doc')"><span class="cc-icon">&#128196;</span><div><div class="cc-name">Documente</div><div class="cc-line"></div></div><div class="cc-count">Fise, certificate</div></div>
-              <div class="cc-card" style="background:linear-gradient(135deg,#8B5E3C,#6B4226);" onclick="openSP('s-foto')"><span class="cc-icon">&#128247;</span><div><div class="cc-name">Fotografii</div><div class="cc-line"></div></div><div class="cc-count">Poze produs</div></div>
-              <div class="cc-card" style="background:linear-gradient(135deg,#C0392B,#A93226);" onclick="openSP('s-alerte')"><span class="cc-icon">&#9888;</span><div><div class="cc-name">Alerte</div><div class="cc-line"></div></div><div class="cc-count">Expirare, stoc min</div></div>
+              <div class="cc-card" style="background:linear-gradient(135deg,#2E86AB,#1B6A8A);" onclick="openSP('s-fisa')"><span class="cc-icon"><i data-lucide="clipboard-list"></i></span><div><div class="cc-name">Fisa Magazie</div><div class="cc-line"></div></div><div class="cc-count">Intrari &amp; iesiri</div></div>
+              <div class="cc-card" style="background:linear-gradient(135deg,#3B82A0,#2A6B85);" onclick="openSP('s-jurnal')"><span class="cc-icon"><i data-lucide="file"></i></span><div><div class="cc-name">Jurnal Utilizare</div><div class="cc-line"></div></div><div class="cc-count">Detalii pe zile</div></div>
+              <div class="cc-card" style="background:linear-gradient(135deg,#1B5E20,#2E7D32);" onclick="openSP('s-ftech')"><span class="cc-icon"><i data-lucide="library"></i></span><div><div class="cc-name">Fisa Tehnica</div><div class="cc-line"></div></div><div class="cc-count">Date produs (DB)</div></div>
+              <div class="cc-card" style="background:linear-gradient(135deg,#00686A,#005557);" onclick="openSP('s-detalii')"><span class="cc-icon"><i data-lucide="package"></i></span><div><div class="cc-name">Detalii Stoc</div><div class="cc-line"></div></div><div class="cc-count">Loturi &amp; cantitati</div></div>
+              <div class="cc-card" style="background:linear-gradient(135deg,#338687,#1E6B6C);" onclick="openSP('s-doc')"><span class="cc-icon"><i data-lucide="file"></i></span><div><div class="cc-name">Documente</div><div class="cc-line"></div></div><div class="cc-count">Fise, certificate</div></div>
+              <div class="cc-card" style="background:linear-gradient(135deg,#8B5E3C,#6B4226);" onclick="openSP('s-foto')"><span class="cc-icon"><i data-lucide="camera"></i></span><div><div class="cc-name">Fotografii</div><div class="cc-line"></div></div><div class="cc-count">Poze produs</div></div>
+              <div class="cc-card" style="background:linear-gradient(135deg,#C0392B,#A93226);" onclick="openSP('s-alerte')"><span class="cc-icon"><i data-lucide="alert-triangle"></i></span><div><div class="cc-name">Alerte</div><div class="cc-line"></div></div><div class="cc-count">Expirare, stoc min</div></div>
             </div>
           </div>
         </div>
 
         <!-- SUB: Fisa Magazie -->
-        <div id="sub-s-fisa" class="sp"><div class="sh" style="background:linear-gradient(135deg,#2E86AB,#1B6A8A);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128203; Fisa Magazie</span><div onclick="openCorectie()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">&#177; Corectie</div></div>
+        <div id="sub-s-fisa" class="sp"><div class="sh" style="background:linear-gradient(135deg,#2E86AB,#1B6A8A);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="clipboard-list"></i> Fisa Magazie</span><div onclick="openCorectie()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">&#177; Corectie</div></div>
           <div class="ss">
             <div style="display:flex;gap:6px;margin-bottom:10px;">
               <div style="flex:1;padding:10px;background:var(--brand-success-bg);border-radius:var(--brand-radius);text-align:center;"><div style="font-size:11px;font-weight:600;color:var(--brand-success);text-transform:uppercase;">Intrari</div><div style="font-size:20px;font-weight:700;color:var(--brand-success);">+650 L</div></div>
@@ -108,19 +111,19 @@
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;"><div><div style="font-size:12px;font-weight:600;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">Cantitate</div><input type="number" placeholder="0" style="width:100%;padding:8px 12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:15px;outline:none;" /></div><div><div style="font-size:12px;font-weight:600;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">Unitate</div><select style="width:100%;padding:8px 12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:15px;outline:none;"><option>L</option><option>kg</option></select></div></div>
                 <div style="margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">Motiv</div><textarea style="width:100%;padding:8px 12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:15px;outline:none;min-height:50px;resize:vertical;" placeholder="Detalii..."></textarea></div>
               </div>
-              <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;"><div onclick="closeCorectie()" style="flex:1;padding:10px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div><div onclick="closeCorectie()" style="flex:1;padding:10px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;">&#10003; Salveaza</div></div>
+              <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;"><div onclick="closeCorectie()" style="flex:1;padding:10px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div><div onclick="closeCorectie()" style="flex:1;padding:10px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;"><i data-lucide="check"></i> Salveaza</div></div>
             </div>
           </div>
         </div>
 
         <!-- SUB: Jurnal Utilizare -->
-        <div id="sub-s-jurnal" class="sp"><div class="sh" style="background:linear-gradient(135deg,#3B82A0,#2A6B85);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;">&#128196; Jurnal Utilizare</span></div>
+        <div id="sub-s-jurnal" class="sp"><div class="sh" style="background:linear-gradient(135deg,#3B82A0,#2A6B85);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;"><i data-lucide="file"></i> Jurnal Utilizare</span></div>
           <div class="ss">
             <div style="padding:8px 10px;background:var(--brand-hover-bg);border-radius:var(--brand-radius);margin-bottom:10px;font-size:14px;color:var(--brand-primary);font-weight:600;">Iesire totala: 100 L &middot; Utilizat in 3 zile</div>
             <div class="sc" style="padding:0;overflow:hidden;border-left:3px solid var(--brand-primary);">
               <div style="padding:10px 12px;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">
                 <div style="display:flex;justify-content:space-between;margin-bottom:2px;"><span style="font-size:15px;font-weight:600;">05 Apr 2026</span><span style="font-size:14px;font-weight:700;color:var(--brand-danger);">-40 L</span></div>
-                <div style="font-size:13px;color:var(--brand-text-muted);">Parcela 12 Nord &middot; Tratament foliar &middot; <span style="padding:1px 5px;border-radius:4px;font-size:11px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);font-family:monospace;">PP-2026-011</span> &#9660;</div>
+                <div style="font-size:13px;color:var(--brand-text-muted);">Parcela 12 Nord &middot; Tratament foliar &middot; <span style="padding:1px 5px;border-radius:4px;font-size:11px;font-weight:600;background:var(--brand-hover-bg);color:var(--brand-primary);font-family:monospace;">PP-2026-011</span> <i data-lucide="chevron-down"></i></div>
               </div>
               <div style="display:none;padding:0 12px 10px;border-top:1px solid #f0f0f0;">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;font-size:13px;">
@@ -147,10 +150,10 @@
         </div>
 
         <!-- SUB: Fisa Tehnica (read-only din DB) -->
-        <div id="sub-s-ftech" class="sp"><div class="sh" style="background:linear-gradient(135deg,#1B5E20,#2E7D32);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128218; Fisa Tehnica</span><span style="padding:3px 8px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(255,255,255,0.2);color:#fff;">READ ONLY</span></div>
+        <div id="sub-s-ftech" class="sp"><div class="sh" style="background:linear-gradient(135deg,#1B5E20,#2E7D32);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="library"></i> Fisa Tehnica</span><span style="padding:3px 8px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(255,255,255,0.2);color:#fff;">READ ONLY</span></div>
           <div class="ss">
             <div style="display:flex;gap:12px;margin-bottom:10px;padding:12px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);">
-              <div style="width:70px;height:70px;border-radius:var(--brand-radius);background:#f5f5f5;border:1px solid #e0e0e0;display:flex;align-items:center;justify-content:center;"><div style="font-size:30px;">&#128137;</div></div>
+              <div style="width:70px;height:70px;border-radius:var(--brand-radius);background:#f5f5f5;border:1px solid #e0e0e0;display:flex;align-items:center;justify-content:center;"><div style="font-size:30px;"><i data-lucide="syringe"></i></div></div>
               <div style="flex:1;">
                 <div style="font-size:17px;font-weight:700;color:var(--brand-text-primary);margin-bottom:2px;">Adengo 465 SC</div>
                 <div style="padding:2px 8px;border-radius:4px;background:#10384F;color:#78BE20;font-size:11px;font-weight:700;display:inline-block;">BAYER</div>
@@ -158,7 +161,7 @@
               </div>
             </div>
             <div style="padding:8px 10px;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:var(--brand-radius);margin-bottom:10px;display:flex;align-items:center;gap:8px;font-size:13px;">
-              <span style="font-size:18px;">&#128218;</span>
+              <span style="font-size:18px;"><i data-lucide="library"></i></span>
               <div><span style="font-weight:700;color:#1B5E20;">Date din baza de date ConnAgri</span><br><span style="color:var(--brand-text-muted);font-size:12px;">Informatii preluate automat &mdash; nu pot fi editate manual</span></div>
             </div>
             <div style="font-size:12px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--brand-border);">Informatii generale</div>
@@ -180,7 +183,7 @@
         </div>
 
         <!-- SUB: Detalii Stoc -->
-        <div id="sub-s-detalii" class="sp"><div class="sh" style="background:linear-gradient(135deg,#00686A,#005557);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128230; Detalii Stoc</span></div>
+        <div id="sub-s-detalii" class="sp"><div class="sh" style="background:linear-gradient(135deg,#00686A,#005557);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="package"></i> Detalii Stoc</span></div>
           <div class="ss">
             <div style="padding:10px;background:var(--brand-hover-bg);border-radius:var(--brand-radius);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
               <div style="font-size:14px;font-weight:600;color:var(--brand-primary);">Stoc total</div>
@@ -214,47 +217,47 @@
         </div>
 
         <!-- SUB: Documente -->
-        <div id="sub-s-doc" class="sp"><div class="sh" style="background:linear-gradient(135deg,#338687,#1E6B6C);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128196; Documente</span><div onclick="openDocStocPopup()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
+        <div id="sub-s-doc" class="sp"><div class="sh" style="background:linear-gradient(135deg,#338687,#1E6B6C);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="file"></i> Documente</span><div onclick="openDocStocPopup()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
           <div class="ss">
-            <div style="padding:6px 8px;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:var(--brand-radius);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><span style="font-size:14px;">&#128274;</span><span style="font-size:12px;font-weight:700;color:#1B5E20;">Documente oficiale &mdash; din DB (read only)</span></div>
-            <div class="sc" style="display:flex;align-items:center;gap:10px;border-left:3px solid #2E7D32;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:18px;">&#128196;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Fisa de securitate (SDS)</div><div style="font-size:13px;color:var(--brand-text-muted);">SDS_Adengo_465SC.pdf &middot; 12 pag</div></div><span style="padding:2px 6px;border-radius:6px;font-size:10px;font-weight:700;background:#E8F5E9;color:#1B5E20;">DB</span></div>
-            <div class="sc" style="display:flex;align-items:center;gap:10px;border-left:3px solid #2E7D32;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:18px;">&#128203;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Eticheta produs</div><div style="font-size:13px;color:var(--brand-text-muted);">Eticheta_Adengo.pdf</div></div><span style="padding:2px 6px;border-radius:6px;font-size:10px;font-weight:700;background:#E8F5E9;color:#1B5E20;">DB</span></div>
+            <div style="padding:6px 8px;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:var(--brand-radius);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><span style="font-size:14px;"><i data-lucide="lock"></i></span><span style="font-size:12px;font-weight:700;color:#1B5E20;">Documente oficiale &mdash; din DB (read only)</span></div>
+            <div class="sc" style="display:flex;align-items:center;gap:10px;border-left:3px solid #2E7D32;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="file"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Fisa de securitate (SDS)</div><div style="font-size:13px;color:var(--brand-text-muted);">SDS_Adengo_465SC.pdf &middot; 12 pag</div></div><span style="padding:2px 6px;border-radius:6px;font-size:10px;font-weight:700;background:#E8F5E9;color:#1B5E20;">DB</span></div>
+            <div class="sc" style="display:flex;align-items:center;gap:10px;border-left:3px solid #2E7D32;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="clipboard-list"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Eticheta produs</div><div style="font-size:13px;color:var(--brand-text-muted);">Eticheta_Adengo.pdf</div></div><span style="padding:2px 6px;border-radius:6px;font-size:10px;font-weight:700;background:#E8F5E9;color:#1B5E20;">DB</span></div>
             <div style="height:1px;background:var(--brand-border);margin:12px 0;"></div>
-            <div style="padding:6px 8px;background:var(--brand-hover-bg);border:1px solid var(--brand-border);border-radius:var(--brand-radius);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><span style="font-size:14px;">&#128221;</span><span style="font-size:12px;font-weight:700;color:var(--brand-primary);">Documente fermier &mdash; adaugate de dvs.</span></div>
-            <div class="sc" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128196;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Factura achizitie</div><div style="font-size:13px;color:var(--brand-text-muted);">F-2026-0234 &middot; 02 Apr 2026</div></div><span style="font-size:16px;color:var(--brand-text-muted);cursor:pointer;">&#9998;</span></div>
-            <div class="sc" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128203;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Aviz de insotire marfa</div><div style="font-size:13px;color:var(--brand-text-muted);">AIM-2026-0234</div></div><span style="font-size:16px;color:var(--brand-text-muted);cursor:pointer;">&#9998;</span></div>
+            <div style="padding:6px 8px;background:var(--brand-hover-bg);border:1px solid var(--brand-border);border-radius:var(--brand-radius);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><span style="font-size:14px;"><i data-lucide="file-pen"></i></span><span style="font-size:12px;font-weight:700;color:var(--brand-primary);">Documente fermier &mdash; adaugate de dvs.</span></div>
+            <div class="sc" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="file"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Factura achizitie</div><div style="font-size:13px;color:var(--brand-text-muted);">F-2026-0234 &middot; 02 Apr 2026</div></div><span style="font-size:16px;color:var(--brand-text-muted);cursor:pointer;"><i data-lucide="pencil"></i></span></div>
+            <div class="sc" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="clipboard-list"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Aviz de insotire marfa</div><div style="font-size:13px;color:var(--brand-text-muted);">AIM-2026-0234</div></div><span style="font-size:16px;color:var(--brand-text-muted);cursor:pointer;"><i data-lucide="pencil"></i></span></div>
           </div>
           <!-- Add Document Popup -->
           <div id="doc-stoc-popup" style="display:none;position:absolute;inset:0;z-index:70;">
             <div onclick="closeDocStocPopup()" style="position:absolute;inset:0;background:rgba(0,0,0,0.5);"></div>
             <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;max-height:88%;display:flex;flex-direction:column;animation:slideUpStoc 0.25s ease-out;">
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;">&#128196; Adauga Document</div><div onclick="closeDocStocPopup()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;"><i data-lucide="file"></i> Adauga Document</div><div onclick="closeDocStocPopup()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
               <div style="flex:1;overflow-y:auto;padding:16px;">
                 <div style="margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">Tip document</div><select style="width:100%;padding:8px 12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:15px;"><option>Factura achizitie</option><option>Aviz insotire</option><option>Certificat calitate</option><option>Bon consum</option></select></div>
                 <div style="margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">Nr. document</div><input type="text" placeholder="Ex: F-2026-0234" style="width:100%;padding:8px 12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:15px;" /></div>
                 <div style="margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:8px;">Incarca fisier</div>
                   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-                    <div style="aspect-ratio:1;border:2px dashed var(--brand-primary);border-radius:var(--brand-radius);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--brand-primary);"><div style="font-size:26px;">&#128247;</div><div style="font-size:11px;font-weight:600;">Camera</div></div>
-                    <div style="aspect-ratio:1;border:2px dashed var(--brand-border);border-radius:var(--brand-radius);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--brand-text-muted);"><div style="font-size:26px;">&#128206;</div><div style="font-size:11px;font-weight:600;">Galerie</div></div>
-                    <div style="aspect-ratio:1;border:2px dashed var(--brand-border);border-radius:var(--brand-radius);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--brand-text-muted);"><div style="font-size:26px;">&#128196;</div><div style="font-size:11px;font-weight:600;">PDF</div></div>
+                    <div style="aspect-ratio:1;border:2px dashed var(--brand-primary);border-radius:var(--brand-radius);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--brand-primary);"><div style="font-size:26px;"><i data-lucide="camera"></i></div><div style="font-size:11px;font-weight:600;">Camera</div></div>
+                    <div style="aspect-ratio:1;border:2px dashed var(--brand-border);border-radius:var(--brand-radius);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--brand-text-muted);"><div style="font-size:26px;"><i data-lucide="paperclip"></i></div><div style="font-size:11px;font-weight:600;">Galerie</div></div>
+                    <div style="aspect-ratio:1;border:2px dashed var(--brand-border);border-radius:var(--brand-radius);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--brand-text-muted);"><div style="font-size:26px;"><i data-lucide="file"></i></div><div style="font-size:11px;font-weight:600;">PDF</div></div>
                   </div>
                 </div>
               </div>
-              <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;"><div onclick="closeDocStocPopup()" style="flex:1;padding:10px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;">Anuleaza</div><div onclick="closeDocStocPopup()" style="flex:1;padding:10px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;">&#10003; Salveaza</div></div>
+              <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;"><div onclick="closeDocStocPopup()" style="flex:1;padding:10px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;">Anuleaza</div><div onclick="closeDocStocPopup()" style="flex:1;padding:10px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;"><i data-lucide="check"></i> Salveaza</div></div>
             </div>
           </div>
         </div>
 
         <!-- SUB: Fotografii -->
-        <div id="sub-s-foto" class="sp"><div class="sh" style="background:linear-gradient(135deg,#8B5E3C,#6B4226);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;">&#128247; Fotografii</span></div>
-          <div class="ss"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"><div style="aspect-ratio:1;border-radius:var(--brand-radius);background:var(--brand-surface);border:1px solid var(--brand-border);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--brand-primary-40);">&#128137;</div><div style="aspect-ratio:1;border-radius:var(--brand-radius);background:var(--brand-surface);border:1px solid var(--brand-border);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--brand-primary-40);">&#128137;</div><div style="aspect-ratio:1;border:2px dashed var(--brand-primary);border-radius:var(--brand-radius);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--brand-primary);cursor:pointer;">+</div></div></div>
+        <div id="sub-s-foto" class="sp"><div class="sh" style="background:linear-gradient(135deg,#8B5E3C,#6B4226);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;"><i data-lucide="camera"></i> Fotografii</span></div>
+          <div class="ss"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"><div style="aspect-ratio:1;border-radius:var(--brand-radius);background:var(--brand-surface);border:1px solid var(--brand-border);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--brand-primary-40);"><i data-lucide="syringe"></i></div><div style="aspect-ratio:1;border-radius:var(--brand-radius);background:var(--brand-surface);border:1px solid var(--brand-border);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--brand-primary-40);"><i data-lucide="syringe"></i></div><div style="aspect-ratio:1;border:2px dashed var(--brand-primary);border-radius:var(--brand-radius);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--brand-primary);cursor:pointer;">+</div></div></div>
         </div>
 
         <!-- SUB: Alerte -->
-        <div id="sub-s-alerte" class="sp"><div class="sh" style="background:linear-gradient(135deg,#C0392B,#A93226);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;">&#9888; Alerte</span></div>
+        <div id="sub-s-alerte" class="sp"><div class="sh" style="background:linear-gradient(135deg,#C0392B,#A93226);"><div onclick="closeSP()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;"><i data-lucide="alert-triangle"></i> Alerte</span></div>
           <div class="ss">
-            <div class="sc" style="border-left:3px solid var(--brand-warning);display:flex;align-items:center;gap:10px;"><span style="font-size:22px;">&#9888;</span><div><div style="font-size:15px;font-weight:600;color:var(--brand-warning);">Expira in 62 zile</div><div style="font-size:13px;color:var(--brand-text-muted);">Data expirare: 10 Jun 2026</div></div></div>
-            <div class="sc" style="border-left:3px solid var(--brand-primary);display:flex;align-items:center;gap:10px;"><span style="font-size:22px;">&#128161;</span><div><div style="font-size:15px;font-weight:600;color:var(--brand-primary);">Stoc peste minim</div><div style="font-size:13px;color:var(--brand-text-muted);">180 L in stoc &middot; Minim: 50 L</div></div></div>
+            <div class="sc" style="border-left:3px solid var(--brand-warning);display:flex;align-items:center;gap:10px;"><span style="font-size:22px;"><i data-lucide="alert-triangle"></i></span><div><div style="font-size:15px;font-weight:600;color:var(--brand-warning);">Expira in 62 zile</div><div style="font-size:13px;color:var(--brand-text-muted);">Data expirare: 10 Jun 2026</div></div></div>
+            <div class="sc" style="border-left:3px solid var(--brand-primary);display:flex;align-items:center;gap:10px;"><span style="font-size:22px;"><i data-lucide="lightbulb"></i></span><div><div style="font-size:15px;font-weight:600;color:var(--brand-primary);">Stoc peste minim</div><div style="font-size:13px;color:var(--brand-text-muted);">180 L in stoc &middot; Minim: 50 L</div></div></div>
           </div>
         </div>
 
@@ -285,14 +288,14 @@ if (filterDD) {
 var stocuri = [
   { name: 'Karate Zeon 5CS', value: '48', unit: 'L', number: 'Insecticid', type: 'Pesticide', status: 'Expira', details: ['Feb 2026'], thumbBg: '#C0392B', thumbSmall: true },
   { name: 'Motorina', value: '1250', unit: 'L', number: 'Combustibil', type: 'Combustibil', status: 'Expira', details: ['Dec 2027'], thumbBg: '#B7791F', thumbSmall: true },
-  { name: 'Pioneer P225', value: '3200', unit: 'kg', number: 'Grau', type: 'Seminte', icons: ['&#128276;'], status: 'Expira', details: ['Iun 2026'], thumbBg: '#1B5E20', thumbSmall: true },
+  { name: 'Pioneer P225', value: '3200', unit: 'kg', number: 'Grau', type: 'Seminte', icons: ['<i data-lucide="bell"></i>'], status: 'Expira', details: ['Iun 2026'], thumbBg: '#1B5E20', thumbSmall: true },
   { name: 'Amonio Nitrat 34.4%', value: '8500', unit: 'kg', number: 'Ingrasamant', type: 'Ingrasaminte', status: 'Expira', details: ['Mai 2026'], thumbBg: '#0369A1', thumbSmall: true },
   { name: 'Folicur Solo 250 EW', value: '-12', unit: 'L', number: 'Fungicid', type: 'Pesticide', thumbBg: '#6D28D9', thumbSmall: true },
   { name: 'Roundup Classic', value: '0', unit: 'L', number: 'Erbicid', type: 'Pesticide', thumbBg: '#999', thumbSmall: true },
   { name: 'Ulei hidraulic H46', value: '0', unit: 'L', number: 'Lubrifiant', type: 'Piese', thumbBg: '#999', thumbSmall: true },
   { name: 'Mustang 306 SE', value: '120', unit: 'L', number: 'Erbicid', type: 'Pesticide', status: 'Expira', details: ['Iun 2026'], thumbBg: '#C0392B', thumbSmall: true },
   { name: 'P9911', value: '1800', unit: 'kg', number: 'Porumb', type: 'Seminte', status: 'Expira', details: ['Feb 2027'], thumbBg: '#1B5E20', thumbSmall: true },
-  { name: 'NPK 20-20-0', value: '4200', unit: 'kg', number: 'Ingrasamant', type: 'Ingrasaminte', icons: ['&#128276;'], status: 'Expira', details: ['Dec 2027'], thumbBg: '#0369A1', thumbSmall: true },
+  { name: 'NPK 20-20-0', value: '4200', unit: 'kg', number: 'Ingrasamant', type: 'Ingrasaminte', icons: ['<i data-lucide="bell"></i>'], status: 'Expira', details: ['Dec 2027'], thumbBg: '#0369A1', thumbSmall: true },
   { name: 'Filtru ulei motor JD', value: '6', unit: 'buc', number: 'Piesa', type: 'Piese', thumbBg: '#8B5E3C', thumbSmall: true },
   { name: 'Cruiser 350 FS', value: '25', unit: 'L', number: 'Fungicid', type: 'Pesticide', status: 'Expira', details: ['Dec 2025'], thumbBg: '#6D28D9', thumbSmall: true },
   { name: 'AdBlue', value: '450', unit: 'L', number: 'Combustibil', type: 'Combustibil', status: 'Expira', details: ['Ian 2028'], thumbBg: '#B7791F', thumbSmall: true },
@@ -302,7 +305,7 @@ var stocuri = [
 var list = document.getElementById('card-list');
 stocuri.forEach(function(s) {
   // Wire up click pe fiecare card → deschide detail view
-  s.onClick = 'openProd(' + JSON.stringify(s.name).replace(/"/g, '&quot;') + ',' + JSON.stringify(s.thumbIcon || '&#128230;').replace(/"/g, '&quot;') + ',' + JSON.stringify(s.number || '').replace(/"/g, '&quot;') + ',' + JSON.stringify((s.value || '0') + ' ' + (s.unit || '')).replace(/"/g, '&quot;') + ',' + JSON.stringify((s.details && s.details[0]) || '').replace(/"/g, '&quot;') + ')';
+  s.onClick = 'openProd(' + JSON.stringify(s.name).replace(/"/g, '&quot;') + ',' + JSON.stringify(s.thumbIcon || '<i data-lucide="package"></i>').replace(/"/g, '&quot;') + ',' + JSON.stringify(s.number || '').replace(/"/g, '&quot;') + ',' + JSON.stringify((s.value || '0') + ' ' + (s.unit || '')).replace(/"/g, '&quot;') + ',' + JSON.stringify((s.details && s.details[0]) || '').replace(/"/g, '&quot;') + ')';
   list.insertAdjacentHTML('beforeend', buildCardStocuri(s));
 });
 
@@ -327,7 +330,7 @@ window.openProd = function(name, icon, lot, stock, exp) {
   document.getElementById('detail-view').style.display = 'flex';
   document.getElementById('d-title').textContent = name;
   document.getElementById('h-name').textContent = name;
-  document.getElementById('h-icon').innerHTML = icon || '&#128230;';
+  document.getElementById('h-icon').innerHTML = icon || '<i data-lucide="package"></i>';
   document.getElementById('h-lot').textContent = lot || '';
   document.getElementById('h-stock').textContent = stock + (exp ? ' · Exp: ' + exp : '');
 };
@@ -377,9 +380,9 @@ function applyZeroFilter() {
 applyZeroFilter();
 
 initFabActions([
-  { icon: '&#10010;', label: 'Adauga stoc', action: function(){ openAddDrawer(); } },
-  { icon: '&#128196;', label: 'Exporta lista', action: function(){ alert('Exporta stocuri'); } },
-  { icon: '&#128438;', label: 'Importa stocuri', action: function(){ alert('Importa stocuri'); } }
+  { icon: '<i data-lucide="plus"></i>', label: 'Adauga stoc', action: function(){ openAddDrawer(); } },
+  { icon: '<i data-lucide="file"></i>', label: 'Exporta lista', action: function(){ alert('Exporta stocuri'); } },
+  { icon: '<i data-lucide="printer"></i>', label: 'Importa stocuri', action: function(){ alert('Importa stocuri'); } }
 ]);
 
 function openAddDrawer() {
@@ -389,5 +392,7 @@ function openAddDrawer() {
   }
 }
 </script>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

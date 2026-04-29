@@ -1,0 +1,21 @@
+{
+  "name": "ConnAgri",
+  "short_name": "ConnAgri",
+  "start_url": "./prototype/main/roles.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#00686A",
+  "icons": [
+    {
+      "src": "prototype/main/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "prototype/main/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

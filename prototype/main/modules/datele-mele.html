@@ -7,7 +7,9 @@
   <title>Profilul meu — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
     .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
     .browser-dots { display: flex; gap: 6px; }
@@ -46,6 +48,7 @@
     .role-manager { background: var(--brand-warning-bg); color: var(--brand-warning); }
     .card { background: #fff; border: 1px solid var(--brand-border); border-radius: var(--brand-radius-lg); padding: 16px; }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -63,13 +66,13 @@
               <div style="font-size:20px; font-weight:700; color:var(--brand-text-primary);">Ion Popescu</div>
             </div>
           </div>
-          <button class="btn-ghost" style="font-size:22px;">&#9998;</button>
+          <button class="btn-ghost" style="font-size:22px;"><i data-lucide="pencil"></i></button>
         </div>
         <div style="padding:16px;">
           <div class="card" style="margin-bottom:12px;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
-              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#128100; Profil</div>
-              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9650;</span>
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);"><i data-lucide="user"></i> Profil</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;"><i data-lucide="chevron-up"></i></span>
             </div>
             <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
               <div style="width:64px; height:64px; border-radius:50%; background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; flex-shrink:0;">IP</div>
@@ -87,8 +90,8 @@
           </div>
           <div class="card" style="margin-bottom:12px;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
-              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#128274; Securitate</div>
-              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);"><i data-lucide="lock"></i> Securitate</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;"><i data-lucide="chevron-down"></i></span>
             </div>
             <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0;"><span style="font-size:15px;">Metoda autentificare</span><span class="badge badge-primary">Email + Parola</span></div>
             <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0;"><span style="font-size:15px;">Autentificare 2FA</span><span class="badge badge-success">Activ</span></div>
@@ -100,8 +103,8 @@
           </div>
           <div class="card" style="margin-bottom:12px;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
-              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#128276; Notificari</div>
-              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);"><i data-lucide="bell"></i> Notificari</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;"><i data-lucide="chevron-down"></i></span>
             </div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
               <div class="form-group" style="margin-bottom:0;"><label class="form-label">Canal</label><select class="select" style="width:100%;"><option selected>PUSH</option><option>EMAIL</option><option>SMS</option></select></div>
@@ -116,8 +119,8 @@
           </div>
           <div class="card" style="margin-bottom:12px;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
-              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#127970; Workspace-uri</div>
-              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);"><i data-lucide="building"></i> Workspace-uri</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;"><i data-lucide="chevron-down"></i></span>
             </div>
             <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f0f0f0;">
               <div style="width:36px; height:36px; border-radius:var(--brand-radius); background:var(--brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; flex-shrink:0;">AV</div>
@@ -142,8 +145,8 @@
           </div>
           <div class="card" style="margin-bottom:12px;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
-              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#9881; Preferinte</div>
-              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);"><i data-lucide="settings"></i> Preferinte</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;"><i data-lucide="chevron-down"></i></span>
             </div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
               <div class="form-group" style="margin-bottom:0;"><label class="form-label">Suprafata</label><select class="select" style="width:100%;"><option selected>Hectare (HA)</option><option>Acri</option></select></div>
@@ -156,14 +159,14 @@
           </div>
           <div class="card" style="margin-bottom:12px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
-              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#128241; Dispozitive <span class="badge badge-neutral" style="margin-left:4px;">3</span></div>
-              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);"><i data-lucide="smartphone"></i> Dispozitive <span class="badge badge-neutral" style="margin-left:4px;">3</span></div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;"><i data-lucide="chevron-down"></i></span>
             </div>
           </div>
           <div class="card" style="margin-bottom:16px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
-              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);">&#128203; Activitate</div>
-              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;">&#9660;</span>
+              <div style="font-size:16px; font-weight:600; color:var(--brand-text-primary);"><i data-lucide="clipboard-list"></i> Activitate</div>
+              <span style="font-size:20px; color:var(--brand-text-muted); cursor:pointer;"><i data-lucide="chevron-down"></i></span>
             </div>
           </div>
         </div>
@@ -194,5 +197,7 @@ function openAddDrawer() {
   ]);
 }
 </script>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

@@ -7,7 +7,9 @@
   <title>Mesaje — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
     .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
     .browser-dots { display: flex; gap: 6px; }
@@ -56,6 +58,7 @@
     .msg-tab .tab-icon { font-size: 18px; }
     .msg-tab .badge-count { position: absolute; top: 4px; right: calc(50% - 24px); min-width: 16px; height: 16px; border-radius: 8px; background: var(--brand-danger); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -68,9 +71,9 @@
         <div id="list-view" style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
 
           <div class="toolbar">
-            <div class="toolbar-pill">&#9744; Toate</div>
-            <div class="toolbar-icon-btn">&#8645;</div>
-            <div class="toolbar-search"><span class="toolbar-search-icon">&#128269;</span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow">&#9660;</span></div>
+            <div class="toolbar-pill"><i data-lucide="square"></i> Toate</div>
+            <div class="toolbar-icon-btn"><i data-lucide="arrows-up-down"></i></div>
+            <div class="toolbar-search"><span class="toolbar-search-icon"><i data-lucide="search"></i></span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow"><i data-lucide="chevron-down"></i></span></div>
             <button class="toolbar-add" onclick="openAddDrawer()">+</button>
           <div class="filter-dropdown" id="filter-dd"></div>
         </div>
@@ -79,9 +82,9 @@
           <div id="tab-mesaje" class="phone-scroll" style="display:block;">
             <div class="contact-item" onclick="openBotChat()" style="background:linear-gradient(135deg, var(--brand-hover-bg) 0%, #fff 100%); border-bottom:2px solid var(--brand-primary-40);">
               <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, var(--brand-primary), var(--brand-primary-hover)); display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative;">
-                <span style="font-size:20px;">&#129302;</span>
+                <span style="font-size:20px;"><i data-lucide="bot"></i></span>
                 <div style="position:absolute; bottom:-1px; right:-1px; width:14px; height:14px; border-radius:50%; background:var(--brand-success); border:2px solid #fff; display:flex; align-items:center; justify-content:center;">
-                  <span style="font-size:12px; color:#fff;">&#10003;</span>
+                  <span style="font-size:12px; color:#fff;"><i data-lucide="check"></i></span>
                 </div>
               </div>
               <div class="contact-info">
@@ -89,7 +92,7 @@
                   <span class="contact-name">Asistent ConnAgri</span>
                   <span style="padding:1px 6px; border-radius:4px; font-size:12px; font-weight:700; background:var(--brand-primary); color:#fff; letter-spacing:0.5px;">BOT</span>
                 </div>
-                <div class="contact-msg">&#127874; Maine: Ziua de nastere Ion Popescu</div>
+                <div class="contact-msg"><i data-lucide="cake"></i> Maine: Ziua de nastere Ion Popescu</div>
               </div>
               <div class="contact-meta">
                 <span class="contact-time">08:00</span>
@@ -101,7 +104,7 @@
               <div class="contact-info">
                 <div class="contact-name">Maria Ionescu</div>
                 <div class="contact-msg">Am terminat tratamentul pe parcela 12</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta">
                 <span class="contact-time">10:42</span>
@@ -113,7 +116,7 @@
               <div class="contact-info">
                 <div class="contact-name">Vasile Lungu</div>
                 <div class="contact-msg">Am gasit copaci doborati pe Canton Poieni</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta">
                 <span class="contact-time">09:30</span>
@@ -125,7 +128,7 @@
               <div class="contact-info">
                 <div class="contact-name">Andrei Popa</div>
                 <div class="contact-msg">Tractorul e gata, pot incepe maine</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta">
                 <span class="contact-time">09:15</span>
@@ -137,7 +140,7 @@
               <div class="contact-info">
                 <div class="contact-name">Elena Vasile</div>
                 <div class="contact-msg">Stocul de ingrasamant e pe terminate</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;">&#127963; Ferma Constanta</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;"><i data-lucide="building-2"></i> Ferma Constanta</span></div>
               </div>
               <div class="contact-meta"><span class="contact-time">Ieri</span></div>
             </div>
@@ -146,7 +149,7 @@
               <div class="contact-info">
                 <div class="contact-name">Mihai Stancu</div>
                 <div class="contact-msg">Raportul de costuri e trimis</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta"><span class="contact-time">Ieri</span></div>
             </div>
@@ -155,7 +158,7 @@
               <div class="contact-info">
                 <div class="contact-name">Ioana Marin</div>
                 <div class="contact-msg">Pot prelua parcela 7 saptamana viitoare?</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;">&#127963; Ferma Constanta</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;"><i data-lucide="building-2"></i> Ferma Constanta</span></div>
               </div>
               <div class="contact-meta"><span class="contact-time">Lun</span></div>
             </div>
@@ -164,7 +167,7 @@
               <div class="contact-info">
                 <div class="contact-name">Dan Gheorghe</div>
                 <div class="contact-msg">Verificati NDVI pe parcela 3, arata ciudat</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta"><span class="contact-time">Lun</span></div>
             </div>
@@ -179,7 +182,7 @@
               <div class="contact-info">
                 <div class="contact-name">Parcela 12 Nord</div>
                 <div class="contact-msg" style="font-size:12px;">Grau de toamna &middot; 3 comentarii noi</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta">
                 <span class="contact-time">10:30</span>
@@ -193,7 +196,7 @@
               <div class="contact-info">
                 <div class="contact-name">Parcela 7 Vest</div>
                 <div class="contact-msg" style="font-size:12px;">Porumb &middot; Problema drenaj</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta">
                 <span class="contact-time">09:45</span>
@@ -207,7 +210,7 @@
               <div class="contact-info">
                 <div class="contact-name">Parcela 3 Sud</div>
                 <div class="contact-msg" style="font-size:12px;">Floarea-soarelui &middot; Evaluare cultura</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;">&#127963; Ferma Constanta</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;"><i data-lucide="building-2"></i> Ferma Constanta</span></div>
               </div>
               <div class="contact-meta">
                 <span class="contact-time">Ieri</span>
@@ -221,7 +224,7 @@
               <div class="contact-info">
                 <div class="contact-name">Parcela 15 Est</div>
                 <div class="contact-msg" style="font-size:12px;">Rapita &middot; Tratament finalizat</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta"><span class="contact-time">Mar</span></div>
             </div>
@@ -230,56 +233,56 @@
           <!-- TAB: Alerte -->
           <div id="tab-alerte" class="phone-scroll" style="display:none;">
             <div class="contact-item">
-              <div class="alert-icon alert-temp">&#127777;</div>
+              <div class="alert-icon alert-temp"><i data-lucide="thermometer"></i></div>
               <div class="contact-info">
                 <div class="contact-name" style="color:var(--brand-danger);">Temperatura peste 30&deg;C</div>
                 <div class="contact-msg">Opriti lucrarile de tratamente foliare pe toate parcelele din zona Vest</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta"><span class="contact-time">11:05</span></div>
             </div>
             <div class="contact-item">
-              <div class="alert-icon alert-temp" style="background:var(--brand-danger-bg);color:var(--brand-danger);">&#10052;</div>
+              <div class="alert-icon alert-temp" style="background:var(--brand-danger-bg);color:var(--brand-danger);"><i data-lucide="snowflake"></i></div>
               <div class="contact-info">
                 <div class="contact-name" style="color:var(--brand-danger);">Risc inghet — Parcela 3 Sud</div>
                 <div class="contact-msg">70% sanse Tmin &lt;0&deg;C. Cer senin, vant slab. Protejati rasadurile.</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;">&#127963; Ferma Constanta</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;"><i data-lucide="building-2"></i> Ferma Constanta</span></div>
               </div>
               <div class="contact-meta"><span class="contact-time">10:45</span></div>
             </div>
             <div class="contact-item">
-              <div class="alert-icon alert-sat">&#128752;</div>
+              <div class="alert-icon alert-sat"><i data-lucide="satellite"></i></div>
               <div class="contact-info">
                 <div class="contact-name" style="color:#0369A1;">Update imagini satelitare</div>
                 <div class="contact-msg">S-au actualizat imaginile Sentinel-2 pentru 12 parcele</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta"><span class="contact-time">10:22</span></div>
             </div>
             <div class="contact-item">
-              <div class="alert-icon alert-geo">&#128668;</div>
+              <div class="alert-icon alert-geo"><i data-lucide="tractor"></i></div>
               <div class="contact-info">
                 <div class="contact-name" style="color:var(--brand-warning);">Geofencing — Tractor JD-4520</div>
                 <div class="contact-msg">Tractorul JD-4520 a iesit din zona de lucru Parcela 7</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta"><span class="contact-time">09:38</span></div>
             </div>
             <div class="contact-item">
-              <div class="alert-icon" style="background:var(--brand-danger-bg);color:var(--brand-danger);font-size:16px;">&#128137;</div>
+              <div class="alert-icon" style="background:var(--brand-danger-bg);color:var(--brand-danger);font-size:16px;"><i data-lucide="syringe"></i></div>
               <div class="contact-info">
                 <div class="contact-name" style="color:var(--brand-danger);">Stoc expirat — Karate Zeon 5CS</div>
                 <div class="contact-msg">12 L expirate pe 01 Mar 2026. Scoateti din uz imediat.</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;">&#127963; Ferma Constanta</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#FFF3E0;color:#8B5E3C;"><i data-lucide="building-2"></i> Ferma Constanta</span></div>
               </div>
               <div class="contact-meta"><span class="contact-time">Ieri</span></div>
             </div>
             <div class="contact-item">
-              <div class="alert-icon alert-rain">&#127783;</div>
+              <div class="alert-icon alert-rain"><i data-lucide="cloud-rain"></i></div>
               <div class="contact-info">
                 <div class="contact-name" style="color:#6D28D9;">Precipitatii prognozate</div>
                 <div class="contact-msg">Ploi moderate asteptate in urmatoarele 48h — zona Nord-Est</div>
-                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;">&#127963; Agro Vest Holdings</span></div>
+                <div class="ws-badge" style="margin-top:3px;"><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;background:#E6F3F3;color:#00686A;"><i data-lucide="building-2"></i> Agro Vest Holdings</span></div>
               </div>
               <div class="contact-meta"><span class="contact-time">Ieri</span></div>
             </div>
@@ -288,15 +291,15 @@
           <!-- Tabs: Mesaje / Comentarii / Alerte (jos) -->
           <div class="msg-tabs">
             <div class="msg-tab active" onclick="switchTab('mesaje', this)">
-              <span class="tab-icon">&#128172;</span>Mesaje
+              <span class="tab-icon"><i data-lucide="message-circle"></i></span>Mesaje
               <span class="badge-count">3</span>
             </div>
             <div class="msg-tab" onclick="switchTab('comentarii', this)">
-              <span class="tab-icon">&#128221;</span>Comentarii
+              <span class="tab-icon"><i data-lucide="file-pen"></i></span>Comentarii
               <span class="badge-count">5</span>
             </div>
             <div class="msg-tab" onclick="switchTab('alerte', this)">
-              <span class="tab-icon">&#128276;</span>Alerte
+              <span class="tab-icon"><i data-lucide="bell"></i></span>Alerte
               <span class="badge-count">4</span>
             </div>
           </div>
@@ -306,7 +309,7 @@
         <!-- ===== COMMENTS VIEW ===== -->
         <div id="comments-view" style="display:none; flex-direction:column; height:100%;">
           <div class="chat-header">
-            <div onclick="closeComments()" style="cursor:pointer; color:#fff; font-size:18px; width:28px;">&#8592;</div>
+            <div onclick="closeComments()" style="cursor:pointer; color:#fff; font-size:18px; width:28px;"><i data-lucide="arrow-left"></i></div>
             <div style="width:32px; height:32px; border-radius:6px; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,8 22,16 12,22 2,16 2,8" stroke="#fff" stroke-width="2" fill="rgba(255,255,255,0.2)"/></svg>
             </div>
@@ -316,9 +319,9 @@
             </div>
           </div>
           <div onclick="alert('Deschide parcela pe harta')" style="padding:10px 16px; background:var(--brand-hover-bg); border-bottom:1px solid var(--brand-border); display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer; flex-shrink:0;">
-            <span style="font-size:16px;">&#127793;</span>
+            <span style="font-size:16px;"><i data-lucide="sprout"></i></span>
             <span style="font-size:13px; font-weight:600; color:var(--brand-primary);">Vezi parcela</span>
-            <span style="font-size:12px; color:var(--brand-primary);">&#10132;</span>
+            <span style="font-size:12px; color:var(--brand-primary);"><i data-lucide="arrow-right"></i></span>
           </div>
           <div class="phone-scroll" style="padding:16px; background:#f0f5f5;">
             <div class="comment-bubble">
@@ -326,7 +329,7 @@
               <div class="comment-body">
                 <div class="comment-author">Maria Ionescu</div>
                 <div class="comment-text">Am observat zone cu plante mai scunde in coltul de Nord-Est. Posibil problema de drenaj.</div>
-                <div class="comment-meta">Azi, 10:28 &middot; &#128247; 2 poze atasate</div>
+                <div class="comment-meta">Azi, 10:28 &middot; <i data-lucide="camera"></i> 2 poze atasate</div>
               </div>
             </div>
             <div class="comment-bubble">
@@ -348,14 +351,14 @@
           </div>
           <div class="chat-input">
             <input type="text" placeholder="Adauga un comentariu..." />
-            <button>&#10148;</button>
+            <button><i data-lucide="arrow-right"></i></button>
           </div>
         </div>
 
         <!-- ===== CHAT VIEW ===== -->
         <div id="chat-view" class="chat-view">
           <div class="chat-header">
-            <div onclick="closeChat()" style="cursor:pointer; color:#fff; font-size:18px; width:28px;">&#8592;</div>
+            <div onclick="closeChat()" style="cursor:pointer; color:#fff; font-size:18px; width:28px;"><i data-lucide="arrow-left"></i></div>
             <div id="chat-avatar" class="contact-avatar" style="width:32px; height:32px; font-size:12px;"></div>
             <div id="chat-name" style="font-size:17px; font-weight:600; color:#fff;"></div>
           </div>
@@ -368,15 +371,15 @@
           </div>
           <div class="chat-input">
             <input type="text" placeholder="Scrie un mesaj..." />
-            <button>&#10148;</button>
+            <button><i data-lucide="arrow-right"></i></button>
           </div>
         </div>
 
         <!-- ===== BOT CHAT VIEW ===== -->
         <div id="bot-chat-view" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
           <div class="chat-header" style="background:linear-gradient(135deg, var(--brand-primary-hover), #003D3E);">
-            <div onclick="closeBotChat()" style="cursor:pointer; color:#fff; font-size:18px; width:28px;">&#8592;</div>
-            <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--brand-primary), var(--brand-primary-hover)); display:flex; align-items:center; justify-content:center; font-size:16px;">&#129302;</div>
+            <div onclick="closeBotChat()" style="cursor:pointer; color:#fff; font-size:18px; width:28px;"><i data-lucide="arrow-left"></i></div>
+            <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--brand-primary), var(--brand-primary-hover)); display:flex; align-items:center; justify-content:center; font-size:16px;"><i data-lucide="bot"></i></div>
             <div style="flex:1;">
               <div style="display:flex; align-items:center; gap:6px;">
                 <span style="font-size:17px; font-weight:600; color:#fff;">Asistent ConnAgri</span>
@@ -384,7 +387,7 @@
               </div>
               <div style="font-size:12px; color:rgba(255,255,255,0.7);">Activ mereu &middot; Notificari automate</div>
             </div>
-            <div onclick="openBotSettings()" style="cursor:pointer; color:#fff; font-size:22px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.2); border-radius:8px;">&#9881;</div>
+            <div onclick="openBotSettings()" style="cursor:pointer; color:#fff; font-size:22px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.2); border-radius:8px;"><i data-lucide="settings"></i></div>
           </div>
           <div class="chat-messages" id="bot-messages" style="padding:12px 12px; flex:1; overflow-y:auto;">
             <div style="text-align:center; margin:8px 0 14px;">
@@ -392,13 +395,13 @@
             </div>
             <div style="margin-bottom:14px;">
               <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                <span style="font-size:12px;">&#129302;</span>
+                <span style="font-size:12px;"><i data-lucide="bot"></i></span>
                 <span style="font-size:12px; font-weight:700; color:var(--brand-primary);">Asistent ConnAgri</span>
                 <span style="font-size:12px; color:var(--brand-text-muted);">08:00</span>
               </div>
               <div style="background:#fff; border:1px solid var(--brand-border); border-radius:12px; border-top-left-radius:4px; padding:12px; max-width:92%;">
                 <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                  <span style="font-size:14px;">&#128200;</span>
+                  <span style="font-size:14px;"><i data-lucide="trending-up"></i></span>
                   <span style="font-size:12px; font-weight:700; color:var(--brand-text-primary);">Raport zilnic — 13 Aprilie</span>
                 </div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:8px;">
@@ -412,28 +415,28 @@
                   </div>
                 </div>
                 <div style="font-size:12px; color:var(--brand-text-muted); line-height:1.5;">
-                  &#127806; Arat: 24.5 ha (Parcela 12, 7, 4)<br>
-                  &#128167; Erbicidat: 18.2 ha (Parcela 9, 15)<br>
-                  &#127793; Semanat: 5.5 ha (Parcela 3)
+                  <i data-lucide="wheat"></i> Arat: 24.5 ha (Parcela 12, 7, 4)<br>
+                  <i data-lucide="droplets"></i> Erbicidat: 18.2 ha (Parcela 9, 15)<br>
+                  <i data-lucide="sprout"></i> Semanat: 5.5 ha (Parcela 3)
                 </div>
               </div>
             </div>
             <div style="margin-bottom:14px;">
               <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                <span style="font-size:12px;">&#129302;</span>
+                <span style="font-size:12px;"><i data-lucide="bot"></i></span>
                 <span style="font-size:12px; font-weight:700; color:var(--brand-primary);">Asistent ConnAgri</span>
                 <span style="font-size:12px; color:var(--brand-text-muted);">08:00</span>
               </div>
               <div style="background:#fff; border:1px solid var(--brand-border); border-radius:12px; border-top-left-radius:4px; padding:12px; max-width:92%;">
                 <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
-                  <span style="font-size:14px;">&#127874;</span>
+                  <span style="font-size:14px;"><i data-lucide="cake"></i></span>
                   <span style="font-size:12px; font-weight:700; color:var(--brand-text-primary);">Zile de nastere</span>
                 </div>
                 <div style="background:linear-gradient(135deg, #FFF7ED, #FFFBEB); border:1px solid #FED7AA; border-radius:8px; padding:10px;">
                   <div style="display:flex; align-items:center; gap:8px;">
                     <div style="width:36px; height:36px; border-radius:50%; background:#F57C00; color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">IP</div>
                     <div style="flex:1;">
-                      <div style="font-size:12px; font-weight:700; color:var(--brand-text-primary);">&#127881; Maine — Ion Popescu</div>
+                      <div style="font-size:12px; font-weight:700; color:var(--brand-text-primary);"><i data-lucide="party-popper"></i> Maine — Ion Popescu</div>
                       <div style="font-size:12px; color:var(--brand-text-muted);">Operator &middot; PL ferma1</div>
                     </div>
                   </div>
@@ -442,9 +445,9 @@
             </div>
           </div>
           <div style="padding:10px 16px; background:#fff; border-top:1px solid var(--brand-border); display:flex; align-items:center; gap:8px;">
-            <span style="font-size:14px;">&#129302;</span>
+            <span style="font-size:14px;"><i data-lucide="bot"></i></span>
             <span style="font-size:12px; color:var(--brand-text-muted); flex:1;">Mesajele sunt generate automat de sistem</span>
-            <div onclick="openBotSettings()" style="padding:4px 10px; border-radius:6px; border:1px solid var(--brand-border); font-size:12px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;">&#9881; Setari</div>
+            <div onclick="openBotSettings()" style="padding:4px 10px; border-radius:6px; border:1px solid var(--brand-border); font-size:12px; font-weight:600; color:var(--brand-text-muted); cursor:pointer;"><i data-lucide="settings"></i> Setari</div>
           </div>
         </div>
 
@@ -454,14 +457,14 @@
           <div onclick="event.stopPropagation()" style="position:absolute; bottom:0; left:0; right:0; background:#fff; border-radius:16px 16px 0 0; max-height:85%; display:flex; flex-direction:column; animation:slideUp 0.25s ease-out; z-index:2;">
             <div style="display:flex; align-items:center; padding:16px 16px 12px; border-bottom:1px solid var(--brand-border); flex-shrink:0;">
               <div style="flex:1;">
-                <div style="font-size:15px; font-weight:700; color:var(--brand-text-primary);">&#129302; Setari Asistent</div>
+                <div style="font-size:15px; font-weight:700; color:var(--brand-text-primary);"><i data-lucide="bot"></i> Setari Asistent</div>
                 <div style="font-size:12px; color:var(--brand-text-muted); margin-top:2px;">Alege ce notificari primesti automat</div>
               </div>
               <div onclick="closeBotSettings()" class="close-btn">&times;</div>
             </div>
             <div style="flex:1; overflow-y:auto; padding:8px 0; scrollbar-width:none;">
               <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
-                <span style="font-size:18px; width:24px; text-align:center;">&#128200;</span>
+                <span style="font-size:18px; width:24px; text-align:center;"><i data-lucide="trending-up"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Raport zilnic de activitate</div>
                   <div style="font-size:12px; color:var(--brand-text-muted);">Rezumat ha lucrate, lucrari, combustibil — per punct de lucru</div>
@@ -471,7 +474,7 @@
                 </div>
               </div>
               <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
-                <span style="font-size:18px; width:24px; text-align:center;">&#128202;</span>
+                <span style="font-size:18px; width:24px; text-align:center;"><i data-lucide="bar-chart-2"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Raport saptamanal</div>
                   <div style="font-size:12px; color:var(--brand-text-muted);">Rezumat complet al saptamanii — costuri, productivitate, comparatii</div>
@@ -481,7 +484,7 @@
                 </div>
               </div>
               <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
-                <span style="font-size:18px; width:24px; text-align:center;">&#127874;</span>
+                <span style="font-size:18px; width:24px; text-align:center;"><i data-lucide="cake"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Zile de nastere</div>
                   <div style="font-size:12px; color:var(--brand-text-muted);">Notificare azi/maine cand cineva din echipa are ziua</div>
@@ -491,7 +494,7 @@
                 </div>
               </div>
               <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
-                <span style="font-size:18px; width:24px; text-align:center;">&#128276;</span>
+                <span style="font-size:18px; width:24px; text-align:center;"><i data-lucide="bell"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Remindere lucrari planificate</div>
                   <div style="font-size:12px; color:var(--brand-text-muted);">Amintire cu lucrarile programate pentru azi si maine</div>
@@ -501,7 +504,7 @@
                 </div>
               </div>
               <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
-                <span style="font-size:18px; width:24px; text-align:center;">&#127793;</span>
+                <span style="font-size:18px; width:24px; text-align:center;"><i data-lucide="sprout"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Status terenuri si culturi</div>
                   <div style="font-size:12px; color:var(--brand-text-muted);">Evolutia culturilor, stadii fenologice, parcele nelucrate</div>
@@ -511,7 +514,7 @@
                 </div>
               </div>
               <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
-                <span style="font-size:18px; width:24px; text-align:center;">&#128668;</span>
+                <span style="font-size:18px; width:24px; text-align:center;"><i data-lucide="tractor"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Utilaje — revizii si service</div>
                   <div style="font-size:12px; color:var(--brand-text-muted);">Remindere revizii programate, ore depasit, mentenanta</div>
@@ -521,7 +524,7 @@
                 </div>
               </div>
               <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
-                <span style="font-size:18px; width:24px; text-align:center;">&#9745;</span>
+                <span style="font-size:18px; width:24px; text-align:center;"><i data-lucide="check-square"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Task-uri si sarcini</div>
                   <div style="font-size:12px; color:var(--brand-text-muted);">Sarcini nefinalizate, task-uri asignate, deadline-uri</div>
@@ -531,7 +534,7 @@
                 </div>
               </div>
               <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
-                <span style="font-size:18px; width:24px; text-align:center;">&#128101;</span>
+                <span style="font-size:18px; width:24px; text-align:center;"><i data-lucide="users"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Pontaj si prezenta</div>
                   <div style="font-size:12px; color:var(--brand-text-muted);">Rezumat prezenti/absenti, ore lucrate pe echipa</div>
@@ -541,7 +544,7 @@
                 </div>
               </div>
               <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f0f0f0; cursor:pointer;">
-                <span style="font-size:18px; width:24px; text-align:center;">&#9981;</span>
+                <span style="font-size:18px; width:24px; text-align:center;"><i data-lucide="fuel"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Consum combustibil</div>
                   <div style="font-size:12px; color:var(--brand-text-muted);">Raport zilnic consum per utilaj, comparatie cu normativul</div>
@@ -551,7 +554,7 @@
                 </div>
               </div>
               <div class="bot-setting-item" onclick="toggleBotSetting(this)" style="display:flex; align-items:center; gap:12px; padding:14px 16px; cursor:pointer;">
-                <span style="font-size:18px; width:24px; text-align:center;">&#128196;</span>
+                <span style="font-size:18px; width:24px; text-align:center;"><i data-lucide="file"></i></span>
                 <div style="flex:1;">
                   <div style="font-size:13px; font-weight:600; color:var(--brand-text-primary);">Documente si contracte</div>
                   <div style="font-size:12px; color:var(--brand-text-muted);">Remindere contracte arenda, documente de reinoit</div>
@@ -562,7 +565,7 @@
               </div>
             </div>
             <div style="padding:12px 16px; border-top:1px solid var(--brand-border); display:flex; gap:8px; flex-shrink:0;">
-              <div onclick="closeBotSettings()" style="flex:1; padding:12px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:13px; font-weight:600; cursor:pointer;">&#10003; Salveaza setarile</div>
+              <div onclick="closeBotSettings()" style="flex:1; padding:12px; background:var(--brand-primary); color:#fff; border-radius:var(--brand-radius); text-align:center; font-size:13px; font-weight:600; cursor:pointer;"><i data-lucide="check"></i> Salveaza setarile</div>
             </div>
           </div>
         </div>
@@ -659,5 +662,7 @@ function openAddDrawer() {
   ]);
 }
 </script>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

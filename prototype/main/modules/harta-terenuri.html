@@ -6,20 +6,12 @@
   <link rel="manifest" href="../manifest.json">
   <title>newLand — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
+  <link rel="stylesheet" href="../dist/app.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
-    .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-    .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
-    .browser-dots { display: flex; gap: 6px; }
-    .browser-dots span { width: 12px; height: 12px; border-radius: 50%; }
-    .browser-dots span:nth-child(1) { background: #FF5F57; }
-    .browser-dots span:nth-child(2) { background: #FFBD2E; }
-    .browser-dots span:nth-child(3) { background: #28CA41; }
-    .browser-url { flex: 1; background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; padding: 4px 10px; font-size: 13px; color: #888; }
-    .browser-screen { background: var(--brand-background); min-height: 600px; overflow-y: auto; }
-    .spec-section { margin-bottom: 20px; }
-    .spec-section h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 8px; }
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
   </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -29,51 +21,66 @@
         <div id="app-topbar" data-title="Harta Terenuri"></div>
 
         <!-- Summary bar -->
-        <div class="summary-bar" style="display:flex;align-items:center;padding:11px 8px;background:var(--brand-surface);border-bottom:1px solid var(--brand-border);flex-shrink:0;gap:6px;position:relative;z-index:6;overflow:visible;">
-          <div style="flex-shrink:0;text-align:center;transform:translateX(-3px);">
-            <div style="position:relative;">
-              <div onclick="event.stopPropagation();var dd=document.getElementById('an-dd');dd.style.display=dd.style.display==='block'?'none':'block'" style="width:150px;padding:6px 4px 6px 6px;border:1px solid var(--brand-primary);border-radius:var(--brand-radius);font-size:13px;font-weight:600;background:#fff;color:var(--brand-primary);cursor:pointer;display:flex;align-items:center;gap:10px;white-space:nowrap;overflow:hidden;">
-                <span id="an-label" style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;">Prestari 2025-2026</span> <span style="font-size:13px;">&#9660;</span>
+        <div class="summary-bar flex items-center py-3 px-3 bg-[var(--brand-surface)] border-b border-[var(--brand-border)] shrink-0 gap-2 relative z-[6] overflow-visible">
+          <div class="flex-1 text-center">
+            <div class="relative">
+              <div onclick="event.stopPropagation();var dd=document.getElementById('an-dd');dd.style.display=dd.style.display==='block'?'none':'block'" class="w-full py-1.5 pr-1 pl-2 border border-gray-300 rounded-lg text-base font-semibold bg-white text-(--brand-primary) cursor-pointer flex items-center gap-2.5 whitespace-nowrap overflow-hidden">
+                <span id="an-label" class="flex-1 text-left text-sm overflow-hidden text-ellipsis">Prestari 2025-2026</span> <span class="text-base"><i data-lucide="chevron-down"></i></span>
               </div>
-              <div id="an-dd" style="display:none;position:absolute;top:100%;left:0;margin-top:4px;background:#fff;border-radius:var(--brand-radius);box-shadow:0 4px 16px rgba(0,0,0,0.2);overflow:hidden;min-width:100%;z-index:5;white-space:nowrap;">
-                <div onclick="selectAn('Apia 2025-2026')" class="an-opt" style="padding:12px;font-size:13px;font-weight:600;cursor:pointer;background:var(--brand-primary);color:#fff;">Apia 2025-2026</div>
-                <div onclick="selectAn('Prestari 2026')" class="an-opt" style="padding:12px;font-size:13px;cursor:pointer;border-bottom:1px solid #eee;">Prestari 2026</div>
-                <div onclick="selectAn('Apia 2024-2025')" class="an-opt" style="padding:12px;font-size:13px;cursor:pointer;border-bottom:1px solid #eee;">Apia 2024-2025</div>
-                <div onclick="selectAn('Prestari 2025')" class="an-opt" style="padding:12px;font-size:13px;cursor:pointer;border-bottom:1px solid #eee;">Prestari 2025</div>
-                <div onclick="selectAn('Apia 2023-2024')" class="an-opt" style="padding:12px;font-size:13px;cursor:pointer;">Apia 2023-2024</div>
+              <div id="an-dd" style="display:none;" class="absolute top-full left-0 mt-1 bg-white rounded-[var(--brand-radius)] shadow-[0_4px_16px_rgba(0,0,0,0.2)] overflow-hidden min-w-full z-[5] whitespace-nowrap">
+                <option onclick="selectAn('Apia 2025-2026')" class="an-opt py-4 pr-8 pl-4 overflow-hidden text-ellipsis text-2 text-left font-semibold cursor-pointer bg-[var(--brand-primary)] text-white">Apia 2025-2026</option>
+                <option onclick="selectAn('Prestari 2026')" class="an-opt p-3 overflow-hidden text-ellipsis text-sm text-left cursor-pointer border-b border-[#eee]">Prestari 2026</option>
+                <option onclick="selectAn('Apia 2024-2025')" class="an-opt p-3 overflow-hidden text-ellipsis text-sm text-left cursor-pointer border-b border-[#eee]">Apia 2024-2025</option>
+                <option onclick="selectAn('Prestari 2025')" class="an-opt p-3 overflow-hidden text-ellipsis text-sm text-left cursor-pointer border-b border-[#eee]">Prestari 2025</option>
+                <option onclick="selectAn('Apia 2023-2024')" class="an-opt p-3 overflow-hidden text-ellipsistext-sm text-left cursor-pointer">Apia 2023-2024 are un text extrem de lung</option>
               </div>
+              <!-- <div class="mt-2 grid grid-cols-1">
+                <select id="location" name="location" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:*:bg-gray-800 dark:focus-visible:outline-indigo-500">
+                  <option>United States</option>
+                  <option selected>Canada</option>
+                  <option>Mexico</option>
+                </select>
+                <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4 dark:text-gray-400">
+                  <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </div> -->
             </div>
           </div>
-          <div style="flex:1;display:flex;align-items:center;justify-content:flex-start;gap:8px;padding-left:3px;transform:translateX(-8px);">
-            <div style="padding:4px 7px;background:var(--brand-primary-40);border-radius:10px;display:flex;flex-direction:column;align-items:center;line-height:1.1;transform:translateX(4px);">
-              <span style="font-size:11px;font-weight:500;color:var(--brand-text-muted);">Sole</span>
-              <span style="font-size:15px;font-weight:700;color:var(--brand-primary);">128</span>
+          <div class="shrink-0 flex items-center justify-start gap-2">
+            <div class="py-1 px-[7px] bg-[var(--brand-primary-40)] rounded-[10px] flex flex-col items-center leading-[1.1]">
+              <span class="text-[11px] font-medium text-[var(--brand-text-muted)]">Sole</span>
+              <span class="text-[15px] font-bold text-[var(--brand-primary)]">128</span>
             </div>
-            <div style="padding:4px 5px;background:var(--brand-primary-40);border-radius:10px;display:flex;flex-direction:column;align-items:center;line-height:1.1;transform:translateX(3px);">
-              <span style="font-size:11px;font-weight:500;color:var(--brand-text-muted);">ha</span>
-              <span style="font-size:15px;font-weight:700;color:var(--brand-primary);">542.6</span>
+            <div class="py-1 px-[5px] bg-[var(--brand-primary-40)] rounded-[10px] flex flex-col items-center leading-[1.1]">
+              <span class="text-[11px] font-medium text-[var(--brand-text-muted)]">ha</span>
+              <span class="text-[15px] font-bold text-[var(--brand-primary)]">542.6</span>
             </div>
           </div>
-          <div style="display:flex;border:1px solid var(--brand-border);border-radius:10px;overflow:hidden;flex-shrink:0;align-items:stretch;align-self:stretch;transform:translateX(-3px);">
-            <a href="terenuri.html" style="padding:0 12px;font-size:14px;font-weight:600;cursor:pointer;background:#fff;color:var(--brand-text-muted);text-decoration:none;display:flex;align-items:center;justify-content:center;">&#9776;</a>
-            <div style="padding:0 12px;font-size:14px;font-weight:600;cursor:pointer;background:var(--brand-primary);color:#fff;display:flex;align-items:center;justify-content:center;">&#127758;</div>
+          <div class="flex border border-[var(--brand-border)] rounded-[10px] overflow-hidden shrink-0 items-stretch self-stretch">
+            <a href="terenuri.html" class="py-0 px-3 font-semibold cursor-pointer bg-white no-underline flex items-center justify-center text-base"><i data-lucide="menu"></i></a>
+            <a type="button" class="w-9 h-9 cursor-pointer bg-teal-700 text-white flex items-center justify-center border-none text-base"><i data-lucide="globe"></i></a>
           </div>
         </div>
 
+
         <!-- Search/Filter bar (hidden) -->
-        <div id="map-search-bar" style="display:none;padding:8px 12px;background:#fff;border-bottom:1px solid var(--brand-border);flex-shrink:0;position:relative;">
-          <input type="text" placeholder="Cauta teren sau filtreaza..." style="width:100%;border:1px solid var(--brand-border);border-radius:20px;padding:8px 14px 8px 34px;font-size:14px;outline:none;background:var(--brand-surface) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%224A6E6E%22 stroke-width=%222%22%3E%3Ccircle cx=%2211%22 cy=%2211%22 r=%228%22/%3E%3Cline x1=%2221%22 y1=%2221%22 x2=%2216.65%22 y2=%2216.65%22/%3E%3C/svg%3E') no-repeat 12px center;" />
-          <div style="margin-top:8px;">
-            <div style="font-size:13px;color:var(--brand-text-muted);font-weight:600;margin-bottom:4px;">CULTURA</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
-              <span class="filter-pill">&#127806; Grau</span>
-              <span class="filter-pill">&#127803; Rapita</span>
-              <span class="filter-pill">&#127805; Porumb</span>
-              <span class="filter-pill">&#127804; F.Soarelui</span>
-              <span class="filter-pill">&#127806; Orz</span>
+        <div id="map-search-bar" style="display:none;" class="py-4 px-3 bg-white border-b border-[var(--brand-border)] shrink-0 relative">
+          <div class="relative">
+            <i data-lucide="search" class="absolute left-3 mt-2 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" style="width:16px;height:16px;"></i>
+            <input type="text" placeholder="Cauta teren sau filtreaza..." class="w-full border border-gray-300 rounded-[20px] py-2 pr-3.5 pl-8 text-base text-gray-800 outline-none bg-(--brand-surface)" />
+          </div>
+
+          <div class="mt-2">
+            <div class="text-sm text-[var(--brand-text-muted)] font-semibold mb-1">CULTURA</div>
+            <div class="flex gap-1 flex-wrap mb-[6px]">
+              <span class="filter-pill"><i data-lucide="wheat"></i> Grau</span>
+              <span class="filter-pill"><i data-lucide="sun"></i> Rapita</span>
+              <span class="filter-pill"><i data-lucide="wheat"></i> Porumb</span>
+              <span class="filter-pill"><i data-lucide="flower-2"></i> F.Soarelui</span>
+              <span class="filter-pill"><i data-lucide="wheat"></i> Orz</span>
             </div>
-            <div style="font-size:13px;color:var(--brand-text-muted);font-weight:600;margin-bottom:4px;">PROPRIETATE</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+            <div class="text-sm text-[var(--brand-text-muted)] font-semibold mb-1">PROPRIETATE</div>
+            <div class="flex gap-1 flex-wrap">
               <span class="filter-pill">Propriu</span>
               <span class="filter-pill">Arenda</span>
               <span class="filter-pill">Concesiune</span>
@@ -83,103 +90,103 @@
         </div>
 
         <!-- Map -->
-        <div style="flex:1;background:#e8e8e8;position:relative;overflow:hidden;">
-          <div id="map-container" style="width:100%;height:100%;background-image:url('sat2d.jpeg');background-size:cover;background-position:center;position:relative;">
+        <div class="flex-1 bg-[#e8e8e8] relative overflow-hidden">
+          <div id="map-container" class="w-full h-full bg-cover bg-center relative" style="background-image:url('sat2d.jpeg');">
             <!-- GPS marker -->
-            <div id="gps-marker" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;">
-              <div style="display:flex;flex-direction:column;align-items:center;">
-                <div style="width:22px;height:22px;border-radius:50%;background:#1565C0;border:3px solid #fff;box-shadow:0 0 0 2px #1565C0,0 2px 8px rgba(0,0,0,0.3);"></div>
-                <div style="width:44px;height:44px;border-radius:50%;border:2px solid rgba(21,101,192,0.3);background:rgba(21,101,192,0.08);position:absolute;top:50%;left:50%;transform:translate(-50%,-30%);"></div>
+            <div id="gps-marker" style="display:none;" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[4]">
+              <div class="flex flex-col items-center">
+                <div class="w-[22px] h-[22px] rounded-full bg-[#1565C0] border-[3px] border-white shadow-[0_0_0_2px_#1565C0,0_2px_8px_rgba(0,0,0,0.3)]"></div>
+                <div class="w-11 h-11 rounded-full border-2 border-[rgba(21,101,192,0.3)] bg-[rgba(21,101,192,0.08)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[30%]"></div>
               </div>
             </div>
             <!-- Search btn -->
-            <div style="position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:4px;">
-              <div id="map-search-btn" onclick="event.stopPropagation();toggleMapSearch()" style="width:44px;height:44px;border-radius:var(--brand-radius);background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:var(--brand-text-primary);">&#128269;</div>
+            <div class="absolute top-[10px] right-[10px] flex flex-col gap-1">
+              <button id="map-search-btn" onclick="event.stopPropagation();toggleMapSearch()" class="w-12 h-12 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center cursor-pointer text-lg text-(--brand-text-primary)"><i data-lucide="search"></i></button>
             </div>
             <!-- Map type + Layer -->
-            <div id="map-dropdowns" style="position:absolute;top:10px;left:10px;z-index:5;">
-              <div style="position:relative;margin-bottom:4px;z-index:3;">
-                <div onclick="event.stopPropagation();var dd=document.getElementById('mtype-dd');dd.style.display=dd.style.display==='block'?'none':'block'" style="padding:6px 10px;border:2px solid var(--brand-primary);border-radius:var(--brand-radius);font-size:13px;font-weight:600;background:rgba(255,255,255,0.92);color:var(--brand-primary);box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;">
-                  <span id="mtype-label">Satelit 2D</span> <span style="font-size:13px;">&#9660;</span>
+            <div id="map-dropdowns" class="absolute top-[10px] left-[10px] z-[5]">
+              <div class="relative mb-1 z-[3]">
+                <div onclick="event.stopPropagation();var dd=document.getElementById('mtype-dd');dd.style.display=dd.style.display==='block'?'none':'block'" class="py-[6px] px-[10px] border-2 border-[var(--brand-primary)] rounded-[var(--brand-radius)] text-base font-semibold bg-[rgba(255,255,255,0.92)] text-[var(--brand-primary)] shadow-[0_2px_8px_rgba(0,0,0,0.15)] cursor-pointer flex items-center justify-between gap-1 whitespace-nowrap w-full">
+                  <span id="mtype-label">Satelit 2D</span> <span class="text-base ml-auto"><i data-lucide="chevron-down"></i></span>
                 </div>
-                <div id="mtype-dd" style="display:none;position:absolute;top:100%;left:0;margin-top:4px;background:#fff;border-radius:var(--brand-radius);box-shadow:0 4px 16px rgba(0,0,0,0.2);overflow:hidden;min-width:100%;">
-                  <div onclick="selectMapType('sat3d','Satelit 3D')" class="mtype-opt" style="padding:12px;font-size:13px;cursor:pointer;border-bottom:1px solid #eee;">Satelit 3D</div>
-                  <div onclick="selectMapType('sat2d','Satelit 2D')" class="mtype-opt" style="padding:12px;font-size:13px;font-weight:600;cursor:pointer;background:var(--brand-primary);color:#fff;border-bottom:1px solid #eee;">Satelit 2D</div>
-                  <div onclick="selectMapType('terrain','Terrain')" class="mtype-opt" style="padding:12px;font-size:13px;cursor:pointer;">Terrain</div>
+                <div id="mtype-dd" style="display:none;" class="absolute top-full left-0 mt-1 bg-white rounded-[var(--brand-radius)] shadow-[0_4px_16px_rgba(0,0,0,0.2)] overflow-hidden min-w-full">
+                  <div onclick="selectMapType('sat3d','Satelit 3D')" class="mtype-opt p-3 text-base cursor-pointer border-b border-[#eee]">Satelit 3D</div>
+                  <div onclick="selectMapType('sat2d','Satelit 2D')" class="mtype-opt p-3 text-base font-semibold cursor-pointer bg-[var(--brand-primary)] text-white border-b border-[#eee]">Satelit 2D</div>
+                  <div onclick="selectMapType('terrain','Terrain')" class="mtype-opt p-3 text-base cursor-pointer">Terrain</div>
                 </div>
               </div>
-              <div style="position:relative;margin-bottom:4px;z-index:2;">
-                <div onclick="event.stopPropagation();var dd=document.getElementById('layer-dd');dd.style.display=dd.style.display==='block'?'none':'block'" style="padding:6px 10px;border:2px solid var(--brand-primary);border-radius:var(--brand-radius);font-size:13px;font-weight:600;background:rgba(255,255,255,0.92);color:var(--brand-primary);box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;">
-                  <span id="layer-label">Suprafete cultivate</span> <span style="font-size:13px;">&#9660;</span>
+              <div class="relative mb-1 z-[2]">
+                <div onclick="event.stopPropagation();var dd=document.getElementById('layer-dd');dd.style.display=dd.style.display==='block'?'none':'block'" class="py-[6px] px-[10px] border-2 border-[var(--brand-primary)] rounded-[var(--brand-radius)] text-base font-semibold bg-[rgba(255,255,255,0.92)] text-[var(--brand-primary)] shadow-[0_2px_8px_rgba(0,0,0,0.15)] cursor-pointer flex items-center gap-1 whitespace-nowrap">
+                  <span id="layer-label">Suprafete cultivate</span> <span class="text-base"><i data-lucide="chevron-down"></i></span>
                 </div>
-                <div id="layer-dd" style="display:none;position:absolute;top:100%;left:0;margin-top:4px;background:#fff;border-radius:var(--brand-radius);box-shadow:0 4px 16px rgba(0,0,0,0.2);overflow:hidden;min-width:100%;">
-                  <div onclick="selectLayer('culturi','Suprafete cultivate')" class="layer-opt" style="padding:12px;font-size:13px;font-weight:600;cursor:pointer;background:var(--brand-primary);color:#fff;">Suprafete cultivate</div>
-                  <div onclick="selectLayer('satelit','Imagini satelitare')" class="layer-opt" style="padding:12px;font-size:13px;cursor:pointer;">Imagini satelitare</div>
-                  <div onclick="selectLayer('meteo','Radar meteo')" class="layer-opt" style="padding:12px;font-size:13px;cursor:pointer;">Radar meteo</div>
-                  <div onclick="selectLayer('cadastru','Cadastru (eTera)')" class="layer-opt" style="padding:12px;font-size:13px;cursor:pointer;">Cadastru (eTera)</div>
-                  <div onclick="selectLayer('utilaje','Utilaje pe harta')" class="layer-opt" style="padding:12px;font-size:13px;cursor:pointer;">Utilaje pe harta</div>
+                <div id="layer-dd" style="display:none;" class="absolute top-full left-0 mt-1 bg-white rounded-[var(--brand-radius)] shadow-[0_4px_16px_rgba(0,0,0,0.2)] overflow-hidden min-w-full">
+                  <div onclick="selectLayer('culturi','Suprafete cultivate')" class="layer-opt p-3 text-base font-semibold cursor-pointer bg-[var(--brand-primary)] text-white">Suprafete cultivate</div>
+                  <div onclick="selectLayer('satelit','Imagini satelitare')" class="layer-opt p-3 text-base cursor-pointer">Imagini satelitare</div>
+                  <div onclick="selectLayer('meteo','Radar meteo')" class="layer-opt p-3 text-base cursor-pointer">Radar meteo</div>
+                  <div onclick="selectLayer('cadastru','Cadastru (eTera)')" class="layer-opt p-3 text-base cursor-pointer">Cadastru (eTera)</div>
+                  <div onclick="selectLayer('utilaje','Utilaje pe harta')" class="layer-opt p-3 text-base cursor-pointer">Utilaje pe harta</div>
                 </div>
               </div>
             </div>
             <!-- Legend -->
-            <div id="map-legend" style="position:absolute;top:98px;left:10px;background:rgba(255,255,255,0.92);border-radius:var(--brand-radius);padding:6px 8px;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,0.15);z-index:1;">
-              <div style="display:flex;align-items:center;gap:4px;margin-bottom:2px;"><div style="width:8px;height:8px;border-radius:2px;background:#FBBF24;"></div> Grau de toamna</div>
-              <div style="display:flex;align-items:center;gap:4px;margin-bottom:2px;"><div style="width:8px;height:8px;border-radius:2px;background:#F97316;"></div> Grau de primavara</div>
-              <div style="display:flex;align-items:center;gap:4px;margin-bottom:2px;"><div style="width:8px;height:8px;border-radius:2px;background:#DC2626;"></div> Orz</div>
-              <div style="display:flex;align-items:center;gap:4px;margin-bottom:2px;"><div style="width:8px;height:8px;border-radius:2px;background:#9333EA;"></div> Triticale</div>
-              <div style="display:flex;align-items:center;gap:4px;margin-bottom:2px;"><div style="width:8px;height:8px;border-radius:2px;background:#22C55E;"></div> Mazare</div>
-              <div style="display:flex;align-items:center;gap:4px;margin-bottom:2px;"><div style="width:8px;height:8px;border-radius:2px;background:#0891B2;"></div> Soia</div>
-              <div style="display:flex;align-items:center;gap:4px;margin-bottom:2px;"><div style="width:8px;height:8px;border-radius:2px;background:#2563EB;"></div> Porumb</div>
-              <div style="display:flex;align-items:center;gap:4px;"><div style="width:8px;height:8px;border-radius:2px;background:#DB2777;"></div> Floarea Soarelui</div>
+            <div id="map-legend" class="absolute top-[98px] left-3 bg-[rgba(255,255,255,0.99)] rounded-[var(--brand-radius)] py-2 px-2 text-base shadow-[0_2px_8px_rgba(0,0,0,0.15)] z-[1]">
+              <div class="flex items-center gap-1.5 mb-0.5"><div class="w-2 h-2 rounded-full bg-[#FBBF24] text-gray-800"></div> Grau de toamna</div>
+              <div class="flex items-center gap-1.5 mb-0.5"><div class="w-2 h-2 rounded-full bg-[#F97316] text-gray-800"></div> Grau de primavara</div>
+              <div class="flex items-center gap-1.5 mb-0.5"><div class="w-2 h-2 rounded-full bg-[#DC2626] text-gray-800"></div> Orz</div>
+              <div class="flex items-center gap-1.5 mb-0.5"><div class="w-2 h-2 rounded-full bg-[#9333EA] text-gray-800"></div> Triticale</div>
+              <div class="flex items-center gap-1.5 mb-0.5"><div class="w-2 h-2 rounded-full bg-[#22C55E] text-gray-800"></div> Mazare</div>
+              <div class="flex items-center gap-1.5 mb-0.5"><div class="w-2 h-2 rounded-full bg-[#0891B2] text-gray-800"></div> Soia</div>
+              <div class="flex items-center gap-1.5 mb-0.5"><div class="w-2 h-2 rounded-full bg-[#2563EB] text-gray-800"></div> Porumb</div>
+              <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-[#DB2777] text-gray-800"></div> Floarea Soarelui</div>
             </div>
             <!-- Zoom + tools -->
-            <div id="map-tools" style="position:absolute;bottom:16px;left:10px;display:flex;flex-direction:column;gap:4px;">
-              <div onclick="zoomMap(5)" style="width:44px;height:44px;border-radius:var(--brand-radius);background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;font-weight:700;">+</div>
-              <div onclick="zoomMap(-5)" style="width:44px;height:44px;border-radius:var(--brand-radius);background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;font-weight:700;">−</div>
-              <div onclick="alert('Masoara suprafata')" style="width:44px;height:44px;border-radius:var(--brand-radius);background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;margin-top:4px;">&#128207;</div>
+            <div id="map-tools" class="absolute bottom-[68px] left-3 flex flex-col gap-2">
+              <button onclick="zoomMap(5)" class="w-12 h-12 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center cursor-pointer text-lg font-bold"><i data-lucide="zoom-in"></i></button>
+              <button onclick="zoomMap(-5)" class="w-12 h-12 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center cursor-pointer text-lg font-bold"><i data-lucide="zoom-out"></i></button>
+              <button onclick="alert('Masoara suprafata')" class="w-12 h-12 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center cursor-pointer text-lg"><i data-lucide="ruler"></i></button>
             </div>
             <!-- Eye toggle -->
-            <div style="position:absolute;bottom:16px;left:10px;">
-              <div id="eye-btn" onclick="toggleMapOverlay()" style="width:44px;height:44px;border-radius:var(--brand-radius);background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:19px;" title="Ascunde/Arata interfata">&#128065;</div>
+            <div class="absolute bottom-3 left-3">
+              <div id="eye-btn" onclick="toggleMapOverlay()" class="w-12 h-12 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center cursor-pointer text-lg" title="Ascunde/Arata interfata"><i data-lucide="eye"></i></div>
             </div>
             <!-- Nav btns -->
-            <div id="map-nav-btns" style="position:absolute;bottom:70px;right:10px;display:flex;flex-direction:column;gap:4px;align-items:center;width:52px;">
-              <div onclick="centerOnTerenuri()" style="width:44px;height:44px;border-radius:var(--brand-radius);background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;">&#127758;</div>
-              <div onclick="toggleMyLocation()" id="loc-btn" style="width:44px;height:44px;border-radius:var(--brand-radius);background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;">&#128205;</div>
+            <div id="map-nav-btns" class="absolute bottom-[68px] right-3 flex flex-col gap-1 items-center w-[52px]">
+              <div onclick="centerOnTerenuri()" class="w-12 h-12 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center cursor-pointer text-lg"><i data-lucide="focus"></i></div>
+              <div onclick="toggleMyLocation()" id="loc-btn" class="w-12 h-12 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center cursor-pointer text-lg"><i data-lucide="map-pin"></i></div>
             </div>
             <!-- Action FAB -->
           </div>
         </div>
 
         <!-- Import popup -->
-        <div id="import-popup" style="display:none;position:absolute;inset:0;z-index:70;">
-          <div onclick="closeImportPopup()" style="position:absolute;inset:0;background:rgba(0,0,0,0.5);"></div>
-          <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;display:flex;flex-direction:column;animation:slideUp 0.25s ease-out;">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--brand-border);">
-              <div style="font-size:17px;font-weight:700;">&#11014; Importa terenuri</div>
+        <div id="import-popup" style="display:none;" class="absolute inset-0 z-[70]">
+          <div onclick="closeImportPopup()" class="absolute inset-0 bg-[rgba(0,0,0,0.5)]"></div>
+          <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl flex flex-col animate-[slideUp_0.25s_ease-out]">
+            <div class="flex items-center justify-between p-4 border-b border-[var(--brand-border)]">
+              <div class="text-[17px] font-bold"><i data-lucide="arrow-up"></i> Importa terenuri</div>
               <div onclick="closeImportPopup()" class="close-btn">&times;</div>
             </div>
-            <div style="padding:16px;">
-              <div style="flex:1;padding:12px;border:2px dashed var(--brand-border);border-radius:var(--brand-radius);text-align:center;cursor:pointer;color:var(--brand-text-muted);font-size:13px;">
-                <div style="font-size:25px;margin-bottom:4px;">&#128193;</div>
+            <div class="p-4">
+              <div class="flex-1 p-3 border-2 border-dashed border-[var(--brand-border)] rounded-[var(--brand-radius)] text-center cursor-pointer text-[var(--brand-text-muted)] text-base">
+                <div class="text-[25px] mb-1"><i data-lucide="folder"></i></div>
                 Apasa pentru a selecta fisier (.shp, .dxf, .kml, .kmz)
               </div>
             </div>
-            <div style="padding:0 16px 16px;display:flex;gap:8px;">
-              <div onclick="closeImportPopup()" style="flex:1;padding:14px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div>
-              <div onclick="alert('Import...');closeImportPopup()" style="flex:1;padding:14px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;">&#11014; Importa</div>
+            <div class="px-4 pb-4 flex gap-2">
+              <div onclick="closeImportPopup()" class="flex-1 p-[14px] border border-[var(--brand-border)] rounded-[var(--brand-radius)] text-center text-[15px] font-semibold text-[var(--brand-text-muted)] cursor-pointer">Anuleaza</div>
+              <div onclick="alert('Import...');closeImportPopup()" class="flex-1 p-[14px] bg-[var(--brand-primary)] text-white rounded-[var(--brand-radius)] text-center text-[15px] font-semibold cursor-pointer"><i data-lucide="arrow-up"></i> Importa</div>
             </div>
           </div>
         </div>
 
-        <div id="map-actions" style="display:none;position:absolute;bottom:140px;right:16px;background:#fff;border-radius:var(--brand-radius-lg);box-shadow:0 4px 20px rgba(0,0,0,0.2);min-width:180px;overflow:hidden;z-index:53;">
-          <div onclick="openImportPopup()" style="display:flex;align-items:center;gap:10px;padding:15px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:14px;"><span style="font-size:17px;">&#11014;</span> Importa terenuri</div>
-          <div onclick="alert('Exporta terenuri')" style="display:flex;align-items:center;gap:10px;padding:15px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:14px;"><span style="font-size:17px;">&#11015;</span> Exporta terenuri</div>
-          <div onclick="alert('Deseneaza teren nou')" style="display:flex;align-items:center;gap:10px;padding:15px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:14px;"><span style="font-size:17px;">&#10010;</span> Deseneaza teren nou</div>
-          <div onclick="alert('Adauga punct de interes')" style="display:flex;align-items:center;gap:10px;padding:15px 14px;cursor:pointer;font-size:14px;"><span style="font-size:17px;">&#128204;</span> Adauga punct de interes</div>
+        <div id="map-actions" style="display:none;" class="absolute bottom-[140px] right-4 bg-white rounded-[var(--brand-radius-lg)] shadow-[0_4px_20px_rgba(0,0,0,0.2)] min-w-[180px] overflow-hidden z-[53]">
+          <div onclick="openImportPopup()" class="flex items-center gap-2.5 py-[15px] px-[14px] cursor-pointer border-b border-[#f0f0f0] text-base"><span class="text-[17px]"><i data-lucide="arrow-up"></i></span> Importa terenuri</div>
+          <div onclick="alert('Exporta terenuri')" class="flex items-center gap-2.5 py-[15px] px-[14px] cursor-pointer border-b border-[#f0f0f0] text-base"><span class="text-[17px]"><i data-lucide="arrow-down"></i></span> Exporta terenuri</div>
+          <div onclick="alert('Deseneaza teren nou')" class="flex items-center gap-2.5 py-[15px] px-[14px] cursor-pointer border-b border-[#f0f0f0] text-base"><span class="text-[17px]"><i data-lucide="plus"></i></span> Deseneaza teren nou</div>
+          <div onclick="alert('Adauga punct de interes')" class="flex items-center gap-2.5 py-[15px] px-[14px] cursor-pointer text-base"><span class="text-[17px]"><i data-lucide="map-pin"></i></span> Adauga punct de interes</div>
         </div>
-        <div id="map-action-btn" class="fab" onclick="event.stopPropagation();toggleMapActions()" style="transition:transform 0.3s ease;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="4" y1="8" x2="16" y2="8"/><line x1="4" y1="14" x2="14" y2="14"/><line x1="19" y1="11" x2="19" y2="17"/><line x1="16" y1="14" x2="22" y2="14"/></svg>
+        <div id="map-action-btn" class="fab w-12 h-12 bottom-3 right-3 rounded-full text-lg bg-teal-700 shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center cursor-pointer" style="transition:transform 0.3s ease;" onclick="event.stopPropagation();toggleMapActions()">
+          <i data-lucide="list-plus"></i>
         </div>
 
         <div id="app-bottombar"></div>
@@ -340,5 +347,7 @@ document.addEventListener('click',function(e){
   if(dd&&dd.style.display==='block'&&!dd.parentElement.contains(e.target))dd.style.display='none';
 });
 </script>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

@@ -11,7 +11,18 @@
       "Bash(node \"d:/Projects/Rurio/App/version 1.0/NEW_App/strip_panel_spec.js\")",
       "Bash(node \"d:/Projects/Rurio/App/version 1.0/NEW_App/strip_panel_desktop.js\")",
       "Bash(node \"d:/Projects/Rurio/App/version 1.0/NEW_App/strip_toggle_bar.js\")",
-      "Bash(node \"d:/Projects/Rurio/App/version 1.0/NEW_App/strip_phone_chrome.js\")"
+      "Bash(node \"d:/Projects/Rurio/App/version 1.0/NEW_App/strip_phone_chrome.js\")",
+      "Bash(cat)",
+      "Read(//tmp/**)",
+      "Bash(sort -t'#' -k2 -n)",
+      "Bash(node replace-icons.js)",
+      "Bash(git mv *)",
+      "Bash(git add *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(sed -i 's/height: 100vh; height: 100dvh; gap: 0; overflow-y: hidden;/height: 100%; gap: 0; overflow-y: hidden;/g' *.html)",
+      "Bash(sed -i 's/, viewport-fit=cover//g' *.html)",
+      "Bash(git -C 'd:\\\\Projects\\\\Rurio\\\\App\\\\version 1.0\\\\NEW_App' status --short)"
     ]
   }
 }

@@ -6,6 +6,8 @@
   <link rel="manifest" href="manifest.json">
   <title>ConnAgri — App Shell</title>
   <style>
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
     :root {
       --brand-primary:        #00686A;
       --brand-primary-hover:  #005557;
@@ -53,6 +55,7 @@
     .empty-state .big { font-size: 49px; margin-bottom: 16px; }
     .empty-state p { font-size: 16px; }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 <script>window.location.href = 'roles.html';</script>
@@ -65,56 +68,56 @@
 
   <div class="sidebar-section">Principal</div>
   <a class="sidebar-item" data-feature="dashboard" onclick="load(this)">
-    <span class="icon">&#128202;</span> Dashboard
+    <span class="icon"><i data-lucide="bar-chart-2"></i></span> Dashboard
   </a>
 
   <a class="sidebar-item" data-feature="newdash" onclick="load(this)">
-    <span class="icon">&#128202;</span> Dash Admin
+    <span class="icon"><i data-lucide="bar-chart-2"></i></span> Dash Admin
   </a>
   <a class="sidebar-item" data-feature="dash_ops" onclick="load(this)">
-    <span class="icon">&#128293;</span> Dash Ops
+    <span class="icon"><i data-lucide="flame"></i></span> Dash Ops
   </a>
   <a class="sidebar-item" data-feature="operator" onclick="load(this)">
-    <span class="icon">&#128736;</span> Ecran operator
+    <span class="icon"><i data-lucide="wrench"></i></span> Ecran operator
   </a>
 
   <div class="sidebar-section">Resurse</div>
   <a class="sidebar-item" data-feature="angajati" onclick="load(this)">
-    <span class="icon">&#128101;</span> Echipa
+    <span class="icon"><i data-lucide="users"></i></span> Echipa
   </a>
   <a class="sidebar-item" data-feature="utilaje" onclick="load(this)">
-    <span class="icon">&#128668;</span> Utilaje
+    <span class="icon"><i data-lucide="tractor"></i></span> Utilaje
   </a>
   <a class="sidebar-item" data-feature="terenuri" onclick="load(this)">
-    <span class="icon">&#127793;</span> Lista Terenuri
+    <span class="icon"><i data-lucide="sprout"></i></span> Lista Terenuri
   </a>
   <a class="sidebar-item" data-feature="harta-terenuri" onclick="load(this)">
-    <span class="icon">&#127758;</span> Harta Terenuri
+    <span class="icon"><i data-lucide="globe"></i></span> Harta Terenuri
   </a>
   <a class="sidebar-item" data-feature="stocuri" onclick="load(this)">
-    <span class="icon">&#128230;</span> Stocuri
+    <span class="icon"><i data-lucide="package"></i></span> Stocuri
   </a>
   <a class="sidebar-item" data-feature="agenda" onclick="load(this)">
-    <span class="icon">&#127806;</span> Jurnal de c&acirc;mp
+    <span class="icon"><i data-lucide="wheat"></i></span> Jurnal de c&acirc;mp
   </a>
   <a class="sidebar-item" data-feature="arenda" onclick="load(this)">
-    <span class="icon">&#128220;</span> Arenda
+    <span class="icon"><i data-lucide="file-text"></i></span> Arenda
   </a>
   <a class="sidebar-item" data-feature="fotografii" onclick="load(this)">
-    <span class="icon">&#128247;</span> Media
+    <span class="icon"><i data-lucide="camera"></i></span> Media
   </a>
   <a class="sidebar-item" data-feature="firme" onclick="load(this)">
-    <span class="icon">&#127963;</span> Firme
+    <span class="icon"><i data-lucide="building-2"></i></span> Firme
   </a>
 
   <div class="sidebar-section">Comunicare</div>
   <a class="sidebar-item" data-feature="mesaje" onclick="load(this)">
-    <span class="icon">&#128172;</span> Mesaje
+    <span class="icon"><i data-lucide="message-circle"></i></span> Mesaje
   </a>
 
   <div class="sidebar-section">Cont</div>
   <a class="sidebar-item" data-feature="datele-mele" onclick="load(this)">
-    <span class="icon">&#128100;</span> Profilul meu
+    <span class="icon"><i data-lucide="user"></i></span> Profilul meu
   </a>
 </div>
 
@@ -126,7 +129,7 @@
   </div>
 
   <div class="empty-state" id="empty-state">
-    <div class="big">&#127793;</div>
+    <div class="big"><i data-lucide="sprout"></i></div>
     <p>Selecteaza un modul din sidebar</p>
   </div>
 
@@ -193,5 +196,6 @@
     }
   });
 </script>
+<script>lucide.createIcons();</script>
 </body>
 </html>

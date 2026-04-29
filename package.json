@@ -1,0 +1,18 @@
+{
+  "name": "connagri",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build:ds":    "tailwindcss -i design-system/src/input.css -o design-system/dist/design-system.css --minify",
+    "build:proto": "tailwindcss -i prototype/main/src/input.css -o prototype/main/dist/app.css --minify",
+    "build":       "npm run build:ds && npm run build:proto",
+    "watch:ds":    "tailwindcss -i design-system/src/input.css -o design-system/dist/design-system.css --watch",
+    "watch:proto": "tailwindcss -i prototype/main/src/input.css -o prototype/main/dist/app.css --watch",
+    "watch":       "concurrently \"npm run watch:ds\" \"npm run watch:proto\""
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "concurrently": "^9.0.0",
+    "tailwindcss": "^4.1.0"
+  }
+}

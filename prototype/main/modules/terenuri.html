@@ -7,7 +7,9 @@
   <title>Terenuri — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
     .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
     .browser-dots { display: flex; gap: 6px; }
@@ -43,6 +45,7 @@
     .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
     @keyframes slideUpTeren { 0% { transform: translateY(100%); } 100% { transform: translateY(0); } }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -55,7 +58,7 @@
           <div style="flex-shrink:0;text-align:center;transform:translateX(-3px);">
             <div style="position:relative;">
               <div onclick="event.stopPropagation();var dd=document.getElementById('an-dd-t');dd.style.display=dd.style.display==='block'?'none':'block'" style="width:150px;padding:6px 4px 6px 6px;border:1px solid var(--brand-primary);border-radius:var(--brand-radius);font-size:13px;font-weight:600;background:#fff;color:var(--brand-primary);cursor:pointer;display:flex;align-items:center;gap:10px;white-space:nowrap;overflow:hidden;">
-                <span id="an-label-t" style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;">Prestari 2025-2026</span> <span style="font-size:13px;">&#9660;</span>
+                <span id="an-label-t" style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;">Prestari 2025-2026</span> <span style="font-size:13px;"><i data-lucide="chevron-down"></i></span>
               </div>
               <div id="an-dd-t" style="display:none;position:absolute;top:100%;left:0;margin-top:4px;background:#fff;border-radius:var(--brand-radius);box-shadow:0 4px 16px rgba(0,0,0,0.2);overflow:hidden;min-width:100%;z-index:5;white-space:nowrap;">
                 <div onclick="selectAnT('Apia 2025-2026')" class="an-opt-t" style="padding:12px;font-size:13px;font-weight:600;cursor:pointer;background:var(--brand-primary);color:#fff;">Apia 2025-2026</div>
@@ -77,23 +80,23 @@
             </div>
           </div>
           <div style="display:flex;border:1px solid var(--brand-border);border-radius:10px;overflow:hidden;flex-shrink:0;align-items:stretch;align-self:stretch;transform:translateX(-3px);">
-            <div id="tog-lista" onclick="switchView('lista')" style="padding:0 12px;font-size:14px;font-weight:600;cursor:pointer;background:var(--brand-primary);color:#fff;display:flex;align-items:center;justify-content:center;">&#9776;</div>
-            <a href="harta-terenuri.html" id="tog-harta" style="padding:0 12px;font-size:14px;font-weight:600;cursor:pointer;background:#fff;color:var(--brand-text-muted);text-decoration:none;display:flex;align-items:center;justify-content:center;">&#127758;</a>
+            <div id="tog-lista" onclick="switchView('lista')" style="padding:0 12px;font-size:14px;font-weight:600;cursor:pointer;background:var(--brand-primary);color:#fff;display:flex;align-items:center;justify-content:center;"><i data-lucide="menu"></i></div>
+            <a href="harta-terenuri.html" id="tog-harta" style="padding:0 12px;font-size:14px;font-weight:600;cursor:pointer;background:#fff;color:var(--brand-text-muted);text-decoration:none;display:flex;align-items:center;justify-content:center;"><i data-lucide="globe"></i></a>
           </div>
         </div>
         <div class="toolbar">
-          <div class="toolbar-pill" onclick="selectAllVisible()">&#9744; Toate</div>
-          <div class="toolbar-icon-btn" id="sort-btn" onclick="event.stopPropagation();toggleSortDD()">&#8645;</div>
+          <div class="toolbar-pill" onclick="selectAllVisible()"><i data-lucide="square"></i> Toate</div>
+          <div class="toolbar-icon-btn" id="sort-btn" onclick="event.stopPropagation();toggleSortDD()"><i data-lucide="arrows-up-down"></i></div>
           <div class="sort-dropdown" id="sort-dd">
-            <div class="sort-option" data-field="name" onclick="sortCards('name')"><span class="sort-arrow">&#8595;</span> Nume</div>
-            <div class="sort-option" data-field="type" onclick="sortCards('type')"><span class="sort-arrow">&#8593;</span> Cultura</div>
-            <div class="sort-option" data-field="status" onclick="sortCards('status')"><span class="sort-arrow">&#8593;</span> Status</div>
-            <div class="sort-option" data-field="updated" onclick="sortCards('updated')"><span class="sort-arrow">&#8593;</span> Ultima actualizare</div>
+            <div class="sort-option" data-field="name" onclick="sortCards('name')"><span class="sort-arrow"><i data-lucide="arrow-down"></i></span> Nume</div>
+            <div class="sort-option" data-field="type" onclick="sortCards('type')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Cultura</div>
+            <div class="sort-option" data-field="status" onclick="sortCards('status')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Status</div>
+            <div class="sort-option" data-field="updated" onclick="sortCards('updated')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Ultima actualizare</div>
           </div>
           <div class="toolbar-search">
-            <span class="toolbar-search-icon">&#128269;</span>
+            <span class="toolbar-search-icon"><i data-lucide="search"></i></span>
             <span class="toolbar-search-text">Cauta / filtreaza</span>
-            <span class="toolbar-search-arrow">&#9660;</span>
+            <span class="toolbar-search-arrow"><i data-lucide="chevron-down"></i></span>
           </div>
           <button class="toolbar-add" onclick="openAddDrawer()">+</button>
           <div class="filter-dropdown" id="filter-dd"></div>
@@ -107,7 +110,7 @@
             <div style="display:flex;height:140px;">
               <div style="width:50%;position:relative;background:linear-gradient(135deg,#4A7A32,#3D6B2E);overflow:hidden;">
                 <svg width="100%" height="100%" viewBox="0 0 180 110" style="position:absolute;inset:0;"><polygon points="20,10 120,8 130,90 30,95 15,50" fill="#42A5F5" opacity="0.6" stroke="#fff" stroke-width="1.5"/></svg>
-                <div onclick="closeDetail()" style="position:absolute;top:6px;left:6px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:18px;">&#8592;</div>
+                <div onclick="closeDetail()" style="position:absolute;top:6px;left:6px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:18px;"><i data-lucide="arrow-left"></i></div>
                 <div onclick="openSubPage('t-carbon')" style="position:absolute;top:6px;right:6px;width:36px;height:36px;border-radius:50%;background:rgba(46,125,50,0.9);border:2px solid #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.3);">
                   <div style="font-size:14px;font-weight:800;color:#fff;line-height:1;">B+</div>
                   <div style="font-size:7px;color:rgba(255,255,255,0.8);font-weight:600;">CO2</div>
@@ -121,10 +124,10 @@
                   <span id="dt-prop" style="padding:2px 6px;border-radius:4px;font-size:12px;font-weight:600;background:var(--brand-success-bg);color:var(--brand-success);">Propriu</span>
                 </div>
                 <div style="margin-top:3px;">
-                  <div id="dt-cult" style="font-size:16px;font-weight:700;color:#F59E0B;">&#127803; Rapita de toamna</div>
+                  <div id="dt-cult" style="font-size:16px;font-weight:700;color:#F59E0B;"><i data-lucide="sun"></i> Rapita de toamna</div>
                   <div style="font-size:15px;font-weight:700;color:var(--brand-text-muted);margin-left:20px;">Rumburack</div>
                 </div>
-                <div onclick="alert('Deschide navigatia GPS catre parcela')" style="margin-top:6px;padding:5px 12px;border-radius:16px;background:var(--brand-primary);color:#fff;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(0,104,106,0.3);border:2px solid #fff;">&#128665; Navigheaza</div>
+                <div onclick="alert('Deschide navigatia GPS catre parcela')" style="margin-top:6px;padding:5px 12px;border-radius:16px;background:var(--brand-primary);color:#fff;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(0,104,106,0.3);border:2px solid #fff;"><i data-lucide="car"></i> Navigheaza</div>
               </div>
             </div>
 
@@ -132,18 +135,18 @@
             <div style="padding:8px 12px;background:var(--brand-surface);">
               <div style="display:flex;align-items:flex-start;gap:6px;margin-bottom:6px;">
                 <div style="flex:1;padding:8px 10px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:13px;color:var(--brand-text-primary);line-height:1.4;min-height:36px;cursor:pointer;" onclick="openNotitaPopup()">
-                  <div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:3px;">&#128221; Notite teren</div>
+                  <div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:3px;"><i data-lucide="file-pen"></i> Notite teren</div>
                   <div>Sol argilos in zona de NE. Drenaj slab dupa ploi. Nu aplica tratamente cand e umed.</div>
                 </div>
-                <div id="teren-action-btn2" onclick="event.stopPropagation();toggleTerenActions()" style="width:32px;height:32px;border-radius:50%;background:var(--brand-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px rgba(0,104,106,0.3);cursor:pointer;flex-shrink:0;margin-top:2px;">&#9881;</div>
+                <div id="teren-action-btn2" onclick="event.stopPropagation();toggleTerenActions()" style="width:32px;height:32px;border-radius:50%;background:var(--brand-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px rgba(0,104,106,0.3);cursor:pointer;flex-shrink:0;margin-top:2px;"><i data-lucide="settings"></i></div>
               </div>
               <div style="display:flex;gap:6px;">
                 <div onclick="openReminderPopup()" style="flex:1;padding:6px 8px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius);cursor:pointer;display:flex;align-items:center;gap:6px;">
-                  <span style="font-size:16px;">&#128276;</span>
+                  <span style="font-size:16px;"><i data-lucide="bell"></i></span>
                   <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;">Reminder</div><div style="font-size:12px;color:var(--brand-warning);font-weight:600;">15 Apr &mdash; Inspectie drona</div></div>
                 </div>
                 <div onclick="openTaskPopup()" style="flex:1;padding:6px 8px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius);cursor:pointer;display:flex;align-items:center;gap:6px;">
-                  <span style="font-size:16px;">&#9745;</span>
+                  <span style="font-size:16px;"><i data-lucide="check-square"></i></span>
                   <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;">Tasks</div><div style="font-size:12px;color:var(--brand-primary);font-weight:600;">2 active / 5 total</div></div>
                 </div>
               </div>
@@ -152,71 +155,71 @@
             <!-- Risc & Predictii (alerta compacta) -->
             <div style="margin:10px 12px 8px;padding:10px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius-lg);">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                <div style="font-size:14px;font-weight:700;color:var(--brand-text-primary);">&#9888; Risc &amp; Predictii</div>
+                <div style="font-size:14px;font-weight:700;color:var(--brand-text-primary);"><i data-lucide="alert-triangle"></i> Risc &amp; Predictii</div>
                 <div style="display:flex;gap:5px;">
-                  <div style="display:flex;align-items:center;gap:2px;"><span style="font-size:12px;">&#127807;</span><span style="font-size:13px;font-weight:800;color:#2E7D32;">&#9660;</span></div>
-                  <div style="display:flex;align-items:center;gap:2px;"><span style="font-size:12px;">&#128027;</span><span style="font-size:13px;font-weight:800;color:#2E7D32;">&#9660;</span></div>
-                  <div style="display:flex;align-items:center;gap:2px;"><span style="font-size:12px;">&#127807;</span><span style="font-size:13px;font-weight:800;color:#2E7D32;">&#9660;</span></div>
-                  <div style="display:flex;align-items:center;gap:2px;"><span style="font-size:12px;">&#128167;</span><span style="font-size:13px;font-weight:800;color:#F59E0B;">&#9654;</span></div>
+                  <div style="display:flex;align-items:center;gap:2px;"><span style="font-size:12px;"><i data-lucide="leaf"></i></span><span style="font-size:13px;font-weight:800;color:#2E7D32;"><i data-lucide="chevron-down"></i></span></div>
+                  <div style="display:flex;align-items:center;gap:2px;"><span style="font-size:12px;"><i data-lucide="bug"></i></span><span style="font-size:13px;font-weight:800;color:#2E7D32;"><i data-lucide="chevron-down"></i></span></div>
+                  <div style="display:flex;align-items:center;gap:2px;"><span style="font-size:12px;"><i data-lucide="leaf"></i></span><span style="font-size:13px;font-weight:800;color:#2E7D32;"><i data-lucide="chevron-down"></i></span></div>
+                  <div style="display:flex;align-items:center;gap:2px;"><span style="font-size:12px;"><i data-lucide="droplets"></i></span><span style="font-size:13px;font-weight:800;color:#F59E0B;"><i data-lucide="chevron-right"></i></span></div>
                 </div>
               </div>
               <div style="display:flex;gap:6px;padding:6px 8px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius);font-size:13px;">
-                <span style="font-size:14px;flex-shrink:0;margin-top:1px;">&#128167;</span>
+                <span style="font-size:14px;flex-shrink:0;margin-top:1px;"><i data-lucide="droplets"></i></span>
                 <div><strong style="color:#F59E0B;">Deficit hidric mediu.</strong> Fara ploi 12 zile. Prognoza: ploi maine. Irigati zona C daca nu ploua.</div>
               </div>
-              <div onclick="document.getElementById('risc-detalii').scrollIntoView({behavior:'smooth'})" style="text-align:center;margin-top:6px;font-size:12px;color:var(--brand-primary);font-weight:600;cursor:pointer;">Vezi detalii &#9660;</div>
+              <div onclick="document.getElementById('risc-detalii').scrollIntoView({behavior:'smooth'})" style="text-align:center;margin-top:6px;font-size:12px;color:var(--brand-primary);font-weight:600;cursor:pointer;">Vezi detalii <i data-lucide="chevron-down"></i></div>
             </div>
 
             <!-- Cat-grid (10 categorii) -->
             <div class="cat-grid">
               <div class="cat-card" style="background:linear-gradient(135deg,#338687,#1E6B6C);" onclick="openSubPage('t-satelit')">
-                <span class="cat-card-icon">&#128752;</span>
+                <span class="cat-card-icon"><i data-lucide="satellite"></i></span>
                 <div><div class="cat-card-name">Satelit &amp; NDVI</div><div class="cat-card-line"></div></div>
                 <div class="cat-card-count">Ultima: 06 Apr</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg,#2D8E5F,#1E7A4D);" onclick="openSubPage('t-meteo')">
-                <span class="cat-card-icon">&#128176;</span>
+                <span class="cat-card-icon"><i data-lucide="banknote"></i></span>
                 <div><div class="cat-card-name">Cheltuieli</div></div>
                 <div style="font-size:20px;font-weight:800;margin-top:4px;">1.247 <span style="font-size:12px;opacity:0.7;">LEI/ha</span></div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg,#2E86AB,#1B6A8A);" onclick="openSubPage('t-lucrari')">
-                <span class="cat-card-icon">&#127806;</span>
+                <span class="cat-card-icon"><i data-lucide="wheat"></i></span>
                 <div><div class="cat-card-name">Rezumat Activitati</div><div class="cat-card-line"></div></div>
                 <div class="cat-card-count">4 inregistrate</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg,#6D28D9,#5B21B6);" onclick="openSubPage('t-comentarii')">
-                <span class="cat-card-icon">&#128172;</span>
+                <span class="cat-card-icon"><i data-lucide="message-circle"></i></span>
                 <div><div class="cat-card-name">Comentarii &amp; Note</div><div class="cat-card-line"></div></div>
                 <div class="cat-card-count">3 noi</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg,#8B5E3C,#6B4226);" onclick="openSubPage('t-foto')">
-                <span class="cat-card-icon">&#128247;</span>
+                <span class="cat-card-icon"><i data-lucide="camera"></i></span>
                 <div><div class="cat-card-name">Fotografii</div><div class="cat-card-line"></div></div>
                 <div class="cat-card-count">12 poze</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg,#00686A,#005557);" onclick="openSubPage('t-info')">
-                <span class="cat-card-icon">&#9881;</span>
+                <span class="cat-card-icon"><i data-lucide="settings"></i></span>
                 <div><div class="cat-card-name">Info Teren</div><div class="cat-card-line"></div></div>
                 <div class="cat-card-count">Cadastru &amp; detalii</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg,#795548,#5D4037);" onclick="openSubPage('t-analize')">
-                <span class="cat-card-icon">&#129514;</span>
-                <div style="position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:#F59E0B;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 1px 4px rgba(0,0,0,0.3);z-index:1;">&#128276;</div>
+                <span class="cat-card-icon"><i data-lucide="test-tube-2"></i></span>
+                <div style="position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:#F59E0B;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 1px 4px rgba(0,0,0,0.3);z-index:1;"><i data-lucide="bell"></i></div>
                 <div><div class="cat-card-name">Analize Sol</div><div class="cat-card-line"></div></div>
                 <div class="cat-card-count">pH, NPK, humus</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg,#3B82A0,#2A6B85);" onclick="openSubPage('t-stocuri')">
-                <span class="cat-card-icon">&#128220;</span>
+                <span class="cat-card-icon"><i data-lucide="file-text"></i></span>
                 <div><div class="cat-card-name">Proprietate</div><div class="cat-card-line"></div></div>
                 <div class="cat-card-count">Arenda / Propriu</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg,#4A9BBF,#357FA3);" onclick="openSubPage('t-doc')">
-                <span class="cat-card-icon">&#128196;</span>
+                <span class="cat-card-icon"><i data-lucide="file"></i></span>
                 <div><div class="cat-card-name">Documente</div><div class="cat-card-line"></div></div>
                 <div class="cat-card-count">Contract, extras CF</div>
               </div>
               <div class="cat-card" style="background:linear-gradient(135deg,#1B5E20,#2E7D32);" onclick="openSubPage('t-carbon')">
-                <span class="cat-card-icon">&#127811;</span>
+                <span class="cat-card-icon"><i data-lucide="leaf"></i></span>
                 <div><div class="cat-card-name">Carbon</div></div>
                 <div style="font-size:18px;font-weight:800;margin-top:4px;">B+ <span style="font-size:11px;opacity:0.7;">1.42 t/ha</span></div>
               </div>
@@ -227,19 +230,19 @@
               <div style="font-size:14px;font-weight:700;color:var(--brand-text-primary);margin-bottom:10px;">Risc &amp; Predictii &mdash; detalii</div>
               <div style="font-size:13px;line-height:1.5;">
                 <div style="display:flex;gap:6px;margin-bottom:6px;padding:6px 8px;background:var(--brand-success-bg);border-radius:var(--brand-radius);">
-                  <span style="font-size:14px;flex-shrink:0;margin-top:2px;">&#127807;</span>
+                  <span style="font-size:14px;flex-shrink:0;margin-top:2px;"><i data-lucide="leaf"></i></span>
                   <div><strong style="color:var(--brand-success);">Boli &mdash; risc scazut.</strong> NDVI stabil, temperatura sub pragul de infectie. Fara tratament necesar momentan.</div>
                 </div>
                 <div style="display:flex;gap:6px;margin-bottom:6px;padding:6px 8px;background:var(--brand-success-bg);border-radius:var(--brand-radius);">
-                  <span style="font-size:14px;flex-shrink:0;margin-top:2px;">&#128027;</span>
+                  <span style="font-size:14px;flex-shrink:0;margin-top:2px;"><i data-lucide="bug"></i></span>
                   <div><strong style="color:var(--brand-success);">Daunatori &mdash; risc scazut.</strong> Nicio captura in capcane. Monitorizati gandacul de rapita dupa 15&deg;C constant.</div>
                 </div>
                 <div style="display:flex;gap:6px;margin-bottom:6px;padding:6px 8px;background:var(--brand-success-bg);border-radius:var(--brand-radius);">
-                  <span style="font-size:14px;flex-shrink:0;margin-top:2px;">&#127807;</span>
+                  <span style="font-size:14px;flex-shrink:0;margin-top:2px;"><i data-lucide="leaf"></i></span>
                   <div><strong style="color:var(--brand-success);">Buruieni &mdash; risc scazut.</strong> Tratament erbicid aplicat 22 Mar &mdash; efect vizibil pe satelit, acoperire buna.</div>
                 </div>
                 <div style="display:flex;gap:6px;padding:6px 8px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius);">
-                  <span style="font-size:14px;flex-shrink:0;margin-top:2px;">&#128167;</span>
+                  <span style="font-size:14px;flex-shrink:0;margin-top:2px;"><i data-lucide="droplets"></i></span>
                   <div><strong style="color:#F59E0B;">Deficit hidric &mdash; risc mediu.</strong> NDMI 0.18 si fara ploi 12 zile. Prognoza: ploi 15 mm maine. Daca nu ploua, irigati zona C inainte de fertilizare.</div>
                 </div>
               </div>
@@ -248,7 +251,7 @@
         </div>
 
         <!-- SUB: Satelit & NDVI -->
-        <div id="sub-t-satelit" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#338687,#1E6B6C);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;">&#128752; Satelit &amp; Indici</span></div>
+        <div id="sub-t-satelit" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#338687,#1E6B6C);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;"><i data-lucide="satellite"></i> Satelit &amp; Indici</span></div>
           <div class="sub-scroll">
             <div style="margin-bottom:10px;">
               <div style="font-size:13px;font-weight:700;color:var(--brand-text-primary);margin-bottom:6px;">Istoric imagini</div>
@@ -283,7 +286,7 @@
                 <span style="padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;background:rgba(0,0,0,0.3);color:rgba(255,255,255,0.7);cursor:pointer;">NDRE</span>
                 <span style="padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;background:rgba(0,0,0,0.3);color:rgba(255,255,255,0.7);cursor:pointer;">LAI</span>
               </div>
-              <div style="position:absolute;bottom:6px;left:8px;background:rgba(0,0,0,0.4);border-radius:4px;padding:2px 6px;font-size:10px;color:#fff;">&#128269; Apasa pentru marire</div>
+              <div style="position:absolute;bottom:6px;left:8px;background:rgba(0,0,0,0.4);border-radius:4px;padding:2px 6px;font-size:10px;color:#fff;"><i data-lucide="search"></i> Apasa pentru marire</div>
             </div>
             <div id="sat-zoom-popup" style="display:none;position:absolute;inset:0;z-index:70;">
               <div onclick="closeSatZoom()" style="position:absolute;inset:0;background:rgba(0,0,0,0.6);"></div>
@@ -296,9 +299,9 @@
                   <svg width="100%" height="100%" viewBox="0 0 300 250" preserveAspectRatio="xMidYMid meet"><polygon points="30,15 250,10 270,230 50,240 20,130" fill="rgba(255,255,255,0.15)" stroke="#fff" stroke-width="1.5"/></svg>
                 </div>
                 <div style="display:flex;justify-content:center;gap:6px;padding:8px;">
-                  <div style="padding:4px 10px;border-radius:var(--brand-radius);background:var(--brand-surface);font-size:12px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">&#128269;+ Zoom</div>
-                  <div style="padding:4px 10px;border-radius:var(--brand-radius);background:var(--brand-surface);font-size:12px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">&#128269;- Zoom</div>
-                  <div style="padding:4px 10px;border-radius:var(--brand-radius);background:var(--brand-primary);font-size:12px;font-weight:600;color:#fff;cursor:pointer;">&#11015; Descarca</div>
+                  <div style="padding:4px 10px;border-radius:var(--brand-radius);background:var(--brand-surface);font-size:12px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;"><i data-lucide="search"></i>+ Zoom</div>
+                  <div style="padding:4px 10px;border-radius:var(--brand-radius);background:var(--brand-surface);font-size:12px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;"><i data-lucide="search"></i>- Zoom</div>
+                  <div style="padding:4px 10px;border-radius:var(--brand-radius);background:var(--brand-primary);font-size:12px;font-weight:600;color:#fff;cursor:pointer;"><i data-lucide="arrow-down"></i> Descarca</div>
                 </div>
               </div>
             </div>
@@ -307,41 +310,41 @@
                 <div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">NDVI</div>
                 <div style="font-size:20px;font-weight:800;color:var(--brand-success);">0.72</div>
                 <div style="height:3px;background:#e5e5e5;border-radius:2px;margin:4px 0;"><div style="height:100%;width:72%;background:var(--brand-success);border-radius:2px;"></div></div>
-                <div style="font-size:10px;color:var(--brand-success);font-weight:600;">&#9650; Buna</div>
+                <div style="font-size:10px;color:var(--brand-success);font-weight:600;"><i data-lucide="chevron-up"></i> Buna</div>
               </div>
               <div style="padding:8px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;">
                 <div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">NDRE</div>
                 <div style="font-size:20px;font-weight:800;color:var(--brand-success);">0.38</div>
                 <div style="height:3px;background:#e5e5e5;border-radius:2px;margin:4px 0;"><div style="height:100%;width:65%;background:var(--brand-success);border-radius:2px;"></div></div>
-                <div style="font-size:10px;color:var(--brand-success);font-weight:600;">&#9650; Normala</div>
+                <div style="font-size:10px;color:var(--brand-success);font-weight:600;"><i data-lucide="chevron-up"></i> Normala</div>
               </div>
               <div style="padding:8px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;">
                 <div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">LAI</div>
                 <div style="font-size:20px;font-weight:800;color:var(--brand-primary);">3.2</div>
                 <div style="height:3px;background:#e5e5e5;border-radius:2px;margin:4px 0;"><div style="height:100%;width:55%;background:var(--brand-primary);border-radius:2px;"></div></div>
-                <div style="font-size:10px;color:var(--brand-primary);font-weight:600;">&#9654; Medie</div>
+                <div style="font-size:10px;color:var(--brand-primary);font-weight:600;"><i data-lucide="chevron-right"></i> Medie</div>
               </div>
               <div style="padding:8px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;">
                 <div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">NDMI</div>
                 <div style="font-size:20px;font-weight:800;color:#F59E0B;">0.18</div>
                 <div style="height:3px;background:#e5e5e5;border-radius:2px;margin:4px 0;"><div style="height:100%;width:35%;background:#F59E0B;border-radius:2px;"></div></div>
-                <div style="font-size:10px;color:#F59E0B;font-weight:600;">&#9660; Scazuta</div>
+                <div style="font-size:10px;color:#F59E0B;font-weight:600;"><i data-lucide="chevron-down"></i> Scazuta</div>
               </div>
               <div style="padding:8px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;">
                 <div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">SAVI</div>
                 <div style="font-size:20px;font-weight:800;color:var(--brand-success);">0.65</div>
                 <div style="height:3px;background:#e5e5e5;border-radius:2px;margin:4px 0;"><div style="height:100%;width:65%;background:var(--brand-success);border-radius:2px;"></div></div>
-                <div style="font-size:10px;color:var(--brand-success);font-weight:600;">&#9650; Buna</div>
+                <div style="font-size:10px;color:var(--brand-success);font-weight:600;"><i data-lucide="chevron-up"></i> Buna</div>
               </div>
               <div style="padding:8px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;">
                 <div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">EVI</div>
                 <div style="font-size:20px;font-weight:800;color:var(--brand-success);">0.58</div>
                 <div style="height:3px;background:#e5e5e5;border-radius:2px;margin:4px 0;"><div style="height:100%;width:58%;background:var(--brand-success);border-radius:2px;"></div></div>
-                <div style="font-size:10px;color:var(--brand-success);font-weight:600;">&#9650; Buna</div>
+                <div style="font-size:10px;color:var(--brand-success);font-weight:600;"><i data-lucide="chevron-up"></i> Buna</div>
               </div>
             </div>
             <div class="sub-card" style="padding:10px;">
-              <div style="font-size:13px;font-weight:700;color:var(--brand-text-primary);margin-bottom:6px;">&#128161; Interpretare</div>
+              <div style="font-size:13px;font-weight:700;color:var(--brand-text-primary);margin-bottom:6px;"><i data-lucide="lightbulb"></i> Interpretare</div>
               <div style="font-size:13px;color:var(--brand-text-muted);line-height:1.5;">
                 <div style="display:flex;gap:6px;margin-bottom:4px;"><span style="color:var(--brand-success);font-weight:800;">&#9679;</span> <strong>NDVI 0.72</strong> &mdash; Vegetatie viguroasa, cultura in stadiu activ de crestere</div>
                 <div style="display:flex;gap:6px;margin-bottom:4px;"><span style="color:var(--brand-success);font-weight:800;">&#9679;</span> <strong>NDRE 0.38</strong> &mdash; Continut de clorofila normal, fara semne de stres nutritional</div>
@@ -352,7 +355,7 @@
               </div>
             </div>
             <div style="margin-top:8px;padding:8px 10px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius);display:flex;align-items:center;gap:6px;">
-              <span style="font-size:18px;">&#9888;</span>
+              <span style="font-size:18px;"><i data-lucide="alert-triangle"></i></span>
               <div style="font-size:13px;"><strong style="color:var(--brand-warning);">Atentie: NDMI scazut</strong><div style="color:var(--brand-text-muted);margin-top:1px;">Verificati irigarea sau asteptati precipitatii prognozate</div></div>
             </div>
             <div class="sub-card" style="margin-top:10px;"><div style="font-size:13px;font-weight:700;margin-bottom:4px;">Evolutie NDVI</div>
@@ -369,7 +372,7 @@
             </div>
             <div style="margin-top:10px;padding:10px 12px;background:linear-gradient(135deg,#EDE9FE,#F5F3FF);border:1px solid #C4B5FD;border-radius:var(--brand-radius-lg);">
               <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                <div style="width:22px;height:22px;border-radius:50%;background:#6D28D9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;">&#9733;</div>
+                <div style="width:22px;height:22px;border-radius:50%;background:#6D28D9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;"><i data-lucide="star"></i></div>
                 <div style="font-size:14px;font-weight:700;color:#6D28D9;">Interpretare AI</div>
                 <span style="margin-left:auto;font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(109,40,217,0.15);color:#6D28D9;font-weight:600;">ConnAgri AI</span>
               </div>
@@ -377,7 +380,7 @@
                 Cultura de <strong>rapita de toamna</strong> prezinta o stare generala <strong style="color:var(--brand-success);">buna</strong>. Indicele NDVI a crescut constant din ianuarie (+0.37), indicand o dezvoltare normala.
               </div>
               <div style="font-size:14px;color:var(--brand-text-primary);line-height:1.5;margin-top:6px;">
-                <strong style="color:#F59E0B;">&#9888; Atentie:</strong> NDMI scazut (0.18) sugereaza un <strong>deficit hidric moderat</strong>. Recomandam monitorizarea precipitatiilor din urmatoarele 5 zile. Daca nu ploua, luati in considerare irigarea &mdash; cultura este in stadiu critic de dezvoltare.
+                <strong style="color:#F59E0B;"><i data-lucide="alert-triangle"></i> Atentie:</strong> NDMI scazut (0.18) sugereaza un <strong>deficit hidric moderat</strong>. Recomandam monitorizarea precipitatiilor din urmatoarele 5 zile. Daca nu ploua, luati in considerare irigarea &mdash; cultura este in stadiu critic de dezvoltare.
               </div>
               <div style="font-size:14px;color:var(--brand-text-primary);line-height:1.5;margin-top:6px;">
                 Zona de <strong>Nord-Est</strong> a parcelei prezinta valori NDVI mai scazute (0.45) &mdash; posibila problema de drenaj sau compactare sol. Recomandam inspectie teren.
@@ -386,13 +389,13 @@
           </div></div>
 
         <!-- SUB: Cheltuieli -->
-        <div id="sub-t-meteo" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#2D8E5F,#1E7A4D);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128176; Cheltuieli</span><div onclick="openCheltuialaPopup()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
+        <div id="sub-t-meteo" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#2D8E5F,#1E7A4D);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="banknote"></i> Cheltuieli</span><div onclick="openCheltuialaPopup()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
           <div class="sub-scroll">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
               <div style="font-size:20px;font-weight:800;color:var(--brand-text-primary);">Cheltuieli</div>
               <div style="display:flex;align-items:center;gap:4px;">
                 <input type="date" value="2025-10-01" style="padding:3px 6px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:12px;outline:none;background:#fff;color:var(--brand-text-primary);width:110px;" />
-                <span style="font-size:12px;color:var(--brand-text-muted);">&#8594;</span>
+                <span style="font-size:12px;color:var(--brand-text-muted);"><i data-lucide="arrow-right"></i></span>
                 <input type="date" value="2026-04-10" style="padding:3px 6px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:12px;outline:none;background:#fff;color:var(--brand-text-primary);width:110px;" />
               </div>
             </div>
@@ -468,13 +471,13 @@
                 </div>
                 <div style="margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">Observatii</div><textarea style="width:100%;padding:8px 12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:15px;outline:none;min-height:50px;resize:vertical;font-family:var(--brand-font-sans);" placeholder="Detalii..."></textarea></div>
               </div>
-              <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;"><div onclick="closeCheltuialaPopup()" style="flex:1;padding:10px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div><div onclick="closeCheltuialaPopup()" style="flex:1;padding:10px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;">&#10003; Salveaza</div></div>
+              <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;"><div onclick="closeCheltuialaPopup()" style="flex:1;padding:10px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div><div onclick="closeCheltuialaPopup()" style="flex:1;padding:10px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;"><i data-lucide="check"></i> Salveaza</div></div>
             </div>
           </div>
         </div>
 
         <!-- SUB: Rezumat Activitati -->
-        <div id="sub-t-lucrari" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#2E86AB,#1B6A8A);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#127806; Rezumat Activitati</span><div onclick="alert('Adauga lucrare')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
+        <div id="sub-t-lucrari" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#2E86AB,#1B6A8A);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="wheat"></i> Rezumat Activitati</span><div onclick="alert('Adauga lucrare')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
           <div class="sub-scroll">
             <div style="margin-bottom:16px;">
               <div style="font-size:14px;font-weight:700;color:var(--brand-text-primary);margin-bottom:10px;">Cronologie</div>
@@ -486,7 +489,7 @@
                 <div style="flex:1;padding-bottom:12px;">
                   <div style="font-size:15px;font-weight:700;color:var(--brand-success);">Fertilizare</div>
                   <div style="font-size:13px;margin-top:2px;"><span style="display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--brand-primary);"></span>Uree 46% <strong style="color:var(--brand-primary);">150</strong> kg/ha</span></div>
-                  <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">&#128100; A. Popa &middot; &#128668; NH T7.245</div>
+                  <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;"><i data-lucide="user"></i> A. Popa &middot; <i data-lucide="tractor"></i> NH T7.245</div>
                 </div>
               </div>
               <div style="display:flex;gap:0;">
@@ -499,7 +502,7 @@
                   <div style="font-size:13px;margin-top:2px;">
                     <div style="display:flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--brand-danger);"></span>Roundup PowerMax <strong style="color:var(--brand-danger);">2.0</strong> L/ha</div>
                   </div>
-                  <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">&#128100; V. Marin &middot; &#128668; Berthoud 4240</div>
+                  <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;"><i data-lucide="user"></i> V. Marin &middot; <i data-lucide="tractor"></i> Berthoud 4240</div>
                 </div>
               </div>
               <div style="display:flex;gap:0;">
@@ -509,8 +512,8 @@
                 </div>
                 <div style="flex:1;padding-bottom:12px;">
                   <div style="font-size:15px;font-weight:700;color:#6D28D9;">Evaluare cultura</div>
-                  <div style="font-size:13px;margin-top:2px;color:var(--brand-text-muted);">BBCH 31 &middot; Stare: Buna &middot; &#128247; 3 poze</div>
-                  <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">&#128100; E. Vasile</div>
+                  <div style="font-size:13px;margin-top:2px;color:var(--brand-text-muted);">BBCH 31 &middot; Stare: Buna &middot; <i data-lucide="camera"></i> 3 poze</div>
+                  <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;"><i data-lucide="user"></i> E. Vasile</div>
                 </div>
               </div>
               <div style="display:flex;gap:0;">
@@ -521,7 +524,7 @@
                 <div style="flex:1;padding-bottom:12px;">
                   <div style="font-size:15px;font-weight:700;color:#0369A1;">Precipitatii</div>
                   <div style="font-size:13px;margin-top:2px;">
-                    <span style="display:inline-flex;align-items:center;gap:3px;">&#128167; <strong style="color:#0369A1;">22 mm</strong></span>
+                    <span style="display:inline-flex;align-items:center;gap:3px;"><i data-lucide="droplets"></i> <strong style="color:#0369A1;">22 mm</strong></span>
                   </div>
                   <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Ploaie moderata &middot; 6h durata</div>
                 </div>
@@ -536,7 +539,7 @@
                   <div style="font-size:13px;margin-top:2px;">
                     <div style="display:flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:#2E7D32;"></span>Samanta Arlequin <strong style="color:#2E7D32;">180</strong> kg/ha</div>
                   </div>
-                  <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">&#128100; A. Popa, V. Marin &middot; &#128668; JD 6130R</div>
+                  <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;"><i data-lucide="user"></i> A. Popa, V. Marin &middot; <i data-lucide="tractor"></i> JD 6130R</div>
                 </div>
               </div>
               <div style="display:flex;gap:0;">
@@ -548,7 +551,7 @@
                   <div style="font-size:13px;margin-top:2px;">
                     <div style="display:flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--brand-primary);"></span>NPK 15-15-15 <strong style="color:var(--brand-primary);">300</strong> kg/ha</div>
                   </div>
-                  <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">&#128100; A. Popa &middot; &#128668; NH T7.245</div>
+                  <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;"><i data-lucide="user"></i> A. Popa &middot; <i data-lucide="tractor"></i> NH T7.245</div>
                 </div>
               </div>
             </div>
@@ -571,9 +574,9 @@
                   <span style="display:flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--brand-primary);"></span>Uree 46% <strong style="color:var(--brand-primary);">150</strong> kg/ha</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--brand-text-muted);">
-                  <span>&#128668; NH T7.245</span>
+                  <span><i data-lucide="tractor"></i> NH T7.245</span>
                   <span>&middot;</span>
-                  <span>&#127777; 12&deg; / 22&deg;C</span>
+                  <span><i data-lucide="thermometer"></i> 12&deg; / 22&deg;C</span>
                 </div>
               </div>
             </div>
@@ -594,24 +597,24 @@
                   <span style="display:flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--brand-danger);"></span>Roundup <strong style="color:var(--brand-danger);">2.0</strong> L/ha</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--brand-text-muted);margin-bottom:6px;">
-                  <span>&#128668; Berthoud 4240</span>
+                  <span><i data-lucide="tractor"></i> Berthoud 4240</span>
                   <span>&middot;</span>
-                  <span>&#127777; 8&deg; / 18&deg;C</span>
+                  <span><i data-lucide="thermometer"></i> 8&deg; / 18&deg;C</span>
                   <span>&middot;</span>
-                  <span>&#128167; 200 L/ha</span>
+                  <span><i data-lucide="droplets"></i> 200 L/ha</span>
                 </div>
                 <div style="height:100px;border-radius:var(--brand-radius);background:linear-gradient(135deg,#4A7A32,#5B8C3E);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;">
-                  <div style="font-size:32px;opacity:0.3;">&#127806;</div>
+                  <div style="font-size:32px;opacity:0.3;"><i data-lucide="wheat"></i></div>
                 </div>
               </div>
               <div style="display:flex;align-items:center;padding:6px 12px;border-top:1px solid var(--brand-border);">
-                <span style="font-size:13px;color:var(--brand-text-muted);cursor:pointer;">&#128172; Comenteaza</span>
-                <span style="font-size:12px;color:var(--brand-text-muted);margin-left:8px;">&#128247; 2 poze</span>
+                <span style="font-size:13px;color:var(--brand-text-muted);cursor:pointer;"><i data-lucide="message-circle"></i> Comenteaza</span>
+                <span style="font-size:12px;color:var(--brand-text-muted);margin-left:8px;"><i data-lucide="camera"></i> 2 poze</span>
                 <div style="margin-left:auto;display:flex;gap:6px;">
-                  <span onclick="alert('Editeaza')" style="font-size:13px;color:var(--brand-primary);cursor:pointer;font-weight:600;">&#9998;</span>
-                  <span onclick="alert('Schimba data')" style="font-size:13px;color:var(--brand-text-muted);cursor:pointer;">&#128197;</span>
-                  <span onclick="alert('Share')" style="font-size:13px;color:var(--brand-text-muted);cursor:pointer;">&#128279;</span>
-                  <span onclick="alert('Sterge')" style="font-size:13px;color:var(--brand-danger);cursor:pointer;">&#128465;</span>
+                  <span onclick="alert('Editeaza')" style="font-size:13px;color:var(--brand-primary);cursor:pointer;font-weight:600;"><i data-lucide="pencil"></i></span>
+                  <span onclick="alert('Schimba data')" style="font-size:13px;color:var(--brand-text-muted);cursor:pointer;"><i data-lucide="calendar"></i></span>
+                  <span onclick="alert('Share')" style="font-size:13px;color:var(--brand-text-muted);cursor:pointer;"><i data-lucide="link"></i></span>
+                  <span onclick="alert('Sterge')" style="font-size:13px;color:var(--brand-danger);cursor:pointer;"><i data-lucide="trash-2"></i></span>
                 </div>
               </div>
             </div>
@@ -634,7 +637,7 @@
             <div class="sub-card" style="padding:0;overflow:hidden;border-left:3px solid #0369A1;">
               <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--brand-surface);">
                 <div style="display:flex;align-items:center;gap:8px;">
-                  <div style="width:28px;height:28px;border-radius:50%;background:#0369A1;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;">&#127783;</div>
+                  <div style="width:28px;height:28px;border-radius:50%;background:#0369A1;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;"><i data-lucide="cloud-rain"></i></div>
                   <div><div style="font-size:15px;font-weight:700;">Precipitatii</div><div style="font-size:12px;color:var(--brand-text-muted);">18 Mar 2026</div></div>
                 </div>
                 <span style="padding:3px 8px;border-radius:8px;font-size:11px;font-weight:700;background:#E0F2FE;color:#0369A1;">Meteo</span>
@@ -655,33 +658,33 @@
           </div></div>
 
         <!-- SUB: Comentarii & Note -->
-        <div id="sub-t-comentarii" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#6D28D9,#5B21B6);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128172; Comentarii &amp; Note</span><div onclick="alert('Adauga comentariu')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
+        <div id="sub-t-comentarii" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#6D28D9,#5B21B6);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="message-circle"></i> Comentarii &amp; Note</span><div onclick="alert('Adauga comentariu')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
           <div class="sub-scroll">
-            <div style="display:flex;gap:10px;margin-bottom:12px;"><div style="width:28px;height:28px;border-radius:50%;background:#2E86AB;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">MI</div><div><div style="font-size:14px;font-weight:600;">Maria Ionescu</div><div style="font-size:15px;margin-top:2px;">Zone cu plante scunde in NE. Posibil drenaj.</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:4px;">Azi, 10:28 &middot; &#128247; 2 poze</div></div></div>
+            <div style="display:flex;gap:10px;margin-bottom:12px;"><div style="width:28px;height:28px;border-radius:50%;background:#2E86AB;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">MI</div><div><div style="font-size:14px;font-weight:600;">Maria Ionescu</div><div style="font-size:15px;margin-top:2px;">Zone cu plante scunde in NE. Posibil drenaj.</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:4px;">Azi, 10:28 &middot; <i data-lucide="camera"></i> 2 poze</div></div></div>
             <div style="display:flex;gap:10px;margin-bottom:12px;"><div style="width:28px;height:28px;border-radius:50%;background:#8B5E3C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AP</div><div><div style="font-size:14px;font-weight:600;">Andrei Popa</div><div style="font-size:15px;margin-top:2px;">Confirm, de la ploile de saptamana trecuta.</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:4px;">Azi, 10:30</div></div></div>
             <div style="display:flex;gap:10px;margin-bottom:12px;"><div style="width:28px;height:28px;border-radius:50%;background:#0D7377;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">MS</div><div><div style="font-size:14px;font-weight:600;">Mihai Stancu</div><div style="font-size:15px;margin-top:2px;">Programat inspectie drona maine dimineata.</div><div style="font-size:12px;color:var(--brand-text-muted);margin-top:4px;">Azi, 10:35</div></div></div>
           </div></div>
 
         <!-- SUB: Fotografii -->
-        <div id="sub-t-foto" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#8B5E3C,#6B4226);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128247; Fotografii</span><div onclick="openFotoPopup()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
+        <div id="sub-t-foto" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#8B5E3C,#6B4226);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="camera"></i> Fotografii</span><div onclick="openFotoPopup()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
           <div class="sub-scroll"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-            <div style="aspect-ratio:1;border-radius:var(--brand-radius);background:var(--brand-surface);border:1px solid var(--brand-border);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;color:var(--brand-primary-40);"><div>&#127806;</div><div style="font-size:9px;color:var(--brand-text-muted);">15 Oct</div></div>
-            <div style="aspect-ratio:1;border-radius:var(--brand-radius);background:var(--brand-surface);border:1px solid var(--brand-border);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;color:var(--brand-primary-40);"><div>&#127806;</div><div style="font-size:9px;color:var(--brand-text-muted);">22 Mar</div></div>
-            <div style="aspect-ratio:1;border-radius:var(--brand-radius);background:var(--brand-surface);border:1px solid var(--brand-border);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;color:var(--brand-primary-40);"><div>&#127806;</div><div style="font-size:9px;color:var(--brand-text-muted);">05 Apr</div></div>
+            <div style="aspect-ratio:1;border-radius:var(--brand-radius);background:var(--brand-surface);border:1px solid var(--brand-border);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;color:var(--brand-primary-40);"><div><i data-lucide="wheat"></i></div><div style="font-size:9px;color:var(--brand-text-muted);">15 Oct</div></div>
+            <div style="aspect-ratio:1;border-radius:var(--brand-radius);background:var(--brand-surface);border:1px solid var(--brand-border);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;color:var(--brand-primary-40);"><div><i data-lucide="wheat"></i></div><div style="font-size:9px;color:var(--brand-text-muted);">22 Mar</div></div>
+            <div style="aspect-ratio:1;border-radius:var(--brand-radius);background:var(--brand-surface);border:1px solid var(--brand-border);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;color:var(--brand-primary-40);"><div><i data-lucide="wheat"></i></div><div style="font-size:9px;color:var(--brand-text-muted);">05 Apr</div></div>
             <div onclick="openFotoPopup()" style="aspect-ratio:1;border:2px dashed var(--brand-primary);border-radius:var(--brand-radius);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--brand-primary);cursor:pointer;">+</div>
           </div></div>
           <div id="foto-popup" style="display:none;position:absolute;inset:0;z-index:70;">
             <div onclick="closeFotoPopup()" style="position:absolute;inset:0;background:rgba(0,0,0,0.5);"></div>
             <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;animation:slideUpTeren 0.25s ease-out;">
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;">&#128247; Adauga fotografie</div><div onclick="closeFotoPopup()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;"><i data-lucide="camera"></i> Adauga fotografie</div><div onclick="closeFotoPopup()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
               <div style="padding:16px;display:flex;gap:12px;">
                 <div onclick="alert('Deschide camera');closeFotoPopup()" style="flex:1;padding:20px 10px;border:2px solid var(--brand-primary);border-radius:var(--brand-radius-lg);text-align:center;cursor:pointer;background:var(--brand-hover-bg);">
-                  <div style="font-size:38px;margin-bottom:6px;">&#128247;</div>
+                  <div style="font-size:38px;margin-bottom:6px;"><i data-lucide="camera"></i></div>
                   <div style="font-size:15px;font-weight:700;color:var(--brand-primary);">Camera</div>
                   <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Fotografiaza acum</div>
                 </div>
                 <div onclick="alert('Deschide galeria');closeFotoPopup()" style="flex:1;padding:20px 10px;border:2px solid var(--brand-border);border-radius:var(--brand-radius-lg);text-align:center;cursor:pointer;">
-                  <div style="font-size:38px;margin-bottom:6px;">&#128206;</div>
+                  <div style="font-size:38px;margin-bottom:6px;"><i data-lucide="paperclip"></i></div>
                   <div style="font-size:15px;font-weight:700;color:var(--brand-text-primary);">Galerie</div>
                   <div style="font-size:12px;color:var(--brand-text-muted);margin-top:2px;">Incarca din memorie</div>
                 </div>
@@ -691,7 +694,7 @@
         </div>
 
         <!-- SUB: Info Teren -->
-        <div id="sub-t-info" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#00686A,#005557);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#9881; Info Teren</span><div onclick="alert('Editare')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">&#9998; Editeaza</div></div>
+        <div id="sub-t-info" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#00686A,#005557);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="settings"></i> Info Teren</span><div onclick="alert('Editare')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;"><i data-lucide="pencil"></i> Editeaza</div></div>
           <div class="sub-scroll">
             <div class="sub-card">
               <div class="sub-field"><span class="sub-field-label">Denumire</span><span class="sub-field-value">La Salcie</span></div>
@@ -710,10 +713,10 @@
           </div></div>
 
         <!-- SUB: Analize Sol -->
-        <div id="sub-t-analize" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#795548,#5D4037);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#129514; Analize Sol</span></div>
+        <div id="sub-t-analize" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#795548,#5D4037);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="test-tube-2"></i> Analize Sol</span></div>
           <div class="sub-scroll">
             <div style="padding:8px 10px;background:var(--brand-hover-bg);border:1px solid var(--brand-border);border-radius:var(--brand-radius);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-              <span style="font-size:14px;">&#128196;</span>
+              <span style="font-size:14px;"><i data-lucide="file"></i></span>
               <span style="font-size:13px;font-weight:600;color:var(--brand-primary);">Ultima analiza: 15 Mar 2025 &middot; Lab OSPA Arges</span>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px;">
@@ -766,14 +769,14 @@
               <div class="sub-field"><span class="sub-field-label">Carbonati</span><span class="sub-field-value">1.2%</span></div>
             </div>
             <div style="margin-top:10px;padding:10px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius);">
-              <div style="font-size:13px;font-weight:700;color:var(--brand-warning);margin-bottom:4px;">&#128161; Recomandari fertilizare</div>
+              <div style="font-size:13px;font-weight:700;color:var(--brand-warning);margin-bottom:4px;"><i data-lucide="lightbulb"></i> Recomandari fertilizare</div>
               <div style="font-size:13px;color:var(--brand-text-primary);line-height:1.4;">
                 <div style="margin-bottom:3px;">&#9679; Fosfor scazut &mdash; suplimentati cu 80 kg/ha P2O5</div>
                 <div>&#9679; pH optim pentru rapita &mdash; nu necesita amendare</div>
               </div>
             </div>
             <div class="sub-card" style="margin-top:10px;display:flex;align-items:center;gap:10px;">
-              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128196;</div>
+              <div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="file"></i></div>
               <div style="flex:1;"><div style="font-size:14px;font-weight:600;">Buletin analiza sol</div><div style="font-size:12px;color:var(--brand-text-muted);">OSPA_Arges_BF345_2025.pdf</div></div>
             </div>
             <div style="margin-top:12px;">
@@ -816,7 +819,7 @@
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #f0f0f0;">
                   <div style="width:24px;height:24px;border-radius:4px;background:#FFA726;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;">C</div>
-                  <div style="flex:1;font-size:13px;"><strong>Zona C</strong> &mdash; 1.8 ha <span style="color:var(--brand-warning);font-weight:600;">&#9888;</span></div>
+                  <div style="flex:1;font-size:13px;"><strong>Zona C</strong> &mdash; 1.8 ha <span style="color:var(--brand-warning);font-weight:600;"><i data-lucide="alert-triangle"></i></span></div>
                   <div style="text-align:right;font-size:12px;color:var(--brand-text-muted);">NPK: <strong style="color:#F59E0B;">380</strong> kg/ha</div>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;">
@@ -826,13 +829,13 @@
                 </div>
               </div>
               <div onclick="alert('Export prescriptie fertilizare variabila')" style="margin-top:8px;padding:10px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
-                &#11015; Export prescriptie fertilizare variabila
+                <i data-lucide="arrow-down"></i> Export prescriptie fertilizare variabila
               </div>
             </div>
           </div></div>
 
         <!-- SUB: Proprietate -->
-        <div id="sub-t-stocuri" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#3B82A0,#2A6B85);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128220; Proprietate &amp; Arenda</span><div onclick="openPropEdit()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">&#9998; Editeaza</div></div>
+        <div id="sub-t-stocuri" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#3B82A0,#2A6B85);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="file-text"></i> Proprietate &amp; Arenda</span><div onclick="openPropEdit()" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;"><i data-lucide="pencil"></i> Editeaza</div></div>
           <div class="sub-scroll">
             <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius-lg);margin-bottom:10px;">
               <div style="width:40px;height:40px;border-radius:50%;background:var(--brand-warning);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;flex-shrink:0;">A</div>
@@ -867,7 +870,7 @@
               <div class="sub-field"><span class="sub-field-label">Prelungire auto</span><span class="sub-field-value">Da, cu acord scris</span></div>
             </div>
             <div style="padding:8px 10px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-              <span style="font-size:16px;">&#9888;</span>
+              <span style="font-size:16px;"><i data-lucide="alert-triangle"></i></span>
               <div style="font-size:13px;"><strong style="color:var(--brand-warning);">Contract expira in 174 zile</strong><div style="color:var(--brand-text-muted);margin-top:1px;">Discutati prelungirea cu proprietarul</div></div>
             </div>
             <div style="font-size:12px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:6px;">Valoare arenda</div>
@@ -895,40 +898,40 @@
             </div>
             <div style="font-size:12px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:6px;">Documente</div>
             <div class="sub-card" style="display:flex;align-items:center;gap:10px;">
-              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:16px;">&#128196;</div>
+              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:16px;"><i data-lucide="file"></i></div>
               <div style="flex:1;font-size:14px;"><strong>Contract arenda</strong><div style="font-size:12px;color:var(--brand-text-muted);">CA-2023-0045.pdf</div></div>
             </div>
             <div class="sub-card" style="display:flex;align-items:center;gap:10px;">
-              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:16px;">&#128196;</div>
+              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:16px;"><i data-lucide="file"></i></div>
               <div style="flex:1;font-size:14px;"><strong>Procura imputernicit</strong><div style="font-size:12px;color:var(--brand-text-muted);">Procura_234_2024.pdf</div></div>
             </div>
             <div class="sub-card" style="display:flex;align-items:center;gap:10px;">
-              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:16px;">&#128196;</div>
+              <div style="width:32px;height:32px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:16px;"><i data-lucide="file"></i></div>
               <div style="flex:1;font-size:14px;"><strong>Extras CF proprietar</strong><div style="font-size:12px;color:var(--brand-text-muted);">CF_402156_Mozaceni.pdf</div></div>
             </div>
           </div>
           <div id="prop-edit-popup" style="display:none;position:absolute;inset:0;z-index:70;">
             <div onclick="closePropEdit()" style="position:absolute;inset:0;background:rgba(0,0,0,0.5);"></div>
             <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;max-height:90%;display:flex;flex-direction:column;animation:slideUpTeren 0.25s ease-out;">
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;">&#9998; Editare Proprietate</div><div onclick="closePropEdit()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;"><i data-lucide="pencil"></i> Editare Proprietate</div><div onclick="closePropEdit()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
               <div style="flex:1;overflow-y:auto;padding:16px;">
                 <div style="margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:4px;">Tip proprietate</div><select style="width:100%;padding:8px 12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:15px;outline:none;background:#fff;"><option selected>Arenda</option><option>Propriu</option><option>Concesiune</option><option>Schimb</option><option>Comodat</option></select></div>
               </div>
-              <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;"><div onclick="closePropEdit()" style="flex:1;padding:10px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div><div onclick="closePropEdit()" style="flex:1;padding:10px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;">&#10003; Salveaza</div></div>
+              <div style="padding:12px 16px;border-top:1px solid var(--brand-border);display:flex;gap:8px;"><div onclick="closePropEdit()" style="flex:1;padding:10px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;color:var(--brand-text-muted);cursor:pointer;">Anuleaza</div><div onclick="closePropEdit()" style="flex:1;padding:10px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);text-align:center;font-size:15px;font-weight:600;cursor:pointer;"><i data-lucide="check"></i> Salveaza</div></div>
             </div>
           </div>
         </div>
 
         <!-- SUB: Documente -->
-        <div id="sub-t-doc" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#4A9BBF,#357FA3);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;flex:1;">&#128196; Documente</span><div onclick="alert('Adauga')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
+        <div id="sub-t-doc" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#4A9BBF,#357FA3);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;flex:1;"><i data-lucide="file"></i> Documente</span><div onclick="alert('Adauga')" style="padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">+ Adauga</div></div>
           <div class="sub-scroll">
-            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128196;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Extras carte funciara</div><div style="font-size:13px;color:var(--brand-text-muted);">CF_402156_Sacalaz.pdf</div></div></div>
-            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128203;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Contract proprietate</div><div style="font-size:13px;color:var(--brand-text-muted);">Contract_vanzare_2018.pdf</div></div></div>
-            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:18px;">&#128203;</div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Analiza sol 2025</div><div style="font-size:13px;color:var(--brand-text-muted);">Analiza_sol_BF345.pdf</div></div></div>
+            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="file"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Extras carte funciara</div><div style="font-size:13px;color:var(--brand-text-muted);">CF_402156_Sacalaz.pdf</div></div></div>
+            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-success-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="clipboard-list"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Contract proprietate</div><div style="font-size:13px;color:var(--brand-text-muted);">Contract_vanzare_2018.pdf</div></div></div>
+            <div class="sub-card" style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:var(--brand-radius);background:var(--brand-hover-bg);display:flex;align-items:center;justify-content:center;font-size:18px;"><i data-lucide="clipboard-list"></i></div><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Analiza sol 2025</div><div style="font-size:13px;color:var(--brand-text-muted);">Analiza_sol_BF345.pdf</div></div></div>
           </div></div>
 
         <!-- SUB: Carbon -->
-        <div id="sub-t-carbon" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#1B5E20,#2E7D32);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;">&#8592;</div><span style="font-size:16px;font-weight:600;">&#127811; Amprenta de Carbon</span></div>
+        <div id="sub-t-carbon" class="sub-page"><div class="sub-header" style="background:linear-gradient(135deg,#1B5E20,#2E7D32);"><div onclick="closeSubPage()" style="cursor:pointer;color:#fff;font-size:20px;width:28px;"><i data-lucide="arrow-left"></i></div><span style="font-size:16px;font-weight:600;"><i data-lucide="leaf"></i> Amprenta de Carbon</span></div>
           <div class="sub-scroll">
             <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:12px;">
               <div style="width:80px;height:80px;border-radius:50%;border:4px solid #2E7D32;display:flex;flex-direction:column;align-items:center;justify-content:center;">
@@ -937,7 +940,7 @@
               </div>
               <div style="font-size:13px;line-height:1.5;">
                 <div style="font-size:18px;font-weight:800;color:var(--brand-text-primary);">1.42 <span style="font-size:12px;color:var(--brand-text-muted);font-weight:600;">t CO2e/ha</span></div>
-                <div style="color:var(--brand-success);font-weight:600;font-size:12px;">&#9660; 12% vs anul trecut</div>
+                <div style="color:var(--brand-success);font-weight:600;font-size:12px;"><i data-lucide="chevron-down"></i> 12% vs anul trecut</div>
                 <div style="color:var(--brand-text-muted);font-size:12px;margin-top:2px;">Media zona: 1.85 t/ha</div>
                 <div style="color:var(--brand-text-muted);font-size:12px;">Media nationala: 2.10 t/ha</div>
               </div>
@@ -957,12 +960,12 @@
               <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-top:2px solid var(--brand-border);font-size:14px;font-weight:700;margin-top:4px;"><span>TOTAL NET</span><span>0.97 t CO2e/ha</span></div>
             </div>
             <div style="padding:10px;background:linear-gradient(135deg,#EDE9FE,#F5F3FF);border:1px solid #C4B5FD;border-radius:var(--brand-radius);">
-              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><div style="width:18px;height:18px;border-radius:50%;background:#6D28D9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;">&#9733;</div><div style="font-size:13px;font-weight:700;color:#6D28D9;">Sugestii AI reducere emisii</div></div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><div style="width:18px;height:18px;border-radius:50%;background:#6D28D9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;"><i data-lucide="star"></i></div><div style="font-size:13px;font-weight:700;color:#6D28D9;">Sugestii AI reducere emisii</div></div>
               <div style="font-size:13px;color:var(--brand-text-primary);line-height:1.5;">
-                <div style="display:flex;gap:4px;margin-bottom:3px;"><span style="color:#2E7D32;">&#10003;</span> <strong>Fertilizare variabila</strong> &mdash; -0.10 t CO2e/ha</div>
-                <div style="display:flex;gap:4px;margin-bottom:3px;"><span style="color:#2E7D32;">&#10003;</span> <strong>Cover crops iarna</strong> &mdash; -0.20 t CO2e/ha</div>
-                <div style="display:flex;gap:4px;margin-bottom:3px;"><span style="color:#2E7D32;">&#10003;</span> <strong>No-till zona D</strong> &mdash; -0.08 t CO2e/ha</div>
-                <div style="display:flex;gap:4px;"><span style="color:#F59E0B;">&#9888;</span> <strong>Inlocuire Uree cu UAN</strong> &mdash; -25% N2O</div>
+                <div style="display:flex;gap:4px;margin-bottom:3px;"><span style="color:#2E7D32;"><i data-lucide="check"></i></span> <strong>Fertilizare variabila</strong> &mdash; -0.10 t CO2e/ha</div>
+                <div style="display:flex;gap:4px;margin-bottom:3px;"><span style="color:#2E7D32;"><i data-lucide="check"></i></span> <strong>Cover crops iarna</strong> &mdash; -0.20 t CO2e/ha</div>
+                <div style="display:flex;gap:4px;margin-bottom:3px;"><span style="color:#2E7D32;"><i data-lucide="check"></i></span> <strong>No-till zona D</strong> &mdash; -0.08 t CO2e/ha</div>
+                <div style="display:flex;gap:4px;"><span style="color:#F59E0B;"><i data-lucide="alert-triangle"></i></span> <strong>Inlocuire Uree cu UAN</strong> &mdash; -25% N2O</div>
               </div>
               <div style="margin-top:6px;font-size:12px;color:#6D28D9;font-weight:600;">Potential: <strong>-0.38 t/ha</strong> (scor: <strong>A-</strong>)</div>
             </div>
@@ -972,12 +975,12 @@
         <div id="notita-popup" style="display:none;position:absolute;inset:0;z-index:70;">
           <div onclick="closeNotitaPopup()" style="position:absolute;inset:0;background:rgba(0,0,0,0.5);"></div>
           <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;animation:slideUpTeren 0.25s ease-out;">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;">&#128221; Notita noua</div><div onclick="closeNotitaPopup()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;"><i data-lucide="file-pen"></i> Notita noua</div><div onclick="closeNotitaPopup()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
             <div style="padding:16px;">
               <textarea style="width:100%;padding:10px 12px;border:1px solid var(--brand-border);border-radius:var(--brand-radius);font-size:15px;outline:none;min-height:80px;resize:vertical;font-family:var(--brand-font-sans);" placeholder="Scrie o notita despre acest teren..."></textarea>
               <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
-                <div onclick="alert('Adauga poza')" style="width:36px;height:36px;border-radius:var(--brand-radius);border:1px solid var(--brand-border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--brand-text-muted);">&#128247;</div>
-                <div onclick="alert('Adauga locatie')" style="width:36px;height:36px;border-radius:var(--brand-radius);border:1px solid var(--brand-border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--brand-text-muted);">&#128205;</div>
+                <div onclick="alert('Adauga poza')" style="width:36px;height:36px;border-radius:var(--brand-radius);border:1px solid var(--brand-border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--brand-text-muted);"><i data-lucide="camera"></i></div>
+                <div onclick="alert('Adauga locatie')" style="width:36px;height:36px;border-radius:var(--brand-radius);border:1px solid var(--brand-border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--brand-text-muted);"><i data-lucide="map-pin"></i></div>
                 <div style="flex:1;"></div>
                 <div onclick="closeNotitaPopup()" style="padding:8px 20px;background:var(--brand-primary);color:#fff;border-radius:var(--brand-radius);font-size:15px;font-weight:600;cursor:pointer;">Salveaza</div>
               </div>
@@ -989,14 +992,14 @@
         <div id="reminder-popup" style="display:none;position:absolute;inset:0;z-index:70;">
           <div onclick="closeReminderPopup()" style="position:absolute;inset:0;background:rgba(0,0,0,0.5);"></div>
           <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;max-height:70%;display:flex;flex-direction:column;animation:slideUpTeren 0.25s ease-out;">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;">&#128276; Remindere</div><div onclick="closeReminderPopup()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;"><i data-lucide="bell"></i> Remindere</div><div onclick="closeReminderPopup()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
             <div style="flex:1;overflow-y:auto;padding:12px;">
               <div style="display:flex;align-items:center;gap:8px;padding:10px;background:var(--brand-warning-bg);border:1px solid var(--brand-warning);border-radius:var(--brand-radius);margin-bottom:6px;">
-                <span style="font-size:18px;">&#128276;</span>
+                <span style="font-size:18px;"><i data-lucide="bell"></i></span>
                 <div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--brand-warning);">15 Apr &mdash; Inspectie drona</div><div style="font-size:12px;color:var(--brand-text-muted);">Zona NE cu NDVI scazut</div></div>
               </div>
               <div style="display:flex;align-items:center;gap:8px;padding:10px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius);margin-bottom:6px;">
-                <span style="font-size:18px;">&#128276;</span>
+                <span style="font-size:18px;"><i data-lucide="bell"></i></span>
                 <div style="flex:1;"><div style="font-size:14px;font-weight:600;">22 Apr &mdash; Tratament fungicid</div><div style="font-size:12px;color:var(--brand-text-muted);">Programat dupa inspectie</div></div>
               </div>
               <div style="margin-top:8px;display:flex;gap:6px;">
@@ -1012,7 +1015,7 @@
         <div id="task-popup" style="display:none;position:absolute;inset:0;z-index:70;">
           <div onclick="closeTaskPopup()" style="position:absolute;inset:0;background:rgba(0,0,0,0.5);"></div>
           <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;max-height:75%;display:flex;flex-direction:column;animation:slideUpTeren 0.25s ease-out;">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;">&#9745; Tasks</div><div onclick="closeTaskPopup()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--brand-border);"><div style="font-size:18px;font-weight:700;"><i data-lucide="check-square"></i> Tasks</div><div onclick="closeTaskPopup()" style="width:28px;height:28px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#888;">&times;</div></div>
             <div style="flex:1;overflow-y:auto;padding:12px;">
               <div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin-bottom:6px;">Active (2)</div>
               <div style="display:flex;align-items:center;gap:8px;padding:8px;background:#fff;border:1px solid var(--brand-border);border-radius:var(--brand-radius);margin-bottom:4px;cursor:pointer;">
@@ -1025,7 +1028,7 @@
               </div>
               <div style="font-size:11px;font-weight:700;color:var(--brand-text-muted);text-transform:uppercase;margin:10px 0 6px;">Completate (3)</div>
               <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--brand-surface);border:1px solid var(--brand-border);border-radius:var(--brand-radius);margin-bottom:4px;opacity:0.6;">
-                <div style="width:18px;height:18px;border:2px solid var(--brand-success);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--brand-success);color:#fff;font-size:12px;">&#10003;</div>
+                <div style="width:18px;height:18px;border:2px solid var(--brand-success);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--brand-success);color:#fff;font-size:12px;"><i data-lucide="check"></i></div>
                 <div style="flex:1;"><div style="font-size:14px;font-weight:600;text-decoration:line-through;">Analiza sol</div><div style="font-size:12px;color:var(--brand-text-muted);">Completat 10 Mar</div></div>
               </div>
               <div style="margin-top:8px;display:flex;gap:6px;">
@@ -1039,22 +1042,22 @@
         <!-- Teren actions popup -->
         <div id="teren-actions" style="display:none;position:absolute;top:140px;right:16px;background:#fff;border-radius:var(--brand-radius-lg);box-shadow:0 4px 20px rgba(0,0,0,0.2);min-width:190px;overflow:hidden;z-index:41;">
           <div onclick="alert('Editeaza forma teren');toggleTerenActions()" style="display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:15px;">
-            <span style="font-size:18px;">&#9998;</span> Editeaza forma
+            <span style="font-size:18px;"><i data-lucide="pencil"></i></span> Editeaza forma
           </div>
           <div onclick="alert('Editeaza informatii');toggleTerenActions()" style="display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:15px;">
-            <span style="font-size:18px;">&#128221;</span> Editeaza informatii
+            <span style="font-size:18px;"><i data-lucide="file-pen"></i></span> Editeaza informatii
           </div>
           <div onclick="alert('Adauga lucrare');toggleTerenActions()" style="display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:15px;">
-            <span style="font-size:18px;">&#127806;</span> Adauga lucrare
+            <span style="font-size:18px;"><i data-lucide="wheat"></i></span> Adauga lucrare
           </div>
           <div onclick="alert('Share teren');toggleTerenActions()" style="display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:15px;">
-            <span style="font-size:18px;">&#128279;</span> Share
+            <span style="font-size:18px;"><i data-lucide="link"></i></span> Share
           </div>
           <div onclick="alert('Export teren');toggleTerenActions()" style="display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:15px;">
-            <span style="font-size:18px;">&#11015;</span> Export
+            <span style="font-size:18px;"><i data-lucide="arrow-down"></i></span> Export
           </div>
           <div onclick="alert('Sterge teren');toggleTerenActions()" style="display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;font-size:15px;color:var(--brand-danger);">
-            <span style="font-size:18px;">&#128465;</span> Sterge teren
+            <span style="font-size:18px;"><i data-lucide="trash-2"></i></span> Sterge teren
           </div>
         </div>
 
@@ -1100,42 +1103,42 @@ function switchView(mode) {
 
 initFilterDropdown([
   { key: 'cult', label: 'CULTURA', pills: [
-    { icon: '&#127806;', text: 'Grau' }, { icon: '&#127803;', text: 'Rapita' },
-    { icon: '&#127805;', text: 'Porumb' }, { icon: '&#127804;', text: 'F.Soarelui' },
-    { icon: '&#127806;', text: 'Orz' }
+    { icon: '<i data-lucide="wheat"></i>', text: 'Grau' }, { icon: '<i data-lucide="sun"></i>', text: 'Rapita' },
+    { icon: '<i data-lucide="wheat"></i>', text: 'Porumb' }, { icon: '<i data-lucide="flower-2"></i>', text: 'F.Soarelui' },
+    { icon: '<i data-lucide="wheat"></i>', text: 'Orz' }
   ]},
   { key: 'prop', label: 'PROPRIETATE', pills: [{ text: 'Propriu' }, { text: 'Arenda' }, { text: 'Concesiune' }, { text: 'Schimb' }, { text: 'Altele' }]},
   { key: 'stat', label: 'LUCRARI AGRICOLE', pills: [{ text: 'Semanat' }, { text: 'Erbicidare' }, { text: 'Fertilizare' }, { text: 'Fungicid' }, { text: 'Insecticid' }, { text: 'Tratament' }, { text: 'Pregatire sol' }, { text: 'Recoltat' }]}
 ]);
 var terenuri = [
-  { name: 'Parcela 12 Nord', value: '25.5', unit: 'ha', number: 'BF 152 Parcela 17a', type: 'Grau de toamnă', soi: "Genesi 60k/ha", icons: ['&#128276;'], updated: '15-apr-26', status: 'Erbicidare', thumbIcon: '&#127793;', thumbBg: '#1B5E20', details: ['PL ferma1','Propriu'] },
-  { name: 'Parcela 7 Vest', value: '18.2', unit: 'ha', number: 'BF 152 Parcela 7', type: 'Porumb', soi: "DKC 5143 65k/ha", icons: ['&#128276;'], updated: '14-apr-26', status: 'Semanat', thumbIcon: '&#127805;', thumbBg: '#B7791F', details: ['PL ferma1','Arenda'], alert: true, alertColor: '#C0392B' },
-  { name: 'Parcela 3 Sud', value: '32.0', unit: 'ha', number: 'BF 153 Parcela 3', type: 'Floarea soarelui', soi: "LG 5411 55k/ha", updated: '13-apr-26', status: 'Pregatire sol', statusColor: '#B7791F', thumbIcon: '&#127804;', thumbBg: '#F57C00', details: ['PL ferma2','Propriu'] },
-  { name: 'Parcela 15 Est', value: '14.8', unit: 'ha', number: 'BF 154 Parcela 15', type: 'Rapita de toamnă', soi: "ES Neptune 50 sem/m²", icons: ['&#128276;'], updated: '12-apr-26', status: 'Fertilizare', thumbIcon: '&#127803;', thumbBg: '#6D28D9', details: ['PL ferma1','Concesiune'], alert: true, alertColor: '#F59E0B' },
-  { name: 'Parcela 9 Centru', value: '42.3', unit: 'ha', number: 'BF 155 Parcela 9', type: 'Grau de toamnă', soi: "Genesi 60k/ha", updated: '11-apr-26', status: 'Tratament', statusColor: '#C0392B', thumbIcon: '&#127793;', thumbBg: '#1B5E20', details: ['PL agricola','Propriu'], alert: true, alertColor: '#C0392B' },
-  { name: 'Lotul 3 Vest', value: '8.7', unit: 'ha', number: 'BF 156 Lot 3', type: 'Orz', soi: "Montague 280kg/ha", updated: '10-apr-26', status: 'Fungicid', thumbIcon: '&#127806;', thumbBg: '#2E86AB', details: ['PL ferma2','Schimb'] },
-  { name: 'Parcela 22 Nord', value: '55.0', unit: 'ha', number: 'BF 157 Parcela 22', type: 'Porumb', soi: "P9074 70k/ha", icons: ['&#128276;'], updated: '09-apr-26', status: 'Semanat', thumbIcon: '&#127805;', thumbBg: '#B7791F', details: ['PL agricola','Arenda'] },
-  { name: 'Parcela 4 Est', value: '19.6', unit: 'ha', number: 'BF 158 Parcela 4', type: 'Soia', soi: "Enigma 620k/ha", updated: '08-apr-26', status: 'Pregatire sol', statusColor: '#B7791F', thumbIcon: '&#127793;', thumbBg: '#0D7377', details: ['PL ferma1','Propriu'] },
-  { name: 'Parcela 18 Sud', value: '28.4', unit: 'ha', number: 'BF 159 Parcela 18', type: 'Grau de toamnă', soi: "Genesi 60k/ha", updated: '07-apr-26', status: 'Insecticid', thumbIcon: '&#127793;', thumbBg: '#1B5E20', details: ['PL AgrSud','Arenda'] },
-  { name: 'Parcela 6 Vest', value: '12.1', unit: 'ha', number: 'BF 160 Parcela 6', type: 'Neinsemantata', updated: '25-mar-26', status: 'Pregatire sol', statusColor: '#B7791F', thumbIcon: '&#127793;', thumbBg: '#666', details: ['PL ferma2','Altele'] },
-  { name: 'Parcela 30 Nord', value: '67.2', unit: 'ha', number: 'BF 161 Parcela 30', type: 'Floarea soarelui', soi: "P64LE99 58k/ha", icons: ['&#128276;'], updated: '14-apr-26', status: 'Semanat', thumbIcon: '&#127804;', thumbBg: '#F57C00', details: ['PL ferma1','Propriu'], alert: true, alertColor: '#F59E0B' },
-  { name: 'Parcela 11 Centru', value: '21.8', unit: 'ha', number: 'BF 162 Parcela 11', type: 'Rapita de toamnă', soi: "PX131 45 sem/m²", updated: '06-apr-26', status: 'Recoltat', statusColor: '#666', thumbIcon: '&#127803;', thumbBg: '#6D28D9', details: ['PL agricola','Concesiune'] }
+  { name: 'Parcela 12 Nord', value: '25.5', unit: 'ha', number: 'BF 152 Parcela 17a', type: 'Grau de toamnă', soi: "Genesi 60k/ha", icons: ['<i data-lucide="bell"></i>'], updated: '15-apr-26', status: 'Erbicidare', thumbIcon: '<i data-lucide="sprout"></i>', thumbBg: '#1B5E20', details: ['PL ferma1','Propriu'] },
+  { name: 'Parcela 7 Vest', value: '18.2', unit: 'ha', number: 'BF 152 Parcela 7', type: 'Porumb', soi: "DKC 5143 65k/ha", icons: ['<i data-lucide="bell"></i>'], updated: '14-apr-26', status: 'Semanat', thumbIcon: '<i data-lucide="wheat"></i>', thumbBg: '#B7791F', details: ['PL ferma1','Arenda'], alert: true, alertColor: '#C0392B' },
+  { name: 'Parcela 3 Sud', value: '32.0', unit: 'ha', number: 'BF 153 Parcela 3', type: 'Floarea soarelui', soi: "LG 5411 55k/ha", updated: '13-apr-26', status: 'Pregatire sol', statusColor: '#B7791F', thumbIcon: '<i data-lucide="flower-2"></i>', thumbBg: '#F57C00', details: ['PL ferma2','Propriu'] },
+  { name: 'Parcela 15 Est', value: '14.8', unit: 'ha', number: 'BF 154 Parcela 15', type: 'Rapita de toamnă', soi: "ES Neptune 50 sem/m²", icons: ['<i data-lucide="bell"></i>'], updated: '12-apr-26', status: 'Fertilizare', thumbIcon: '<i data-lucide="sun"></i>', thumbBg: '#6D28D9', details: ['PL ferma1','Concesiune'], alert: true, alertColor: '#F59E0B' },
+  { name: 'Parcela 9 Centru', value: '42.3', unit: 'ha', number: 'BF 155 Parcela 9', type: 'Grau de toamnă', soi: "Genesi 60k/ha", updated: '11-apr-26', status: 'Tratament', statusColor: '#C0392B', thumbIcon: '<i data-lucide="sprout"></i>', thumbBg: '#1B5E20', details: ['PL agricola','Propriu'], alert: true, alertColor: '#C0392B' },
+  { name: 'Lotul 3 Vest', value: '8.7', unit: 'ha', number: 'BF 156 Lot 3', type: 'Orz', soi: "Montague 280kg/ha", updated: '10-apr-26', status: 'Fungicid', thumbIcon: '<i data-lucide="wheat"></i>', thumbBg: '#2E86AB', details: ['PL ferma2','Schimb'] },
+  { name: 'Parcela 22 Nord', value: '55.0', unit: 'ha', number: 'BF 157 Parcela 22', type: 'Porumb', soi: "P9074 70k/ha", icons: ['<i data-lucide="bell"></i>'], updated: '09-apr-26', status: 'Semanat', thumbIcon: '<i data-lucide="wheat"></i>', thumbBg: '#B7791F', details: ['PL agricola','Arenda'] },
+  { name: 'Parcela 4 Est', value: '19.6', unit: 'ha', number: 'BF 158 Parcela 4', type: 'Soia', soi: "Enigma 620k/ha", updated: '08-apr-26', status: 'Pregatire sol', statusColor: '#B7791F', thumbIcon: '<i data-lucide="sprout"></i>', thumbBg: '#0D7377', details: ['PL ferma1','Propriu'] },
+  { name: 'Parcela 18 Sud', value: '28.4', unit: 'ha', number: 'BF 159 Parcela 18', type: 'Grau de toamnă', soi: "Genesi 60k/ha", updated: '07-apr-26', status: 'Insecticid', thumbIcon: '<i data-lucide="sprout"></i>', thumbBg: '#1B5E20', details: ['PL AgrSud','Arenda'] },
+  { name: 'Parcela 6 Vest', value: '12.1', unit: 'ha', number: 'BF 160 Parcela 6', type: 'Neinsemantata', updated: '25-mar-26', status: 'Pregatire sol', statusColor: '#B7791F', thumbIcon: '<i data-lucide="sprout"></i>', thumbBg: '#666', details: ['PL ferma2','Altele'] },
+  { name: 'Parcela 30 Nord', value: '67.2', unit: 'ha', number: 'BF 161 Parcela 30', type: 'Floarea soarelui', soi: "P64LE99 58k/ha", icons: ['<i data-lucide="bell"></i>'], updated: '14-apr-26', status: 'Semanat', thumbIcon: '<i data-lucide="flower-2"></i>', thumbBg: '#F57C00', details: ['PL ferma1','Propriu'], alert: true, alertColor: '#F59E0B' },
+  { name: 'Parcela 11 Centru', value: '21.8', unit: 'ha', number: 'BF 162 Parcela 11', type: 'Rapita de toamnă', soi: "PX131 45 sem/m²", updated: '06-apr-26', status: 'Recoltat', statusColor: '#666', thumbIcon: '<i data-lucide="sun"></i>', thumbBg: '#6D28D9', details: ['PL agricola','Concesiune'] }
 ];
 var list = document.getElementById('card-list');
 terenuri.forEach(function(t) {
   var haVal = (t.value || '') + ' ' + (t.unit || '');
   var cult = t.type || '';
   var prop = (t.details && t.details[1]) || '';
-  t.onClick = 'openDetail(' + JSON.stringify(t.name).replace(/"/g,'&quot;') + ',' + JSON.stringify(t.number || '').replace(/"/g,'&quot;') + ',' + JSON.stringify(haVal).replace(/"/g,'&quot;') + ',' + JSON.stringify(cult).replace(/"/g,'&quot;') + ',' + JSON.stringify(prop).replace(/"/g,'&quot;') + ',' + JSON.stringify(t.thumbIcon || '&#127793;').replace(/"/g,'&quot;') + ')';
+  t.onClick = 'openDetail(' + JSON.stringify(t.name).replace(/"/g,'&quot;') + ',' + JSON.stringify(t.number || '').replace(/"/g,'&quot;') + ',' + JSON.stringify(haVal).replace(/"/g,'&quot;') + ',' + JSON.stringify(cult).replace(/"/g,'&quot;') + ',' + JSON.stringify(prop).replace(/"/g,'&quot;') + ',' + JSON.stringify(t.thumbIcon || '<i data-lucide="sprout"></i>').replace(/"/g,'&quot;') + ')';
   list.insertAdjacentHTML('beforeend', buildCardV2(t));
 });
 
 initFabActions([
-  { icon: '&#10010;', label: 'Adauga manual teren', action: function(){ openAddDrawer(); } },
-  { icon: '&#128465;', label: 'Sterge teren', action: function(){ tryFabDelete(); } },
-  { icon: '&#11014;', label: 'Importa terenuri', action: function(){ alert('Importa terenuri'); } },
-  { icon: '&#11015;', label: 'Exporta terenuri', action: function(){ alert('Exporta terenuri'); } },
-  { icon: '&#127758;', label: 'Deschide harta', action: function(){ window.location.href='harta-terenuri.html'; } }
+  { icon: '<i data-lucide="plus"></i>', label: 'Adauga manual teren', action: function(){ openAddDrawer(); } },
+  { icon: '<i data-lucide="trash-2"></i>', label: 'Sterge teren', action: function(){ tryFabDelete(); } },
+  { icon: '<i data-lucide="arrow-up"></i>', label: 'Importa terenuri', action: function(){ alert('Importa terenuri'); } },
+  { icon: '<i data-lucide="arrow-down"></i>', label: 'Exporta terenuri', action: function(){ alert('Exporta terenuri'); } },
+  { icon: '<i data-lucide="globe"></i>', label: 'Deschide harta', action: function(){ window.location.href='harta-terenuri.html'; } }
 ]);
 setupFabDelete({ cardSel: '.ucard-v2', entityLabel: 'teren', entityLabelPl: 'terenuri', labelText: 'Sterge teren' });
 
@@ -1149,7 +1152,7 @@ function openAddDrawer() {
     formHTML += buildGpsPoint(i);
   }
   formHTML += '</div>';
-  formHTML += '<div onclick="addGpsPoint()" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;margin-top:8px;border:1px dashed var(--brand-primary);border-radius:var(--brand-radius);cursor:pointer;color:var(--brand-primary);font-size:14px;font-weight:600;">&#10010; Adauga punct GPS</div>';
+  formHTML += '<div onclick="addGpsPoint()" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;margin-top:8px;border:1px dashed var(--brand-primary);border-radius:var(--brand-radius);cursor:pointer;color:var(--brand-primary);font-size:14px;font-weight:600;"><i data-lucide="plus"></i> Adauga punct GPS</div>';
 
   openDrawer('Adauga manual teren', formHTML, [
     { label: 'Anuleaza', class: 'btn-secondary', action: closeDrawer },
@@ -1198,7 +1201,7 @@ window.openDetail = function(name, bf, ha, cult, prop, icon) {
   if (topbar) topbar.setAttribute('data-title', name || 'Detalii Teren');
   var bfEl = document.getElementById('dt-bf'); if (bfEl) bfEl.textContent = bf || '';
   var haEl = document.getElementById('dt-ha'); if (haEl) haEl.textContent = ha || '';
-  var cultEl = document.getElementById('dt-cult'); if (cultEl) cultEl.innerHTML = (icon || '&#127793;') + ' ' + (cult || '');
+  var cultEl = document.getElementById('dt-cult'); if (cultEl) cultEl.innerHTML = (icon || '<i data-lucide="sprout"></i>') + ' ' + (cult || '');
   var propEl = document.getElementById('dt-prop');
   if (propEl) {
     propEl.textContent = prop || 'Propriu';
@@ -1268,5 +1271,7 @@ window.switchSoilMap = function(type, el) {
   el.style.background = 'var(--brand-primary)'; el.style.color = '#fff'; el.style.borderColor = 'var(--brand-primary)';
 };
 </script>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

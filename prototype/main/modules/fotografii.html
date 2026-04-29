@@ -7,7 +7,9 @@
   <title>Media — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
     .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
     .browser-dots { display: flex; gap: 6px; }
@@ -242,6 +244,7 @@
     .foto-share-opt-lbl { font-size: 11px; font-weight: 700; color: var(--brand-text-primary); line-height: 1.15; }
     .foto-share-cancel { width: 100%; padding: 14px; border-radius: 12px; background: #F5F5F5; border: none; font-size: 15px; font-weight: 700; color: var(--brand-text-primary); cursor: pointer; }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -251,8 +254,8 @@
         <div id="app-topbar" data-title="Media"></div>
         <div class="view-tabs"><button class="view-tab active">Fotografii</button><button class="view-tab">Video</button></div>
         <div class="toolbar">
-          <div class="toolbar-pill" onclick="selectAllVisible()">&#9744; Toate</div>
-          <div class="toolbar-search" style="flex:1;"><span class="toolbar-search-icon">&#128269;</span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow">&#9660;</span></div>
+          <div class="toolbar-pill" onclick="selectAllVisible()"><i data-lucide="square"></i> Toate</div>
+          <div class="toolbar-search" style="flex:1;"><span class="toolbar-search-icon"><i data-lucide="search"></i></span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow"><i data-lucide="chevron-down"></i></span></div>
           <div class="filter-dropdown" id="filter-dd"></div>
         </div>
         <div class="phone-scroll" id="gallery" style="padding-bottom:150px;"></div>
@@ -267,17 +270,17 @@
             </button>
           </div>
           <div class="foto-ds">
-            <div id="foto-preview" class="foto-preview" onclick="openFullscreen()" title="Apasă pentru fullscreen">&#128247;</div>
+            <div id="foto-preview" class="foto-preview" onclick="openFullscreen()" title="Apasă pentru fullscreen"><i data-lucide="camera"></i></div>
             <div class="foto-meta-box">
               <div class="foto-meta-head" onclick="toggleMeta()">
-                <div class="foto-meta-label"><span style="font-size:13px;">&#9881;</span> Metadate foto</div>
-                <span id="foto-meta-chev" class="foto-meta-chev">&#9662;</span>
+                <div class="foto-meta-label"><span style="font-size:13px;"><i data-lucide="settings"></i></span> Metadate foto</div>
+                <span id="foto-meta-chev" class="foto-meta-chev"><i data-lucide="chevron-down"></i></span>
               </div>
               <div class="foto-meta-grid" id="foto-meta-grid" style="display:none;"></div>
             </div>
             <div id="foto-comment-section" class="foto-note-box">
               <div class="foto-note-head">
-                <div class="foto-note-label"><span style="font-size:14px;">&#128221;</span> Notă</div>
+                <div class="foto-note-label"><span style="font-size:14px;"><i data-lucide="file-pen"></i></span> Notă</div>
               </div>
               <div id="foto-comment" class="foto-note-txt" onclick="startEditNote()" role="button" tabindex="0"></div>
               <button id="foto-note-edit-btn" class="foto-note-edit-btn" onclick="startEditNote()">
@@ -293,7 +296,7 @@
               </div>
             </div>
             <div class="foto-ai-box">
-              <div class="foto-ai-label"><span style="font-size:14px;">&#129302;</span> Interpretare AI — ce s-a detectat</div>
+              <div class="foto-ai-label"><span style="font-size:14px;"><i data-lucide="bot"></i></span> Interpretare AI — ce s-a detectat</div>
               <div id="foto-ai-list"></div>
             </div>
           </div>
@@ -321,7 +324,7 @@
             <div class="foto-bs-title">Etichetă și Important</div>
             <div class="foto-bs-sub" id="foto-tag-sub">Pentru fotografia selectată</div>
             <div class="foto-tag-row">
-              <span style="font-size:22px;">&#11088;</span>
+              <span style="font-size:22px;"><i data-lucide="star"></i></span>
               <div class="foto-tag-row-lbl">Marchează ca important</div>
               <div id="foto-tag-switch" class="foto-switch" onclick="toggleTagStar()"></div>
             </div>
@@ -342,14 +345,14 @@
             <div class="foto-bs-title">Atașează la lucrare</div>
             <div class="foto-bs-sub" id="foto-attach-sub">Alege lucrarea sau evaluarea</div>
             <div class="foto-attach-search">
-              <span class="foto-attach-search-ico">&#128269;</span>
+              <span class="foto-attach-search-ico"><i data-lucide="search"></i></span>
               <input type="search" id="foto-attach-input" class="foto-attach-input" placeholder="Caută după parcelă sau tip lucrare..." inputmode="search" autocomplete="off">
               <button class="foto-attach-clear" id="foto-attach-clear" onclick="clearAttachSearch()" style="display:none;">&times;</button>
             </div>
             <div class="foto-attach-count" id="foto-attach-count">—</div>
             <div id="foto-attach-list" class="foto-attach-list"></div>
             <div id="foto-attach-empty" class="foto-attach-empty" style="display:none;">
-              <div style="font-size:40px;opacity:0.35;margin-bottom:8px;">&#128269;</div>
+              <div style="font-size:40px;opacity:0.35;margin-bottom:8px;"><i data-lucide="search"></i></div>
               <div style="font-size:14px;font-weight:700;color:var(--brand-text-primary);">Nu am găsit nimic</div>
               <div style="font-size:12px;color:var(--brand-text-muted);margin-top:4px;">Încearcă alt termen de căutare</div>
             </div>
@@ -384,7 +387,7 @@
         <!-- Confirm delete dialog -->
         <div id="foto-confirm" class="foto-confirm" onclick="if(event.target===this)closeConfirm()">
           <div class="foto-confirm-card">
-            <div class="foto-confirm-ico">&#128465;</div>
+            <div class="foto-confirm-ico"><i data-lucide="trash-2"></i></div>
             <div class="foto-confirm-title" id="foto-confirm-title">Șterge fotografiile?</div>
             <div class="foto-confirm-txt" id="foto-confirm-txt">—</div>
             <div class="foto-confirm-btns">
@@ -400,14 +403,14 @@
             <div class="foto-share-title" id="foto-share-title">Distribuie</div>
             <div class="foto-share-sub" id="foto-share-sub">—</div>
             <div class="foto-share-grid">
-              <div class="foto-share-opt" onclick="doShare('whatsapp')"><div class="foto-share-opt-ico" style="background:#25D366;">&#128241;</div><div class="foto-share-opt-lbl">WhatsApp</div></div>
-              <div class="foto-share-opt" onclick="doShare('email')"><div class="foto-share-opt-ico" style="background:#EA4335;">&#9993;</div><div class="foto-share-opt-lbl">Email</div></div>
-              <div class="foto-share-opt" onclick="doShare('sms')"><div class="foto-share-opt-ico" style="background:#4A90E2;">&#128172;</div><div class="foto-share-opt-lbl">SMS</div></div>
-              <div class="foto-share-opt" onclick="doShare('link')"><div class="foto-share-opt-ico" style="background:#6B7280;">&#128279;</div><div class="foto-share-opt-lbl">Copiază link</div></div>
-              <div class="foto-share-opt" onclick="doShare('team')"><div class="foto-share-opt-ico" style="background:#00686A;">&#128101;</div><div class="foto-share-opt-lbl">Echipa fermă</div></div>
-              <div class="foto-share-opt" onclick="doShare('agronom')"><div class="foto-share-opt-ico" style="background:#16A34A;">&#128377;</div><div class="foto-share-opt-lbl">Agronom</div></div>
-              <div class="foto-share-opt" onclick="doShare('download')"><div class="foto-share-opt-ico" style="background:#7C3AED;">&#11015;</div><div class="foto-share-opt-lbl">Descarcă</div></div>
-              <div class="foto-share-opt" onclick="doShare('pdf')"><div class="foto-share-opt-ico" style="background:#DC2626;">&#128196;</div><div class="foto-share-opt-lbl">Export PDF</div></div>
+              <div class="foto-share-opt" onclick="doShare('whatsapp')"><div class="foto-share-opt-ico" style="background:#25D366;"><i data-lucide="smartphone"></i></div><div class="foto-share-opt-lbl">WhatsApp</div></div>
+              <div class="foto-share-opt" onclick="doShare('email')"><div class="foto-share-opt-ico" style="background:#EA4335;"><i data-lucide="mail"></i></div><div class="foto-share-opt-lbl">Email</div></div>
+              <div class="foto-share-opt" onclick="doShare('sms')"><div class="foto-share-opt-ico" style="background:#4A90E2;"><i data-lucide="message-circle"></i></div><div class="foto-share-opt-lbl">SMS</div></div>
+              <div class="foto-share-opt" onclick="doShare('link')"><div class="foto-share-opt-ico" style="background:#6B7280;"><i data-lucide="link"></i></div><div class="foto-share-opt-lbl">Copiază link</div></div>
+              <div class="foto-share-opt" onclick="doShare('team')"><div class="foto-share-opt-ico" style="background:#00686A;"><i data-lucide="users"></i></div><div class="foto-share-opt-lbl">Echipa fermă</div></div>
+              <div class="foto-share-opt" onclick="doShare('agronom')"><div class="foto-share-opt-ico" style="background:#16A34A;"><i data-lucide="gamepad-2"></i></div><div class="foto-share-opt-lbl">Agronom</div></div>
+              <div class="foto-share-opt" onclick="doShare('download')"><div class="foto-share-opt-ico" style="background:#7C3AED;"><i data-lucide="arrow-down"></i></div><div class="foto-share-opt-lbl">Descarcă</div></div>
+              <div class="foto-share-opt" onclick="doShare('pdf')"><div class="foto-share-opt-ico" style="background:#DC2626;"><i data-lucide="file"></i></div><div class="foto-share-opt-lbl">Export PDF</div></div>
             </div>
             <button class="foto-share-cancel" onclick="closeShareSheet()">Anulează</button>
           </div>
@@ -422,61 +425,61 @@
 // Galerie foto grupata pe date
 var photos = [
   { date: '2026-apr-16', items: [
-    { bg: '#1B5E20', icon: '&#127793;', label: 'Parcela 12', search: 'parcela 12 grau ion popescu', comment: 'Cultură uniformă după tratamentul de săptămâna trecută. Plantele arată viguroase, densitatea bună pe toată suprafața. Am observat câteva zone cu ușor stres hidric pe latura de sud — de monitorizat.' },
-    { bg: '#2E86AB', icon: '&#127806;', label: 'Parcela 7', search: 'parcela 7 porumb andrei popa', comment: 'Verificare rapidă fenofază V4-V5.' },
-    { bg: '#F57C00', icon: '&#127804;', label: 'Parcela 3', search: 'parcela 3 floarea soarelui maria ionescu', comment: 'Răsărire neuniformă pe latura de est, probabil din cauza compactării solului. De revenit peste 5 zile pentru reevaluare.' },
-    { bg: '#6D28D9', icon: '&#127803;', label: 'Parcela 15', search: 'parcela 15 rapita elena vasile', comment: 'Înflorire în plin — sezon bun până acum.' },
-    { bg: '#C0392B', icon: '&#128030;', label: 'Parcela 9', search: 'parcela 9 grau ion popescu', comment: 'ATENȚIE! Focar de rugină galbenă identificat într-o zonă de 2-3 m². Necesită tratament fungicid urgent în 48h, altfel riscăm extinderea pe toată parcela. Am sunat agronomul.' }
+    { bg: '#1B5E20', icon: '<i data-lucide="sprout"></i>', label: 'Parcela 12', search: 'parcela 12 grau ion popescu', comment: 'Cultură uniformă după tratamentul de săptămâna trecută. Plantele arată viguroase, densitatea bună pe toată suprafața. Am observat câteva zone cu ușor stres hidric pe latura de sud — de monitorizat.' },
+    { bg: '#2E86AB', icon: '<i data-lucide="wheat"></i>', label: 'Parcela 7', search: 'parcela 7 porumb andrei popa', comment: 'Verificare rapidă fenofază V4-V5.' },
+    { bg: '#F57C00', icon: '<i data-lucide="flower-2"></i>', label: 'Parcela 3', search: 'parcela 3 floarea soarelui maria ionescu', comment: 'Răsărire neuniformă pe latura de est, probabil din cauza compactării solului. De revenit peste 5 zile pentru reevaluare.' },
+    { bg: '#6D28D9', icon: '<i data-lucide="sun"></i>', label: 'Parcela 15', search: 'parcela 15 rapita elena vasile', comment: 'Înflorire în plin — sezon bun până acum.' },
+    { bg: '#C0392B', icon: '<i data-lucide="bug"></i>', label: 'Parcela 9', search: 'parcela 9 grau ion popescu', comment: 'ATENȚIE! Focar de rugină galbenă identificat într-o zonă de 2-3 m². Necesită tratament fungicid urgent în 48h, altfel riscăm extinderea pe toată parcela. Am sunat agronomul.' }
   ]},
   { date: '2026-apr-15', items: [
-    { bg: '#0D7377', icon: '&#127793;', label: 'Parcela 4', search: 'parcela 4 soia andrei popa', comment: 'Control fenologic săptămânal. Totul arată ok.' },
-    { bg: '#8B5E3C', icon: '&#128668;', label: 'JD 6130R', search: 'john deere tractor ion popescu', comment: 'Revizie făcută la 2400 ore. Filtrele schimbate, lagărele verificate. Gata pentru campania de primăvară.' },
-    { bg: '#1B5E20', icon: '&#127806;', label: 'Lotul 3', search: 'lotul 3 orz maria ionescu', comment: 'Orzul se prezintă bine, spicul format.' },
-    { bg: '#B7791F', icon: '&#127805;', label: 'Parcela 22', search: 'parcela 22 porumb andrei popa', comment: 'Prășit efectuat ieri, buruienile bine stăpânite.' },
-    { bg: '#00686A', icon: '&#127793;', label: 'Parcela 18', search: 'parcela 18 grau elena vasile', comment: 'Foto martor după tratamentul erbicid — zona de control arată diferențe clare față de parcela netratată. Rezultat foarte bun.' },
-    { bg: '#C0392B', icon: '&#9888;', label: 'Parcela 30', search: 'parcela 30 floarea soarelui ion popescu', comment: 'URGENT — zone cu atac de gărgăriță identificate. Pragul economic aproape atins, trebuie intervenit cât mai rapid. Am programat tratament pentru mâine dimineață.' }
+    { bg: '#0D7377', icon: '<i data-lucide="sprout"></i>', label: 'Parcela 4', search: 'parcela 4 soia andrei popa', comment: 'Control fenologic săptămânal. Totul arată ok.' },
+    { bg: '#8B5E3C', icon: '<i data-lucide="tractor"></i>', label: 'JD 6130R', search: 'john deere tractor ion popescu', comment: 'Revizie făcută la 2400 ore. Filtrele schimbate, lagărele verificate. Gata pentru campania de primăvară.' },
+    { bg: '#1B5E20', icon: '<i data-lucide="wheat"></i>', label: 'Lotul 3', search: 'lotul 3 orz maria ionescu', comment: 'Orzul se prezintă bine, spicul format.' },
+    { bg: '#B7791F', icon: '<i data-lucide="wheat"></i>', label: 'Parcela 22', search: 'parcela 22 porumb andrei popa', comment: 'Prășit efectuat ieri, buruienile bine stăpânite.' },
+    { bg: '#00686A', icon: '<i data-lucide="sprout"></i>', label: 'Parcela 18', search: 'parcela 18 grau elena vasile', comment: 'Foto martor după tratamentul erbicid — zona de control arată diferențe clare față de parcela netratată. Rezultat foarte bun.' },
+    { bg: '#C0392B', icon: '<i data-lucide="alert-triangle"></i>', label: 'Parcela 30', search: 'parcela 30 floarea soarelui ion popescu', comment: 'URGENT — zone cu atac de gărgăriță identificate. Pragul economic aproape atins, trebuie intervenit cât mai rapid. Am programat tratament pentru mâine dimineață.' }
   ]},
   { date: '2026-apr-14', items: [
-    { bg: '#6D28D9', icon: '&#127803;', label: 'Parcela 11', search: 'parcela 11 rapita maria ionescu', comment: 'Rapița în fenofază de înflorire completă, polen vizibil pe flori. Albinele active — vizită polenizator reușită.' },
-    { bg: '#1B5E20', icon: '&#127793;', label: 'Parcela 12', search: 'parcela 12 grau andrei popa', comment: 'Vizită rutină.' },
-    { bg: '#F57C00', icon: '&#128247;', label: 'Depozit A1', search: 'depozit a1 ion popescu', comment: 'Verificare stoc îngrășăminte NPK — mai avem aproximativ 3.5 tone. Suficient pentru următoarele 2 campanii.' },
-    { bg: '#2E86AB', icon: '&#127806;', label: 'Parcela 7', search: 'parcela 7 porumb elena vasile', comment: 'Creștere armonioasă, fără semne de atac.' }
+    { bg: '#6D28D9', icon: '<i data-lucide="sun"></i>', label: 'Parcela 11', search: 'parcela 11 rapita maria ionescu', comment: 'Rapița în fenofază de înflorire completă, polen vizibil pe flori. Albinele active — vizită polenizator reușită.' },
+    { bg: '#1B5E20', icon: '<i data-lucide="sprout"></i>', label: 'Parcela 12', search: 'parcela 12 grau andrei popa', comment: 'Vizită rutină.' },
+    { bg: '#F57C00', icon: '<i data-lucide="camera"></i>', label: 'Depozit A1', search: 'depozit a1 ion popescu', comment: 'Verificare stoc îngrășăminte NPK — mai avem aproximativ 3.5 tone. Suficient pentru următoarele 2 campanii.' },
+    { bg: '#2E86AB', icon: '<i data-lucide="wheat"></i>', label: 'Parcela 7', search: 'parcela 7 porumb elena vasile', comment: 'Creștere armonioasă, fără semne de atac.' }
   ]},
   { date: '2026-apr-13', items: [
-    { bg: '#B7791F', icon: '&#127805;', label: 'Parcela 22', search: 'parcela 22 porumb ion popescu', comment: 'Monitorizare post-prășit, solul bine structurat.' },
-    { bg: '#0D7377', icon: '&#127793;', label: 'Parcela 4', search: 'parcela 4 soia maria ionescu', comment: 'Răsărire completă.' },
-    { bg: '#8B5E3C', icon: '&#128668;', label: 'Combina', search: 'combina cr9 andrei popa', comment: 'Combina CR9 pregătită pentru perioada de recoltare. Am verificat lagărele și curelele, uleiul hidraulic completat. Testul la gol a decurs fără probleme.' }
+    { bg: '#B7791F', icon: '<i data-lucide="wheat"></i>', label: 'Parcela 22', search: 'parcela 22 porumb ion popescu', comment: 'Monitorizare post-prășit, solul bine structurat.' },
+    { bg: '#0D7377', icon: '<i data-lucide="sprout"></i>', label: 'Parcela 4', search: 'parcela 4 soia maria ionescu', comment: 'Răsărire completă.' },
+    { bg: '#8B5E3C', icon: '<i data-lucide="tractor"></i>', label: 'Combina', search: 'combina cr9 andrei popa', comment: 'Combina CR9 pregătită pentru perioada de recoltare. Am verificat lagărele și curelele, uleiul hidraulic completat. Testul la gol a decurs fără probleme.' }
   ]},
   { date: '2026-apr-12', items: [
-    { bg: '#1B5E20', icon: '&#127793;', label: 'Parcela 9', search: 'parcela 9 grau elena vasile', comment: 'Primul control vizual la această parcelă — cultura arată excelent, fără probleme vizibile.' },
-    { bg: '#00686A', icon: '&#127793;', label: 'Parcela 6', search: 'parcela 6 ion popescu', comment: 'Observație: mici zone cu apă stagnantă în capăt — de verificat drenajul.' },
-    { bg: '#C0392B', icon: '&#128030;', label: 'Parcela 15', search: 'parcela 15 rapita maria ionescu', comment: 'Insecte detectate pe frunze, probabil gărgăriță. Voi consulta agronomul pentru strategia de tratament.' },
-    { bg: '#6D28D9', icon: '&#127804;', label: 'Parcela 3', search: 'parcela 3 floarea soarelui andrei popa', comment: 'Foto rutină, plantele uniforme.' },
-    { bg: '#F57C00', icon: '&#127793;', label: 'Parcela 18', search: 'parcela 18 grau ion popescu', comment: 'Spicul în curs de formare, stare generală bună.' }
+    { bg: '#1B5E20', icon: '<i data-lucide="sprout"></i>', label: 'Parcela 9', search: 'parcela 9 grau elena vasile', comment: 'Primul control vizual la această parcelă — cultura arată excelent, fără probleme vizibile.' },
+    { bg: '#00686A', icon: '<i data-lucide="sprout"></i>', label: 'Parcela 6', search: 'parcela 6 ion popescu', comment: 'Observație: mici zone cu apă stagnantă în capăt — de verificat drenajul.' },
+    { bg: '#C0392B', icon: '<i data-lucide="bug"></i>', label: 'Parcela 15', search: 'parcela 15 rapita maria ionescu', comment: 'Insecte detectate pe frunze, probabil gărgăriță. Voi consulta agronomul pentru strategia de tratament.' },
+    { bg: '#6D28D9', icon: '<i data-lucide="flower-2"></i>', label: 'Parcela 3', search: 'parcela 3 floarea soarelui andrei popa', comment: 'Foto rutină, plantele uniforme.' },
+    { bg: '#F57C00', icon: '<i data-lucide="sprout"></i>', label: 'Parcela 18', search: 'parcela 18 grau ion popescu', comment: 'Spicul în curs de formare, stare generală bună.' }
   ]}
 ];
 
 // ===== Mock lucrari pentru picker-ul Atașează =====
 // dateISO = YYYY-MM-DD pentru sortare; date = display
 var MOCK_LUCRARI = [
-  { id: 'L1',  title: 'Tratament fungicid',       parcela: 'Parcela 12', dateISO: '2026-04-16', date: '16 apr 2026', type: 'lucrare',  icon: '&#129514;' },
-  { id: 'L3',  title: 'Erbicidare',               parcela: 'Parcela 18', dateISO: '2026-04-15', date: '15 apr 2026', type: 'lucrare',  icon: '&#128167;' },
-  { id: 'E1',  title: 'Evaluare cultură',         parcela: 'Parcela 9',  dateISO: '2026-04-15', date: '15 apr 2026', type: 'evaluare', icon: '&#128269;' },
-  { id: 'L2',  title: 'Prășit',                   parcela: 'Parcela 22', dateISO: '2026-04-13', date: '13 apr 2026', type: 'lucrare',  icon: '&#128668;' },
-  { id: 'E2',  title: 'Monitorizare dăunători',   parcela: 'Parcela 15', dateISO: '2026-04-12', date: '12 apr 2026', type: 'evaluare', icon: '&#128027;' },
-  { id: 'L4',  title: 'Tratament insecticid',     parcela: 'Parcela 30', dateISO: '2026-04-11', date: '11 apr 2026', type: 'lucrare',  icon: '&#128029;' },
-  { id: 'L5',  title: 'Fertilizare NPK',          parcela: 'Parcela 7',  dateISO: '2026-04-10', date: '10 apr 2026', type: 'lucrare',  icon: '&#127806;' },
-  { id: 'E3',  title: 'Evaluare răsărire',        parcela: 'Parcela 3',  dateISO: '2026-04-09', date: '9 apr 2026',  type: 'evaluare', icon: '&#127804;' },
-  { id: 'L6',  title: 'Semănat porumb',           parcela: 'Parcela 7',  dateISO: '2026-04-05', date: '5 apr 2026',  type: 'lucrare',  icon: '&#127806;' },
-  { id: 'L7',  title: 'Discuit',                  parcela: 'Parcela 11', dateISO: '2026-04-03', date: '3 apr 2026',  type: 'lucrare',  icon: '&#9881;' },
-  { id: 'L8',  title: 'Arat de primăvară',        parcela: 'Parcela 4',  dateISO: '2026-03-28', date: '28 mar 2026', type: 'lucrare',  icon: '&#128668;' },
-  { id: 'E4',  title: 'Evaluare densitate',       parcela: 'Parcela 12', dateISO: '2026-03-22', date: '22 mar 2026', type: 'evaluare', icon: '&#127793;' },
-  { id: 'L9',  title: 'Tratament T1',             parcela: 'Parcela 9',  dateISO: '2026-03-18', date: '18 mar 2026', type: 'lucrare',  icon: '&#129514;' },
-  { id: 'L10', title: 'Fertilizare azotată',      parcela: 'Parcela 18', dateISO: '2026-03-12', date: '12 mar 2026', type: 'lucrare',  icon: '&#128293;' },
-  { id: 'E5',  title: 'Monitorizare dezghețare',  parcela: 'Parcela 6',  dateISO: '2026-03-08', date: '8 mar 2026',  type: 'evaluare', icon: '&#10052;' },
-  { id: 'L11', title: 'Erbicidare de toamnă',     parcela: 'Parcela 15', dateISO: '2025-11-20', date: '20 nov 2025', type: 'lucrare',  icon: '&#128167;' },
-  { id: 'L12', title: 'Semănat rapiță',           parcela: 'Parcela 15', dateISO: '2025-09-05', date: '5 sep 2025',  type: 'lucrare',  icon: '&#127803;' },
-  { id: 'L13', title: 'Semănat grâu',             parcela: 'Parcela 12', dateISO: '2025-10-02', date: '2 oct 2025',  type: 'lucrare',  icon: '&#127793;' }
+  { id: 'L1',  title: 'Tratament fungicid',       parcela: 'Parcela 12', dateISO: '2026-04-16', date: '16 apr 2026', type: 'lucrare',  icon: '<i data-lucide="test-tube-2"></i>' },
+  { id: 'L3',  title: 'Erbicidare',               parcela: 'Parcela 18', dateISO: '2026-04-15', date: '15 apr 2026', type: 'lucrare',  icon: '<i data-lucide="droplets"></i>' },
+  { id: 'E1',  title: 'Evaluare cultură',         parcela: 'Parcela 9',  dateISO: '2026-04-15', date: '15 apr 2026', type: 'evaluare', icon: '<i data-lucide="search"></i>' },
+  { id: 'L2',  title: 'Prășit',                   parcela: 'Parcela 22', dateISO: '2026-04-13', date: '13 apr 2026', type: 'lucrare',  icon: '<i data-lucide="tractor"></i>' },
+  { id: 'E2',  title: 'Monitorizare dăunători',   parcela: 'Parcela 15', dateISO: '2026-04-12', date: '12 apr 2026', type: 'evaluare', icon: '<i data-lucide="bug"></i>' },
+  { id: 'L4',  title: 'Tratament insecticid',     parcela: 'Parcela 30', dateISO: '2026-04-11', date: '11 apr 2026', type: 'lucrare',  icon: '<i data-lucide="bug"></i>' },
+  { id: 'L5',  title: 'Fertilizare NPK',          parcela: 'Parcela 7',  dateISO: '2026-04-10', date: '10 apr 2026', type: 'lucrare',  icon: '<i data-lucide="wheat"></i>' },
+  { id: 'E3',  title: 'Evaluare răsărire',        parcela: 'Parcela 3',  dateISO: '2026-04-09', date: '9 apr 2026',  type: 'evaluare', icon: '<i data-lucide="flower-2"></i>' },
+  { id: 'L6',  title: 'Semănat porumb',           parcela: 'Parcela 7',  dateISO: '2026-04-05', date: '5 apr 2026',  type: 'lucrare',  icon: '<i data-lucide="wheat"></i>' },
+  { id: 'L7',  title: 'Discuit',                  parcela: 'Parcela 11', dateISO: '2026-04-03', date: '3 apr 2026',  type: 'lucrare',  icon: '<i data-lucide="settings"></i>' },
+  { id: 'L8',  title: 'Arat de primăvară',        parcela: 'Parcela 4',  dateISO: '2026-03-28', date: '28 mar 2026', type: 'lucrare',  icon: '<i data-lucide="tractor"></i>' },
+  { id: 'E4',  title: 'Evaluare densitate',       parcela: 'Parcela 12', dateISO: '2026-03-22', date: '22 mar 2026', type: 'evaluare', icon: '<i data-lucide="sprout"></i>' },
+  { id: 'L9',  title: 'Tratament T1',             parcela: 'Parcela 9',  dateISO: '2026-03-18', date: '18 mar 2026', type: 'lucrare',  icon: '<i data-lucide="test-tube-2"></i>' },
+  { id: 'L10', title: 'Fertilizare azotată',      parcela: 'Parcela 18', dateISO: '2026-03-12', date: '12 mar 2026', type: 'lucrare',  icon: '<i data-lucide="flame"></i>' },
+  { id: 'E5',  title: 'Monitorizare dezghețare',  parcela: 'Parcela 6',  dateISO: '2026-03-08', date: '8 mar 2026',  type: 'evaluare', icon: '<i data-lucide="snowflake"></i>' },
+  { id: 'L11', title: 'Erbicidare de toamnă',     parcela: 'Parcela 15', dateISO: '2025-11-20', date: '20 nov 2025', type: 'lucrare',  icon: '<i data-lucide="droplets"></i>' },
+  { id: 'L12', title: 'Semănat rapiță',           parcela: 'Parcela 15', dateISO: '2025-09-05', date: '5 sep 2025',  type: 'lucrare',  icon: '<i data-lucide="sun"></i>' },
+  { id: 'L13', title: 'Semănat grâu',             parcela: 'Parcela 12', dateISO: '2025-10-02', date: '2 oct 2025',  type: 'lucrare',  icon: '<i data-lucide="sprout"></i>' }
 ];
 // Sortat descrescator dupa data (cel mai recent primul)
 MOCK_LUCRARI.sort(function(a, b) { return b.dateISO.localeCompare(a.dateISO); });
@@ -489,7 +492,7 @@ try { CAM_PHOTOS = JSON.parse(localStorage.getItem('camphotos') || '[]'); } catc
 if (CAM_PHOTOS.length) {
   photos.unshift({ date: '2026-apr-20 (camera)', items: CAM_PHOTOS.map(function(cp, i) {
     return {
-      bg: '#00686A', icon: '&#128247;',
+      bg: '#00686A', icon: '<i data-lucide="camera"></i>',
       label: (cp.parcele && cp.parcele[0]) ? cp.parcele[0].split(' ').slice(0,2).join(' ') : 'Foto',
       search: ((cp.parcele || []).join(' ') + ' ' + (cp.comment || '') + ' camera').toLowerCase(),
       _camId: cp.id
@@ -502,28 +505,28 @@ function mockAIDetections(label) {
   label = (label || '').toLowerCase();
   // Reguli simple per tip poza:
   if (label.indexOf('grau') >= 0) return [
-    { level: 'danger', icon: '&#128030;', name: 'Rugina galbenă', conf: 91, desc: 'Pete galbene pe 3 zone identificate — tratament recomandat în 48h.' },
-    { level: 'ok', icon: '&#127793;', name: 'Densitate cultură', conf: 88, desc: 'Uniformă — ~450 plante/m² (peste pragul minim).' }
+    { level: 'danger', icon: '<i data-lucide="bug"></i>', name: 'Rugina galbenă', conf: 91, desc: 'Pete galbene pe 3 zone identificate — tratament recomandat în 48h.' },
+    { level: 'ok', icon: '<i data-lucide="sprout"></i>', name: 'Densitate cultură', conf: 88, desc: 'Uniformă — ~450 plante/m² (peste pragul minim).' }
   ];
   if (label.indexOf('porumb') >= 0) return [
-    { level: 'warning', icon: '&#128027;', name: 'Sfredelitor porumb', conf: 76, desc: 'Ouă detectate pe 2 frunze — monitorizare activă.' },
-    { level: 'ok', icon: '&#127804;', name: 'Înălțime medie', conf: 95, desc: 'V6-V7 (optim pentru sezon).' }
+    { level: 'warning', icon: '<i data-lucide="bug"></i>', name: 'Sfredelitor porumb', conf: 76, desc: 'Ouă detectate pe 2 frunze — monitorizare activă.' },
+    { level: 'ok', icon: '<i data-lucide="flower-2"></i>', name: 'Înălțime medie', conf: 95, desc: 'V6-V7 (optim pentru sezon).' }
   ];
   if (label.indexOf('rapita') >= 0 || label.indexOf('rapiță') >= 0) return [
-    { level: 'warning', icon: '&#128027;', name: 'Gărgăriță siliconică', conf: 82, desc: '5-7 exemplare / m² — aproape de prag.' }
+    { level: 'warning', icon: '<i data-lucide="bug"></i>', name: 'Gărgăriță siliconică', conf: 82, desc: '5-7 exemplare / m² — aproape de prag.' }
   ];
   if (label.indexOf('floarea') >= 0 || label.indexOf('floarea soarelui') >= 0) return [
-    { level: 'ok', icon: '&#127804;', name: 'Fenofază', conf: 93, desc: 'R3 — optim pentru tratament.' }
+    { level: 'ok', icon: '<i data-lucide="flower-2"></i>', name: 'Fenofază', conf: 93, desc: 'R3 — optim pentru tratament.' }
   ];
   if (label.indexOf('combina') >= 0 || label.indexOf('tractor') >= 0) return [
-    { level: 'ok', icon: '&#128668;', name: 'Echipament identificat', conf: 97, desc: 'Stare aparentă bună, fără anomalii vizibile.' }
+    { level: 'ok', icon: '<i data-lucide="tractor"></i>', name: 'Echipament identificat', conf: 97, desc: 'Stare aparentă bună, fără anomalii vizibile.' }
   ];
   if (label.indexOf('depozit') >= 0) return [
-    { level: 'ok', icon: '&#128230;', name: 'Depozit produse', conf: 89, desc: 'Nu s-au detectat anomalii.' }
+    { level: 'ok', icon: '<i data-lucide="package"></i>', name: 'Depozit produse', conf: 89, desc: 'Nu s-au detectat anomalii.' }
   ];
   // Default
   return [
-    { level: 'ok', icon: '&#127807;', name: 'Cultură sănătoasă', conf: 84, desc: 'Nu s-au detectat boli sau dăunători la scanare.' }
+    { level: 'ok', icon: '<i data-lucide="leaf"></i>', name: 'Cultură sănătoasă', conf: 84, desc: 'Nu s-au detectat boli sau dăunători la scanare.' }
   ];
 }
 
@@ -551,7 +554,7 @@ photos.forEach(function(day) {
     grid += '<div class="gallery-item" data-search="' + (p.search || p.label.toLowerCase()) + '" data-photo="' + pData + '" data-idx="' + globalIdx + '" data-key="' + pKey + '" onclick="openFoto(this)">';
     grid += '<div class="gallery-img" style="background:' + p.bg + ';">' + p.icon + '</div>';
     grid += '<div class="gallery-badge">' + p.label + '</div>';
-    grid += '<div class="gallery-select" onclick="event.stopPropagation();this.classList.toggle(\'checked\');updateShareFab()">&#10003;</div>';
+    grid += '<div class="gallery-select" onclick="event.stopPropagation();this.classList.toggle(\'checked\');updateShareFab()"><i data-lucide="check"></i></div>';
     grid += '</div>';
   });
   grid += '</div>';
@@ -571,7 +574,7 @@ function refreshThumbIndicators() {
     if (m.star) {
       var s = document.createElement('div');
       s.className = 'gallery-star';
-      s.innerHTML = '&#11088;';
+      s.innerHTML = '<i data-lucide="star"></i>';
       item.appendChild(s);
     }
     if (m.tags && m.tags.length) {
@@ -613,14 +616,14 @@ function populateDetail(data) {
   if (camData) {
     terainName = (camData.parcele && camData.parcele.length) ? camData.parcele.join(', ') : '—';
     autoBadge = camData.parcelaAuto
-      ? '<span class="ft-sub auto">&#10003; AUTO GPS</span>'
-      : '<span class="ft-sub manual">&#9998; MANUAL</span>';
+      ? '<span class="ft-sub auto"><i data-lucide="check"></i> AUTO GPS</span>'
+      : '<span class="ft-sub manual"><i data-lucide="pencil"></i> MANUAL</span>';
   } else {
     terainName = (data && data.label) || '—';
   }
-  prev.innerHTML = (data && data.icon ? data.icon : '&#128247;') +
+  prev.innerHTML = (data && data.icon ? data.icon : '<i data-lucide="camera"></i>') +
     '<div class="foto-terrain-badge">' +
-      '<div class="ft-name"><span style="font-size:17px;">&#127806;</span> ' + terainName + '</div>' +
+      '<div class="ft-name"><span style="font-size:17px;"><i data-lucide="wheat"></i></span> ' + terainName + '</div>' +
       (autoBadge ? autoBadge : '') +
     '</div>';
 
@@ -647,9 +650,9 @@ function populateDetail(data) {
   var mh = '';
   // Coloana 1
   mh += '<div>';
-  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#128197;</span><div class="foto-meta-txt"><div class="foto-meta-k">Data</div><div class="foto-meta-v">' + d_date + '</div></div></div>';
-  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#128368;</span><div class="foto-meta-txt"><div class="foto-meta-k">Ora</div><div class="foto-meta-v">' + d_time + '</div></div></div>';
-  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#128100;</span><div class="foto-meta-txt"><div class="foto-meta-k">Cine a făcut</div><div class="foto-meta-v">' + d_user + '</div></div></div>';
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico"><i data-lucide="calendar"></i></span><div class="foto-meta-txt"><div class="foto-meta-k">Data</div><div class="foto-meta-v">' + d_date + '</div></div></div>';
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico"><i data-lucide="clock"></i></span><div class="foto-meta-txt"><div class="foto-meta-k">Ora</div><div class="foto-meta-v">' + d_time + '</div></div></div>';
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico"><i data-lucide="user"></i></span><div class="foto-meta-txt"><div class="foto-meta-k">Cine a făcut</div><div class="foto-meta-v">' + d_user + '</div></div></div>';
   mh += '</div>';
   // Coloana 2
   mh += '<div>';
@@ -657,12 +660,12 @@ function populateDetail(data) {
   var xyParts = (d_gps || '').split(/[,;]\s*/);
   var gx = xyParts[0] || '—';
   var gy = xyParts[1] || '—';
-  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#128205;</span><div class="foto-meta-txt"><div class="foto-meta-k">Coordonate</div>' +
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico"><i data-lucide="map-pin"></i></span><div class="foto-meta-txt"><div class="foto-meta-k">Coordonate</div>' +
         '<div class="foto-meta-v"><span style="display:inline-block;min-width:18px;color:var(--brand-text-muted);font-weight:800;">X</span> ' + gx + '</div>' +
         '<div class="foto-meta-v"><span style="display:inline-block;min-width:18px;color:var(--brand-text-muted);font-weight:800;">Y</span> ' + gy + '</div>' +
         '</div></div>';
-  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#129517;</span><div class="foto-meta-txt"><div class="foto-meta-k">Direcție</div><div class="foto-meta-v">' + d_orient + '</div></div></div>';
-  mh += '<div class="foto-meta-item"><span class="foto-meta-ico">&#127777;</span><div class="foto-meta-txt"><div class="foto-meta-k">Temperatură</div><div class="foto-meta-v">' + d_temp + '</div></div></div>';
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico"><i data-lucide="compass"></i></span><div class="foto-meta-txt"><div class="foto-meta-k">Direcție</div><div class="foto-meta-v">' + d_orient + '</div></div></div>';
+  mh += '<div class="foto-meta-item"><span class="foto-meta-ico"><i data-lucide="thermometer"></i></span><div class="foto-meta-txt"><div class="foto-meta-k">Temperatură</div><div class="foto-meta-v">' + d_temp + '</div></div></div>';
   mh += '</div>';
   metaBox.innerHTML = mh;
   // AI analysis — prefera cele deja salvate in localStorage, fallback la mock
@@ -854,8 +857,8 @@ function renderFS(container) {
   container.innerHTML =
     '<div class="foto-fs-hd">' +
       '<div class="foto-fs-hd-info">' +
-        '<div class="foto-fs-label"><span style="font-size:21px;">&#127806;</span> ' + parcela + '</div>' +
-        '<div class="foto-fs-sub"><span style="font-size:17px;">&#128197;</span> ' + dataStr + '</div>' +
+        '<div class="foto-fs-label"><span style="font-size:21px;"><i data-lucide="wheat"></i></span> ' + parcela + '</div>' +
+        '<div class="foto-fs-sub"><span style="font-size:17px;"><i data-lucide="calendar"></i></span> ' + dataStr + '</div>' +
       '</div>' +
       '<span class="foto-fs-count">' + (idx + 1) + ' / ' + ALL_FOTOS.length + '</span>' +
       '<button class="foto-share-btn" onclick="shareCurrentFS()" title="Distribuie" style="width:40px;height:40px;">' +
@@ -869,7 +872,7 @@ function renderFS(container) {
       (hasNav ? '<button class="foto-fs-nav next" onclick="navFS(1)">&rsaquo;</button>' : '') +
       (hasNav ? '<div class="foto-fs-hint">Swipe ←/→ sau taste</div>' : '') +
     '</div>' +
-    (commentStr ? '<div class="foto-fs-comment"><span class="foto-fs-comment-ico">&#128172;</span><span>' + commentStr + '</span></div>' : '');
+    (commentStr ? '<div class="foto-fs-comment"><span class="foto-fs-comment-ico"><i data-lucide="message-circle"></i></span><span>' + commentStr + '</span></div>' : '');
 }
 
 function navFS(dir) {
@@ -1122,12 +1125,12 @@ function renderFotoFabMenu() {
   var needsAny = n >= 1;
   var needs2 = n === 2;
   var actions = [
-    { key:'share', icon:'&#128228;', lbl:'Distribuie', desc:'Trimite la WhatsApp, email, agronom', need:needsAny, needHint:'Selectează poze' },
-    { key:'tag', icon:'&#127991;', lbl:'Etichetă / Important', desc:'Marchează cu ⭐ sau adaugă etichete', need:needsAny, needHint:'Selectează poze' },
-    { key:'attach', icon:'&#128206;', lbl:'Atașează la lucrare', desc:'Leagă pozele de o lucrare din Jurnal', need:needsAny, needHint:'Selectează poze' },
-    { key:'compare', icon:'&#128202;', lbl:'Compară (2)', desc:'Vezi 2 poze side-by-side (before / after)', need:needs2, needHint:'Selectează exact 2 poze' },
-    { key:'pdf', icon:'&#128196;', lbl:'Raport PDF', desc:'Generează raport cu toate metadatele', need:needsAny, needHint:'Selectează poze' },
-    { key:'delete', icon:'&#128465;', lbl:'Șterge', desc:'Elimină pozele selectate din galerie', need:needsAny, needHint:'Selectează poze', danger:true }
+    { key:'share', icon:'<i data-lucide="send"></i>', lbl:'Distribuie', desc:'Trimite la WhatsApp, email, agronom', need:needsAny, needHint:'Selectează poze' },
+    { key:'tag', icon:'<i data-lucide="tag"></i>', lbl:'Etichetă / Important', desc:'Marchează cu ⭐ sau adaugă etichete', need:needsAny, needHint:'Selectează poze' },
+    { key:'attach', icon:'<i data-lucide="paperclip"></i>', lbl:'Atașează la lucrare', desc:'Leagă pozele de o lucrare din Jurnal', need:needsAny, needHint:'Selectează poze' },
+    { key:'compare', icon:'<i data-lucide="bar-chart-2"></i>', lbl:'Compară (2)', desc:'Vezi 2 poze side-by-side (before / after)', need:needs2, needHint:'Selectează exact 2 poze' },
+    { key:'pdf', icon:'<i data-lucide="file"></i>', lbl:'Raport PDF', desc:'Generează raport cu toate metadatele', need:needsAny, needHint:'Selectează poze' },
+    { key:'delete', icon:'<i data-lucide="trash-2"></i>', lbl:'Șterge', desc:'Elimină pozele selectate din galerie', need:needsAny, needHint:'Selectează poze', danger:true }
   ];
   var html = '';
   actions.forEach(function(a) {
@@ -1212,12 +1215,12 @@ function renderTagChips() {
   var html = '';
   QUICK_TAGS.forEach(function(t) {
     var on = _tagState.tags.indexOf(t) !== -1;
-    html += '<div class="foto-chip' + (on ? ' on' : '') + '" onclick="toggleTagChip(\'' + t + '\')">' + (on ? '&#10003; ' : '') + t + '</div>';
+    html += '<div class="foto-chip' + (on ? ' on' : '') + '" onclick="toggleTagChip(\'' + t + '\')">' + (on ? '<i data-lucide="check"></i> ' : '') + t + '</div>';
   });
   // Custom tags (not in QUICK_TAGS)
   _tagState.tags.forEach(function(t) {
     if (QUICK_TAGS.indexOf(t) !== -1) return;
-    html += '<div class="foto-chip on" onclick="toggleTagChip(\'' + t.replace(/'/g,"\\'") + '\')">&#10003; ' + t + ' &times;</div>';
+    html += '<div class="foto-chip on" onclick="toggleTagChip(\'' + t.replace(/'/g,"\\'") + '\')"><i data-lucide="check"></i> ' + t + ' &times;</div>';
   });
   host.innerHTML = html;
 }
@@ -1308,7 +1311,7 @@ window.renderAttachList = function() {
     html += '<div class="fli-sub">' + _escHtml(l.date) + '</div>';
     html += '</div>';
     html += '<div class="fli-type ' + l.type + '">' + (l.type === 'lucrare' ? 'LUCRARE' : 'EVALUARE') + '</div>';
-    html += '<div class="fli-check">&#10003;</div>';
+    html += '<div class="fli-check"><i data-lucide="check"></i></div>';
     html += '</div>';
   });
   if (currentGroup !== null) html += '</div>';
@@ -1416,9 +1419,9 @@ window.openCompare = function() {
   sel.forEach(function(p, i) {
     var pill = (p.label || '—') + ' &middot; ' + (p._dayDate || '—');
     html += '<div class="foto-cmp-half" style="background:' + (p.bg || '#333') + ';">';
-    html += (p.icon || '&#128247;');
+    html += (p.icon || '<i data-lucide="camera"></i>');
     html += '<div class="foto-cmp-pos">' + (i === 0 ? 'A' : 'B') + '</div>';
-    html += '<div class="foto-cmp-pill"><span style="font-size:14px;">&#127806;</span> ' + pill + '</div>';
+    html += '<div class="foto-cmp-pill"><span style="font-size:14px;"><i data-lucide="wheat"></i></span> ' + pill + '</div>';
     html += '</div>';
   });
   body.innerHTML = html;
@@ -1460,8 +1463,8 @@ window.openPdfSheet = function() {
     // Poza mare
     html += '<div class="foto-pdf-photo" style="background:' + (p.bg || '#333') + ';">';
     html += '<span class="foto-pdf-item-no">#' + (i+1) + '</span>';
-    html += (p.icon || '&#128247;');
-    html += '<div class="foto-pdf-photo-badge"><span style="font-size:13px;">&#127806;</span> ' + parcela + '</div>';
+    html += (p.icon || '<i data-lucide="camera"></i>');
+    html += '<div class="foto-pdf-photo-badge"><span style="font-size:13px;"><i data-lucide="wheat"></i></span> ' + parcela + '</div>';
     html += '</div>';
     // Metadate
     html += '<div class="foto-pdf-meta">';
@@ -1475,7 +1478,7 @@ window.openPdfSheet = function() {
       html += '<div class="foto-pdf-meta-row"><span class="k">Analiză AI:</span><span>' + aiHtml + '</span></div>';
     }
     if (note) {
-      html += '<div class="foto-pdf-note">&#128172; ' + _escHtml(note) + '</div>';
+      html += '<div class="foto-pdf-note"><i data-lucide="message-circle"></i> ' + _escHtml(note) + '</div>';
     }
     html += '</div>';
     html += '</div>';
@@ -1510,5 +1513,7 @@ function openAddDrawer() {
   ]);
 }
 </script>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>

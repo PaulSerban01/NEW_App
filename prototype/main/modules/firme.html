@@ -7,7 +7,9 @@
   <title>Firme — UI Preview</title>
   <link rel="stylesheet" href="../design-system.css">
   <style>
-    .preview-root { display: flex; height: 100vh; gap: 0; overflow-y: auto; }
+  /* Lucide icons */
+  svg.lucide { width:1em; height:1em; vertical-align:middle; display:inline-block; flex-shrink:0; }
+    .preview-root { display: flex; height: 100%; gap: 0; overflow-y: hidden; }
     .browser-chrome { border: 1px solid #d4d4d4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .browser-bar { background: #f3f3f3; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e5e5; }
     .browser-dots { display: flex; gap: 6px; }
@@ -20,6 +22,7 @@
     .spec-section { margin-bottom: 20px; }
     .spec-section h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 8px; }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -29,15 +32,15 @@
         <div id="app-topbar" data-title="Firme"></div>
         <div class="view-tabs"><button class="view-tab active">Firme</button><button class="view-tab">Puncte de lucru</button></div>
         <div class="toolbar">
-          <div class="toolbar-pill" onclick="selectAllVisible()">&#9744; Toate</div>
-          <div class="toolbar-icon-btn" id="sort-btn" onclick="event.stopPropagation();toggleSortDD()">&#8645;</div>
+          <div class="toolbar-pill" onclick="selectAllVisible()"><i data-lucide="square"></i> Toate</div>
+          <div class="toolbar-icon-btn" id="sort-btn" onclick="event.stopPropagation();toggleSortDD()"><i data-lucide="arrows-up-down"></i></div>
           <div class="sort-dropdown" id="sort-dd">
-            <div class="sort-option" data-field="name" onclick="sortCards('name')"><span class="sort-arrow">&#8595;</span> Denumire</div>
-            <div class="sort-option" data-field="type" onclick="sortCards('type')"><span class="sort-arrow">&#8593;</span> Localitate</div>
-            <div class="sort-option" data-field="status" onclick="sortCards('status')"><span class="sort-arrow">&#8593;</span> Abonament</div>
-            <div class="sort-option" data-field="updated" onclick="sortCards('updated')"><span class="sort-arrow">&#8593;</span> Ultima actualizare</div>
+            <div class="sort-option" data-field="name" onclick="sortCards('name')"><span class="sort-arrow"><i data-lucide="arrow-down"></i></span> Denumire</div>
+            <div class="sort-option" data-field="type" onclick="sortCards('type')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Localitate</div>
+            <div class="sort-option" data-field="status" onclick="sortCards('status')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Abonament</div>
+            <div class="sort-option" data-field="updated" onclick="sortCards('updated')"><span class="sort-arrow"><i data-lucide="arrow-up"></i></span> Ultima actualizare</div>
           </div>
-          <div class="toolbar-search"><span class="toolbar-search-icon">&#128269;</span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow">&#9660;</span></div>
+          <div class="toolbar-search"><span class="toolbar-search-icon"><i data-lucide="search"></i></span><span class="toolbar-search-text">Cauta / filtreaza</span><span class="toolbar-search-arrow"><i data-lucide="chevron-down"></i></span></div>
           <button class="toolbar-add" onclick="openAddDrawer()">+</button>
           <div class="filter-dropdown" id="filter-dd"></div>
         </div>
@@ -71,9 +74,9 @@ var list = document.getElementById('card-list');
 firme.forEach(function(f) { list.insertAdjacentHTML('beforeend', buildCard(f)); });
 
 initFabActions([
-  { icon: '&#10010;', label: 'Adauga firma', action: function(){ openAddDrawer(); } },
-  { icon: '&#128465;', label: 'Sterge firma', action: function(){ tryFabDelete(); } },
-  { icon: '&#128196;', label: 'Exporta firme', action: function(){ alert('Exporta firme'); } }
+  { icon: '<i data-lucide="plus"></i>', label: 'Adauga firma', action: function(){ openAddDrawer(); } },
+  { icon: '<i data-lucide="trash-2"></i>', label: 'Sterge firma', action: function(){ tryFabDelete(); } },
+  { icon: '<i data-lucide="file"></i>', label: 'Exporta firme', action: function(){ alert('Exporta firme'); } }
 ]);
 setupFabDelete({ cardSel: '.ucard', entityLabel: 'firmă', entityLabelPl: 'firme', labelText: 'Sterge firma' });
 
@@ -92,5 +95,7 @@ function openAddDrawer() {
   ]);
 }
 </script>
+<script>lucide.createIcons();</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script>
 </body>
 </html>
