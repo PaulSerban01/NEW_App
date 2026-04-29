@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light" data-frame="ios">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Button · Rurio</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+  <link rel="stylesheet" href="../shared/frames.css">
+</head>
+<body data-crumb="Components" data-title="Button" data-show-frame-toggle>
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Component</div>
+          <h1 class="ds-page-title">Button</h1>
+          <p class="ds-page-desc">The primary interactive element. Five variants cover 90% of needs; icon-only and full-width flags handle the rest. Min hit target 44px.</p>
+        </div>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">In context</h2>
+          <p class="ds-section__desc">Toggle iOS / Android in the top bar.</p>
+          <div class="ds-stage">
+            <div id="frame-demo"></div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Variants</h2>
+          <div class="ds-board">
+            <div class="ds-board__header">
+              <h3 class="ds-board__title">Primary · Secondary · Ghost · Destructive</h3>
+              <span class="ds-board__note">Size: md (default)</span>
+            </div>
+            <div class="ds-row">
+              <button class="rn-button rn-button--primary rn-button--md">Save changes</button>
+              <button class="rn-button rn-button--secondary rn-button--md">Cancel</button>
+              <button class="rn-button rn-button--ghost rn-button--md">Learn more</button>
+              <button class="rn-button rn-button--destructive rn-button--md">Delete farm</button>
+              <button class="rn-button rn-button--destructive-soft rn-button--md">Archive</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Sizes</h2>
+          <div class="ds-board">
+            <div class="ds-row">
+              <button class="rn-button rn-button--primary rn-button--sm">Small</button>
+              <button class="rn-button rn-button--primary rn-button--md">Medium</button>
+              <button class="rn-button rn-button--primary rn-button--lg">Large</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">With icons</h2>
+          <div class="ds-board">
+            <div class="ds-row">
+              <button class="rn-button rn-button--primary rn-button--md">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                Add farm
+              </button>
+              <button class="rn-button rn-button--secondary rn-button--md">
+                Filter
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
+              </button>
+              <button class="rn-button rn-button--primary rn-button--icon rn-button--md" aria-label="Add">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+              <button class="rn-button rn-button--secondary rn-button--icon rn-button--md" aria-label="Filter">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">States</h2>
+          <div class="ds-board">
+            <div class="ds-row">
+              <button class="rn-button rn-button--primary rn-button--md">Default</button>
+              <button class="rn-button rn-button--primary rn-button--md" disabled>Disabled</button>
+              <button class="rn-button rn-button--primary rn-button--md" style="background:var(--accent-bg-hover)">Hover</button>
+              <button class="rn-button rn-button--primary rn-button--md" style="background:var(--accent-bg-active)">Pressed</button>
+              <button class="rn-button rn-button--primary rn-button--md" style="box-shadow:var(--shadow-focus)">Focused</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Full width</h2>
+          <div class="ds-board">
+            <button class="rn-button rn-button--primary rn-button--lg rn-button--full">Sign in</button>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">React Native</h2>
+          <pre class="ds-code"><code>&lt;Button
+  variant="primary"      // primary | secondary | ghost | destructive | destructive-soft
+  size="md"              // sm | md | lg
+  leadingIcon={&lt;Plus /&gt;}
+  fullWidth={false}
+  onPress={handlePress}
+&gt;
+  Save changes
+&lt;/Button&gt;</code></pre>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+  <script src="../shared/frames.js"></script>
+  <script>
+    RurioFrames.render('frame-demo', `
+      <div class="phone-screen phone-pad">
+        <h1 class="phone-title">New farm</h1>
+        <p class="phone-sub">Add a farm to start assigning operators and tracking activity.</p>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px;">
+          <button class="rn-button rn-button--primary rn-button--lg rn-button--full">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Create farm
+          </button>
+          <button class="rn-button rn-button--secondary rn-button--lg rn-button--full">Import from CSV</button>
+          <button class="rn-button rn-button--ghost rn-button--md rn-button--full">Cancel</button>
+        </div>
+        <div style="margin-top:auto;padding-top:24px;">
+          <button class="rn-button rn-button--destructive-soft rn-button--md rn-button--full">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+            Delete this draft
+          </button>
+        </div>
+      </div>
+    `);
+  </script>
+</body>
+</html>

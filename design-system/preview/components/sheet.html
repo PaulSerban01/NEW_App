@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Bottom sheet · Rurio</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+</head>
+<body data-crumb="Components" data-title="Bottom sheet">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Component</div>
+          <h1 class="ds-page-title">Bottom sheet <span class="rn-chip rn-chip--accent" style="vertical-align:middle;margin-left:var(--space-2);font-size:11px;">Coming next</span></h1>
+          <p class="ds-page-desc">Dismissable and modal sheets. Three snap points by default.</p>
+        </div>
+
+        <section class="ds-section">
+          <div class="ds-callout ds-callout--info">
+            <div class="ds-callout__title">Scheduled for v1.1</div>
+            <div class="ds-callout__body">Tokens and interaction spec are locked. The visual design and React Native component ship in the next sprint. Until then, compose from existing primitives and match spacing / type rules from <a href="../foundations/tokens.html" style="color:var(--accent-text);">Token architecture</a>.</div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Planned anatomy</h2>
+          <div class="ds-board" style="min-height:240px;display:flex;align-items:center;justify-content:center;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-3);text-align:center;color:var(--fg-subtle);">
+              <div style="width:64px;height:64px;border-radius:var(--radius-2xl);background:var(--accent-subtle);display:grid;place-items:center;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg>
+              </div>
+              <div style="font-size:var(--text-sm);">Placeholder — detailed specs land with the next token pass.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Will cover</h2>
+          <ul style="padding-left:var(--space-5);line-height:1.8;color:var(--fg-muted);">
+            <li>All token bindings — no component-local hex values</li>
+            <li>Default / hover / focus / pressed / disabled states</li>
+            <li>iOS + Android in-context preview</li>
+            <li>React Native prop surface with TypeScript signature</li>
+            <li>Accessibility notes (roles, labels, hit targets)</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+</body>
+</html>

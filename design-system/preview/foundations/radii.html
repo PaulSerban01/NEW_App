@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Radii · Rurio</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+  <style>
+    .rad-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+    @media (max-width: 900px) { .rad-grid { grid-template-columns: repeat(2, 1fr); } }
+    .rad { padding: var(--space-5); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
+    .rad__box { height: 80px; background: var(--accent-subtle); border: 1px solid color-mix(in srgb, var(--accent-bg) 30%, transparent); margin-bottom: var(--space-3); }
+    .rad__name { font-family: var(--font-mono); font-size: 11px; color: var(--fg-default); font-weight: 600; }
+    .rad__value { font-family: var(--font-mono); font-size: 11px; color: var(--fg-subtle); margin-top: 2px; }
+  </style>
+</head>
+<body data-crumb="Foundations" data-title="Radii">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Foundation</div>
+          <h1 class="ds-page-title">Radii</h1>
+          <p class="ds-page-desc">Softly rounded, never squishy. <code class="ds-inline">lg</code> is the workhorse — buttons, inputs, cards. <code class="ds-inline">xl</code> marks elevated surfaces and sheets.</p>
+        </div>
+        <section class="ds-section">
+          <div class="rad-grid">
+            <div class="rad"><div class="rad__box" style="border-radius:var(--radius-none)"></div><div class="rad__name">--radius-none</div><div class="rad__value">0px · dividers, data rows</div></div>
+            <div class="rad"><div class="rad__box" style="border-radius:var(--radius-xs)"></div><div class="rad__name">--radius-xs</div><div class="rad__value">4px · badges, tight tags</div></div>
+            <div class="rad"><div class="rad__box" style="border-radius:var(--radius-sm)"></div><div class="rad__name">--radius-sm</div><div class="rad__value">6px · swatches, small chips</div></div>
+            <div class="rad"><div class="rad__box" style="border-radius:var(--radius-md)"></div><div class="rad__name">--radius-md</div><div class="rad__value">8px · small buttons, nav items</div></div>
+            <div class="rad"><div class="rad__box" style="border-radius:var(--radius-lg)"></div><div class="rad__name">--radius-lg</div><div class="rad__value">12px · buttons, inputs (default)</div></div>
+            <div class="rad"><div class="rad__box" style="border-radius:var(--radius-xl)"></div><div class="rad__name">--radius-xl</div><div class="rad__value">16px · cards, textareas</div></div>
+            <div class="rad"><div class="rad__box" style="border-radius:var(--radius-2xl)"></div><div class="rad__name">--radius-2xl</div><div class="rad__value">20px · sheets, dialogs</div></div>
+            <div class="rad"><div class="rad__box" style="border-radius:var(--radius-3xl)"></div><div class="rad__name">--radius-3xl</div><div class="rad__value">28px · hero surfaces</div></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+</body>
+</html>

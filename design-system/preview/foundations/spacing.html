@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>Spacing · Rurio</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+  <style>
+    .sp-row { display: grid; grid-template-columns: 120px 1fr 120px; gap: var(--space-4); align-items: center; padding: var(--space-3) 0; border-bottom: 1px solid var(--border-subtle); }
+    .sp-row:last-child { border: 0; }
+    .sp-row__name { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--fg-default); font-weight: 600; }
+    .sp-row__bar { height: 24px; background: var(--accent-subtle); border-radius: var(--radius-sm); border: 1px solid color-mix(in srgb, var(--accent-bg) 25%, transparent); }
+    .sp-row__px { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--fg-subtle); text-align: right; }
+  </style>
+</head>
+<body data-crumb="Foundations" data-title="Spacing">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Foundation</div>
+          <h1 class="ds-page-title">Spacing</h1>
+          <p class="ds-page-desc">4-pixel base grid. Half-step values (2, 6) exist for tight icons and inline pills; otherwise stick to multiples of 4.</p>
+        </div>
+        <section class="ds-section">
+          <h2 class="ds-section__title">Scale</h2>
+          <div class="ds-board" id="sp-table"></div>
+        </section>
+        <section class="ds-section">
+          <h2 class="ds-section__title">Application</h2>
+          <table class="ds-table">
+            <thead><tr><th>Use</th><th>Token</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Icon-to-text in a button</td><td><code>--space-2</code></td><td>8px</td></tr>
+              <tr><td>Inputs inside a form</td><td><code>--space-3</code></td><td>12px</td></tr>
+              <tr><td>Card inner padding</td><td><code>--space-5</code></td><td>20px</td></tr>
+              <tr><td>Screen edge padding (mobile)</td><td><code>--space-5</code></td><td>20px</td></tr>
+              <tr><td>Gap between unrelated sections</td><td><code>--space-8</code></td><td>32px</td></tr>
+              <tr><td>Page top breathing room</td><td><code>--space-10</code></td><td>40px</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+  <script>
+    const SP = [['0','0'],['0-5','2'],['1','4'],['1-5','6'],['2','8'],['3','12'],['4','16'],['5','20'],['6','24'],['7','28'],['8','32'],['10','40'],['12','48'],['14','56'],['16','64'],['20','80'],['24','96']];
+    document.getElementById('sp-table').innerHTML = SP.map(([k,v]) => `
+      <div class="sp-row">
+        <div class="sp-row__name">--space-${k}</div>
+        <div><div class="sp-row__bar" style="width:${v}px"></div></div>
+        <div class="sp-row__px">${v}px</div>
+      </div>`).join('');
+  </script>
+</body>
+</html>

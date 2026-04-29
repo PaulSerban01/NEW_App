@@ -1,0 +1,147 @@
+/* ============================================================
+   RURIO — DEVICE FRAMES (pure CSS, no React)
+   Use .rf-ios or .rf-android on a wrapper; inner .rf-screen holds content.
+   Toggle visibility with [data-frame="ios"] / [data-frame="android"] on <html>.
+   Canonical size: 375 × 812 (iPhone 14-ish) — scaled via CSS transform.
+   ============================================================ */
+
+:root[data-frame="android"] .rf-ios { display: none; }
+:root[data-frame="ios"]     .rf-android { display: none; }
+:root:not([data-frame])     .rf-android { display: none; } /* default → iOS */
+
+/* Shared screen dimensions */
+.rf-frame {
+  --rf-w: 390px;
+  --rf-h: 812px;
+  position: relative;
+}
+
+/* ── iOS FRAME ───────────────────────────────────────────── */
+.rf-ios {
+  width: calc(var(--rf-w) + 20px);
+  height: calc(var(--rf-h) + 20px);
+  background: #0A0D0E;
+  border-radius: 56px;
+  padding: 10px;
+  box-shadow:
+    0 0 0 2px #1a1e20 inset,
+    0 30px 60px -20px rgba(0,0,0,0.35),
+    0 20px 40px -30px rgba(0,0,0,0.25);
+}
+.rf-ios .rf-body {
+  position: relative;
+  width: var(--rf-w);
+  height: var(--rf-h);
+  border-radius: 48px;
+  background: var(--bg-canvas);
+  overflow: hidden;
+}
+.rf-ios .rf-status {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg-default);
+  z-index: 5;
+  pointer-events: none;
+}
+.rf-ios .rf-notch {
+  position: absolute; top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: 120px; height: 34px;
+  background: #0A0D0E;
+  border-radius: 20px;
+  z-index: 4;
+}
+.rf-ios .rf-indicators {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.rf-ios .rf-indicators svg { display: block; }
+.rf-ios .rf-home {
+  position: absolute; bottom: 8px; left: 50%;
+  transform: translateX(-50%);
+  width: 134px; height: 5px;
+  background: var(--fg-default);
+  opacity: 0.9;
+  border-radius: 3px;
+  z-index: 5;
+}
+.rf-ios .rf-screen {
+  position: absolute;
+  inset: 54px 0 24px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.rf-ios .rf-screen::-webkit-scrollbar { display: none; }
+
+/* ── ANDROID FRAME ───────────────────────────────────────── */
+.rf-android {
+  width: calc(var(--rf-w) + 16px);
+  height: calc(var(--rf-h) + 16px);
+  background: #0A0D0E;
+  border-radius: 44px;
+  padding: 8px;
+  box-shadow:
+    0 0 0 1.5px #1a1e20 inset,
+    0 30px 60px -20px rgba(0,0,0,0.35),
+    0 20px 40px -30px rgba(0,0,0,0.25);
+}
+.rf-android .rf-body {
+  position: relative;
+  width: var(--rf-w);
+  height: var(--rf-h);
+  border-radius: 36px;
+  background: var(--bg-canvas);
+  overflow: hidden;
+}
+.rf-android .rf-status {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 22px 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--fg-default);
+  z-index: 5;
+  pointer-events: none;
+}
+.rf-android .rf-punchhole {
+  position: absolute; top: 12px; left: 50%;
+  transform: translateX(-50%);
+  width: 12px; height: 12px;
+  background: #0A0D0E;
+  border-radius: 50%;
+  z-index: 6;
+}
+.rf-android .rf-indicators { display: flex; align-items: center; gap: 4px; }
+.rf-android .rf-nav {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+.rf-android .rf-nav-bar {
+  width: 120px; height: 4px;
+  background: var(--fg-default);
+  opacity: 0.7;
+  border-radius: 2px;
+}
+.rf-android .rf-screen {
+  position: absolute;
+  inset: 34px 0 26px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.rf-android .rf-screen::-webkit-scrollbar { display: none; }

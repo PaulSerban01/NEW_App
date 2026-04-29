@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light" data-frame="ios">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Card · Rurio</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+  <link rel="stylesheet" href="../shared/frames.css">
+</head>
+<body data-crumb="Components" data-title="Card" data-show-frame-toggle>
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Component</div>
+          <h1 class="ds-page-title">Card</h1>
+          <p class="ds-page-desc">The universal surface — farm summaries, operator rows, stat tiles, news items. Four elevation styles for different density needs.</p>
+        </div>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">In context</h2>
+          <div class="ds-stage">
+            <div id="frame-demo"></div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Elevation variants</h2>
+          <div class="ds-grid-2">
+            <div class="rn-card">
+              <div class="rn-card__eyebrow">Default</div>
+              <h3 class="rn-card__title">Resting card</h3>
+              <p class="rn-card__body">Soft subtle shadow — the default in most lists and grids.</p>
+            </div>
+            <div class="rn-card rn-card--elevated">
+              <div class="rn-card__eyebrow">Elevated</div>
+              <h3 class="rn-card__title">Floating card</h3>
+              <p class="rn-card__body">For hovered states and popover-like surfaces.</p>
+            </div>
+            <div class="rn-card rn-card--outlined">
+              <div class="rn-card__eyebrow">Outlined</div>
+              <h3 class="rn-card__title">Structural card</h3>
+              <p class="rn-card__body">No shadow, visible border. Use on light canvases where shadows feel busy.</p>
+            </div>
+            <div class="rn-card rn-card--filled">
+              <div class="rn-card__eyebrow">Filled</div>
+              <h3 class="rn-card__title">Grouped card</h3>
+              <p class="rn-card__body">Subtle fill, no shadow. Perfect for settings and info panels.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Stat card</h2>
+          <div class="ds-grid-3">
+            <div class="rn-card rn-stat-card rn-card--outlined">
+              <div class="rn-stat-card__label">Active farms</div>
+              <div class="rn-stat-card__value">24</div>
+              <span class="rn-stat-card__delta rn-stat-card__delta--up"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 3l5 5H3z"/></svg>+3 this week</span>
+            </div>
+            <div class="rn-card rn-stat-card rn-card--outlined">
+              <div class="rn-stat-card__label">Operators</div>
+              <div class="rn-stat-card__value">148</div>
+              <span class="rn-stat-card__delta rn-stat-card__delta--up"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 3l5 5H3z"/></svg>+12</span>
+            </div>
+            <div class="rn-card rn-stat-card rn-card--outlined">
+              <div class="rn-stat-card__label">Open alerts</div>
+              <div class="rn-stat-card__value">6</div>
+              <span class="rn-stat-card__delta rn-stat-card__delta--down"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 13L3 8h10z"/></svg>−2</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">With media</h2>
+          <div class="ds-grid-3">
+            <div class="rn-card" style="padding:0;">
+              <div class="rn-card__media" style="margin:0;border-top-left-radius:var(--radius-xl);border-top-right-radius:var(--radius-xl);height:140px;"></div>
+              <div style="padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-3);">
+                <div>
+                  <div class="rn-card__eyebrow">Glenmore</div>
+                  <h3 class="rn-card__title">Morning paddock walk</h3>
+                </div>
+                <p class="rn-card__body">Checked gates and water. Two fence posts need replacing near the east boundary.</p>
+                <div class="rn-card__footer rn-card__footer--no-divider">
+                  <div style="display:flex;align-items:center;gap:var(--space-2);">
+                    <div class="rn-avatar">MT</div>
+                    <div style="display:flex;flex-direction:column;">
+                      <span style="font-size:var(--text-sm);font-weight:500;color:var(--fg-default);">Mira T.</span>
+                      <span style="font-size:var(--text-xs);color:var(--fg-subtle);">2h ago</span>
+                    </div>
+                  </div>
+                  <span class="rn-chip rn-chip--accent"><span class="rn-chip__dot"></span>Field</span>
+                </div>
+              </div>
+            </div>
+            <div class="rn-card" style="padding:0;">
+              <div class="rn-card__media" style="margin:0;border-top-left-radius:var(--radius-xl);border-top-right-radius:var(--radius-xl);height:140px;background:linear-gradient(135deg,var(--t-300),var(--t-600));"></div>
+              <div style="padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-3);">
+                <div>
+                  <div class="rn-card__eyebrow">Harvest</div>
+                  <h3 class="rn-card__title">Yield forecast ready</h3>
+                </div>
+                <p class="rn-card__body">Projected 412 tons across three fields. Review allocations before Thursday.</p>
+                <div class="rn-card__footer rn-card__footer--no-divider">
+                  <span class="rn-chip rn-chip--warning"><span class="rn-chip__dot"></span>Needs review</span>
+                  <button class="rn-button rn-button--ghost rn-button--sm">Open →</button>
+                </div>
+              </div>
+            </div>
+            <div class="rn-card" style="padding:0;">
+              <div class="rn-card__media" style="margin:0;border-top-left-radius:var(--radius-xl);border-top-right-radius:var(--radius-xl);height:140px;background:linear-gradient(135deg,var(--brand-300),var(--brand-800));"></div>
+              <div style="padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-3);">
+                <div>
+                  <div class="rn-card__eyebrow">News</div>
+                  <h3 class="rn-card__title">New subsidy rules</h3>
+                </div>
+                <p class="rn-card__body">The national board published updated ag-subsidy eligibility for dairy operations.</p>
+                <div class="rn-card__footer rn-card__footer--no-divider">
+                  <span style="font-size:var(--text-xs);color:var(--fg-subtle);">3 min read</span>
+                  <span class="rn-chip">Policy</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">React Native</h2>
+          <pre class="ds-code"><code>&lt;Card variant="outlined"&gt;
+  &lt;Card.Header eyebrow="Glenmore" title="Morning paddock walk" /&gt;
+  &lt;Card.Body&gt;Checked gates and water…&lt;/Card.Body&gt;
+  &lt;Card.Footer&gt;
+    &lt;Avatar label="MT" /&gt;
+    &lt;Chip tone="accent"&gt;Field&lt;/Chip&gt;
+  &lt;/Card.Footer&gt;
+&lt;/Card&gt;</code></pre>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+  <script src="../shared/frames.js"></script>
+  <script>
+    RurioFrames.render('frame-demo', `
+      <div class="phone-screen phone-pad" style="gap:12px;display:flex;flex-direction:column;">
+        <h1 class="phone-title">Your farms</h1>
+        <p class="phone-sub">3 active · last synced 2 minutes ago</p>
+
+        <div class="rn-card rn-card--interactive" style="padding:16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="rn-avatar" style="background:var(--brand-200);">GM</div>
+            <div style="flex:1;min-width:0;">
+              <h3 class="rn-card__title" style="font-size:16px;">Glenmore Dairy</h3>
+              <div style="font-size:12px;color:var(--fg-subtle);">120 ha · 4 operators</div>
+            </div>
+            <span class="rn-chip rn-chip--success"><span class="rn-chip__dot"></span>All clear</span>
+          </div>
+        </div>
+
+        <div class="rn-card rn-card--interactive" style="padding:16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="rn-avatar" style="background:var(--t-200);color:var(--t-800);">NR</div>
+            <div style="flex:1;min-width:0;">
+              <h3 class="rn-card__title" style="font-size:16px;">North Ridge</h3>
+              <div style="font-size:12px;color:var(--fg-subtle);">84 ha · 2 operators</div>
+            </div>
+            <span class="rn-chip rn-chip--warning"><span class="rn-chip__dot"></span>2 alerts</span>
+          </div>
+        </div>
+
+        <div class="rn-card rn-card--interactive" style="padding:16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="rn-avatar" style="background:var(--p3-200,var(--n-200));color:var(--p3-800,var(--fg-default));">CR</div>
+            <div style="flex:1;min-width:0;">
+              <h3 class="rn-card__title" style="font-size:16px;">Creekside</h3>
+              <div style="font-size:12px;color:var(--fg-subtle);">56 ha · 1 operator</div>
+            </div>
+            <span class="rn-chip"><span class="rn-chip__dot"></span>Quiet</span>
+          </div>
+        </div>
+
+        <div class="rn-card rn-card--filled" style="padding:16px;margin-top:8px;">
+          <div class="rn-stat-card__label">Combined hectares</div>
+          <div class="rn-stat-card__value" style="font-size:28px;">260<span style="font-size:14px;color:var(--fg-subtle);font-weight:500;"> ha</span></div>
+        </div>
+      </div>
+    `);
+  </script>
+</body>
+</html>

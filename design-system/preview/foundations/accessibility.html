@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Accessibility · Rurio</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+</head>
+<body data-crumb="Foundations" data-title="Accessibility">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Foundation</div>
+          <h1 class="ds-page-title">Accessibility</h1>
+          <p class="ds-page-desc">Target is WCAG 2.2 AA. Every semantic pairing below was tuned to clear 4.5:1 for body text, 3:1 for large text and UI.</p>
+        </div>
+        <section class="ds-section">
+          <h2 class="ds-section__title">Contrast pairings</h2>
+          <table class="ds-table">
+            <thead><tr><th>Pair</th><th>Role</th><th>Target</th></tr></thead>
+            <tbody>
+              <tr><td><code>--fg-default</code> on <code>--bg-surface</code></td><td>Primary text</td><td>≥ 4.5:1 ✓</td></tr>
+              <tr><td><code>--fg-muted</code> on <code>--bg-surface</code></td><td>Secondary text</td><td>≥ 4.5:1 ✓</td></tr>
+              <tr><td><code>--fg-subtle</code> on <code>--bg-surface</code></td><td>Metadata (14px+ medium)</td><td>≥ 4.5:1 ✓</td></tr>
+              <tr><td><code>--accent-fg</code> on <code>--accent-bg</code></td><td>Button label</td><td>≥ 4.5:1 ✓</td></tr>
+              <tr><td><code>--accent-text</code> on <code>--bg-surface</code></td><td>Brand-colored text</td><td>≥ 4.5:1 ✓</td></tr>
+              <tr><td><code>--danger-text</code> on <code>--danger-subtle</code></td><td>Error text</td><td>≥ 4.5:1 ✓</td></tr>
+              <tr><td><code>--border-default</code> on surface</td><td>Decorative boundaries (paired with shadow/fill)</td><td>Informational</td></tr>
+              <tr><td><code>--border-strong</code> on surface</td><td>Boundary-critical UI (outlined buttons, inputs)</td><td>≥ 3:1 ✓</td></tr>
+              <tr><td><code>--border-focus</code> ring</td><td>Focus indicator</td><td>≥ 3:1 on adjacent surfaces ✓</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="ds-section">
+          <h2 class="ds-section__title">Touch targets</h2>
+          <div class="ds-callout ds-callout--info">
+            <div class="ds-callout__title">44 × 44 minimum</div>
+            <div class="ds-callout__body">All interactive components default to <code class="ds-inline">min-height: 44px</code>. Small (<code class="ds-inline">--sm</code>) variants drop to 36px only when stacked in a form row where the whole row is tappable.</div>
+          </div>
+        </section>
+        <section class="ds-section">
+          <h2 class="ds-section__title">Focus</h2>
+          <p class="ds-section__desc">A 3px accent-tinted ring appears on keyboard-only focus. Never remove it — override with <code class="ds-inline">var(--shadow-focus)</code> if a custom component needs its own.</p>
+        </section>
+        <section class="ds-section">
+          <h2 class="ds-section__title">In React Native</h2>
+          <ul style="padding-left: var(--space-5); line-height: 1.7; color: var(--fg-muted);">
+            <li>Use <code class="ds-inline">accessibilityRole</code> on every pressable.</li>
+            <li>Provide <code class="ds-inline">accessibilityLabel</code> for icon-only buttons.</li>
+            <li>Set <code class="ds-inline">accessibilityState</code> for toggles, selected chips, and disabled inputs.</li>
+            <li>Respect <code class="ds-inline">useReducedMotion</code> — swap scale animations for fades.</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+</body>
+</html>

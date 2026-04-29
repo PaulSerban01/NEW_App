@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>Typography · Rurio</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+  <style>
+    .type-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 200px;
+      gap: var(--space-6);
+      padding: var(--space-5) 0;
+      border-bottom: 1px solid var(--border-subtle);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row__meta { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--fg-subtle); line-height: 1.5; }
+    .type-row__meta strong { color: var(--fg-default); font-weight: 600; display: block; margin-bottom: 4px; }
+    .type-row__sample { color: var(--fg-default); }
+    .type-row__tokens { font-family: var(--font-mono); font-size: 11px; color: var(--fg-subtle); line-height: 1.7; }
+    .type-row__tokens code { color: var(--fg-default); }
+  </style>
+</head>
+<body data-crumb="Foundations" data-title="Typography">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Foundation</div>
+          <h1 class="ds-page-title">Typography</h1>
+          <p class="ds-page-desc">
+            Inter — variable, open-source, tuned for UI. Nine semantic roles
+            cover everything from a marquee <em>Display</em> down to an
+            all-caps <em>Overline</em>. Sizes are dense enough for mobile but
+            never smaller than 11px.
+          </p>
+        </div>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">The scale</h2>
+          <div class="ds-board">
+            <div class="type-row">
+              <div class="type-row__meta"><strong>Display</strong>Marquee moments</div>
+              <div class="type-row__sample" style="font-size:var(--display-size);font-weight:var(--display-weight);line-height:var(--display-leading);letter-spacing:var(--display-tracking);">Calm operations</div>
+              <div class="type-row__tokens"><code>42px</code> / <code>700</code> / <code>1.15</code></div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta"><strong>H1</strong>Screen titles</div>
+              <div class="type-row__sample" style="font-size:var(--h1-size);font-weight:var(--h1-weight);line-height:var(--h1-leading);letter-spacing:var(--h1-tracking);">Welcome back, Mira</div>
+              <div class="type-row__tokens"><code>34px</code> / <code>700</code> / <code>1.15</code></div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta"><strong>H2</strong>Section headings</div>
+              <div class="type-row__sample" style="font-size:var(--h2-size);font-weight:var(--h2-weight);line-height:var(--h2-leading);letter-spacing:var(--h2-tracking);">Your three farms</div>
+              <div class="type-row__tokens"><code>28px</code> / <code>600</code> / <code>1.3</code></div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta"><strong>H3</strong>Card headings</div>
+              <div class="type-row__sample" style="font-size:var(--h3-size);font-weight:var(--h3-weight);line-height:var(--h3-leading);letter-spacing:var(--h3-tracking);">Glenmore Dairy</div>
+              <div class="type-row__tokens"><code>24px</code> / <code>600</code> / <code>1.3</code></div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta"><strong>H4</strong>Subsection</div>
+              <div class="type-row__sample" style="font-size:var(--h4-size);font-weight:var(--h4-weight);line-height:var(--h4-leading);">Operators &amp; roles</div>
+              <div class="type-row__tokens"><code>20px</code> / <code>600</code> / <code>1.3</code></div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta"><strong>H5</strong>Inline headings</div>
+              <div class="type-row__sample" style="font-size:var(--h5-size);font-weight:var(--h5-weight);line-height:var(--h5-leading);">Today's checklist</div>
+              <div class="type-row__tokens"><code>18px</code> / <code>600</code> / <code>1.3</code></div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta"><strong>Body · lg</strong>Primary reading</div>
+              <div class="type-row__sample" style="font-size:var(--body-lg-size);line-height:var(--body-leading);">Rainfall of 12.4mm was recorded overnight at the north paddock. Four operators are on-site today.</div>
+              <div class="type-row__tokens"><code>16px</code> / <code>400</code> / <code>1.5</code></div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta"><strong>Body</strong>Default body</div>
+              <div class="type-row__sample" style="font-size:var(--body-size);line-height:var(--body-leading);">Rainfall of 12.4mm was recorded overnight at the north paddock. Four operators are on-site today.</div>
+              <div class="type-row__tokens"><code>15px</code> / <code>400</code> / <code>1.5</code></div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta"><strong>Body · sm</strong>Dense rows</div>
+              <div class="type-row__sample" style="font-size:var(--body-sm-size);line-height:var(--body-leading);">Rainfall of 12.4mm was recorded overnight at the north paddock. Four operators are on-site today.</div>
+              <div class="type-row__tokens"><code>13px</code> / <code>400</code> / <code>1.5</code></div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta"><strong>Label</strong>Form labels, chips</div>
+              <div class="type-row__sample" style="font-size:var(--label-size);font-weight:var(--label-weight);line-height:var(--label-leading);">Farm name</div>
+              <div class="type-row__tokens"><code>13px</code> / <code>500</code> / <code>1.2</code></div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta"><strong>Caption</strong>Meta, hints</div>
+              <div class="type-row__sample" style="font-size:var(--caption-size);color:var(--fg-muted);">Updated 2 minutes ago</div>
+              <div class="type-row__tokens"><code>12px</code> / <code>400</code> / <code>1.5</code></div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta"><strong>Overline</strong>Category eyebrows</div>
+              <div class="type-row__sample" style="font-size:var(--overline-size);font-weight:var(--overline-weight);letter-spacing:var(--overline-tracking);text-transform:uppercase;color:var(--fg-subtle);">Crop report</div>
+              <div class="type-row__tokens"><code>11px</code> / <code>600</code> / <code>+0.06em</code></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Usage rules</h2>
+          <ul style="padding-left: var(--space-5); line-height: 1.7; color: var(--fg-muted);">
+            <li>Mobile body default is <strong>15px</strong>. Use 16px (body-lg) for settings screens and long-form reading.</li>
+            <li>Never go below 11px on-screen. Hint text at 12px must pair with at least medium weight if it sits on a tinted background.</li>
+            <li>Reach for H roles via semantic tokens (<code class="ds-inline">--h1-size</code>, <code class="ds-inline">--h1-weight</code>) — don't read primitives directly.</li>
+            <li>Numerals in the stat card use <strong>tabular-nums</strong> (<code class="ds-inline">font-variant-numeric: tabular-nums</code>).</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+</body>
+</html>

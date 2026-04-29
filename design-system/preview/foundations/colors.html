@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>Colors · Rurio</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+  <style>
+    .ramp { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+    .ramp__cell {
+      aspect-ratio: 1 / 1.1;
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--fg-default);
+      border: 1px solid var(--border-subtle);
+    }
+    .ramp__cell--dark { color: #fff; }
+    .ramp__cell strong { font-weight: 600; font-size: 11px; }
+    .ramp__label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; font-size: var(--text-sm); color: var(--fg-muted); }
+    .ramp__label strong { color: var(--fg-default); font-weight: 600; }
+
+    .sem-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+    @media (max-width: 1000px) { .sem-grid { grid-template-columns: repeat(2, 1fr); } }
+    .sem {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-3);
+      background: var(--bg-surface);
+    }
+    .sem__swatch { height: 48px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); margin-bottom: var(--space-2); }
+    .sem__name { font-family: var(--font-mono); font-size: 11px; color: var(--fg-default); font-weight: 600; }
+    .sem__desc { font-size: var(--text-xs); color: var(--fg-subtle); margin-top: 2px; }
+  </style>
+</head>
+<body data-crumb="Foundations" data-title="Colors">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Foundation</div>
+          <h1 class="ds-page-title">Colors</h1>
+          <p class="ds-page-desc">
+            Three palettes × light/dark = six themes. Every ramp has 12 stops
+            (0 / 50–950), perceptually tuned so text-on-surface pairings clear
+            WCAG 2.2 AA. Switch palettes in the top bar to preview any theme.
+          </p>
+        </div>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Teal · primary palette</h2>
+          <p class="ds-section__desc">
+            The main brand. Light anchor <code class="ds-inline">#00686A</code> (rung 700). Dark anchor <code class="ds-inline">#23F7DD</code> (rung 400).
+          </p>
+          <div class="ramp__label"><strong>teal · prefix p-</strong><span>0 → 950</span></div>
+          <div class="ramp" id="ramp-teal"></div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Palette 2 &amp; 3 · test palettes</h2>
+          <p class="ds-section__desc">Placeholder ramps you can replace. Both are fully tokenised and rebinds work today — drop in new hex values and the app retheme without touching components.</p>
+          <div class="ramp__label"><strong>palette-2</strong></div>
+          <div class="ramp" id="ramp-p2" style="margin-bottom: var(--space-4);"></div>
+          <div class="ramp__label"><strong>palette-3</strong></div>
+          <div class="ramp" id="ramp-p3"></div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Neutrals</h2>
+          <p class="ds-section__desc">Cool neutrals with a faint teal cast, so surfaces read calm next to the brand.</p>
+          <div class="ramp__label"><strong>neutral · prefix n-</strong></div>
+          <div class="ramp" id="ramp-n"></div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Tertiary &amp; status</h2>
+          <p class="ds-section__desc">Tertiary is reserved for charts and highlights. Status colors stay consistent across palettes so error, success, warning and info always read the same.</p>
+          <div class="ramp__label"><strong>tertiary · prefix t-</strong></div>
+          <div class="ramp" id="ramp-t" style="margin-bottom: var(--space-4);"></div>
+          <div class="ramp__label"><strong>danger-</strong></div>
+          <div class="ramp" id="ramp-danger" style="margin-bottom: var(--space-4);"></div>
+          <div class="ramp__label"><strong>success-</strong></div>
+          <div class="ramp" id="ramp-success" style="margin-bottom: var(--space-4);"></div>
+          <div class="ramp__label"><strong>warning-</strong></div>
+          <div class="ramp" id="ramp-warning" style="margin-bottom: var(--space-4);"></div>
+          <div class="ramp__label"><strong>info-</strong></div>
+          <div class="ramp" id="ramp-info"></div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Semantic tokens</h2>
+          <p class="ds-section__desc">These are what components reference. Switch palette or mode in the top bar — every swatch below updates live.</p>
+
+          <h3 class="ds-h4" style="margin-top: var(--space-6);">Surfaces</h3>
+          <div class="sem-grid">
+            <div class="sem"><div class="sem__swatch" style="background:var(--bg-canvas)"></div><div class="sem__name">--bg-canvas</div><div class="sem__desc">Page background</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--bg-surface)"></div><div class="sem__name">--bg-surface</div><div class="sem__desc">Cards, sheets</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--bg-subtle)"></div><div class="sem__name">--bg-subtle</div><div class="sem__desc">Hover, grouped rows</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--bg-muted)"></div><div class="sem__name">--bg-muted</div><div class="sem__desc">Pressed, muted chips</div></div>
+          </div>
+
+          <h3 class="ds-h4" style="margin-top: var(--space-6);">Foreground</h3>
+          <div class="sem-grid">
+            <div class="sem"><div class="sem__swatch" style="background:var(--fg-default)"></div><div class="sem__name">--fg-default</div><div class="sem__desc">Primary text</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--fg-muted)"></div><div class="sem__name">--fg-muted</div><div class="sem__desc">Secondary text</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--fg-subtle)"></div><div class="sem__name">--fg-subtle</div><div class="sem__desc">Metadata, captions</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--fg-disabled)"></div><div class="sem__name">--fg-disabled</div><div class="sem__desc">Disabled state</div></div>
+          </div>
+
+          <h3 class="ds-h4" style="margin-top: var(--space-6);">Accent (interactive)</h3>
+          <div class="sem-grid">
+            <div class="sem"><div class="sem__swatch" style="background:var(--accent-bg)"></div><div class="sem__name">--accent-bg</div><div class="sem__desc">Primary buttons</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--accent-bg-hover)"></div><div class="sem__name">--accent-bg-hover</div><div class="sem__desc">Hover state</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--accent-subtle)"></div><div class="sem__name">--accent-subtle</div><div class="sem__desc">Ghost fill, selected</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--accent-text)"></div><div class="sem__name">--accent-text</div><div class="sem__desc">Brand-colored text</div></div>
+          </div>
+
+          <h3 class="ds-h4" style="margin-top: var(--space-6);">Status</h3>
+          <div class="sem-grid">
+            <div class="sem"><div class="sem__swatch" style="background:var(--danger-bg)"></div><div class="sem__name">--danger-bg</div><div class="sem__desc">Destructive</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--success-bg)"></div><div class="sem__name">--success-bg</div><div class="sem__desc">Success</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--warning-bg)"></div><div class="sem__name">--warning-bg</div><div class="sem__desc">Warning</div></div>
+            <div class="sem"><div class="sem__swatch" style="background:var(--info-bg)"></div><div class="sem__name">--info-bg</div><div class="sem__desc">Info</div></div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+  <script>
+    // Build ramps from tokens.css (via getComputedStyle)
+    const STOPS = [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+    function buildRamp(elId, prefix) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      const css = getComputedStyle(document.documentElement);
+      el.innerHTML = STOPS.map(s => {
+        const val = css.getPropertyValue(`--${prefix}-${s}`).trim();
+        const dark = s >= 500;
+        return `<div class="ramp__cell ${dark ? 'ramp__cell--dark' : ''}" style="background:${val}">
+          <strong>${s}</strong>
+          <span>${val || '—'}</span>
+        </div>`;
+      }).join('');
+    }
+    function buildAll() {
+      buildRamp('ramp-teal', 'teal');
+      buildRamp('ramp-p2', 'p2');
+      buildRamp('ramp-p3', 'p3');
+      buildRamp('ramp-n', 'n');
+      buildRamp('ramp-t', 't');
+      buildRamp('ramp-danger', 'danger');
+      buildRamp('ramp-success', 'success');
+      buildRamp('ramp-warning', 'warning');
+      buildRamp('ramp-info', 'info');
+    }
+    buildAll();
+    // Rebuild on theme change (for semantic swatches)
+    new MutationObserver(buildAll).observe(document.documentElement, { attributes: true, attributeFilter: ['data-palette', 'data-mode'] });
+  </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light" data-frame="ios">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Input · Rurio</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+  <link rel="stylesheet" href="../shared/frames.css">
+</head>
+<body data-crumb="Components" data-title="Input" data-show-frame-toggle>
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Component</div>
+          <h1 class="ds-page-title">Input</h1>
+          <p class="ds-page-desc">Text, search, password and textarea. Leading and trailing slots for icons, units, affordances. Error state is inline with a helper and an icon.</p>
+        </div>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">In context</h2>
+          <div class="ds-stage">
+            <div id="frame-demo"></div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Variants</h2>
+          <div class="ds-board">
+            <div class="ds-stack" style="max-width:420px;">
+              <label class="rn-field">
+                <span class="rn-field__label">Farm name</span>
+                <span class="rn-input"><input class="rn-input__control" placeholder="Glenmore Dairy"></span>
+              </label>
+              <label class="rn-field">
+                <span class="rn-field__label">Search</span>
+                <span class="rn-input">
+                  <span class="rn-input__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+                  <input class="rn-input__control" placeholder="Search operators, farms…">
+                </span>
+              </label>
+              <label class="rn-field">
+                <span class="rn-field__label">Hectares</span>
+                <span class="rn-input">
+                  <input class="rn-input__control" placeholder="120" type="number">
+                  <span class="rn-input__trailing">ha</span>
+                </span>
+              </label>
+              <label class="rn-field">
+                <span class="rn-field__label">Notes</span>
+                <span class="rn-input rn-input--textarea">
+                  <textarea class="rn-input__control" placeholder="Anything we should know…"></textarea>
+                </span>
+                <span class="rn-field__hint">Max 500 characters</span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">States</h2>
+          <div class="ds-grid-2">
+            <label class="rn-field">
+              <span class="rn-field__label">Default</span>
+              <span class="rn-input"><input class="rn-input__control" placeholder="Placeholder"></span>
+            </label>
+            <label class="rn-field">
+              <span class="rn-field__label">Filled</span>
+              <span class="rn-input"><input class="rn-input__control" value="Glenmore Dairy"></span>
+            </label>
+            <label class="rn-field">
+              <span class="rn-field__label">Focus</span>
+              <span class="rn-input" style="border-color:var(--border-focus);box-shadow:var(--shadow-focus);"><input class="rn-input__control" value="Glenmore Dairy"></span>
+            </label>
+            <label class="rn-field">
+              <span class="rn-field__label">Disabled</span>
+              <span class="rn-input rn-input--disabled" aria-disabled="true"><input class="rn-input__control" value="Read only" disabled></span>
+            </label>
+            <label class="rn-field">
+              <span class="rn-field__label">Error <span class="rn-field__label-req">*</span></span>
+              <span class="rn-input rn-input--error"><input class="rn-input__control" value="1,"></span>
+              <span class="rn-field__error">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                Enter a valid number
+              </span>
+            </label>
+            <label class="rn-field">
+              <span class="rn-field__label">With hint</span>
+              <span class="rn-input"><input class="rn-input__control" placeholder="user@email.com"></span>
+              <span class="rn-field__hint">We never share your email.</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Sizes</h2>
+          <div class="ds-board">
+            <div class="ds-stack" style="max-width:420px;">
+              <span class="rn-input rn-input--sm"><input class="rn-input__control" placeholder="Small · 36px"></span>
+              <span class="rn-input"><input class="rn-input__control" placeholder="Medium · 44px (default)"></span>
+              <span class="rn-input rn-input--lg"><input class="rn-input__control" placeholder="Large · 52px"></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">React Native</h2>
+          <pre class="ds-code"><code>&lt;Field label="Farm name" error={error}&gt;
+  &lt;Input
+    value={name}
+    onChangeText={setName}
+    placeholder="Glenmore Dairy"
+    leadingIcon={&lt;Search /&gt;}
+    trailingAffix="ha"
+    size="md"
+  /&gt;
+&lt;/Field&gt;</code></pre>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+  <script src="../shared/frames.js"></script>
+  <script>
+    RurioFrames.render('frame-demo', `
+      <div class="phone-screen phone-pad">
+        <h1 class="phone-title">Sign in</h1>
+        <p class="phone-sub">Welcome back to your farm operations.</p>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:24px;">
+          <label class="rn-field">
+            <span class="rn-field__label">Email</span>
+            <span class="rn-input rn-input--lg">
+              <span class="rn-input__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+              <input class="rn-input__control" placeholder="you@farm.co">
+            </span>
+          </label>
+          <label class="rn-field">
+            <span class="rn-field__label">Password</span>
+            <span class="rn-input rn-input--lg">
+              <span class="rn-input__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></span>
+              <input class="rn-input__control" type="password" value="••••••••">
+              <span class="rn-input__trailing"><button aria-label="Show password"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button></span>
+            </span>
+          </label>
+          <button class="rn-button rn-button--primary rn-button--lg rn-button--full" style="margin-top:8px;">Sign in</button>
+          <button class="rn-button rn-button--ghost rn-button--md rn-button--full">Forgot password?</button>
+        </div>
+      </div>
+    `);
+  </script>
+</body>
+</html>

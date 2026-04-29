@@ -1,0 +1,50 @@
+/**
+ * ConnAgri Design Tokens
+ * Single source of truth for all color, spacing, and typography variables.
+ * Import this file first in any theme or component stylesheet.
+ */
+
+:root {
+  /* ── Brand palette ─────────────────────────────────────────── */
+  --brand-primary:        #00686A;
+  --brand-primary-80:     #338687;
+  --brand-primary-60:     #66A4A5;
+  --brand-primary-40:     #99C2C3;
+  --brand-primary-20:     #CCE1E1;
+  --brand-primary-hover:  #005557;
+  --brand-hover-bg:       #E6F3F3;
+
+  /* ── Surfaces ──────────────────────────────────────────────── */
+  --brand-background:     #FFFFFF;
+  --brand-surface:        #F7FAFA;
+  --brand-border:         #D0E5E5;
+
+  /* ── Typography ────────────────────────────────────────────── */
+  --brand-text-primary:   #0D2626;
+  --brand-text-muted:     #4A6E6E;
+  --brand-font-sans:      'Inter', system-ui, -apple-system, sans-serif;
+
+  /* ── Semantic colors ───────────────────────────────────────── */
+  --brand-danger:         #C0392B;
+  --brand-danger-bg:      #FDECEA;
+  --brand-success:        #00686A;
+  --brand-success-bg:     #E6F3F3;
+  --brand-warning:        #B7791F;
+  --brand-warning-bg:     #FEFCE8;
+  --brand-info:           #0369A1;
+  --brand-info-bg:        #E0F2FE;
+
+  /* ── Radii ─────────────────────────────────────────────────── */
+  --brand-radius:         8px;
+  --brand-radius-lg:      12px;
+
+  /* ── Spacing scale ─────────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+}

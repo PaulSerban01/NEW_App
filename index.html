@@ -3,195 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="manifest.json">
-  <title>ConnAgri — App Shell</title>
+  <title>ConnAgri</title>
+  <link rel="stylesheet" href="design-system/tokens.css">
   <style>
-    :root {
-      --brand-primary:        #00686A;
-      --brand-primary-hover:  #005557;
-      --brand-hover-bg:       #E6F3F3;
-      --brand-background:     #FFFFFF;
-      --brand-surface:        #F7FAFA;
-      --brand-border:         #D0E5E5;
-      --brand-text-primary:   #0D2626;
-      --brand-text-muted:     #4A6E6E;
-      --brand-radius:         8px;
-      --brand-font-sans:      'Inter', system-ui, sans-serif;
-    }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--brand-font-sans); background: #f0f0f0; display: flex; height: 100vh; overflow: hidden; }
-    /* Scrollbars ascunse (ca pe telefon real) */
-    * { scrollbar-width: none; -ms-overflow-style: none; }
-    *::-webkit-scrollbar { display: none; width: 0; height: 0; }
-
-    /* Sidebar */
-    .sidebar { width: 240px; background: var(--brand-surface); border-right: 1px solid var(--brand-border); display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
-    .sidebar-header { padding: 16px 16px 12px; border-bottom: 1px solid var(--brand-border); }
-    .sidebar-logo { font-size: 19px; font-weight: 700; color: var(--brand-primary); }
-    .sidebar-sub { font-size: 13px; color: var(--brand-text-muted); margin-top: 2px; }
-    .sidebar-section { padding: 12px 12px 4px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--brand-text-muted); }
-    .sidebar-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; margin: 1px 8px; border-radius: 6px; cursor: pointer; font-size: 15px; color: var(--brand-text-muted); text-decoration: none; transition: all 0.1s; white-space: nowrap; }
-    .sidebar-item:hover { background: var(--brand-hover-bg); color: var(--brand-text-primary); }
-    .sidebar-item.active { background: var(--brand-primary); color: #fff; font-weight: 600; }
-    .sidebar-item .icon { width: 18px; text-align: center; font-size: 15px; flex-shrink: 0; }
-
-    /* Main */
-    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-
-    /* Top bar */
-    .topbar { height: 42px; background: #fff; border-bottom: 1px solid var(--brand-border); display: flex; align-items: center; padding: 0 16px; gap: 12px; flex-shrink: 0; }
-    .topbar-title { font-size: 15px; font-weight: 600; color: var(--brand-text-primary); }
-    .topbar-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--brand-border); }
-    .topbar-section { font-size: 13px; color: var(--brand-text-muted); }
-
-    /* Iframe */
-    .preview-frame { flex: 1; border: none; width: 100%; }
-
-    /* Empty state */
-    .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--brand-text-muted); }
-    .empty-state .big { font-size: 49px; margin-bottom: 16px; }
-    .empty-state p { font-size: 16px; }
+    body {
+      font-family: var(--brand-font-sans);
+      background: var(--brand-surface);
+      color: var(--brand-text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      padding: 40px 20px;
+    }
+    .logo { font-size: 28px; font-weight: 800; color: var(--brand-primary); letter-spacing: -0.5px; }
+    .logo span { color: var(--brand-text-muted); font-weight: 400; font-size: 14px; display: block; margin-top: 4px; letter-spacing: 0; }
+    .cards { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .card {
+      background: #fff;
+      border: 1px solid var(--brand-border);
+      border-radius: var(--brand-radius-lg);
+      padding: 28px 32px;
+      text-decoration: none;
+      color: var(--brand-text-primary);
+      min-width: 200px;
+      text-align: center;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .card:hover { border-color: var(--brand-primary); box-shadow: 0 4px 16px rgba(0,104,106,0.12); }
+    .card-icon { font-size: 32px; margin-bottom: 12px; }
+    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .card-desc { font-size: 13px; color: var(--brand-text-muted); }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-top: 8px;
+    }
+    .badge-stable { background: var(--brand-success-bg); color: var(--brand-success); }
+    .badge-wip    { background: var(--brand-warning-bg); color: var(--brand-warning); }
   </style>
 </head>
 <body>
-<script>window.location.href = 'roles.html';</script>
+  <div class="logo">ConnAgri <span>Design System &amp; Prototype</span></div>
 
-<div class="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-logo">ConnAgri</div>
-    <div class="sidebar-sub">Design System &middot; 11 module</div>
+  <div class="cards">
+    <a class="card" href="prototype/main/roles.html">
+      <div class="card-icon">📱</div>
+      <div class="card-title">Prototype — Main</div>
+      <div class="card-desc">Stable snapshot</div>
+      <div class="badge badge-stable">stable</div>
+    </a>
+    <a class="card" href="prototype/test/roles.html">
+      <div class="card-icon">🔧</div>
+      <div class="card-title">Prototype — Test</div>
+      <div class="card-desc">Current working version</div>
+      <div class="badge badge-wip">wip</div>
+    </a>
+    <a class="card" href="design-system/preview/index.html">
+      <div class="card-icon">🎨</div>
+      <div class="card-title">Design System</div>
+      <div class="card-desc">Tokens, themes &amp; components</div>
+    </a>
   </div>
-
-  <div class="sidebar-section">Principal</div>
-  <a class="sidebar-item" data-feature="dashboard" onclick="load(this)">
-    <span class="icon">&#128202;</span> Dashboard
-  </a>
-
-  <a class="sidebar-item" data-feature="newdash" onclick="load(this)">
-    <span class="icon">&#128202;</span> Dash Admin
-  </a>
-  <a class="sidebar-item" data-feature="dash_ops" onclick="load(this)">
-    <span class="icon">&#128293;</span> Dash Ops
-  </a>
-  <a class="sidebar-item" data-feature="operator" onclick="load(this)">
-    <span class="icon">&#128736;</span> Ecran operator
-  </a>
-
-  <div class="sidebar-section">Resurse</div>
-  <a class="sidebar-item" data-feature="angajati" onclick="load(this)">
-    <span class="icon">&#128101;</span> Echipa
-  </a>
-  <a class="sidebar-item" data-feature="utilaje" onclick="load(this)">
-    <span class="icon">&#128668;</span> Utilaje
-  </a>
-  <a class="sidebar-item" data-feature="terenuri" onclick="load(this)">
-    <span class="icon">&#127793;</span> Lista Terenuri
-  </a>
-  <a class="sidebar-item" data-feature="harta-terenuri" onclick="load(this)">
-    <span class="icon">&#127758;</span> Harta Terenuri
-  </a>
-  <a class="sidebar-item" data-feature="stocuri" onclick="load(this)">
-    <span class="icon">&#128230;</span> Stocuri
-  </a>
-  <a class="sidebar-item" data-feature="agenda" onclick="load(this)">
-    <span class="icon">&#127806;</span> Jurnal de c&acirc;mp
-  </a>
-  <a class="sidebar-item" data-feature="arenda" onclick="load(this)">
-    <span class="icon">&#128220;</span> Arenda
-  </a>
-  <a class="sidebar-item" data-feature="fotografii" onclick="load(this)">
-    <span class="icon">&#128247;</span> Media
-  </a>
-  <a class="sidebar-item" data-feature="firme" onclick="load(this)">
-    <span class="icon">&#127963;</span> Firme
-  </a>
-
-  <div class="sidebar-section">Comunicare</div>
-  <a class="sidebar-item" data-feature="mesaje" onclick="load(this)">
-    <span class="icon">&#128172;</span> Mesaje
-  </a>
-
-  <div class="sidebar-section">Cont</div>
-  <a class="sidebar-item" data-feature="datele-mele" onclick="load(this)">
-    <span class="icon">&#128100;</span> Profilul meu
-  </a>
-</div>
-
-<div class="main">
-  <div class="topbar" id="topbar">
-    <span class="topbar-title" id="topbar-title">ConnAgri</span>
-    <span class="topbar-dot"></span>
-    <span class="topbar-section" id="topbar-section">Selecteaza un modul din sidebar</span>
-  </div>
-
-  <div class="empty-state" id="empty-state">
-    <div class="big">&#127793;</div>
-    <p>Selecteaza un modul din sidebar</p>
-  </div>
-
-  <iframe class="preview-frame" id="preview-frame" style="display:none;"></iframe>
-</div>
-
-<script>
-  var features = {
-    'dashboard':  { title: 'Dashboard',      section: 'Pagina principala' },
-    'newdash':    { title: 'Dash Admin',       section: 'Manager / Administrare' },
-    'dash_ops':   { title: 'Dash Ops',         section: 'Operational zilnic' },
-    'operator':   { title: 'Ecran operator',   section: 'Start / Gata pe azi' },
-    'angajati':   { title: 'Echipa',          section: 'Angajati si invitati' },
-    'utilaje':    { title: 'Utilaje',         section: 'Echipamente agricole' },
-    'terenuri':   { title: 'Lista Terenuri',   section: 'Parcele si loturi' },
-    'harta-terenuri': { title: 'Harta Terenuri', section: 'Vizualizare harta' },
-    'stocuri':    { title: 'Stocuri',         section: 'Articole de stoc' },
-    'agenda':     { title: 'Jurnal de c&acirc;mp',   section: 'Lucrari agricole' },
-    'arenda':     { title: 'Arenda',          section: 'Contracte arenda' },
-    'fotografii': { title: 'Media',      section: 'Foto geolocalizate' },
-    'firme':      { title: 'Firme',           section: 'Societati comerciale' },
-    'mesaje':     { title: 'Mesaje',           section: 'Comunicare interna' },
-    'datele-mele': { title: 'Profilul meu',       section: 'Cont si setari' },
-  };
-
-  function load(el) {
-    var feature = el.dataset.feature;
-    var info = features[feature];
-    if (!info) return;
-
-    document.querySelectorAll('.sidebar-item').forEach(function(i) { i.classList.remove('active'); });
-    el.classList.add('active');
-
-    document.getElementById('topbar-title').textContent = info.title;
-    document.getElementById('topbar-section').textContent = info.section;
-
-    document.getElementById('empty-state').style.display = 'none';
-    var frame = document.getElementById('preview-frame');
-    frame.style.display = 'block';
-    frame.src = 'modules/' + feature + '.html';
-
-    window.location.hash = feature;
-  }
-
-  // Keyboard navigation
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      var items = Array.from(document.querySelectorAll('.sidebar-item'));
-      var idx = items.findIndex(function(i) { return i.classList.contains('active'); });
-      var next;
-      if (e.key === 'ArrowDown') next = idx < items.length - 1 ? idx + 1 : 0;
-      else next = idx > 0 ? idx - 1 : items.length - 1;
-      items[next].click();
-    }
-  });
-
-  // Load from URL hash
-  window.addEventListener('load', function() {
-    var hash = window.location.hash.slice(1);
-    if (hash && features[hash]) {
-      var el = document.querySelector('[data-feature="' + hash + '"]');
-      if (el) load(el);
-    }
-  });
-</script>
 </body>
 </html>

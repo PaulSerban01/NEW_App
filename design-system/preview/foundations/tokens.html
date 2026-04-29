@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>Tokens · Rurio</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+</head>
+<body data-crumb="Foundations" data-title="Token architecture">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Foundation</div>
+          <h1 class="ds-page-title">Token architecture</h1>
+          <p class="ds-page-desc">
+            Three tiers — primitive, semantic, component — mirror the Figma
+            Variables model. Flipping a theme rebinds semantic tokens, and
+            every component follows automatically.
+          </p>
+        </div>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">The three tiers</h2>
+          <div class="ds-grid-3">
+            <div class="rn-card rn-card--outlined">
+              <div class="rn-card__eyebrow">Tier 1</div>
+              <h3 class="rn-card__title">Primitives</h3>
+              <p class="rn-card__body">Raw palette values. Named by family and rung: <code class="ds-inline">--p-500</code>, <code class="ds-inline">--n-200</code>, <code class="ds-inline">--t-300</code>, <code class="ds-inline">--danger-500</code>. Never referenced by components.</p>
+            </div>
+            <div class="rn-card rn-card--outlined">
+              <div class="rn-card__eyebrow">Tier 2</div>
+              <h3 class="rn-card__title">Semantic</h3>
+              <p class="rn-card__body">Intent aliases: <code class="ds-inline">--fg-default</code>, <code class="ds-inline">--bg-surface</code>, <code class="ds-inline">--accent-bg</code>, <code class="ds-inline">--border-focus</code>. These rebind per theme.</p>
+            </div>
+            <div class="rn-card rn-card--outlined">
+              <div class="rn-card__eyebrow">Tier 3</div>
+              <h3 class="rn-card__title">Component</h3>
+              <p class="rn-card__body">Local variables scoped to a component. Read from semantic tokens only — never skip the middle layer.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Prefix convention</h2>
+          <p class="ds-section__desc">
+            The prefixes you wanted, standardised across primitives and each palette.
+          </p>
+          <table class="ds-table">
+            <thead><tr><th>Prefix</th><th>Family</th><th>Example</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td><code>p-</code></td><td>Primary (active palette)</td><td><code>--brand-500</code></td><td>Rebinds based on active palette</td></tr>
+              <tr><td><code>n-</code></td><td>Neutral</td><td><code>--n-200</code></td><td>Shared across palettes</td></tr>
+              <tr><td><code>t-</code></td><td>Tertiary</td><td><code>--t-400</code></td><td>Reserved for data viz, highlights</td></tr>
+              <tr><td><code>danger-</code></td><td>Destructive</td><td><code>--danger-500</code></td><td>Status, shared</td></tr>
+              <tr><td><code>success-</code></td><td>Success</td><td><code>--success-500</code></td><td>Status, shared</td></tr>
+              <tr><td><code>warning-</code></td><td>Warning</td><td><code>--warning-400</code></td><td>Status, shared</td></tr>
+              <tr><td><code>info-</code></td><td>Info</td><td><code>--info-500</code></td><td>Status, shared</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Scale</h2>
+          <p class="ds-section__desc">Every palette has 12 stops: <code class="ds-inline">0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950</code>.</p>
+          <table class="ds-table">
+            <thead><tr><th>Rung</th><th>Light role</th><th>Dark role</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td>Pure white (inverse ink)</td><td>Pure white</td></tr>
+              <tr><td>50–100</td><td>Subtle tinted surfaces</td><td>Near-fg text on dark</td></tr>
+              <tr><td>200–300</td><td>Borders, subtle fills</td><td>Strong text</td></tr>
+              <tr><td>400</td><td>Accent on dark</td><td>Brand anchor</td></tr>
+              <tr><td>500–600</td><td>Hover states</td><td>Hover / pressed on dark</td></tr>
+              <tr><td>700</td><td>Brand on light</td><td>Subtle surfaces</td></tr>
+              <tr><td>800–950</td><td>High-emphasis ink</td><td>Canvas and sunken</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Rebinding per theme</h2>
+          <p class="ds-section__desc">A semantic token changes value when the palette or mode flips. The component never knows.</p>
+          <pre class="ds-code"><code>/* Light × Teal */
+--accent-bg:       var(--teal-700);   /* #00686A */
+--fg-on-brand:     var(--n-0);
+
+/* Dark × Teal */
+--accent-bg:       var(--teal-400);   /* #23F7DD */
+--fg-on-brand:     var(--teal-950);</code></pre>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Figma mapping</h2>
+          <p class="ds-section__desc">In Figma Variables, create a <strong>Palette</strong> mode with three values and a <strong>Mode</strong> mode with two. Primitive collections publish per palette; semantic collections read from them. Component libraries bind to semantic only.</p>
+          <div class="ds-callout ds-callout--info">
+            <div class="ds-callout__title">One-to-one with CSS</div>
+            <div class="ds-callout__body">The <code class="ds-inline">data-palette</code> × <code class="ds-inline">data-mode</code> combination on <code class="ds-inline">&lt;html&gt;</code> maps directly to two Figma modes. Token names match exactly, so designers and engineers speak the same language.</div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+</body>
+</html>

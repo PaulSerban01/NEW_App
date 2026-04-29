@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>Rurio — Design System</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="shared/site.css">
+  <link rel="stylesheet" href="shared/components.css">
+</head>
+<body data-crumb="" data-title="Overview">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Rurio · v0.1</div>
+          <h1 class="ds-page-title">A design system for managing farms, calmly.</h1>
+          <p class="ds-page-desc">
+            Rurio is the design system for a React Native app that helps farm
+            operators run their business — companies, people, assets and the
+            news that matters to them. Built on three-tier tokens, three
+            palettes with light + dark, Inter type, and WCAG&nbsp;2.2 AA
+            contrast throughout.
+          </p>
+        </div>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Start here</h2>
+          <p class="ds-section__desc">
+            The system is organised the way you'll use it. Foundations first —
+            the atoms every component is built from. Then components, drawn
+            inside real iOS and Android device frames so you can see them in
+            context.
+          </p>
+
+          <div class="ds-grid-3">
+            <a class="rn-card rn-card--interactive" href="foundations/tokens.html" style="text-decoration:none;">
+              <div>
+                <div class="rn-card__eyebrow">Foundation</div>
+                <h3 class="rn-card__title">Token architecture</h3>
+              </div>
+              <p class="rn-card__body">Three-tier tokens — primitive, semantic, component — compatible with Figma Variables modes.</p>
+            </a>
+            <a class="rn-card rn-card--interactive" href="foundations/colors.html" style="text-decoration:none;">
+              <div>
+                <div class="rn-card__eyebrow">Foundation</div>
+                <h3 class="rn-card__title">Colors</h3>
+              </div>
+              <p class="rn-card__body">Three palettes × light + dark. Every text pairing meets AA. Ramps span 0 → 950 with prefixes.</p>
+            </a>
+            <a class="rn-card rn-card--interactive" href="foundations/typography.html" style="text-decoration:none;">
+              <div>
+                <div class="rn-card__eyebrow">Foundation</div>
+                <h3 class="rn-card__title">Typography</h3>
+              </div>
+              <p class="rn-card__body">Inter, tuned for dense mobile UI. Semantic roles: display, h1–h5, body, label, caption, overline.</p>
+            </a>
+            <a class="rn-card rn-card--interactive" href="components/button.html" style="text-decoration:none;">
+              <div>
+                <div class="rn-card__eyebrow">Component</div>
+                <h3 class="rn-card__title">Button</h3>
+              </div>
+              <p class="rn-card__body">Primary, secondary, ghost, destructive and icon. Three sizes, all states, 44px min target.</p>
+            </a>
+            <a class="rn-card rn-card--interactive" href="components/input.html" style="text-decoration:none;">
+              <div>
+                <div class="rn-card__eyebrow">Component</div>
+                <h3 class="rn-card__title">Input</h3>
+              </div>
+              <p class="rn-card__body">Text, search, password, textarea. Leading/trailing slots, error and disabled states.</p>
+            </a>
+            <a class="rn-card rn-card--interactive" href="components/card.html" style="text-decoration:none;">
+              <div>
+                <div class="rn-card__eyebrow">Component</div>
+                <h3 class="rn-card__title">Card</h3>
+              </div>
+              <p class="rn-card__body">Flat, outlined, elevated, filled. Media, header, body, footer — ready for farm summaries.</p>
+            </a>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">What makes it work</h2>
+          <div class="ds-grid-3">
+            <div class="rn-card rn-card--outlined">
+              <div class="rn-card__eyebrow">Architecture</div>
+              <h3 class="rn-card__title">Semantic tokens, not primitives</h3>
+              <p class="rn-card__body">Components reference <code class="ds-inline">--accent-bg</code>, never <code class="ds-inline">--teal-700</code>. Swap a palette — the whole UI re-themes.</p>
+            </div>
+            <div class="rn-card rn-card--outlined">
+              <div class="rn-card__eyebrow">Accessibility</div>
+              <h3 class="rn-card__title">AA verified at source</h3>
+              <p class="rn-card__body">Text tokens are tuned so body copy hits 4.5:1 and UI elements hit 3:1 in every theme × mode combination.</p>
+            </div>
+            <div class="rn-card rn-card--outlined">
+              <div class="rn-card__eyebrow">Translation</div>
+              <h3 class="rn-card__title">Figma-compatible modes</h3>
+              <p class="rn-card__body">Palette and mode are modes on <code class="ds-inline">html</code>, mirroring the Figma Variables model exactly.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Try the switcher</h2>
+          <p class="ds-section__desc">
+            In the top right, switch palettes and toggle dark mode. Watch every
+            card, button and tint rebind — nothing hardcoded. This is how the
+            app will feel on a user's device when they pick a theme.
+          </p>
+          <div class="ds-board">
+            <div class="ds-row">
+              <button class="rn-button rn-button--primary rn-button--md">Save changes</button>
+              <button class="rn-button rn-button--secondary rn-button--md">Cancel</button>
+              <button class="rn-button rn-button--ghost rn-button--md">Learn more</button>
+              <button class="rn-button rn-button--destructive rn-button--md">Remove</button>
+            </div>
+            <div style="height: var(--space-5);"></div>
+            <div class="ds-grid-3">
+              <div class="rn-stat-card">
+                <div class="rn-stat-card__label">Active farms</div>
+                <div class="rn-stat-card__value">24</div>
+                <span class="rn-stat-card__delta rn-stat-card__delta--up">
+                  <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 3l5 5H3z"/></svg>
+                  +3 this week
+                </span>
+              </div>
+              <div class="rn-stat-card">
+                <div class="rn-stat-card__label">Operators</div>
+                <div class="rn-stat-card__value">148</div>
+                <span class="rn-stat-card__delta rn-stat-card__delta--up">
+                  <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 3l5 5H3z"/></svg>
+                  +12
+                </span>
+              </div>
+              <div class="rn-stat-card">
+                <div class="rn-stat-card__label">Open alerts</div>
+                <div class="rn-stat-card__value">6</div>
+                <span class="rn-stat-card__delta rn-stat-card__delta--down">
+                  <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 13L3 8h10z"/></svg>
+                  −2
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="shared/site.js"></script>
+</body>
+</html>
