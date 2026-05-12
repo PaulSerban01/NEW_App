@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light" data-frame="ios">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Button group · Rurio</title>
+  <link rel="stylesheet" href="../../tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+  <link rel="stylesheet" href="../shared/frames.css">
+</head>
+<body data-crumb="Components" data-title="Button group" data-show-frame-toggle>
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Component</div>
+          <h1 class="ds-page-title">Button group</h1>
+          <p class="ds-page-desc">
+            Segmented control for picking exactly one option from 2&ndash;5 mutually exclusive choices.
+            Pattern from Tailwind Plus, themed with design&ndash;system tokens. Outer border-radius matches
+            <code>--radius-lg</code>; rings live on each item so the active one renders cleanly above its neighbors.
+          </p>
+        </div>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">In context</h2>
+          <p class="ds-section__desc">Used as the controls inside the user profile page (theme, mode, font size).</p>
+          <div class="ds-stage">
+            <div id="frame-demo"></div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Default</h2>
+          <div class="ds-board">
+            <div class="ds-board__header">
+              <h3 class="ds-board__title">Three options</h3>
+              <span class="ds-board__note">Click an item to toggle</span>
+            </div>
+            <div class="ds-row">
+              <span class="rn-btn-group" role="group" aria-label="Display mode">
+                <button class="rn-btn-group__btn" type="button" aria-pressed="true">Years</button>
+                <button class="rn-btn-group__btn" type="button" aria-pressed="false">Months</button>
+                <button class="rn-btn-group__btn" type="button" aria-pressed="false">Days</button>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">With icons</h2>
+          <div class="ds-board">
+            <div class="ds-row">
+              <span class="rn-btn-group" role="group" aria-label="Theme mode">
+                <button class="rn-btn-group__btn" type="button" aria-pressed="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                  Light
+                </button>
+                <button class="rn-btn-group__btn" type="button" aria-pressed="false">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                  Dark
+                </button>
+              </span>
+
+              <span class="rn-btn-group" role="group" aria-label="Font size">
+                <button class="rn-btn-group__btn" type="button" aria-pressed="false">A−</button>
+                <button class="rn-btn-group__btn" type="button" aria-pressed="true">A</button>
+                <button class="rn-btn-group__btn" type="button" aria-pressed="false">A+</button>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Two options</h2>
+          <div class="ds-board">
+            <div class="ds-row">
+              <span class="rn-btn-group" role="group" aria-label="View">
+                <button class="rn-btn-group__btn" type="button" aria-pressed="true">Listă</button>
+                <button class="rn-btn-group__btn" type="button" aria-pressed="false">Hartă</button>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">States</h2>
+          <div class="ds-board">
+            <div class="ds-row">
+              <span class="rn-btn-group" role="group" aria-label="States demo">
+                <button class="rn-btn-group__btn" type="button" aria-pressed="true">Active</button>
+                <button class="rn-btn-group__btn" type="button" aria-pressed="false">Default</button>
+                <button class="rn-btn-group__btn" type="button" aria-pressed="false" style="background:var(--bg-subtle)">Hover</button>
+                <button class="rn-btn-group__btn" type="button" aria-pressed="false" style="box-shadow: inset 0 0 0 1px var(--border-subtle), var(--shadow-focus); z-index:1; position:relative;">Focused</button>
+                <button class="rn-btn-group__btn" type="button" aria-pressed="false" disabled>Disabled</button>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Anatomy</h2>
+          <div class="ds-board">
+            <pre class="ds-code"><code>&lt;span class="rn-btn-group" role="group" aria-label="Theme mode"&gt;
+  &lt;button class="rn-btn-group__btn" type="button" aria-pressed="true"&gt;Light&lt;/button&gt;
+  &lt;button class="rn-btn-group__btn" type="button" aria-pressed="false"&gt;Dark&lt;/button&gt;
+&lt;/span&gt;</code></pre>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Tokens</h2>
+          <div class="ds-board">
+            <table class="ds-table">
+              <thead><tr><th>Slot</th><th>Token</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>Background (default)</td><td><code>--bg-surface</code></td><td>Sits above page canvas</td></tr>
+                <tr><td>Background (hover)</td><td><code>--bg-subtle</code></td><td></td></tr>
+                <tr><td>Background (active)</td><td><code>--accent-bg</code></td><td>Primary brand color</td></tr>
+                <tr><td>Border</td><td><code>--border-subtle</code></td><td>Inset ring, neutral</td></tr>
+                <tr><td>Border (active)</td><td><code>--accent-border</code></td><td>Matches active fill</td></tr>
+                <tr><td>Foreground (default)</td><td><code>--fg-default</code></td><td></td></tr>
+                <tr><td>Foreground (active)</td><td><code>--accent-fg</code></td><td>White on most palettes</td></tr>
+                <tr><td>Radius</td><td><code>--radius-lg</code></td><td>12px outer corners</td></tr>
+                <tr><td>Focus ring</td><td><code>--shadow-focus</code></td><td>Inherits accent</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+  <script src="../shared/frames.js"></script>
+  <script>
+    // Minimal toggle behavior so the demos are interactive.
+    document.querySelectorAll('.rn-btn-group').forEach(group => {
+      group.addEventListener('click', e => {
+        const btn = e.target.closest('.rn-btn-group__btn');
+        if (!btn || btn.disabled) return;
+        group.querySelectorAll('.rn-btn-group__btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+      });
+    });
+
+    RurioFrames.render('frame-demo', `
+      <div class="phone-screen phone-pad">
+        <h1 class="phone-title">Profilul meu</h1>
+        <p class="phone-sub">Mărime text</p>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:18px;">
+          <div>
+            <div style="font-size:12px;color:var(--fg-muted);margin-bottom:6px;">Paletă culori</div>
+            <span class="rn-btn-group" role="group" aria-label="Palette">
+              <button class="rn-btn-group__btn" type="button" aria-pressed="true">Teal</button>
+              <button class="rn-btn-group__btn" type="button" aria-pressed="false">Mov</button>
+              <button class="rn-btn-group__btn" type="button" aria-pressed="false">Portocaliu</button>
+            </span>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--fg-muted);margin-bottom:6px;">Mod afișare</div>
+            <span class="rn-btn-group" role="group" aria-label="Mode">
+              <button class="rn-btn-group__btn" type="button" aria-pressed="true">Luminos</button>
+              <button class="rn-btn-group__btn" type="button" aria-pressed="false">Întunecat</button>
+            </span>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--fg-muted);margin-bottom:6px;">Mărime text</div>
+            <span class="rn-btn-group" role="group" aria-label="Font">
+              <button class="rn-btn-group__btn" type="button" aria-pressed="false">A−</button>
+              <button class="rn-btn-group__btn" type="button" aria-pressed="true">A</button>
+              <button class="rn-btn-group__btn" type="button" aria-pressed="false">A+</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    `);
+
+    // Re-bind toggle on frame-demo content too
+    document.querySelectorAll('#frame-demo .rn-btn-group').forEach(group => {
+      group.addEventListener('click', e => {
+        const btn = e.target.closest('.rn-btn-group__btn');
+        if (!btn || btn.disabled) return;
+        group.querySelectorAll('.rn-btn-group__btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+      });
+    });
+  </script>
+</body>
+</html>

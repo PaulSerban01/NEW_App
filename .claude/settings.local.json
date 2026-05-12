@@ -22,7 +22,17 @@
       "Bash(npm run *)",
       "Bash(sed -i 's/height: 100vh; height: 100dvh; gap: 0; overflow-y: hidden;/height: 100%; gap: 0; overflow-y: hidden;/g' *.html)",
       "Bash(sed -i 's/, viewport-fit=cover//g' *.html)",
-      "Bash(git -C 'd:\\\\Projects\\\\Rurio\\\\App\\\\version 1.0\\\\NEW_App' status --short)"
+      "Bash(git -C 'd:\\\\Projects\\\\Rurio\\\\App\\\\version 1.0\\\\NEW_App' status --short)",
+      "Bash(Get-ChildItem -Path \"D:\\\\Projects\\\\Rurio\\\\App\\\\version 1.0\\\\NEW_App\\\\design-system\" -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "Bash(Format-Table -HideTableHeaders)",
+      "Bash(ls -la \"D:\\\\Projects\\\\Rurio\\\\App\\\\version 1.0\\\\NEW_App\\\\\" 2>&1 | head -20)",
+      "Read(//d/Projects/Rurio/App/version 1.0/**)",
+      "Bash(sed -i 's|href=\"../tokens/tokens.css\"|href=\"../../tokens.css\"|g' foundations/*.html components/*.html)",
+      "Bash(sed -i 's|href=\"tokens/tokens.css\"|href=\"../tokens.css\"|g' index.html)",
+      "Bash(sed -i 's|All tokens from /tokens/tokens.css|All tokens from /tokens.css|g' shared/site.css)",
+      "Bash(rm design-system/preview/tokens/tokens.css)",
+      "Bash(rmdir design-system/preview/tokens)"
     ]
   }
 }

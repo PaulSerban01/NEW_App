@@ -1,0 +1,9 @@
+/* Prototype — Tailwind entry point
+   Build: npm run build:proto
+   Watch: npm run watch:proto
+*/
+@import "tailwindcss";
+@import "../../../design-system/tokens.css";
+
+@source "../**/*.html";
+@source "../*.html";

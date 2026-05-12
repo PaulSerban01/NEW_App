@@ -1,0 +1,67 @@
+export const meta = {
+  id: "securitate",
+  label: "Securitate",
+  icon: "shield-check",
+  showInNav: false,
+};
+
+function row({ label, value, last = false }) {
+  const lastCls = last ? "" : "border-b border-border-subtle";
+  return `
+    <div class="${lastCls} flex items-center justify-between gap-3 px-4 py-3">
+      <span class="text-sm font-medium text-fg">${label}</span>
+      <div class="shrink-0">${value}</div>
+    </div>
+  `;
+}
+
+const chipNeutral = `
+  <span class="inline-flex items-center rounded-md bg-subtle px-2 py-0.5 text-xs font-medium text-fg-muted ring-1 ring-inset ring-border-subtle">
+    Email + Parolă
+  </span>
+`;
+
+const chipActive = `
+  <span class="inline-flex items-center gap-1.5 rounded-md bg-success-subtle px-2 py-0.5 text-xs font-medium text-success-text ring-1 ring-inset ring-success-text/20">
+    <svg viewBox="0 0 6 6" aria-hidden="true" class="size-1.5 fill-success">
+      <circle cx="3" cy="3" r="3" />
+    </svg>
+    Activ
+  </span>
+`;
+
+const dateValue = `
+  <span class="text-sm text-fg-muted tabular-nums">15 mar. 2026</span>
+`;
+
+export function render(target) {
+  target.innerHTML = `
+    <section class="px-4 pt-6 pb-12">
+
+      <!-- Status list -->
+      <div class="overflow-hidden rounded-2xl bg-surface ring-1 ring-border-subtle">
+        ${row({ label: "Metodă autentificare",    value: chipNeutral })}
+        ${row({ label: "Autentificare 2FA",       value: chipActive })}
+        ${row({ label: "Ultima schimbare parolă", value: dateValue, last: true })}
+      </div>
+
+      <!-- Actions -->
+      <div class="mt-6 space-y-3">
+        <button type="button" data-action-change-password
+                class="w-full rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
+          Schimbare parolă
+        </button>
+        <button type="button" data-action-recover
+                class="w-full rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default transition-colors hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
+          Recuperare
+        </button>
+      </div>
+
+    </section>
+  `;
+
+  target.querySelector("[data-action-change-password]")
+    ?.addEventListener("click", () => alert("Schimbare parolă"));
+  target.querySelector("[data-action-recover]")
+    ?.addEventListener("click", () => alert("Recuperare cont"));
+}

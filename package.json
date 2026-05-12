@@ -5,10 +5,14 @@
   "scripts": {
     "build:ds":    "tailwindcss -i design-system/src/input.css -o design-system/dist/design-system.css --minify",
     "build:proto": "tailwindcss -i prototype/main/src/input.css -o prototype/main/dist/app.css --minify",
-    "build":       "npm run build:ds && npm run build:proto",
+    "build:test":  "tailwindcss -i prototype/test/src/input.css -o prototype/test/dist/app.css --minify",
+    "build:dorin": "tailwindcss -i prototype/dorin/src/input.css -o prototype/dorin/dist/app.css --minify",
+    "build":       "npm run build:ds && npm run build:proto && npm run build:test && npm run build:dorin",
     "watch:ds":    "tailwindcss -i design-system/src/input.css -o design-system/dist/design-system.css --watch",
     "watch:proto": "tailwindcss -i prototype/main/src/input.css -o prototype/main/dist/app.css --watch",
-    "watch":       "concurrently \"npm run watch:ds\" \"npm run watch:proto\""
+    "watch:test":  "tailwindcss -i prototype/test/src/input.css -o prototype/test/dist/app.css --watch",
+    "watch:dorin": "tailwindcss -i prototype/dorin/src/input.css -o prototype/dorin/dist/app.css --watch",
+    "watch":       "concurrently \"npm run watch:ds\" \"npm run watch:proto\" \"npm run watch:test\" \"npm run watch:dorin\""
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.0",

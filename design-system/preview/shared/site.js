@@ -24,6 +24,7 @@
     ]},
     { label: 'Components', pages: [
       { href: '/components/button.html', label: 'Button' },
+      { href: '/components/button-group.html', label: 'Button group' },
       { href: '/components/input.html', label: 'Input' },
       { href: '/components/card.html', label: 'Card' },
       { href: '/components/select.html', label: 'Select', stub: true },
@@ -35,7 +36,7 @@
       { href: '/components/tab-bar.html', label: 'Bottom tab bar', stub: true },
       { href: '/components/sheet.html', label: 'Bottom sheet', stub: true },
       { href: '/components/toast.html', label: 'Toast', stub: true },
-      { href: '/components/chip.html', label: 'Chip & badge', stub: true },
+      { href: '/components/chip.html', label: 'Chip & badge' },
       { href: '/components/empty.html', label: 'Empty state', stub: true },
       { href: '/components/date-picker.html', label: 'Date picker', stub: true },
       { href: '/components/form.html', label: 'Form', stub: true },

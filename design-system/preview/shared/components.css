@@ -324,4 +324,70 @@
 .rn-chip--success  { background: var(--success-subtle); color: var(--success-text); border-color: color-mix(in srgb, var(--success-bg) 25%, transparent); }
 .rn-chip--warning  { background: var(--warning-subtle); color: var(--warning-text); border-color: color-mix(in srgb, var(--warning-bg) 25%, transparent); }
 .rn-chip--danger   { background: var(--danger-subtle);  color: var(--danger-text);  border-color: color-mix(in srgb, var(--danger-bg) 25%, transparent); }
+.rn-chip--neutral  { background: var(--bg-subtle);      color: var(--fg-muted);     border-color: var(--border-subtle); font-weight: var(--weight-medium); }
 .rn-chip__dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* ==========================================================
+   Button group (segmented control)
+   Pattern from Tailwind Plus, themed with design-system tokens.
+   Outer border-radius lives on the wrapper; ring-inset on items.
+   ========================================================== */
+.rn-btn-group {
+  display: inline-flex;
+  isolation: isolate;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  background: transparent;
+}
+.rn-btn-group__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1-5);
+  padding: var(--space-2) var(--space-3);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+  background: var(--bg-surface);
+  color: var(--fg-default);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-standard);
+}
+.rn-btn-group__btn + .rn-btn-group__btn { margin-left: -1px; }
+.rn-btn-group__btn:first-child {
+  border-top-left-radius: var(--radius-lg);
+  border-bottom-left-radius: var(--radius-lg);
+}
+.rn-btn-group__btn:last-child {
+  border-top-right-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+.rn-btn-group__btn:hover { background: var(--bg-subtle); }
+.rn-btn-group__btn:focus-visible {
+  outline: none;
+  z-index: 1;
+  box-shadow: inset 0 0 0 1px var(--border-subtle), var(--shadow-focus);
+}
+.rn-btn-group__btn[aria-pressed="true"],
+.rn-btn-group__btn--active {
+  background: var(--accent-bg);
+  color: var(--accent-fg);
+  z-index: 1;
+  box-shadow: inset 0 0 0 1px var(--accent-border);
+}
+.rn-btn-group__btn[aria-pressed="true"]:hover,
+.rn-btn-group__btn--active:hover {
+  background: var(--accent-bg-hover);
+}
+.rn-btn-group__btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.rn-btn-group__btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}

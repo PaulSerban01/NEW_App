@@ -3,4 +3,4 @@
    Watch: npm run watch:ds
 */
 @import "tailwindcss";
-@import "../preview/tokens/tokens.css";
+@import "../tokens.css";
