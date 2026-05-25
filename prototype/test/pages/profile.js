@@ -7,7 +7,6 @@ export const meta = {
   id: "profile",
   label: "Profil",
   icon: "user",
-  iconify: "fluent-emoji-flat:person",
   showInNav: true,
 };
 

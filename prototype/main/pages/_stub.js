@@ -2,13 +2,11 @@
  * Helper for placeholder pages: returns a minimal page module with meta + render().
  * Used for routes wired in the bottom nav before their real screens are built.
  */
-export function stubPage({ id, label, icon, iconify, showInNav = false }) {
-  const iconHtml = iconify
-    ? `<iconify-icon icon="${iconify}" width="36" height="36" aria-hidden="true"></iconify-icon>`
-    : `<i data-lucide="${icon}" class="size-9"></i>`;
+export function stubPage({ id, label, icon, showInNav = false }) {
+  const iconHtml = `<i data-lucide="${icon}" class="size-9"></i>`;
 
   return {
-    meta: { id, label, icon, iconify, showInNav },
+    meta: { id, label, icon, showInNav },
     render(target) {
       target.innerHTML = `
         <section class="px-4 pt-10 pb-10 sm:px-6 xl:px-8 xl:pt-16">

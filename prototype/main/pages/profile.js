@@ -7,7 +7,6 @@ export const meta = {
   id: "profile",
   label: "Profil",
   icon: "user",
-  iconify: "fluent-emoji-flat:person",
   showInNav: true,
 };
 
@@ -153,18 +152,10 @@ export function render(target) {
 
   // CONT section items
   const contItems = [
-    { icon: "user-round",          label: "Date cont",   href: "#/profileinfo" },
-    { icon: "briefcase",           label: "Workspace",   href: "#/workspace"   },
-    { icon: "shield-check",        label: "Securitate",  href: "#/securitate"  },
-    { icon: "bell",                label: "Notificări",  href: "#/notificari"  },
-    { icon: "sliders-horizontal",  label: "Preferințe",  href: "#/preferinte"  },
-    { icon: "smartphone",          label: "Dispozitive", href: "#/dispozitive" },
-    { icon: "activity",            label: "Activitate",  href: "#/activitate"  },
+    { icon: "circle-user", label: "Profil Utilizator", href: "#/utilizator" },
+    { icon: "settings",    label: "Setări",            disabled: true       },
   ];
   const contHtml = contItems.map((it, i) => navRow({ ...it, last: i === contItems.length - 1 })).join("");
-
-  // Setări aplicație (only disabled "Setări")
-  const setariHtml = navRow({ icon: "settings", label: "Setări", disabled: true, last: true });
 
   // Accesibilitate
   const accesibilitateHtml = [
@@ -180,19 +171,18 @@ export function render(target) {
     <section class="pb-12">
 
       <!-- Header: avatar + name + email -->
-      <header class="flex items-center gap-4 px-4 pt-6 pb-2">
+      <header class="flex items-center gap-4 px-4 pt-6 pb-2 sm:px-6 xl:px-8 xl:pt-10">
         <div class="size-16 shrink-0 overflow-hidden rounded-full bg-accent ring-2 ring-surface">
           <img src="${USER.avatar}" alt="" loading="lazy" class="size-full object-cover" />
         </div>
         <div class="min-w-0 flex-1">
-          <p class="truncate text-lg font-semibold text-fg">${USER.name}</p>
+          <h1 class="truncate text-2xl font-bold tracking-tight text-fg sm:text-3xl">${USER.name}</h1>
           <p class="truncate text-sm text-fg-muted">${USER.email}</p>
           <p class="truncate text-xs text-fg-subtle">${USER.workspace}</p>
         </div>
       </header>
 
       ${section("CONT", contHtml)}
-      ${section("Setări aplicație", setariHtml)}
       ${section("ACCESIBILITATE", accesibilitateHtml)}
       ${section("LEGAL", legalHtml)}
 

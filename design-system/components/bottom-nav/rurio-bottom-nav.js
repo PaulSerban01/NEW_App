@@ -10,7 +10,7 @@
 const ITEMS = [
   { id: "menu",     label: "Meniu",     icon: "menu",          action: "menu" },
   { id: "planning", label: "Planifică", icon: "notebook-pen",  href: "#/planning" },
-  { id: "quick",    label: "",          iconify: "fluent-emoji-flat:high-voltage", href: "#/quick", primary: true },
+  { id: "quick",    label: "",          icon: "zap",           href: "#/quick", primary: true },
   { id: "messages", label: "Mesaje",    icon: "message-circle",href: "#/messages" },
   { id: "camera",   label: "Cameră",    icon: "camera",        href: "#/camera" },
 ];
@@ -65,13 +65,13 @@ class RurioBottomNav extends HTMLElement {
         ? "text-accent-text"
         : "text-neutral-500 dark:text-neutral-300 hover:text-fg";
 
-      // Primary (zap) item — colored icon, visually emphasized.
+      // Primary (zap) item — accent background, white icon, visually emphasized.
       if (it.primary) {
         return `
           <li class="flex flex-1 items-center justify-center">
             <a ${href} data-bnav="${it.id}"
-               class="flex size-12 items-center justify-center rounded-full bg-accent-subtle ring-1 ring-border-subtle shadow-sm hover:bg-accent-subtle/80 transition no-underline">
-              <iconify-icon icon="${it.iconify}" width="28" height="28" aria-hidden="true"></iconify-icon>
+               class="flex size-12 items-center justify-center rounded-full bg-accent shadow-sm hover:bg-accent-hover transition no-underline">
+              <i data-lucide="${it.icon}" class="size-7 text-white"></i>
               <span class="sr-only">Acțiune rapidă</span>
             </a>
           </li>

@@ -32,7 +32,9 @@
       "Bash(sed -i 's|href=\"tokens/tokens.css\"|href=\"../tokens.css\"|g' index.html)",
       "Bash(sed -i 's|All tokens from /tokens/tokens.css|All tokens from /tokens.css|g' shared/site.css)",
       "Bash(rm design-system/preview/tokens/tokens.css)",
-      "Bash(rmdir design-system/preview/tokens)"
+      "Bash(rmdir design-system/preview/tokens)",
+      "Bash(git rm *)",
+      "Bash(rm prototype/dorin/manifest.json)"
     ]
   }
 }

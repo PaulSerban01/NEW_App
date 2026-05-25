@@ -9,7 +9,7 @@
  * Properties:
  *   .groups = [{ title?: string, items: NavItem[] }, …]   — preferred
  *   .items  = NavItem[]                                   — flat fallback
- *   NavItem = { id, label, icon?, iconify?, href }
+ *   NavItem = { id, label, icon?, href }
  *
  * Events:
  *   listens for `rurio:route-change` on document → updates active-id
@@ -29,12 +29,9 @@ function renderNavItem(it, active) {
   }
 
   const iconCls = `shrink-0${isDisabled ? " grayscale" : ""}`;
-  let icon = "";
-  if (it.iconify) {
-    icon = `<iconify-icon icon="${it.iconify}" width="20" height="20" class="${iconCls}" aria-hidden="true"></iconify-icon>`;
-  } else if (it.icon) {
-    icon = `<i data-lucide="${it.icon}" class="size-5 ${iconCls}"></i>`;
-  }
+  const icon = it.icon
+    ? `<i data-lucide="${it.icon}" class="size-5 ${iconCls}"></i>`
+    : "";
 
   // Disabled rows render as non-interactive spans (no link, not in tab order).
   if (isDisabled) {

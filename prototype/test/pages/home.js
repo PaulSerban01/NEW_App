@@ -2,7 +2,6 @@ export const meta = {
   id: "home",
   label: "Acasă",
   icon: "home",
-  iconify: "fluent-emoji-flat:house",
   showInNav: true,
 };
 

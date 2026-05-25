@@ -5,11 +5,12 @@ export const meta = {
   showInNav: false,
 };
 
-function row({ label, value, last = false }) {
+function row({ label, value, last = false, disabled = false }) {
   const lastCls = last ? "" : "border-b border-border-subtle";
+  const stateCls = disabled ? "opacity-50 select-none" : "";
   return `
-    <div class="${lastCls} flex items-center justify-between gap-3 px-4 py-3">
-      <span class="text-sm font-medium text-fg">${label}</span>
+    <div class="${lastCls} ${stateCls} flex items-center justify-between gap-3 px-4 py-3">
+      <span class="text-sm font-medium text-fg ${disabled ? "line-through" : ""}">${label}</span>
       <div class="shrink-0">${value}</div>
     </div>
   `;
@@ -30,18 +31,27 @@ const chipActive = `
   </span>
 `;
 
+const chipInactive = `
+  <span class="inline-flex items-center gap-1.5 rounded-md bg-subtle px-2 py-0.5 text-xs font-medium text-fg-muted ring-1 ring-inset ring-border-subtle">
+    <svg viewBox="0 0 6 6" aria-hidden="true" class="size-1.5 fill-fg-subtle">
+      <circle cx="3" cy="3" r="3" />
+    </svg>
+    Inactiv
+  </span>
+`;
+
 const dateValue = `
   <span class="text-sm text-fg-muted tabular-nums">15 mar. 2026</span>
 `;
 
 export function render(target) {
   target.innerHTML = `
-    <section class="px-4 pt-6 pb-12">
+    <section class="p-4">
 
       <!-- Status list -->
       <div class="overflow-hidden rounded-2xl bg-surface ring-1 ring-border-subtle">
         ${row({ label: "Metodă autentificare",    value: chipNeutral })}
-        ${row({ label: "Autentificare 2FA",       value: chipActive })}
+        ${row({ label: "Autentificare 2FA",       value: chipInactive, disabled: true })}
         ${row({ label: "Ultima schimbare parolă", value: dateValue, last: true })}
       </div>
 

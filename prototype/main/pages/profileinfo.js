@@ -27,7 +27,7 @@ const INPUT_DISABLED =
 
 export function render(target) {
   target.innerHTML = `
-    <section class="px-4 pt-6 pb-12">
+    <section class="p-4">
       <form class="space-y-4" data-form-account novalidate>
 
         <div>

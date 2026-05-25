@@ -1,7 +1,11 @@
 /**
  * <rurio-summary-bar>
- * Sticky/fixed sub-header. Holds a date-range picker on the left and an
+ * Fixed sub-header. Holds a date-range picker on the left and an
  * optional button group of views on the right.
+ *
+ * Add the `static` attribute — <rurio-summary-bar static> — to drop the
+ * fixed positioning and spacer, e.g. when mounted inside an already-fixed
+ * container such as the app-header.
  *
  * Configure via the .config property:
  *
@@ -204,8 +208,15 @@ class RurioSummaryBar extends HTMLElement {
       `;
     }).join("");
 
+    // `static` opts out of fixed positioning — used when the bar is mounted
+    // inside an already-fixed container (the app-header on the map page).
+    const isStatic = this.hasAttribute("static");
+    const barClass = isStatic
+      ? "summary-bar flex items-center gap-3 bg-surface p-3"
+      : "summary-bar fixed inset-x-0 top-16 xl:top-0 z-20 flex items-center gap-3 bg-surface p-3";
+
     this.innerHTML = `
-      <div class="summary-bar fixed inset-x-0 top-16 xl:top-0 z-20 flex items-center gap-3 bg-surface p-3">
+      <div class="${barClass}">
 
         <!-- Date-range picker (single component) -->
         <div class="relative flex-1" data-summary-wrapper>
@@ -248,10 +259,10 @@ class RurioSummaryBar extends HTMLElement {
         ${views.length
           ? `<span class="isolate inline-flex shrink-0 rounded-lg shadow-xs">${viewBtns}</span>`
           : ""}
-      </div>
+      </div>${isStatic ? "" : `
 
       <!-- Spacer reserving the bar's vertical space (the bar is position:fixed). -->
-      <div aria-hidden="true" class="h-16"></div>
+      <div aria-hidden="true" class="h-16"></div>`}
     `;
 
     document.dispatchEvent(new CustomEvent("rurio:icons-refresh"));

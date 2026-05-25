@@ -50,6 +50,11 @@ function render(route) {
   const detailPane = document.getElementById("pane-detail");
   if (!listPane || !detailPane) return;
 
+  // Per-page header rows are transient — clear them before the next page renders.
+  // A page that wants header rows re-populates #header-extras inside its render().
+  const headerExtras = document.getElementById("header-extras");
+  if (headerExtras) headerExtras.innerHTML = "";
+
   const mod = ensurePage(route.page);
 
   if (typeof mod.render === "function") {

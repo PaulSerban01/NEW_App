@@ -14,22 +14,22 @@ const dispozitive = stubPage({ id: "dispozitive", label: "Dispozitive",       ic
 const activitate  = stubPage({ id: "activitate",  label: "Activitate",        icon: "activity" });
 const termeni     = stubPage({ id: "termeni",     label: "Termeni și condiții", icon: "file-text" });
 
-/* Side-nav stub pages (iconify-colored). */
-const dashadmin = stubPage({ id: "dashadmin", label: "Dash admin",         iconify: "fluent-emoji-flat:bar-chart",        showInNav: true });
-const dashops   = stubPage({ id: "dashops",   label: "Dash ops",           iconify: "fluent-emoji-flat:chart-increasing", showInNav: true });
-const operator  = stubPage({ id: "operator",  label: "Ecran operator",     iconify: "fluent-emoji-flat:man-technologist", showInNav: true });
-const firme     = stubPage({ id: "firme",     label: "Configurator firme", iconify: "fluent-emoji-flat:office-building",  showInNav: true });
-const echipa    = stubPage({ id: "echipa",    label: "Echipa",             iconify: "fluent-emoji-flat:people-hugging",   showInNav: true });
-const stocuri   = stubPage({ id: "stocuri",   label: "Stocuri",            iconify: "fluent-emoji-flat:package",          showInNav: true });
-const utilaje   = stubPage({ id: "utilaje",   label: "Utilaje",            iconify: "fluent-emoji-flat:tractor",          showInNav: true });
-const jurnal    = stubPage({ id: "jurnal",    label: "Jurnal de câmp",     iconify: "fluent-emoji-flat:notebook",         showInNav: true });
-const arenda    = stubPage({ id: "arenda",    label: "Arenda",             iconify: "fluent-emoji-flat:page-with-curl",   showInNav: true });
-const mesagerie = stubPage({ id: "mesagerie", label: "Mesagerie",          iconify: "fluent-emoji-flat:speech-balloon",   showInNav: true });
-const galerie   = stubPage({ id: "galerie",   label: "Galerie foto",       iconify: "fluent-emoji-flat:framed-picture",   showInNav: true });
+/* Side-nav stub pages. */
+const dashadmin = stubPage({ id: "dashadmin", label: "Dash admin",         icon: "bar-chart-3",     showInNav: true });
+const dashops   = stubPage({ id: "dashops",   label: "Dash ops",           icon: "trending-up",     showInNav: true });
+const operator  = stubPage({ id: "operator",  label: "Ecran operator",     icon: "wrench",          showInNav: true });
+const firme     = stubPage({ id: "firme",     label: "Configurator firme", icon: "building-2",      showInNav: true });
+const echipa    = stubPage({ id: "echipa",    label: "Echipa",             icon: "users",           showInNav: true });
+const stocuri   = stubPage({ id: "stocuri",   label: "Stocuri",            icon: "package",         showInNav: true });
+const utilaje   = stubPage({ id: "utilaje",   label: "Utilaje",            icon: "tractor",         showInNav: true });
+const jurnal    = stubPage({ id: "jurnal",    label: "Jurnal de câmp",     icon: "wheat",           showInNav: true });
+const arenda    = stubPage({ id: "arenda",    label: "Arenda",             icon: "file-text",       showInNav: true });
+const mesagerie = stubPage({ id: "mesagerie", label: "Mesagerie",          icon: "messages-square", showInNav: true });
+const galerie   = stubPage({ id: "galerie",   label: "Galerie foto",       icon: "images",          showInNav: true });
 
 /* Bottom-nav stubs (hidden from the side nav). */
 const planning = stubPage({ id: "planning", label: "Planifică",      icon: "notebook-pen" });
-const quick    = stubPage({ id: "quick",    label: "Acțiune rapidă", iconify: "fluent-emoji-flat:high-voltage" });
+const quick    = stubPage({ id: "quick",    label: "Acțiune rapidă", icon: "zap" });
 const messages = stubPage({ id: "messages", label: "Mesaje",         icon: "message-circle" });
 const camera   = stubPage({ id: "camera",   label: "Cameră",         icon: "camera" });
 
@@ -49,7 +49,6 @@ function toNavItem(p, { disabled = false } = {}) {
     id: p.meta.id,
     label: p.meta.label,
     icon: p.meta.icon,
-    iconify: p.meta.iconify,
     href: `#/${p.meta.id === "home" ? "" : p.meta.id}`,
     disabled,
   };

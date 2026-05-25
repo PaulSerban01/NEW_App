@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light" data-frame="ios">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>App header · Rurio</title>
+  <link rel="stylesheet" href="../../tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+  <link rel="stylesheet" href="../shared/frames.css">
+</head>
+<body data-crumb="Components" data-title="App header" data-show-frame-toggle>
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Component</div>
+          <h1 class="ds-page-title">App header</h1>
+          <p class="ds-page-desc">
+            The fixed top region of every mobile screen. A single wrapper holds the
+            header bar (navigation control, title, avatar) and an optional slot for
+            per-page detail rows, closed by exactly one bottom border. Hidden on
+            desktop, where the persistent sidebar takes over.
+          </p>
+        </div>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Anatomy</h2>
+          <p class="ds-section__desc">
+            Three parts, one border. The <strong>wrapper</strong> is the fixed,
+            bordered container. The <strong>header bar</strong> is always present.
+            The <strong>extras slot</strong> is empty on most screens and holds
+            extra rows on the ones that need them — all above the single divider.
+          </p>
+          <div class="ds-board">
+            <ul style="padding-left:var(--space-5);line-height:1.9;color:var(--fg-muted);">
+              <li><strong>Wrapper</strong> — <code>position: fixed</code>, <code>--bg-surface</code> background, one <code>border-bottom</code>.</li>
+              <li><strong>Header bar</strong> — leading control (Home or Back), centered title, trailing avatar.</li>
+              <li><strong>Extras slot</strong> (<code>#header-extras</code>) — per-page detail rows; sits below the bar, above the border.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Default — header bar only</h2>
+          <p class="ds-section__desc">
+            The baseline state used by most screens: leading Home control, centered
+            title, profile avatar. The single border closes the region.
+          </p>
+          <div class="ds-stage">
+            <div id="frame-demo-default"></div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">With detail rows</h2>
+          <p class="ds-section__desc">
+            A page can mount extra rows into the slot — a breadcrumb, a filter bar,
+            a summary line. However many rows are added, there is still just one
+            border at the bottom of the region.
+          </p>
+          <div class="ds-stage">
+            <div id="frame-demo-rows"></div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Behavior</h2>
+          <div class="ds-board">
+            <ul style="padding-left:var(--space-5);line-height:1.9;color:var(--fg-muted);">
+              <li><strong>Fixed, never overlapping.</strong> The wrapper is out of flow; the app shell reserves space with <code>padding-top: var(--app-header-h)</code>.</li>
+              <li><strong>Self-measuring.</strong> A <code>ResizeObserver</code> keeps <code>--app-header-h</code> equal to the header's real height, so adding or removing rows never hides page content.</li>
+              <li><strong>One border, always.</strong> The divider lives on the wrapper — extra rows are added inside it, so the count never changes.</li>
+              <li><strong>Transient slot.</strong> <code>#header-extras</code> is cleared on every navigation; a page re-populates it inside its own render.</li>
+              <li><strong>Notch-safe.</strong> <code>padding-top: env(safe-area-inset-top)</code> clears the status bar in installed-PWA mode.</li>
+              <li><strong>Route-aware leading control.</strong> Shows Home on top-level screens and Back when a detail or sub-page is open.</li>
+              <li><strong>Mobile only.</strong> Hidden at the <code>xl</code> breakpoint — desktop uses the sidebar.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Markup</h2>
+          <div class="ds-board">
+            <pre class="ds-code"><code>&lt;!-- Fixed wrapper — owns positioning and the single border --&gt;
+&lt;div id="app-header"
+     class="header-mobile fixed inset-x-0 top-0 z-30 bg-surface
+            border-b border-border-subtle pt-[env(safe-area-inset-top,0px)]"&gt;
+
+  &lt;!-- The header bar --&gt;
+  &lt;header class="flex items-center gap-2 p-3"&gt;
+    &lt;a id="home-btn" href="#/" aria-label="Acasă"&gt;…&lt;/a&gt;
+    &lt;button id="back-btn" aria-label="Înapoi" class="hidden"&gt;…&lt;/button&gt;
+    &lt;div id="header-title" class="flex-1 text-center font-semibold"&gt;Rurio&lt;/div&gt;
+    &lt;a id="header-avatar" href="#/profile" aria-label="Profil"&gt;…&lt;/a&gt;
+  &lt;/header&gt;
+
+  &lt;!-- Per-page detail rows mount here; cleared on every navigation --&gt;
+  &lt;div id="header-extras"&gt;&lt;/div&gt;
+
+&lt;/div&gt;</code></pre>
+          </div>
+          <p class="ds-section__desc" style="margin-top:12px;">
+            A page adds rows from inside its <code>render()</code>:
+          </p>
+          <div class="ds-board">
+            <pre class="ds-code"><code>document.getElementById("header-extras").innerHTML = `
+  &lt;div class="px-3 pb-3 text-sm text-fg-muted"&gt;Detail row…&lt;/div&gt;
+`;</code></pre>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Tokens</h2>
+          <div class="ds-board">
+            <table class="ds-table">
+              <thead><tr><th>Part</th><th>Token</th></tr></thead>
+              <tbody>
+                <tr><td>Wrapper background</td><td><code>--bg-surface</code></td></tr>
+                <tr><td>Bottom border</td><td><code>--border-subtle</code></td></tr>
+                <tr><td>Title text</td><td><code>--fg-default</code></td></tr>
+                <tr><td>Icon button — rest / hover</td><td><code>--fg-default</code> / <code>--bg-subtle</code></td></tr>
+                <tr><td>Detail row text</td><td><code>--fg-muted</code></td></tr>
+                <tr><td>Reserved shell height</td><td><code>--app-header-h</code> (set by JS)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+  <script src="../shared/site.js"></script>
+  <script src="../shared/frames.js"></script>
+  <script>
+    // Inline SVGs (Lucide geometry) — the demo is static, so no icon runtime.
+    const ICON_HOME = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>`;
+    const ICON_FILTER = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg>`;
+
+    // The header bar — full-bleed, one bottom border lives on the wrapper.
+    function headerBar() {
+      return `
+        <div style="display:flex;align-items:center;gap:8px;padding:12px;">
+          <span style="display:flex;width:32px;height:32px;align-items:center;justify-content:center;border-radius:var(--radius-lg);color:var(--fg-default);">${ICON_HOME}</span>
+          <div style="flex:1;text-align:center;font-size:var(--text-base);font-weight:600;color:var(--fg-default);">Lista terenuri</div>
+          <span style="width:24px;height:24px;border-radius:999px;background:var(--accent-bg);overflow:hidden;display:block;">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=128&h=128&q=80" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+          </span>
+        </div>
+      `;
+    }
+
+    // Sample page body below the header.
+    function pageBody() {
+      return `
+        <div style="padding:16px;">
+          <div style="height:14px;width:55%;border-radius:6px;background:var(--bg-subtle);margin-bottom:10px;"></div>
+          <div style="height:80px;border-radius:var(--radius-xl);background:var(--bg-subtle);margin-bottom:12px;"></div>
+          <div style="height:80px;border-radius:var(--radius-xl);background:var(--bg-subtle);"></div>
+        </div>
+      `;
+    }
+
+    // Demo 1 — header bar only.
+    RurioFrames.render('frame-demo-default', `
+      <div style="background:var(--bg-canvas);min-height:100%;">
+        <div style="background:var(--bg-surface);border-bottom:1px solid var(--border-subtle);">
+          ${headerBar()}
+        </div>
+        ${pageBody()}
+      </div>
+    `);
+
+    // Demo 2 — header bar + two detail rows inside the slot. Still one border.
+    RurioFrames.render('frame-demo-rows', `
+      <div style="background:var(--bg-canvas);min-height:100%;">
+        <div style="background:var(--bg-surface);border-bottom:1px solid var(--border-subtle);">
+          ${headerBar()}
+          <!-- #header-extras content -->
+          <div style="display:flex;gap:6px;padding:0 12px 8px;font-size:13px;color:var(--fg-subtle);">
+            <span>Ferma Nord</span><span>/</span><span style="color:var(--fg-default);">Parcele</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin:0 12px 12px;padding:8px 12px;border-radius:var(--radius-lg);background:var(--bg-subtle);font-size:13px;font-weight:600;color:var(--fg-default);">
+            ${ICON_FILTER}<span>Toate culturile · Sezon 2026</span>
+          </div>
+        </div>
+        ${pageBody()}
+      </div>
+    `);
+  </script>
+</body>
+</html>

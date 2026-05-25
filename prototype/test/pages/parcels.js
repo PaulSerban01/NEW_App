@@ -5,7 +5,6 @@ export const meta = {
   id: "parcels",
   label: "Lista terenuri",
   icon: "wheat",
-  iconify: "fluent-emoji-flat:clipboard",
   showInNav: true,
 };
 

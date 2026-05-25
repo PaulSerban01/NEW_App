@@ -114,10 +114,6 @@
     import * as pages from "./pages/index.js";
     import { navItems, navGroups } from "./pages/index.js";
     import { start, navigate, getRoute } from "./lib/router.js";
-    import { ensureIconify } from "./lib/icons.js";
-
-    // Iconify is used by <rurio-bottom-nav> and the side nav — eager-load it.
-    ensureIconify();
 
     // Wire <rurio-nav> with the grouped/sectioned structure.
     const nav = document.getElementById("rurio-nav");

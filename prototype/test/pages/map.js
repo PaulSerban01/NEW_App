@@ -6,7 +6,6 @@ export const meta = {
   id: "map",
   label: "Harta terenuri",
   icon: "globe",
-  iconify: "fluent-emoji-flat:world-map",
   showInNav: true,
 };
 

@@ -1,11 +1,15 @@
 import { parcels, getParcel, STATUS_LABELS, parcelTileUrl, FILTER_CATEGORIES } from "../data/parcels.js";
 import { cultureColor } from "../data/cultures.js";
 
+// Parcel detail view lives in its own file; re-exported so the router calls it
+// as parcels.renderDetail and map.js's `renderParcelDetail` keeps working.
+export { render as renderDetail } from "./parcel-detail.js";
+
 export const meta = {
   id: "parcels",
   label: "Lista terenuri",
+  detailLabel: "Teren",
   icon: "wheat",
-  iconify: "fluent-emoji-flat:clipboard",
   showInNav: true,
 };
 
@@ -60,8 +64,8 @@ function visibleCount() {
 }
 
 /* ───────── helpers ───────── */
-function mountSummaryBar(target, activeView) {
-  const bar = target.querySelector("rurio-summary-bar");
+function mountSummaryBar(root, activeView) {
+  const bar = root?.querySelector("rurio-summary-bar");
   if (bar) bar.config = { ...SUMMARY_CONFIG, activeView };
 }
 
@@ -238,13 +242,15 @@ function bindListClicks(target) {
   });
 }
 
-function bindToolbar(target) {
-  const all     = target.querySelector("[data-toolbar-all]");
-  const sortBtn = target.querySelector("[data-toolbar-sort]");
-  const sortLbl = target.querySelector("[data-sort-label]");
-  const filter  = target.querySelector("[data-toolbar-filter]");
+function bindToolbar(toolbarRoot, target) {
+  // Toolbar controls live in the app-header; the filter panel + parcel list
+  // stay in the list pane — so the two roots differ.
+  const all     = toolbarRoot?.querySelector("[data-toolbar-all]");
+  const sortBtn = toolbarRoot?.querySelector("[data-toolbar-sort]");
+  const sortLbl = toolbarRoot?.querySelector("[data-sort-label]");
+  const filter  = toolbarRoot?.querySelector("[data-toolbar-filter]");
   const panel   = target.querySelector("[data-filter-panel]");
-  const chev    = target.querySelector("[data-filter-chev]");
+  const chev    = toolbarRoot?.querySelector("[data-filter-chev]");
 
   // "Toate": (un)check all VISIBLE parcel cards.
   all?.addEventListener("change", () => {
@@ -390,34 +396,39 @@ export function render(target, ctx) {
   const totalArea = parcels.reduce((s, p) => s + p.area, 0);
   const currentSortLabel = SORT_OPTIONS[sortIdx].label;
 
-  target.innerHTML = `
-    <rurio-summary-bar></rurio-summary-bar>
+  // Summary bar + toolbar live inside the fixed app-header (#header-extras),
+  // so they stay pinned above the list. Skipped when a parcel detail is open —
+  // the detail view replaces the list and shouldn't carry the list controls.
+  const headerExtras = document.getElementById("header-extras");
+  if (headerExtras && !activeId) {
+    headerExtras.innerHTML = `
+      <rurio-summary-bar static></rurio-summary-bar>
 
-    <!-- TOOLBAR (fixed below the summary bar; mobile-only header offset, xl uses pane-relative top) -->
-    <div class="toolbar fixed inset-x-0 top-32 z-10 xl:top-16 flex items-center gap-2 border-b border-border-subtle bg-surface px-3 py-2 text-neutral-700 dark:text-neutral-300">
-      <label class="flex cursor-pointer items-center gap-2 select-none">
-        <input type="checkbox" data-toolbar-all class="size-4 cursor-pointer rounded-md accent-accent" />
-        <span class="text-sm font-medium">Toate</span>
-      </label>
+      <!-- TOOLBAR (no longer fixed — the app-header owns positioning + the divider) -->
+      <div class="toolbar flex items-center gap-2 bg-surface px-3 py-2 text-neutral-700 dark:text-neutral-300">
+        <label class="flex cursor-pointer items-center gap-2 select-none">
+          <input type="checkbox" data-toolbar-all class="size-4 cursor-pointer rounded-md accent-accent" />
+          <span class="text-sm font-medium">Toate</span>
+        </label>
 
-      <div class="ml-auto flex items-center gap-1">
-        <button type="button" data-toolbar-sort
-                class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
-          <i data-lucide="arrow-up-down" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
-          <span data-sort-label>${currentSortLabel}</span>
-        </button>
+        <div class="ml-auto flex items-center gap-1">
+          <button type="button" data-toolbar-sort
+                  class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
+            <i data-lucide="arrow-up-down" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
+            <span data-sort-label>${currentSortLabel}</span>
+          </button>
 
-        <button type="button" data-toolbar-filter aria-expanded="false"
-                class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
-          <i data-lucide="search" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
-          <span>Cauta / Filtre</span>
-        </button>
+          <button type="button" data-toolbar-filter aria-expanded="false"
+                  class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
+            <i data-lucide="search" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
+            <span>Cauta / Filtre</span>
+          </button>
+        </div>
       </div>
-    </div>
+    `;
+  }
 
-    <!-- Spacer reserving the toolbar's vertical space (since it's now position:fixed) -->
-    <div aria-hidden="true" class="h-12"></div>
-
+  target.innerHTML = `
     <!-- FILTER PANEL (full-width, hidden until toggled) -->
     <div data-filter-panel hidden
          class="border-b border-border-subtle bg-surface px-3 py-4 space-y-4 sm:px-6">
@@ -459,11 +470,11 @@ export function render(target, ctx) {
     </section>
 
     <!-- FAB + actions menu (fixed bottom-right above the bottom nav) -->
-    <div class="pointer-events-none fixed right-0 z-30 p-3 bottom-[calc(4rem+env(safe-area-inset-bottom,0))] xl:bottom-0">
+    <div class="pointer-events-none fixed right-0 z-30 p-3 bottom-[calc(4.25rem+env(safe-area-inset-bottom,0))] xl:bottom-0">
       <div class="pointer-events-auto relative">
         <button type="button" data-list-fab aria-label="Acțiuni listă" aria-haspopup="menu" aria-expanded="false"
-                class="flex size-14 items-center justify-center rounded-full bg-accent text-accent-fg shadow-lg transition hover:shadow-xl hover:bg-accent-hover active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
-          <i data-lucide="plus" class="size-6"></i>
+                class="flex size-12 items-center justify-center rounded-full bg-accent text-accent-fg shadow-lg transition hover:shadow-xl hover:bg-accent-hover active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
+          <i data-lucide="ellipsis-vertical" class="size-5"></i>
         </button>
         <ul data-list-actions-menu role="menu" hidden
             class="absolute right-0 bottom-full mb-2 w-60 overflow-hidden rounded-lg bg-surface py-1 shadow-lg ring-1 ring-border-subtle">
@@ -501,9 +512,9 @@ export function render(target, ctx) {
     </div>
   `;
 
-  mountSummaryBar(target, "list");
+  mountSummaryBar(headerExtras, "list");
   bindListClicks(target);
-  bindToolbar(target);
+  bindToolbar(headerExtras?.querySelector(".toolbar"), target);
   bindFilterBadges(target);
   bindActiveFiltersBar(target);
   bindListFab(target);
@@ -512,92 +523,6 @@ export function render(target, ctx) {
   applyFiltersToDOM(target);
   applySortToDOM(target);
   renderActiveChips(target);
-}
-
-export function renderDetail(id, target) {
-  const p = getParcel(id);
-  if (!p) {
-    target.innerHTML = `
-      <div class="flex h-full items-center justify-center p-8 text-center">
-        <div class="max-w-xs">
-          <div class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-subtle text-fg-subtle">
-            <i data-lucide="search-x" class="size-6"></i>
-          </div>
-          <p class="mt-3 text-sm font-medium text-fg-muted">Parcela nu a fost găsită</p>
-          <a href="#/parcels" class="mt-3 inline-block text-sm font-semibold text-accent-text underline-offset-2 hover:underline">Înapoi la listă</a>
-        </div>
-      </div>
-    `;
-    return;
-  }
-
-  const sown = p.sownAt
-    ? new Date(p.sownAt).toLocaleDateString("ro-RO", { day: "numeric", month: "long", year: "numeric" })
-    : "—";
-  const color = cultureColor(p.crop);
-
-  target.innerHTML = `
-    <article class="px-4 pt-6 pb-10 sm:px-6 xl:px-8 xl:pt-10">
-      <div class="max-w-2xl mx-auto xl:mx-0">
-
-        <p class="text-xs font-semibold uppercase tracking-wider text-fg-subtle">Detalii teren</p>
-        <h2 class="mt-1 flex items-center gap-3 text-2xl font-bold tracking-tight text-fg">
-          <span class="inline-block h-7 w-1 shrink-0 rounded-full" style="background:${color};"></span>
-          <span>${p.name}</span>
-        </h2>
-        <p class="mt-1 text-xs text-fg-muted">${p.apia} · ${p.pl}</p>
-
-        <dl class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div class="rounded-xl border border-border-subtle bg-surface p-3">
-            <dt class="text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">Suprafață</dt>
-            <dd class="mt-1 text-lg font-bold tabular-nums text-fg">${p.area.toFixed(1)} <span class="text-sm font-medium text-fg-muted">ha</span></dd>
-          </div>
-          <div class="rounded-xl border border-border-subtle bg-surface p-3">
-            <dt class="text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">Cultură</dt>
-            <dd class="mt-1 text-sm font-semibold" style="color:${color};">${p.crop}</dd>
-          </div>
-          <div class="rounded-xl border border-border-subtle bg-surface p-3">
-            <dt class="text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">Soi</dt>
-            <dd class="mt-1 text-sm font-semibold text-fg">${p.soi}</dd>
-          </div>
-          <div class="rounded-xl border border-border-subtle bg-surface p-3">
-            <dt class="text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">Normă</dt>
-            <dd class="mt-1 text-sm font-semibold text-fg">${p.norm}</dd>
-          </div>
-          <div class="rounded-xl border border-border-subtle bg-surface p-3">
-            <dt class="text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">Proprietate</dt>
-            <dd class="mt-1 text-sm font-semibold text-fg">${p.property || "—"}</dd>
-          </div>
-          <div class="rounded-xl border border-border-subtle bg-surface p-3">
-            <dt class="text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">Regiune</dt>
-            <dd class="mt-1 text-sm font-semibold text-fg">${p.region}</dd>
-          </div>
-          <div class="rounded-xl border border-border-subtle bg-surface p-3">
-            <dt class="text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">Semănat</dt>
-            <dd class="mt-1 text-sm font-semibold text-fg">${sown}</dd>
-          </div>
-          <div class="rounded-xl border border-border-subtle bg-surface p-3">
-            <dt class="text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">Status</dt>
-            <dd class="mt-1">
-              <span class="inline-flex items-center rounded-md bg-subtle px-2 py-0.5 text-xs font-medium text-fg-muted ring-1 ring-border-subtle ring-inset">
-                ${STATUS_LABELS[p.status] || p.status}
-              </span>
-            </dd>
-          </div>
-        </dl>
-
-        <div class="mt-6 rounded-2xl border border-border-subtle bg-surface p-5">
-          <h3 class="text-sm font-semibold text-fg">Lucrări efectuate</h3>
-          <div class="mt-2 flex flex-wrap gap-2">
-            ${(p.works || []).length
-              ? p.works.map(w => `<span class="inline-flex items-center rounded-md bg-subtle px-2 py-0.5 text-xs font-medium text-fg-muted ring-1 ring-border-subtle ring-inset">${w}</span>`).join("")
-              : `<span class="text-xs text-fg-subtle">Nicio lucrare înregistrată</span>`}
-          </div>
-        </div>
-
-      </div>
-    </article>
-  `;
 }
 
 export function renderDetailEmpty(target) {

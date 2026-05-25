@@ -33,6 +33,7 @@
       { href: '/components/list-item.html', label: 'List item', stub: true },
       { href: '/components/tabs.html', label: 'Tabs', stub: true },
       { href: '/components/nav-bar.html', label: 'Top nav bar', stub: true },
+      { href: '/components/app-header.html', label: 'App header' },
       { href: '/components/tab-bar.html', label: 'Bottom tab bar', stub: true },
       { href: '/components/sheet.html', label: 'Bottom sheet', stub: true },
       { href: '/components/toast.html', label: 'Toast', stub: true },
