@@ -8,6 +8,7 @@ import * as notificari from "./notificari.js";
 import * as preferinte from "./preferinte.js";
 import * as dispozitive from "./dispozitive.js";
 import * as activitate from "./activitate.js";
+import * as activitateCont from "./activitate-cont.js";
 import * as utilizator from "./utilizator.js";
 import { stubPage } from "./_stub.js";
 
@@ -38,7 +39,7 @@ export {
   dashadmin, dashops, operator, firme, echipa, stocuri, utilaje,
   jurnal, arenda, mesagerie, galerie,
   planning, quick, messages, camera,
-  profileinfo, securitate, notificari, preferinte, dispozitive, activitate, termeni, utilizator,
+  profileinfo, securitate, notificari, preferinte, dispozitive, activitate, activitateCont, termeni, utilizator,
 };
 
 /* ──────────────────────────────────────────────────────────────
@@ -65,6 +66,7 @@ export const navGroups = [
     toNavItem(dashops,   { disabled: true }),
     toNavItem(operator,  { disabled: true }),
     toNavItem(firme,     { disabled: true }),
+    toNavItem(activitate),
   ]},
   { title: "RESURSE", items: [
     toNavItem(echipa,  { disabled: true }),

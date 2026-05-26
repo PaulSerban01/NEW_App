@@ -3,7 +3,7 @@ import * as securitate from "./securitate.js";
 import * as notificari from "./notificari.js";
 import * as preferinte from "./preferinte.js";
 import * as dispozitive from "./dispozitive.js";
-import * as activitate from "./activitate.js";
+import * as activitateCont from "./activitate-cont.js";
 
 export const meta = {
   id: "utilizator",
@@ -21,7 +21,7 @@ const SECTIONS = [
   { id: "notificari",  icon: "bell",               label: "Notificări",  render: notificari.render  },
   { id: "preferinte",  icon: "sliders-horizontal", label: "Preferințe",  render: preferinte.render },
   { id: "dispozitive", icon: "smartphone",         label: "Dispozitive", render: dispozitive.render },
-  { id: "activitate",  icon: "activity",           label: "Activitate",  render: activitate.render },
+  { id: "activitate-cont", icon: "activity",       label: "Activitate cont", render: activitateCont.render },
 ];
 
 const STUB_PLACEHOLDER = `
