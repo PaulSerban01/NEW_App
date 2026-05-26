@@ -97,7 +97,7 @@ function listItem(p, idx, activeId) {
 
       <div class="min-w-0 flex-1">
         <div class="flex items-start justify-between gap-3">
-          <p class="truncate text-sm font-semibold text-fg">${p.name}</p>
+          <p class="truncate text-base font-bold text-fg">${p.name}</p>
           <p class="shrink-0 text-sm font-semibold tabular-nums text-fg">
             ${p.area.toFixed(1)}<span class="ml-0.5 text-xs font-medium text-fg-muted"> ha</span>
           </p>

@@ -43,6 +43,14 @@
        4rem fallback matches the bare header height before JS runs. */
     .app-shell { padding-top: var(--app-header-h, 4rem); }
 
+    /* Home button: shows the logo only on the Acasă route; the home icon on every
+       other top-level page. Tag selectors so it works regardless of whether the
+       Lucide placeholder has been hydrated into an <svg> yet. */
+    #home-btn > img { display: none; }
+    [data-route-page="home"] #home-btn > img { display: block; }
+    [data-route-page="home"] #home-btn > i,
+    [data-route-page="home"] #home-btn > svg { display: none; }
+
     /* Mobile: when a detail is active, hide the list pane to slide detail full-screen. */
     @media (max-width: 1279.98px) {
       [data-has-detail] #pane-list { display: none; }
@@ -100,6 +108,9 @@
         <!-- Home button (visible when no detail open) -->
         <a id="home-btn" href="#/" aria-label="Acasă"
            class="flex size-8 items-center justify-center rounded-lg text-fg hover:bg-subtle">
+          <!-- Logo shows only on the Acasă route; other top-level pages show the
+               home icon. CSS in <style> handles the swap via [data-route-page]. -->
+          <img src="images/logo.png" alt="" class="size-6" />
           <i data-lucide="home" class="size-5"></i>
         </a>
         <!-- Back button (visible when current route has a detail id) -->
