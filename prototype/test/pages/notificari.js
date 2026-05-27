@@ -53,7 +53,7 @@ function toggleRow({ id, title, subtitle, on, last }) {
 
 export function render(target) {
   target.innerHTML = `
-    <section class="space-y-6 px-4 pt-6 pb-12">
+    <section class="space-y-6 p-4">
 
       ${selectField({
         id: "notif-canal",

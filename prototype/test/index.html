@@ -2,8 +2,18 @@
 <html lang="ro" data-palette="teal" data-mode="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Rurio — Prototype Test</title>
+
+  <!-- PWA: makes the page installable to the home screen -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#00686A" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Rurio" />
+  <link rel="apple-touch-icon" href="images/icon-192.png" />
+
   <link rel="stylesheet" href="dist/app.css" />
   <script type="module" src="lib/theme-engine.js"></script>
   <script type="module" src="lib/icons.js"></script>
@@ -27,9 +37,32 @@
       transition: opacity var(--duration-base, 220ms) var(--ease-standard, cubic-bezier(.2,0,0,1));
     }
 
+    /* The mobile header is fixed (out of flow), so the shell reserves space for it.
+       --app-header-h is kept in sync with the header's real height by JS, so the
+       header can grow (extra rows) without ever overlapping page content.
+       4rem fallback matches the bare header height before JS runs. */
+    .app-shell { padding-top: var(--app-header-h, 4rem); }
+
+    /* Home button: shows the logo only on the Acasă route; the home icon on every
+       other top-level page. Tag selectors so it works regardless of whether the
+       Lucide placeholder has been hydrated into an <svg> yet. */
+    #home-btn > img { display: none; }
+    [data-route-page="home"] #home-btn > img { display: block; }
+    [data-route-page="home"] #home-btn > i,
+    [data-route-page="home"] #home-btn > svg { display: none; }
+
     /* Mobile: when a detail is active, hide the list pane to slide detail full-screen. */
     @media (max-width: 1279.98px) {
       [data-has-detail] #pane-list { display: none; }
+
+      /* Map route: the list pane fills the viewport below the fixed header so the
+         map container can be full-height. Skipped while a detail is open. */
+      [data-route-page="map"]:not([data-has-detail]) #pane-list {
+        height: calc(100dvh - var(--app-header-h, 4rem));
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 0; /* map runs edge-to-edge, behind the bottom nav */
+      }
     }
 
     /* Desktop ≥ 1280px: 3-pane grid — 15% / 25% / 60% */
@@ -38,6 +71,7 @@
         display: grid;
         grid-template-columns: minmax(0, 15%) minmax(0, 25%) minmax(0, 60%);
         grid-template-rows: 100dvh;
+        padding-top: 0; /* no mobile header on desktop */
       }
       .pane-nav-drawer {
         position: static !important;
@@ -61,35 +95,52 @@
 
 <body class="min-h-dvh bg-canvas text-fg antialiased">
 
-  <div class="app-shell relative pt-16 xl:pt-0">
+  <div class="app-shell relative">
 
-    <!-- Mobile header (hidden on xl). Fixed at viewport top; app-shell pt-16 reserves its space. -->
-    <header class="header-mobile fixed inset-x-0 top-0 z-30 flex items-center gap-2 bg-surface p-3">
-      <!-- Home button (visible when no detail open) -->
-      <a id="home-btn" href="#/" aria-label="Acasă"
-         class="flex size-10 items-center justify-center rounded-lg text-fg hover:bg-subtle">
-        <i data-lucide="home" class="size-5"></i>
-      </a>
-      <!-- Back button (visible when current route has a detail id) -->
-      <button id="back-btn"
-              type="button"
-              aria-label="Înapoi"
-              class="hidden size-10 items-center justify-center rounded-lg text-fg hover:bg-subtle">
-        <i data-lucide="chevron-left" class="size-5"></i>
-      </button>
-      <div class="flex-1 text-center text-base font-semibold text-fg" id="header-title">Rurio</div>
-      <!-- Profile avatar — 24×24 image inside a 40×40 tap target (matches home button).
-           Becomes `invisible` on /profile so the slot still reserves space and the title stays centered. -->
-      <a id="header-avatar" href="#/profile" aria-label="Profil"
-         class="flex size-10 shrink-0 items-center justify-center rounded-lg transition-opacity hover:opacity-80 hover:bg-subtle">
-        <span class="block size-6 overflow-hidden rounded-full bg-accent">
-          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=128&h=128&q=80"
-               alt=""
-               loading="lazy"
-               class="size-full object-cover" />
-        </span>
-      </a>
-    </header>
+    <!-- Mobile header region (hidden on xl). The wrapper is the fixed element and
+         owns the single border-b; the shell reserves space for it via --app-header-h.
+         Per-page detail rows go in #header-extras, below the bar and above the border. -->
+    <div id="app-header"
+         class="header-mobile fixed inset-x-0 top-0 z-30 bg-surface border-b border-border-subtle pt-[env(safe-area-inset-top,0px)]">
+
+      <!-- The header bar itself -->
+      <header class="flex items-center gap-2 p-3">
+        <!-- Home button (visible when no detail open) -->
+        <a id="home-btn" href="#/" aria-label="Acasă"
+           class="flex size-8 items-center justify-center rounded-lg text-fg hover:bg-subtle">
+          <!-- Logo shows only on the Acasă route; other top-level pages show the
+               home icon. CSS in <style> handles the swap via [data-route-page]. -->
+          <img src="images/logo.png" alt="" class="size-6" />
+          <i data-lucide="home" class="size-5"></i>
+        </a>
+        <!-- Back button (visible when current route has a detail id) -->
+        <button id="back-btn"
+                type="button"
+                aria-label="Înapoi"
+                class="hidden size-8 items-center justify-center rounded-lg text-fg hover:bg-subtle">
+          <i data-lucide="chevron-left" class="size-5"></i>
+        </button>
+        <div class="flex-1 text-center text-base font-semibold text-fg" id="header-title">Rurio</div>
+        <!-- Profile avatar — 24×24 image inside a 40×40 tap target (matches home button).
+             Becomes `invisible` on /profile so the slot still reserves space and the title stays centered. -->
+        <a id="header-avatar" href="#/profile" aria-label="Profil"
+           class="flex size-8 shrink-0 items-center justify-center rounded-lg transition-opacity hover:opacity-80 hover:bg-subtle">
+          <span class="block size-6 overflow-hidden rounded-full bg-accent">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=128&h=128&q=80"
+                 alt=""
+                 loading="lazy"
+                 class="size-full object-cover" />
+          </span>
+        </a>
+      </header>
+
+      <!-- Per-page header rows mount here — empty on most pages, cleared on every
+           navigation by the router. A page adds rows inside its render() with:
+             document.getElementById("header-extras").innerHTML = `…markup…`;
+           The fixed wrapper grows to fit and the shell padding follows automatically. -->
+      <div id="header-extras"></div>
+
+    </div>
 
     <!-- Nav pane: drawer on mobile, sidebar on xl -->
     <div class="pane-nav-backdrop fixed inset-0 z-40 bg-black/40 xl:hidden" id="nav-backdrop"></div>
@@ -126,6 +177,17 @@
     const headerAvatar = document.getElementById("header-avatar");
     const headerTitle = document.getElementById("header-title");
 
+    // Keep the shell's top padding synced with the fixed header's real height.
+    // The header is fixed (out of flow), so when a page adds rows to #header-extras
+    // the wrapper grows — the ResizeObserver updates --app-header-h and the shell
+    // padding follows, so page content is never hidden behind the header.
+    const appHeader = document.getElementById("app-header");
+    const syncHeaderHeight = () => {
+      document.documentElement.style.setProperty("--app-header-h", `${appHeader.offsetHeight}px`);
+    };
+    new ResizeObserver(syncHeaderHeight).observe(appHeader);
+    syncHeaderHeight();
+
     function openNav()  { shell.setAttribute("data-nav-open", "true"); }
     function closeNav() { shell.removeAttribute("data-nav-open"); }
 
@@ -140,8 +202,8 @@
     // Includes the profile hub + all of its sub-pages.
     const BACK_PAGES = new Set([
       "profile",
-      "profileinfo", "workspace", "securitate", "notificari", "preferinte",
-      "dispozitive", "activitate", "termeni",
+      "profileinfo", "utilizator", "securitate", "notificari", "preferinte",
+      "dispozitive", "termeni",
     ]);
 
     // Back button on mobile
@@ -162,8 +224,11 @@
     document.addEventListener("rurio:route-change", (e) => {
       const r = e.detail;
       // Prefer the page module's own meta.label so sub-pages (hidden from nav)
-      // still get a proper header title.
-      const label = pages[r.page]?.meta?.label
+      // still get a proper header title. When a detail is open (route has an id),
+      // use the page's meta.detailLabel if it defines one (e.g. parcels → "Teren").
+      const m = pages[r.page]?.meta;
+      const label = (r.id && m?.detailLabel)
+                 ?? m?.label
                  ?? navItems.find(n => n.id === r.page)?.label
                  ?? "Rurio";
       headerTitle.textContent = label;
@@ -179,6 +244,13 @@
     });
 
     start();
+  </script>
+
+  <!-- Register the service worker so the app works offline and is installable. -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+    }
   </script>
 </body>
 </html>

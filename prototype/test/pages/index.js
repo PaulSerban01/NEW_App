@@ -5,13 +5,14 @@ import * as profile from "./profile.js";
 import * as profileinfo from "./profileinfo.js";
 import * as securitate from "./securitate.js";
 import * as notificari from "./notificari.js";
+import * as preferinte from "./preferinte.js";
+import * as dispozitive from "./dispozitive.js";
+import * as activitate from "./activitate.js";
+import * as activitateCont from "./activitate-cont.js";
+import * as utilizator from "./utilizator.js";
 import { stubPage } from "./_stub.js";
 
 /* Profile sub-pages (reached from the profile hub; hidden from side nav). */
-const workspace   = stubPage({ id: "workspace",   label: "Workspace",         icon: "briefcase" });
-const preferinte  = stubPage({ id: "preferinte",  label: "Preferințe",        icon: "sliders-horizontal" });
-const dispozitive = stubPage({ id: "dispozitive", label: "Dispozitive",       icon: "smartphone" });
-const activitate  = stubPage({ id: "activitate",  label: "Activitate",        icon: "activity" });
 const termeni     = stubPage({ id: "termeni",     label: "Termeni și condiții", icon: "file-text" });
 
 /* Side-nav stub pages. */
@@ -38,7 +39,7 @@ export {
   dashadmin, dashops, operator, firme, echipa, stocuri, utilaje,
   jurnal, arenda, mesagerie, galerie,
   planning, quick, messages, camera,
-  profileinfo, securitate, notificari, preferinte, dispozitive, activitate, termeni, workspace,
+  profileinfo, securitate, notificari, preferinte, dispozitive, activitate, activitateCont, termeni, utilizator,
 };
 
 /* ──────────────────────────────────────────────────────────────
@@ -65,6 +66,7 @@ export const navGroups = [
     toNavItem(dashops,   { disabled: true }),
     toNavItem(operator,  { disabled: true }),
     toNavItem(firme,     { disabled: true }),
+    toNavItem(activitate),
   ]},
   { title: "RESURSE", items: [
     toNavItem(echipa,  { disabled: true }),
@@ -81,7 +83,7 @@ export const navGroups = [
     toNavItem(mesagerie, { disabled: true }),
     toNavItem(galerie,   { disabled: true }),
   ]},
-  { items: [toNavItem(profile, { disabled: true })] },
+  { title: "CONT", items: [toNavItem(profile)] },
 ];
 
 /* Flat list — kept for any consumer that wants every nav-visible item. */

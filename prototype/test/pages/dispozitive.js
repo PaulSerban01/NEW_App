@@ -1,0 +1,46 @@
+export const meta = {
+  id: "dispozitive",
+  label: "Dispozitive",
+  icon: "smartphone",
+  showInNav: false,
+};
+
+/* Devices currently signed in to the account (prototype data). */
+const DEVICES = [
+  { icon: "smartphone",        name: "iPhone 14 Pro",      meta: "Activ acum · București",        current: true  },
+  { icon: "tablet-smartphone", name: "Samsung Galaxy Tab", meta: "Acum 2 zile · București",       current: false },
+  { icon: "laptop",            name: "MacBook Pro",        meta: "Acum 6 zile · Cluj-Napoca",     current: false },
+  { icon: "monitor",           name: "Windows PC",         meta: "Acum 3 săptămâni · Timișoara",  current: false },
+];
+
+function deviceRow({ icon, name, meta, current }, last) {
+  const lastCls = last ? "" : "border-b border-border-subtle";
+  const action = current
+    ? `<span class="inline-flex items-center rounded-md bg-success-subtle px-2 py-0.5 text-xs font-medium text-success-text ring-1 ring-inset ring-success-text/20">Acest dispozitiv</span>`
+    : `<button type="button" data-device="${name}"
+               class="rounded-md px-2 py-1 text-xs font-semibold text-danger-text transition-colors hover:bg-danger-subtle">Deconectează</button>`;
+  return `
+    <div class="${lastCls} flex items-center gap-3 px-4 py-3.5">
+      <i data-lucide="${icon}" class="size-5 shrink-0 text-fg-muted"></i>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm font-medium text-fg">${name}</p>
+        <p class="mt-0.5 text-xs text-fg-muted">${meta}</p>
+      </div>
+      <div class="shrink-0">${action}</div>
+    </div>
+  `;
+}
+
+export function render(target) {
+  target.innerHTML = `
+    <section class="p-4">
+      <div class="overflow-hidden rounded-2xl bg-surface ring-1 ring-border-subtle">
+        ${DEVICES.map((d, i) => deviceRow(d, i === DEVICES.length - 1)).join("")}
+      </div>
+    </section>
+  `;
+
+  target.querySelectorAll("[data-device]").forEach(btn => {
+    btn.addEventListener("click", () => alert(`Deconectare: ${btn.dataset.device}`));
+  });
+}

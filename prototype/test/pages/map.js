@@ -5,6 +5,7 @@ import { SUMMARY_CONFIG, renderDetail as renderParcelDetail } from "./parcels.js
 export const meta = {
   id: "map",
   label: "Harta terenuri",
+  detailLabel: "Teren",
   icon: "globe",
   showInNav: true,
 };
@@ -92,10 +93,12 @@ function mapPropertyBadge(value) {
   `;
 }
 
-function bindMapFilter(target) {
-  const trigger = target.querySelector("[data-map-search]");
-  const panel   = target.querySelector("[data-map-filter-panel]");
-  const search  = target.querySelector("[data-map-search-input]");
+function bindMapFilter(toolbarRoot, panelRoot) {
+  // The "Cauta" trigger lives in the toolbar (app-header); the panel + its
+  // controls live in the list pane — so the two roots differ.
+  const trigger = toolbarRoot?.querySelector("[data-map-search]");
+  const panel   = panelRoot.querySelector("[data-map-filter-panel]");
+  const search  = panelRoot.querySelector("[data-map-search-input]");
   if (!trigger || !panel) return;
 
   function close() {
@@ -114,7 +117,7 @@ function bindMapFilter(target) {
     e.stopPropagation();
     if (panel.hidden) open(); else close();
   });
-  target.querySelector("[data-map-filter-close]")?.addEventListener("click", close);
+  panelRoot.querySelector("[data-map-filter-close]")?.addEventListener("click", close);
 
   // Search input
   search?.addEventListener("input", () => {
@@ -122,7 +125,7 @@ function bindMapFilter(target) {
   });
 
   // Badges
-  target.querySelectorAll("[data-map-filter-badge]").forEach(b => {
+  panelRoot.querySelectorAll("[data-map-filter-badge]").forEach(b => {
     b.addEventListener("click", () => {
       const cat = b.dataset.mapCat;
       const val = b.dataset.mapValue;
@@ -351,23 +354,31 @@ function bindMapToolbar(target) {
 export function render(target, ctx) {
   const activeId = ctx?.route?.id || null;
 
+  // Summary bar + map toolbar live inside the fixed app-header (#header-extras),
+  // so they stay pinned above the map. Skipped when a parcel detail is open —
+  // the detail view replaces the list and shouldn't carry the map controls.
+  const headerExtras = document.getElementById("header-extras");
+  if (headerExtras && !activeId) {
+    headerExtras.innerHTML = `
+      <rurio-summary-bar static></rurio-summary-bar>
+
+      <!-- MAP TOOLBAR (border-b dropped — the app-header owns the single divider) -->
+      <div class="map-toolbar flex items-center gap-2 bg-surface px-3 py-2 text-neutral-700 dark:text-neutral-300">
+        ${selectWidget("view",  MAP_VIEW_OPTIONS,  mapToolbarState.view)}
+        ${selectWidget("layer", MAP_LAYER_OPTIONS, mapToolbarState.layer)}
+
+        <button type="button" data-map-search aria-expanded="false" aria-haspopup="dialog"
+                class="ml-auto inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
+          <i data-lucide="search" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
+          <span>Cauta</span>
+        </button>
+      </div>
+    `;
+  }
+
   target.innerHTML = `
-    <rurio-summary-bar></rurio-summary-bar>
-
-    <!-- MAP TOOLBAR -->
-    <div class="map-toolbar flex items-center gap-2 border-b border-border-subtle bg-surface px-3 py-2 text-neutral-700 dark:text-neutral-300">
-      ${selectWidget("view",  MAP_VIEW_OPTIONS,  mapToolbarState.view)}
-      ${selectWidget("layer", MAP_LAYER_OPTIONS, mapToolbarState.layer)}
-
-      <button type="button" data-map-search aria-expanded="false" aria-haspopup="dialog"
-              class="ml-auto inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
-        <i data-lucide="search" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
-        <span>Cauta</span>
-      </button>
-    </div>
-
     <!-- MAP FILTER PANEL (overlays the map when "Cauta" is pressed) -->
-    <div class="relative">
+    <div class="relative flex-1 min-h-0">
       <div data-map-filter-panel hidden
            class="absolute inset-x-0 top-0 z-20 space-y-4 border-b border-border-subtle bg-surface px-3 py-4 shadow-lg sm:px-6">
         <!-- Search -->
@@ -401,15 +412,11 @@ export function render(target, ctx) {
       </div>
 
       <div id="parcels-map-container"
-           class="relative isolate h-[calc(100dvh-14.5rem-env(safe-area-inset-bottom,0))] xl:h-[calc(100dvh-6.75rem)] bg-subtle">
+           class="relative isolate h-full xl:h-[calc(100dvh-6.75rem)] bg-subtle">
         <div class="absolute inset-0 flex items-center justify-center text-sm text-fg-subtle">
           Se încarcă harta…
         </div>
       </div>
-    </div>
-
-    <div class="px-4 py-3 text-xs text-fg-subtle sm:px-6 xl:hidden">
-      Apasă pe o parcelă de pe hartă pentru detalii.
     </div>
 
     <!-- Floating map controls — LEFT.
@@ -417,26 +424,26 @@ export function render(target, ctx) {
          (clears bottom-nav height + iOS safe area); on desktop just bottom of viewport.
          pointer-events-none on the wrapper lets map gestures pass through the
          transparent padding; pointer-events-auto on the FAB cluster restores them. -->
-    <div class="pointer-events-none fixed left-0 z-30 p-3 bottom-[calc(4rem+env(safe-area-inset-bottom,0))] xl:bottom-0">
+    <div class="pointer-events-none fixed left-0 z-30 p-3 bottom-[calc(4.25rem+env(safe-area-inset-bottom,0))] xl:bottom-0">
       <div class="pointer-events-auto flex flex-col gap-2">
         <button type="button" aria-label="Mărește"
                 data-map-fab="zoom-in"
-                class="flex size-11 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                class="flex size-12 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
           <i data-lucide="zoom-in" class="size-5"></i>
         </button>
         <button type="button" aria-label="Micșorează"
                 data-map-fab="zoom-out"
-                class="flex size-11 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                class="flex size-12 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
           <i data-lucide="zoom-out" class="size-5"></i>
         </button>
         <button type="button" aria-label="Măsoară suprafața"
                 data-map-fab="measure"
-                class="flex size-11 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                class="flex size-12 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
           <i data-lucide="ruler" class="size-5"></i>
         </button>
         <button type="button" aria-label="Comută vizibilitate"
                 data-map-fab="visibility"
-                class="flex size-11 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                class="flex size-12 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
           <i data-lucide="eye" class="size-5"></i>
         </button>
       </div>
@@ -444,25 +451,29 @@ export function render(target, ctx) {
 
     <!-- Floating map controls — RIGHT.
          Third FAB is accent-colored and opens an action menu (listbox-style popover). -->
-    <div class="pointer-events-none fixed right-0 z-30 p-3 bottom-[calc(4rem+env(safe-area-inset-bottom,0))] xl:bottom-0">
-      <div class="pointer-events-auto relative flex flex-col gap-2">
+    <div class="pointer-events-none fixed right-0 z-30 p-3 bottom-[calc(4.25rem+env(safe-area-inset-bottom,0))] xl:bottom-0">
+      <div class="pointer-events-auto flex flex-col gap-2">
         <button type="button" aria-label="Focalizare"
                 data-map-fab="focus"
-                class="flex size-11 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                class="flex size-12 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
           <i data-lucide="focus" class="size-5"></i>
         </button>
         <button type="button" aria-label="Pin pe hartă"
                 data-map-fab="pin"
-                class="flex size-11 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                class="flex size-12 items-center justify-center rounded-full bg-surface text-fg shadow-md transition hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
           <i data-lucide="map-pin" class="size-5"></i>
         </button>
-        <button type="button"
-                data-map-fab="add"
+
+        <!-- "Add" FAB + its popover menu — own relative wrapper so the menu
+             positions directly above this button, not above the whole cluster. -->
+        <div class="relative">
+          <button type="button"
+                  data-map-fab="add"
                 aria-label="Adaugă"
                 aria-haspopup="menu"
                 aria-expanded="false"
-                class="flex size-11 items-center justify-center rounded-full bg-accent text-accent-fg shadow-md transition hover:shadow-lg hover:bg-accent-hover active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
-          <i data-lucide="list-plus" class="size-5"></i>
+                class="flex size-12 items-center justify-center rounded-full bg-accent text-accent-fg shadow-md transition hover:shadow-lg hover:bg-accent-hover active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
+          <i data-lucide="ellipsis-vertical" class="size-5"></i>
         </button>
 
         <!-- Action menu — pops up above the cluster, right-aligned -->
@@ -497,6 +508,7 @@ export function render(target, ctx) {
             </button>
           </li>
         </ul>
+        </div>
       </div>
     </div>
   `;
@@ -552,11 +564,16 @@ export function render(target, ctx) {
   document.addEventListener("click", handleOutsideClick);
   document.addEventListener("keydown", handleKeydown);
 
-  const bar = target.querySelector("rurio-summary-bar");
+  const bar = headerExtras?.querySelector("rurio-summary-bar");
   if (bar) bar.config = { ...SUMMARY_CONFIG, activeView: "map" };
 
-  bindMapToolbar(target);
-  bindMapFilter(target);
+  // The toolbar now lives in #header-extras — bind against that root.
+  // Its presence also gates the filter wiring (absent while a detail is open).
+  const toolbarEl = headerExtras?.querySelector(".map-toolbar");
+  if (toolbarEl) {
+    bindMapToolbar(toolbarEl);
+    bindMapFilter(toolbarEl, target);
+  }
 
   const container = target.querySelector("#parcels-map-container");
 

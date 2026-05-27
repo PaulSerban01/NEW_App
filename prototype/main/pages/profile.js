@@ -74,7 +74,7 @@ function section(title, contentHtml) {
       ${title
         ? `<h2 class="px-4 pb-2 text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">${title}</h2>`
         : ""}
-      <div class="mx-4 overflow-hidden rounded-2xl bg-surface ring-1 ring-border-subtle">
+      <div class="mx-4 overflow-hidden rounded-xl bg-surface shadow-sm">
         ${contentHtml}
       </div>
     </div>
