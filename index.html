@@ -55,104 +55,134 @@
     <!-- Stacked list — Tailwind Plus "with archived" pattern, no chips, no card chrome. -->
     <ul role="list" class="divide-y divide-border-subtle">
 
-      <li class="relative flex justify-between gap-x-6 py-5 transition-colors hover:bg-subtle">
-        <div class="flex min-w-0 items-center gap-x-4">
-          <span class="flex size-12 flex-none items-center justify-center rounded-full bg-accent-subtle text-accent-text">
-            <i data-lucide="smartphone" class="size-5"></i>
-          </span>
-          <div class="min-w-0">
-            <div class="flex items-center gap-2">
+      <li class="py-3">
+        <div class="relative flex justify-between gap-x-6 rounded-xl p-3 transition-colors hover:bg-subtle">
+          <div class="flex min-w-0 items-center gap-x-4">
+            <span class="flex size-12 flex-none items-center justify-center rounded-full bg-accent-subtle text-accent-text">
+              <i data-lucide="smartphone" class="size-5"></i>
+            </span>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <p class="text-base font-semibold text-fg">
+                  <a href="prototype/main/index.html">
+                    <span class="absolute inset-0"></span>
+                    Main prototype
+                  </a>
+                </p>
+                <span class="inline-flex shrink-0 items-center rounded-full bg-accent-subtle px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-text">
+                  main
+                </span>
+              </div>
+              <p class="mt-1 truncate text-sm text-gray-500">Versiunea curentă · web components</p>
+            </div>
+          </div>
+          <div class="flex shrink-0 items-center gap-x-4">
+            <div class="hidden sm:flex sm:flex-col sm:items-end">
+              <p class="text-sm text-fg">Activ</p>
+              <p class="mt-1 text-xs text-fg-subtle">2026-05-28</p>
+            </div>
+            <i data-lucide="chevron-right" class="size-5 flex-none text-fg-subtle"></i>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center justify-between gap-3 rounded-lg bg-canvas px-3 py-2">
+          <button
+            type="button"
+            data-changelog-open="main"
+            class="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold text-fg transition-colors hover:bg-raised"
+          >
+            <i data-lucide="scroll-text" class="size-3.5"></i>
+            Changelog
+          </button>
+          <span class="text-xs text-fg-subtle">v0.1.4 · 2026-05-28 · 16:42</span>
+        </div>
+      </li>
+
+      <li class="py-3">
+        <div class="relative flex justify-between gap-x-6 rounded-xl p-3 transition-colors hover:bg-subtle">
+          <div class="flex min-w-0 items-center gap-x-4">
+            <span class="flex size-12 flex-none items-center justify-center rounded-full bg-subtle text-fg-muted">
+              <i data-lucide="archive" class="size-5"></i>
+            </span>
+            <div class="min-w-0">
               <p class="text-base font-semibold text-fg">
-                <a href="prototype/main/index.html">
+                <a href="prototype/dorin/roles.html">
                   <span class="absolute inset-0"></span>
-                  Main prototype
+                  Varianta Originală Dorin
                 </a>
               </p>
-              <span class="inline-flex shrink-0 items-center rounded-full bg-accent-subtle px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-text">
-                main
-              </span>
+              <p class="mt-1 truncate text-sm text-gray-500">Snapshot legacy · referință</p>
             </div>
-            <p class="mt-1 truncate text-sm text-gray-500">Versiunea curentă · web components</p>
           </div>
-        </div>
-        <div class="flex shrink-0 items-center gap-x-4">
-          <div class="hidden sm:flex sm:flex-col sm:items-end">
-            <p class="text-sm text-fg">Activ</p>
-            <p class="mt-1 text-xs text-fg-subtle">Versiune curentă</p>
+          <div class="flex shrink-0 items-center gap-x-4">
+            <div class="hidden sm:flex sm:flex-col sm:items-end">
+              <p class="text-sm text-fg">Arhivat</p>
+              <p class="mt-1 text-xs text-fg-subtle">Referință</p>
+            </div>
+            <i data-lucide="chevron-right" class="size-5 flex-none text-fg-subtle"></i>
           </div>
-          <i data-lucide="chevron-right" class="size-5 flex-none text-fg-subtle"></i>
         </div>
       </li>
 
-      <li class="relative flex justify-between gap-x-6 py-5 transition-colors hover:bg-subtle">
-        <div class="flex min-w-0 items-center gap-x-4">
-          <span class="flex size-12 flex-none items-center justify-center rounded-full bg-subtle text-fg-muted">
-            <i data-lucide="archive" class="size-5"></i>
-          </span>
-          <div class="min-w-0">
-            <p class="text-base font-semibold text-fg">
-              <a href="prototype/dorin/roles.html">
-                <span class="absolute inset-0"></span>
-                Varianta Originală Dorin
-              </a>
-            </p>
-            <p class="mt-1 truncate text-sm text-gray-500">Snapshot legacy · referință</p>
+      <li class="py-3">
+        <div class="relative flex justify-between gap-x-6 rounded-xl p-3 transition-colors hover:bg-subtle">
+          <div class="flex min-w-0 items-center gap-x-4">
+            <span class="flex size-12 flex-none items-center justify-center rounded-full bg-warning-subtle text-warning-text">
+              <i data-lucide="flask-conical" class="size-5"></i>
+            </span>
+            <div class="min-w-0">
+              <p class="text-base font-semibold text-fg">
+                <a href="prototype/test/index.html">
+                  <span class="absolute inset-0"></span>
+                  Test
+                </a>
+              </p>
+              <p class="mt-1 truncate text-sm text-gray-500">Teste design Paul</p>
+            </div>
+          </div>
+          <div class="flex shrink-0 items-center gap-x-4">
+            <div class="hidden sm:flex sm:flex-col sm:items-end">
+              <p class="text-sm text-fg">Sandbox</p>
+              <p class="mt-1 text-xs text-fg-subtle">2026-05-28</p>
+            </div>
+            <i data-lucide="chevron-right" class="size-5 flex-none text-fg-subtle"></i>
           </div>
         </div>
-        <div class="flex shrink-0 items-center gap-x-4">
-          <div class="hidden sm:flex sm:flex-col sm:items-end">
-            <p class="text-sm text-fg">Arhivat</p>
-            <p class="mt-1 text-xs text-fg-subtle">Referință</p>
-          </div>
-          <i data-lucide="chevron-right" class="size-5 flex-none text-fg-subtle"></i>
-        </div>
-      </li>
-
-      <li class="relative flex justify-between gap-x-6 py-5 transition-colors hover:bg-subtle">
-        <div class="flex min-w-0 items-center gap-x-4">
-          <span class="flex size-12 flex-none items-center justify-center rounded-full bg-warning-subtle text-warning-text">
-            <i data-lucide="flask-conical" class="size-5"></i>
-          </span>
-          <div class="min-w-0">
-            <p class="text-base font-semibold text-fg">
-              <a href="prototype/test/index.html">
-                <span class="absolute inset-0"></span>
-                Prototype test
-              </a>
-            </p>
-            <p class="mt-1 truncate text-sm text-gray-500">Teste design Paul</p>
-          </div>
-        </div>
-        <div class="flex shrink-0 items-center gap-x-4">
-          <div class="hidden sm:flex sm:flex-col sm:items-end">
-            <p class="text-sm text-fg">Sandbox</p>
-            <p class="mt-1 text-xs text-fg-subtle">Experimental</p>
-          </div>
-          <i data-lucide="chevron-right" class="size-5 flex-none text-fg-subtle"></i>
+        <div class="mt-3 flex items-center justify-between gap-3 rounded-lg bg-canvas px-3 py-2">
+          <button
+            type="button"
+            data-changelog-open="test"
+            class="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold text-fg transition-colors hover:bg-raised"
+          >
+            <i data-lucide="scroll-text" class="size-3.5"></i>
+            Changelog
+          </button>
+          <span class="text-xs text-fg-subtle">exp-0.0.2 · 2026-05-28 · 18:15</span>
         </div>
       </li>
 
-      <li class="relative flex justify-between gap-x-6 py-5 transition-colors hover:bg-subtle">
-        <div class="flex min-w-0 items-center gap-x-4">
-          <span class="flex size-12 flex-none items-center justify-center rounded-full bg-indigo-100 text-indigo-700">
-            <i data-lucide="palette" class="size-5"></i>
-          </span>
-          <div class="min-w-0">
-            <p class="text-base font-semibold text-fg">
-              <a href="design-system/preview/index.html">
-                <span class="absolute inset-0"></span>
-                Design System
-              </a>
-            </p>
-            <p class="mt-1 truncate text-sm text-gray-500">Tokens, themes &amp; components</p>
+      <li class="py-3">
+        <div class="relative flex justify-between gap-x-6 rounded-xl p-3 transition-colors hover:bg-subtle">
+          <div class="flex min-w-0 items-center gap-x-4">
+            <span class="flex size-12 flex-none items-center justify-center rounded-full bg-indigo-100 text-indigo-700">
+              <i data-lucide="palette" class="size-5"></i>
+            </span>
+            <div class="min-w-0">
+              <p class="text-base font-semibold text-fg">
+                <a href="design-system/preview/index.html">
+                  <span class="absolute inset-0"></span>
+                  Design System
+                </a>
+              </p>
+              <p class="mt-1 truncate text-sm text-gray-500">Tokens, themes &amp; components</p>
+            </div>
           </div>
-        </div>
-        <div class="flex shrink-0 items-center gap-x-4">
-          <div class="hidden sm:flex sm:flex-col sm:items-end">
-            <p class="text-sm text-fg">Library</p>
-            <p class="mt-1 text-xs text-fg-subtle">v0.1.0</p>
+          <div class="flex shrink-0 items-center gap-x-4">
+            <div class="hidden sm:flex sm:flex-col sm:items-end">
+              <p class="text-sm text-fg">Library</p>
+              <p class="mt-1 text-xs text-fg-subtle">v0.1.0</p>
+            </div>
+            <i data-lucide="chevron-right" class="size-5 flex-none text-fg-subtle"></i>
           </div>
-          <i data-lucide="chevron-right" class="size-5 flex-none text-fg-subtle"></i>
         </div>
       </li>
 
@@ -164,6 +194,168 @@
 
   </main>
 
-  <script>lucide.createIcons();</script>
+  <!-- Changelog modals -->
+  <template id="changelog-data">
+    <script type="application/json" data-key="main">
+      {
+        "title": "Main prototype — Changelog",
+        "subtitle": "Versiunea curentă",
+        "entries": [
+          {
+            "version": "v0.1.4",
+            "date": "2026-05-28",
+            "tag": "latest",
+            "changes": [
+              { "type": "added", "text": "Pagină Test Variant și pagină Profil actualizate" },
+              { "type": "changed", "text": "Logo, dimensiune parcele și override-uri pentru tokeni" }
+            ]
+          },
+          {
+            "version": "v0.1.3",
+            "date": "2026-05-20",
+            "changes": [
+              { "type": "added", "text": "Funcționalitate Activitate" },
+              { "type": "changed", "text": "Update Listă Terenuri, Hartă Terenuri, Profil și secțiuni profil" }
+            ]
+          },
+          {
+            "version": "v0.1.2",
+            "date": "2026-05-10",
+            "changes": [
+              { "type": "changed", "text": "Update Hartă Terenuri, Listă Terenuri și pagina Profil" }
+            ]
+          }
+        ]
+      }
+    </script>
+    <script type="application/json" data-key="test">
+      {
+        "title": "Test — Changelog",
+        "subtitle": "Sandbox experimental Paul",
+        "entries": [
+          {
+            "version": "exp-0.0.2",
+            "date": "2026-05-28",
+            "tag": "wip",
+            "changes": [
+              { "type": "added", "text": "Variantă nouă pentru pagina de test" }
+            ]
+          },
+          {
+            "version": "exp-0.0.1",
+            "date": "2026-05-15",
+            "changes": [
+              { "type": "added", "text": "Sandbox inițial pentru teste de design" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </template>
+
+  <div
+    id="changelog-modal"
+    class="fixed inset-0 z-50 hidden items-end justify-center sm:items-center"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="changelog-title"
+  >
+    <div data-changelog-close class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"></div>
+    <div class="relative w-full max-w-md transform overflow-hidden rounded-t-2xl bg-white shadow-xl ring-1 ring-border-subtle transition-all sm:my-8 sm:rounded-2xl">
+      <div class="flex items-start justify-between gap-4 border-b border-border-subtle px-5 py-4">
+        <div class="min-w-0">
+          <h2 id="changelog-title" class="text-base font-semibold text-fg">Changelog</h2>
+          <p id="changelog-subtitle" class="mt-0.5 text-xs text-fg-subtle"></p>
+        </div>
+        <button
+          type="button"
+          data-changelog-close
+          class="inline-flex size-8 flex-none items-center justify-center rounded-full text-fg-subtle transition-colors hover:bg-subtle hover:text-fg"
+          aria-label="Închide"
+        >
+          <i data-lucide="x" class="size-4"></i>
+        </button>
+      </div>
+      <div id="changelog-body" class="max-h-[70vh] space-y-6 overflow-y-auto px-5 py-5"></div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    (function () {
+      const modal       = document.getElementById('changelog-modal');
+      const titleEl     = document.getElementById('changelog-title');
+      const subtitleEl  = document.getElementById('changelog-subtitle');
+      const bodyEl      = document.getElementById('changelog-body');
+      const dataTpl     = document.getElementById('changelog-data');
+
+      const data = {};
+      dataTpl.content.querySelectorAll('script[type="application/json"]').forEach((s) => {
+        data[s.dataset.key] = JSON.parse(s.textContent);
+      });
+
+      const typeStyles = {
+        added:    { label: 'Adăugat',  cls: 'bg-success-subtle text-success-text' },
+        changed:  { label: 'Modificat', cls: 'bg-accent-subtle text-accent-text' },
+        fixed:    { label: 'Reparat',   cls: 'bg-warning-subtle text-warning-text' },
+        removed:  { label: 'Eliminat',  cls: 'bg-subtle text-fg-muted' }
+      };
+
+      function render(key) {
+        const log = data[key];
+        if (!log) return;
+        titleEl.textContent    = log.title;
+        subtitleEl.textContent = log.subtitle || '';
+        bodyEl.innerHTML = log.entries.map((e) => `
+          <section>
+            <div class="flex items-baseline gap-2">
+              <h3 class="text-sm font-semibold text-fg">${e.version}</h3>
+              ${e.tag ? `<span class="inline-flex items-center rounded-full bg-accent-subtle px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-text">${e.tag}</span>` : ''}
+              <span class="text-xs text-fg-subtle">${e.date}</span>
+            </div>
+            <ul class="mt-2 space-y-2">
+              ${e.changes.map((c) => {
+                const s = typeStyles[c.type] || typeStyles.changed;
+                return `
+                  <li class="flex gap-2 text-sm text-fg">
+                    <span class="mt-0.5 inline-flex shrink-0 items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${s.cls}">${s.label}</span>
+                    <span class="text-fg-muted">${c.text}</span>
+                  </li>
+                `;
+              }).join('')}
+            </ul>
+          </section>
+        `).join('');
+        lucide.createIcons();
+      }
+
+      function open(key) {
+        render(key);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('[data-changelog-open]').forEach((btn) => {
+        btn.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          open(btn.dataset.changelogOpen);
+        });
+      });
+      document.querySelectorAll('[data-changelog-close]').forEach((el) => {
+        el.addEventListener('click', close);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+      });
+    })();
+  </script>
 </body>
 </html>
