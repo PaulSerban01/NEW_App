@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Dropdown · Rurio</title>
+  <link rel="stylesheet" href="../../tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body data-crumb="Components" data-title="Dropdown">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Component</div>
+          <h1 class="ds-page-title">Dropdown</h1>
+          <p class="ds-page-desc">Mirrors Catalyst's <code class="ds-inline">Dropdown</code> 1:1 — same Tailwind classes, same focus state (solid blue-500), same subgrid layout. Five variants below.</p>
+        </div>
+
+        <!-- 1. Basic -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">Basic example</h2>
+          <p class="ds-section__desc">Outline trigger, plain items. Default anchor: bottom-start with 8px gap.</p>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 220px; align-items: center; justify-content: center;">
+              <div class="rn-dropdown" data-dropdown>
+                <button class="cat-btn cat-btn--outline" data-dropdown-trigger>
+                  Options
+                  <i data-lucide="chevron-down" data-slot="icon"></i>
+                </button>
+                <div class="rn-dropdown__menu rn-dropdown__menu--bottom-start" role="menu">
+                  <a class="rn-dropdown__item" href="#" role="menuitem"><span class="rn-dropdown__label">View</span></a>
+                  <a class="rn-dropdown__item" href="#" role="menuitem"><span class="rn-dropdown__label">Edit</span></a>
+                  <button class="rn-dropdown__item" role="menuitem"><span class="rn-dropdown__label">Delete</span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Disabled items -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With disabled items</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 260px; align-items: center; justify-content: center;">
+              <div class="rn-dropdown" data-dropdown>
+                <button class="cat-btn cat-btn--outline" data-dropdown-trigger>
+                  Options
+                  <i data-lucide="chevron-down" data-slot="icon"></i>
+                </button>
+                <div class="rn-dropdown__menu rn-dropdown__menu--bottom-start" role="menu">
+                  <a class="rn-dropdown__item" href="#" role="menuitem"><span class="rn-dropdown__label">View</span></a>
+                  <a class="rn-dropdown__item" href="#" role="menuitem"><span class="rn-dropdown__label">Edit</span></a>
+                  <button class="rn-dropdown__item" role="menuitem" aria-disabled="true" disabled><span class="rn-dropdown__label">Share</span></button>
+                  <button class="rn-dropdown__item" role="menuitem"><span class="rn-dropdown__label">Delete</span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Sections -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With sections</h2>
+          <p class="ds-section__desc">Headings are plain <code class="ds-inline">text-xs zinc-500</code> — no uppercase, no tracking.</p>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 360px; align-items: center; justify-content: center;">
+              <div class="rn-dropdown" data-dropdown>
+                <button class="cat-btn cat-btn--outline" data-dropdown-trigger>
+                  Refunds
+                  <i data-lucide="chevron-down" data-slot="icon"></i>
+                </button>
+                <div class="rn-dropdown__menu rn-dropdown__menu--bottom-start rn-dropdown__menu--w-56" role="menu">
+                  <div class="rn-dropdown__section">
+                    <div class="rn-dropdown__heading">Sales</div>
+                    <a class="rn-dropdown__item" href="#" role="menuitem"><span class="rn-dropdown__label">Refunds</span></a>
+                    <a class="rn-dropdown__item" href="#" role="menuitem"><span class="rn-dropdown__label">Disputes</span></a>
+                    <a class="rn-dropdown__item" href="#" role="menuitem"><span class="rn-dropdown__label">Subscriptions</span></a>
+                  </div>
+                  <hr class="rn-dropdown__divider"/>
+                  <div class="rn-dropdown__section">
+                    <div class="rn-dropdown__heading">Operations</div>
+                    <a class="rn-dropdown__item" href="#" role="menuitem"><span class="rn-dropdown__label">Inventory</span></a>
+                    <a class="rn-dropdown__item" href="#" role="menuitem"><span class="rn-dropdown__label">Shipping</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Descriptions -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With descriptions</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 380px; align-items: center; justify-content: center;">
+              <div class="rn-dropdown" data-dropdown>
+                <button class="cat-btn cat-btn--outline" data-dropdown-trigger>
+                  Permissions
+                  <i data-lucide="chevron-down" data-slot="icon"></i>
+                </button>
+                <div class="rn-dropdown__menu rn-dropdown__menu--bottom-start rn-dropdown__menu--w-72" role="menu">
+                  <a class="rn-dropdown__item" href="#" role="menuitem">
+                    <span class="rn-dropdown__label">Public access</span>
+                    <span class="rn-dropdown__description">Anyone with the link can view this farm.</span>
+                  </a>
+                  <a class="rn-dropdown__item" href="#" role="menuitem">
+                    <span class="rn-dropdown__label">Private access</span>
+                    <span class="rn-dropdown__description">Only invited collaborators can view.</span>
+                  </a>
+                  <a class="rn-dropdown__item" href="#" role="menuitem">
+                    <span class="rn-dropdown__label">Admins only</span>
+                    <span class="rn-dropdown__description">Restricted to organization administrators.</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Icons -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With icons</h2>
+          <p class="ds-section__desc">First child with <code class="ds-inline">data-slot="icon"</code> renders in the 16×16 leading slot.</p>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 320px; align-items: center; justify-content: center;">
+              <div class="rn-dropdown" data-dropdown>
+                <button class="cat-btn cat-btn--outline" data-dropdown-trigger>
+                  Options
+                  <i data-lucide="chevron-down" data-slot="icon"></i>
+                </button>
+                <div class="rn-dropdown__menu rn-dropdown__menu--bottom-start rn-dropdown__menu--w-56" role="menu">
+                  <a class="rn-dropdown__item" href="#" role="menuitem">
+                    <i data-lucide="eye" data-slot="icon"></i>
+                    <span class="rn-dropdown__label">View</span>
+                  </a>
+                  <a class="rn-dropdown__item" href="#" role="menuitem">
+                    <i data-lucide="pencil" data-slot="icon"></i>
+                    <span class="rn-dropdown__label">Edit</span>
+                  </a>
+                  <a class="rn-dropdown__item" href="#" role="menuitem">
+                    <i data-lucide="share-2" data-slot="icon"></i>
+                    <span class="rn-dropdown__label">Share</span>
+                  </a>
+                  <hr class="rn-dropdown__divider"/>
+                  <button class="rn-dropdown__item" role="menuitem">
+                    <i data-lucide="trash-2" data-slot="icon"></i>
+                    <span class="rn-dropdown__label">Delete</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../shared/site.js"></script>
+  <script>
+    // Lucide replaces <i data-lucide="..."> with <svg> and PRESERVES data-* attributes,
+    // so data-slot="icon" survives the swap.
+    lucide.createIcons();
+
+    (function () {
+      const dropdowns = document.querySelectorAll('[data-dropdown]');
+      function closeAll(except) {
+        dropdowns.forEach((d) => { if (d !== except) d.setAttribute('data-open', 'false'); });
+      }
+      dropdowns.forEach((d) => {
+        d.setAttribute('data-open', 'false');
+        const trigger = d.querySelector('[data-dropdown-trigger]');
+        if (!trigger) return;
+        trigger.setAttribute('aria-haspopup', 'menu');
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const open = d.getAttribute('data-open') === 'true';
+          closeAll(d);
+          d.setAttribute('data-open', open ? 'false' : 'true');
+          trigger.setAttribute('aria-expanded', open ? 'false' : 'true');
+        });
+        d.querySelectorAll('.rn-dropdown__item').forEach((item) => {
+          item.addEventListener('click', () => {
+            d.setAttribute('data-open', 'false');
+            trigger.setAttribute('aria-expanded', 'false');
+          });
+        });
+      });
+      document.addEventListener('click', () => closeAll(null));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAll(null);
+      });
+    })();
+  </script>
+</body>
+</html>

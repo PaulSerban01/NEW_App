@@ -65,17 +65,17 @@
 
   /* ── PALETTE-3 (placeholder — replace later) ──────────────── */
   --p3-0:    #FFFFFF;
-  --p3-50:   #FFF1EC;
-  --p3-100:  #FFDDCF;
-  --p3-200:  #FFB89E;
-  --p3-300:  #FF8D66;
-  --p3-400:  #F96A3C;
-  --p3-500:  #E14F1F;
-  --p3-600:  #B93D14;
-  --p3-700:  #8F2F10;
-  --p3-800:  #68220B;
-  --p3-900:  #451707;
-  --p3-950:  #270D03;
+  --p3-50:   #EFFDF3;
+  --p3-100:  #D2FBDF;
+  --p3-200:  #A8F5C2;
+  --p3-300:  #6EE79C;
+  --p3-400:  #44D77F;
+  --p3-500:  #24CB71;
+  --p3-600:  #15A85B;
+  --p3-700:  #168649;
+  --p3-800:  #146A3C;
+  --p3-900:  #11502D;
+  --p3-950:  #052E17;
 
   /* ── NEUTRALS (cool, slight teal cast to harmonize) ───────── */
   --n-0:     #FFFFFF;
@@ -349,6 +349,9 @@
   --accent-ring:       color-mix(in srgb, var(--teal-700) 32%, transparent);
   --accent-text:       var(--teal-800);   /* brand-colored text on white */
 
+  /* bottom-nav primary action — per-palette override (default = accent) */
+  --nav-primary:       var(--accent-bg);
+
   /* destructive */
   --danger-bg:         var(--danger-500);
   --danger-bg-hover:   var(--danger-600);
@@ -602,6 +605,7 @@
   --accent-fg: var(--n-0); --accent-subtle: var(--p3-50); --accent-subtle-hover: var(--p3-100);
   --accent-border: var(--p3-700); --accent-ring: color-mix(in srgb, var(--p3-700) 32%, transparent);
   --accent-text: var(--p3-800);
+  --nav-primary: var(--p3-500);
 
   --danger-bg: var(--danger-500); --danger-bg-hover: var(--danger-600); --danger-bg-active: var(--danger-700);
   --danger-fg: var(--n-0); --danger-subtle: var(--danger-50); --danger-border: var(--danger-500);
@@ -644,6 +648,7 @@
   --accent-subtle-hover: color-mix(in srgb, var(--p3-300) 22%, var(--n-900));
   --accent-border: var(--p3-300); --accent-ring: color-mix(in srgb, var(--p3-300) 40%, transparent);
   --accent-text: var(--p3-200);
+  --nav-primary: var(--p3-500);
 
   --danger-bg: var(--danger-400); --danger-bg-hover: var(--danger-300); --danger-bg-active: var(--danger-200);
   --danger-fg: var(--danger-950); --danger-subtle: color-mix(in srgb, var(--danger-400) 18%, var(--n-900));

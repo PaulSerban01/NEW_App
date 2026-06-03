@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Avatar · Rurio</title>
+  <link rel="stylesheet" href="../../tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+</head>
+<body data-crumb="Components" data-title="Avatar">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Component</div>
+          <h1 class="ds-page-title">Avatar</h1>
+          <p class="ds-page-desc">Mirrors Catalyst's <code class="ds-inline">Avatar</code> 1:1 — circular by default, with optional <code class="ds-inline">initials</code> fallback. Sizes <code class="ds-inline">size-6</code>, <code class="ds-inline">size-8</code>, <code class="ds-inline">size-10</code>.</p>
+        </div>
+
+        <!-- Basic -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">Basic example</h2>
+          <p class="ds-section__desc">Image source via <code class="ds-inline">&lt;img&gt;</code>, three sizes from the Catalyst docs.</p>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 140px; align-items: center; justify-content: center; gap: 20px;">
+              <span class="cat-avatar cat-avatar--6">
+                <img src="https://i.pravatar.cc/120?img=12" alt=""/>
+              </span>
+              <span class="cat-avatar cat-avatar--8">
+                <img src="https://i.pravatar.cc/120?img=12" alt=""/>
+              </span>
+              <span class="cat-avatar cat-avatar--10">
+                <img src="https://i.pravatar.cc/120?img=12" alt=""/>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Initials -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">Initials</h2>
+          <p class="ds-section__desc">Pass <code class="ds-inline">initials</code> as a fallback. Catalyst's example uses <code class="ds-inline">bg-zinc-900 text-white</code>.</p>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 140px; align-items: center; justify-content: center; gap: 20px;">
+              <span class="cat-avatar cat-avatar--6" style="background:rgb(24 24 27); color:#fff;">
+                <svg viewBox="0 0 100 100" aria-hidden="true"><text x="50%" y="50%" alignment-baseline="middle" dominant-baseline="middle" text-anchor="middle" dy=".125em">tw</text></svg>
+              </span>
+              <span class="cat-avatar cat-avatar--8" style="background:rgb(24 24 27); color:#fff;">
+                <svg viewBox="0 0 100 100" aria-hidden="true"><text x="50%" y="50%" alignment-baseline="middle" dominant-baseline="middle" text-anchor="middle" dy=".125em">tw</text></svg>
+              </span>
+              <span class="cat-avatar cat-avatar--10" style="background:rgb(24 24 27); color:#fff;">
+                <svg viewBox="0 0 100 100" aria-hidden="true"><text x="50%" y="50%" alignment-baseline="middle" dominant-baseline="middle" text-anchor="middle" dy=".125em">tw</text></svg>
+              </span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../shared/site.js"></script>
+</body>
+</html>

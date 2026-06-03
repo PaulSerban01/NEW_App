@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Checkbox · Rurio</title>
+  <link rel="stylesheet" href="../../tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+</head>
+<body data-crumb="Components" data-title="Checkbox">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Component</div>
+          <h1 class="ds-page-title">Checkbox</h1>
+          <p class="ds-page-desc">Mirrors Catalyst's <code class="ds-inline">Checkbox</code> + <code class="ds-inline">CheckboxField</code> + <code class="ds-inline">CheckboxGroup</code> primitives 1:1.</p>
+        </div>
+
+        <template id="cb-svg">
+          <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </template>
+
+        <!-- 1. Basic -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">Basic example</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 120px; align-items: center; justify-content: center;">
+              <label class="cat-checkbox" aria-label="Allow embedding">
+                <input class="cat-checkbox__input" type="checkbox" name="allow_embedding"/>
+                <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. With label -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With label</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 140px; align-items: center; justify-content: center;">
+              <div class="cat-checkbox-field" style="width: 100%; max-width: 480px;">
+                <label class="cat-checkbox">
+                  <input class="cat-checkbox__input" type="checkbox" name="allow_embedding"/>
+                  <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </label>
+                <span class="cat-label">Allow embedding</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. With description -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With description</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 180px; align-items: center; justify-content: center;">
+              <div class="cat-checkbox-field" style="width: 100%; max-width: 480px;">
+                <label class="cat-checkbox">
+                  <input class="cat-checkbox__input" type="checkbox" name="allow_embedding"/>
+                  <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </label>
+                <span class="cat-label">Allow embedding</span>
+                <span class="cat-description">Allow others to embed your event details on their own site.</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. With custom layout -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With custom layout</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 120px; align-items: center; justify-content: center;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; max-width: 320px;">
+                <span class="cat-label">Allow embedding</span>
+                <label class="cat-checkbox">
+                  <input class="cat-checkbox__input" type="checkbox" name="allow_embedding"/>
+                  <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. With accent color -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With accent color</h2>
+          <p class="ds-section__desc">Catalyst exposes a <code class="ds-inline">color</code> prop. Example uses <code class="ds-inline">sky</code>.</p>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 120px; align-items: center; justify-content: center;">
+              <label class="cat-checkbox cat-checkbox--sky">
+                <input class="cat-checkbox__input" type="checkbox" checked/>
+                <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Indeterminate -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">Indeterminate state</h2>
+          <p class="ds-section__desc">Set <code class="ds-inline">data-indeterminate="true"</code> on the control to render the dash icon.</p>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 120px; align-items: center; justify-content: center;">
+              <label class="cat-checkbox" data-indeterminate="true">
+                <input class="cat-checkbox__input" type="checkbox"/>
+                <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. Multiple checkboxes -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">Multiple checkboxes</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 260px; align-items: center; justify-content: center;">
+              <div class="cat-checkbox-group cat-checkbox-group--with-description" style="width: 100%; max-width: 480px;">
+                <div class="cat-checkbox-field">
+                  <label class="cat-checkbox">
+                    <input class="cat-checkbox__input" type="checkbox" name="show_on_events_page" checked/>
+                    <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </label>
+                  <span class="cat-label">Show on events page</span>
+                  <span class="cat-description">Make this event visible on your profile.</span>
+                </div>
+                <div class="cat-checkbox-field">
+                  <label class="cat-checkbox">
+                    <input class="cat-checkbox__input" type="checkbox" name="allow_embedding"/>
+                    <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </label>
+                  <span class="cat-label">Allow embedding</span>
+                  <span class="cat-description">Allow others to embed your event details on their own site.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. With fieldset -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With fieldset</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 320px; align-items: center; justify-content: center;">
+              <fieldset class="cat-fieldset" style="width: 100%; max-width: 480px;">
+                <legend class="cat-legend">Discoverability</legend>
+                <p class="cat-text">Decide where your events can be found across the web.</p>
+                <div class="cat-control cat-checkbox-group cat-checkbox-group--with-description">
+                  <div class="cat-checkbox-field">
+                    <label class="cat-checkbox">
+                      <input class="cat-checkbox__input" type="checkbox" name="show_fs" checked/>
+                      <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </label>
+                    <span class="cat-label">Show on events page</span>
+                    <span class="cat-description">Make this event visible on your profile.</span>
+                  </div>
+                  <div class="cat-checkbox-field">
+                    <label class="cat-checkbox">
+                      <input class="cat-checkbox__input" type="checkbox" name="embed_fs"/>
+                      <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </label>
+                    <span class="cat-label">Allow embedding</span>
+                    <span class="cat-description">Allow others to embed your event details on their own site.</span>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </section>
+
+        <!-- 9. Disabled -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">Disabled state</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 320px; align-items: center; justify-content: center;">
+              <fieldset class="cat-fieldset" style="width: 100%; max-width: 480px;">
+                <legend class="cat-legend">Discoverability</legend>
+                <p class="cat-text">Decide where your events can be found across the web.</p>
+                <div class="cat-control cat-checkbox-group cat-checkbox-group--with-description">
+                  <div class="cat-checkbox-field">
+                    <label class="cat-checkbox">
+                      <input class="cat-checkbox__input" type="checkbox" name="show_d"/>
+                      <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </label>
+                    <span class="cat-label">Show on events page</span>
+                    <span class="cat-description">Make this event visible on your profile.</span>
+                  </div>
+                  <div class="cat-checkbox-field cat-checkbox-field--disabled">
+                    <label class="cat-checkbox">
+                      <input class="cat-checkbox__input" type="checkbox" name="embed_d" disabled/>
+                      <svg class="cat-checkbox__svg" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path class="cat-checkbox__svg-check" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path class="cat-checkbox__svg-indet" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </label>
+                    <span class="cat-label">Allow embedding</span>
+                    <span class="cat-description">Allow others to embed your event details on their own site.</span>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../shared/site.js"></script>
+</body>
+</html>

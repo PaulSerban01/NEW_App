@@ -1,3 +1,5 @@
+import { selectControl } from "../lib/select.js";
+
 export const meta = {
   id: "profileinfo",
   label: "Date cont",
@@ -27,8 +29,8 @@ const INPUT_DISABLED =
 
 export function render(target) {
   target.innerHTML = `
-    <section class="p-4">
-      <form class="space-y-4" data-form-account novalidate>
+    <section class="flex min-h-full flex-col">
+      <form class="flex-1 space-y-4 p-4" data-form-account novalidate>
 
         <div>
           ${label("acc-nume", "Nume")}
@@ -56,18 +58,33 @@ export function render(target) {
 
         <div>
           ${label("acc-lang", "Limba")}
-          <div class="relative mt-1.5">
-            <select id="acc-lang" name="limba"
-                    class="w-full cursor-pointer appearance-none rounded-lg bg-surface px-3 py-2.5 pr-9 text-sm font-medium text-fg ring-1 ring-inset ring-border-subtle focus:outline-none focus:ring-2 focus:ring-accent transition-shadow">
-              <option value="ro" ${USER.limba === "ro" ? "selected" : ""}>Română (RO)</option>
-              <option value="en" ${USER.limba === "en" ? "selected" : ""}>English (EN)</option>
-            </select>
-            <i data-lucide="chevron-down"
-               class="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-fg-muted"></i>
-          </div>
+          ${selectControl({
+            id: "acc-lang",
+            name: "limba",
+            value: USER.limba,
+            options: [
+              { value: "ro", label: "Română (RO)" },
+              { value: "en", label: "English (EN)" },
+            ],
+          })}
         </div>
 
       </form>
+
+      <div class="sticky bottom-0 z-10 flex gap-3 border-t border-border-subtle bg-canvas px-4 py-3">
+        <a href="#/utilizator"
+           class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+          Anulează
+        </a>
+        <button type="button" data-save
+                class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg hover:bg-accent-hover">
+          Salvează
+        </button>
+      </div>
     </section>
   `;
+
+  target.querySelector("[data-save]")?.addEventListener("click", () => {
+    location.hash = "#/utilizator";
+  });
 }

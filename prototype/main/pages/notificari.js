@@ -1,3 +1,5 @@
+import { selectControl } from "../lib/select.js";
+
 export const meta = {
   id: "notificari",
   label: "Notificări",
@@ -15,21 +17,12 @@ const ALERTS = [
 ];
 
 const LABEL_CLS  = "block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle";
-const SELECT_CLS =
-  "w-full cursor-pointer appearance-none rounded-lg bg-surface px-3 py-2.5 pr-9 text-sm font-medium text-fg " +
-  "ring-1 ring-inset ring-border-subtle focus:outline-none focus:ring-2 focus:ring-accent transition-shadow";
 
 function selectField({ id, label, options }) {
   return `
     <div>
       <label for="${id}" class="${LABEL_CLS}">${label}</label>
-      <div class="relative mt-1.5">
-        <select id="${id}" class="${SELECT_CLS}">
-          ${options.map(o => `<option value="${o.value}">${o.label}</option>`).join("")}
-        </select>
-        <i data-lucide="chevron-down"
-           class="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-fg-muted"></i>
-      </div>
+      ${selectControl({ id, options })}
     </div>
   `;
 }
@@ -53,31 +46,48 @@ function toggleRow({ id, title, subtitle, on, last }) {
 
 export function render(target) {
   target.innerHTML = `
-    <section class="space-y-6 p-4">
+    <section class="flex min-h-full flex-col">
+      <div class="flex-1 space-y-6 p-4">
 
-      ${selectField({
-        id: "notif-canal",
-        label: "Canal",
-        options: [
-          { value: "push",  label: "Push"  },
-          { value: "email", label: "Email" },
-          { value: "sms",   label: "SMS"   },
-        ],
-      })}
+        ${selectField({
+          id: "notif-canal",
+          label: "Canal",
+          options: [
+            { value: "push",  label: "Push"  },
+            { value: "email", label: "Email" },
+            { value: "sms",   label: "SMS"   },
+          ],
+        })}
 
-      ${selectField({
-        id: "notif-freq",
-        label: "Frecvență",
-        options: [
-          { value: "instant", label: "Instant"       },
-          { value: "digest",  label: "Digest zilnic" },
-        ],
-      })}
+        ${selectField({
+          id: "notif-freq",
+          label: "Frecvență",
+          options: [
+            { value: "instant", label: "Instant"       },
+            { value: "digest",  label: "Digest zilnic" },
+          ],
+        })}
 
-      <div class="overflow-hidden rounded-2xl bg-surface ring-1 ring-border-subtle">
-        ${ALERTS.map((a, i) => toggleRow({ ...a, last: i === ALERTS.length - 1 })).join("")}
+        <div class="overflow-hidden rounded-2xl bg-surface ring-1 ring-border-subtle">
+          ${ALERTS.map((a, i) => toggleRow({ ...a, last: i === ALERTS.length - 1 })).join("")}
+        </div>
+
       </div>
 
+      <div class="sticky bottom-0 z-10 flex gap-3 border-t border-border-subtle bg-canvas px-4 py-3">
+        <a href="#/utilizator"
+           class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+          Anulează
+        </a>
+        <button type="button" data-save
+                class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg hover:bg-accent-hover">
+          Salvează
+        </button>
+      </div>
     </section>
   `;
+
+  target.querySelector("[data-save]")?.addEventListener("click", () => {
+    location.hash = "#/utilizator";
+  });
 }

@@ -33,14 +33,30 @@ function deviceRow({ icon, name, meta, current }, last) {
 
 export function render(target) {
   target.innerHTML = `
-    <section class="p-4">
-      <div class="overflow-hidden rounded-2xl bg-surface ring-1 ring-border-subtle">
-        ${DEVICES.map((d, i) => deviceRow(d, i === DEVICES.length - 1)).join("")}
+    <section class="flex min-h-full flex-col">
+      <div class="flex-1 p-4">
+        <div class="overflow-hidden rounded-2xl bg-surface ring-1 ring-border-subtle">
+          ${DEVICES.map((d, i) => deviceRow(d, i === DEVICES.length - 1)).join("")}
+        </div>
+      </div>
+
+      <div class="sticky bottom-0 z-10 flex gap-3 border-t border-border-subtle bg-canvas px-4 py-3">
+        <a href="#/utilizator"
+           class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+          Anulează
+        </a>
+        <button type="button" data-save
+                class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg hover:bg-accent-hover">
+          Salvează
+        </button>
       </div>
     </section>
   `;
 
   target.querySelectorAll("[data-device]").forEach(btn => {
     btn.addEventListener("click", () => alert(`Deconectare: ${btn.dataset.device}`));
+  });
+  target.querySelector("[data-save]")?.addEventListener("click", () => {
+    location.hash = "#/utilizator";
   });
 }

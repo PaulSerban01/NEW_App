@@ -8,6 +8,7 @@ import * as notificari from "./notificari.js";
 import * as preferinte from "./preferinte.js";
 import * as dispozitive from "./dispozitive.js";
 import * as activitate from "./activitate.js";
+import * as utilaje from "./utilaje.js";
 import * as activitateCont from "./activitate-cont.js";
 import * as utilizator from "./utilizator.js";
 import { stubPage } from "./_stub.js";
@@ -22,7 +23,6 @@ const operator  = stubPage({ id: "operator",  label: "Ecran operator",     icon:
 const firme     = stubPage({ id: "firme",     label: "Configurator firme", icon: "building-2",      showInNav: true });
 const echipa    = stubPage({ id: "echipa",    label: "Echipa",             icon: "users",           showInNav: true });
 const stocuri   = stubPage({ id: "stocuri",   label: "Stocuri",            icon: "package",         showInNav: true });
-const utilaje   = stubPage({ id: "utilaje",   label: "Utilaje",            icon: "tractor",         showInNav: true });
 const jurnal    = stubPage({ id: "jurnal",    label: "Jurnal de câmp",     icon: "wheat",           showInNav: true });
 const arenda    = stubPage({ id: "arenda",    label: "Arenda",             icon: "file-text",       showInNav: true });
 const mesagerie = stubPage({ id: "mesagerie", label: "Mesagerie",          icon: "messages-square", showInNav: true });
@@ -41,6 +41,11 @@ export {
   planning, quick, messages, camera,
   profileinfo, securitate, notificari, preferinte, dispozitive, activitate, activitateCont, termeni, utilizator,
 };
+
+/* Route ids use kebab-case ("#/activitate-cont"), but ES module exports can't
+   contain hyphens. Re-export with the string-literal name so the router's
+   `pages[route.page]` lookup finds it. */
+export { activitateCont as "activitate-cont" };
 
 /* ──────────────────────────────────────────────────────────────
    Convert a page module → flat nav-item shape consumed by <rurio-nav>.
@@ -71,7 +76,7 @@ export const navGroups = [
   { title: "RESURSE", items: [
     toNavItem(echipa,  { disabled: true }),
     toNavItem(stocuri, { disabled: true }),
-    toNavItem(utilaje, { disabled: true }),
+    toNavItem(utilaje),
     toNavItem(parcels),
     toNavItem(map),
   ]},

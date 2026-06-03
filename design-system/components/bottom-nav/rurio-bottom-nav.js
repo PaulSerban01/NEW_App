@@ -70,8 +70,8 @@ class RurioBottomNav extends HTMLElement {
         return `
           <li class="flex flex-1 items-center justify-center">
             <a ${href} data-bnav="${it.id}"
-               class="flex size-12 items-center justify-center rounded-full bg-accent shadow-sm hover:bg-accent-hover transition no-underline">
-              <i data-lucide="${it.icon}" class="size-7 text-white"></i>
+               class="flex size-12 items-center justify-center rounded-full bg-(--nav-primary) shadow-sm hover:opacity-90 transition no-underline">
+              <i data-lucide="${it.icon}" class="size-7 text-neutral-800"></i>
               <span class="sr-only">Acțiune rapidă</span>
             </a>
           </li>
@@ -95,7 +95,7 @@ class RurioBottomNav extends HTMLElement {
 
     this.innerHTML = `
       <nav aria-label="Bară de navigare jos"
-           class="fixed inset-x-0 bottom-0 z-40 xl:hidden bg-surface border-t border-border-subtle rounded-t-2xl shadow-[0_-4px_12px_rgba(0,0,0,0.04)] pt-0.5 pb-[calc(0.125rem+env(safe-area-inset-bottom,0))]">
+           class="fixed inset-x-0 bottom-0 z-40 xl:hidden bg-surface rounded-t-2xl shadow-[0_-4px_12px_rgba(0,0,0,0.04)] pt-0.5 pb-[calc(0.125rem+env(safe-area-inset-bottom,0))]">
         <ul role="list" class="flex h-16 items-stretch justify-around px-1">
           ${itemsHtml}
         </ul>

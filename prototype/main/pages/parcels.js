@@ -362,6 +362,8 @@ function bindListFab(target) {
       if (item.hasAttribute("data-action-delete")) {
         const n = countChecked();
         alert(`${label} (${n} ${n === 1 ? "parcelă" : "parcele"})`);
+      } else if (label === "Adauga teren") {
+        document.getElementById("sheet-add-teren")?.open();
       } else {
         alert(label);
       }
@@ -510,6 +512,8 @@ export function render(target, ctx) {
         </ul>
       </div>
     </div>
+
+    ${addTerenSheet()}
   `;
 
   mountSummaryBar(headerExtras, "list");
@@ -518,11 +522,104 @@ export function render(target, ctx) {
   bindFilterBadges(target);
   bindActiveFiltersBar(target);
   bindListFab(target);
+  bindAddTerenSheet(target);
 
   // Re-apply persisted state on each render.
   applyFiltersToDOM(target);
   applySortToDOM(target);
   renderActiveChips(target);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   "Adauga teren" bottom sheet — mounted alongside the list, opened
+   from the FAB menu. The form starts with 3 GPS rows (the minimum
+   for a polygon) and a secondary "Adauga punct GPS" button appends
+   more rows on demand.
+   ────────────────────────────────────────────────────────────── */
+
+const INPUT_CLS =
+  "block w-full rounded-lg bg-surface px-3 py-2.5 text-sm text-fg ring-1 ring-inset ring-border-subtle " +
+  "placeholder:text-fg-subtle focus:outline-none focus:ring-2 focus:ring-accent transition-shadow";
+
+function gpsRow(idx) {
+  return `
+    <div class="grid grid-cols-2 gap-2" data-gps-row>
+      <input type="text" inputmode="decimal" name="lat-${idx}"
+             placeholder="Lat (ex. 45.6427)" class="${INPUT_CLS}" />
+      <input type="text" inputmode="decimal" name="lon-${idx}"
+             placeholder="Lon (ex. 25.5887)" class="${INPUT_CLS}" />
+    </div>
+  `;
+}
+
+function addTerenSheet() {
+  return `
+    <rurio-sheet id="sheet-add-teren" title="Adauga teren">
+      <form data-add-teren-form class="space-y-5" novalidate>
+
+        <div>
+          <label for="at-denumire" class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
+            Denumire Teren
+          </label>
+          <input id="at-denumire" name="denumire" type="text" class="mt-1.5 ${INPUT_CLS}" />
+        </div>
+
+        <div>
+          <div class="flex items-baseline justify-between gap-2">
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
+              Puncte GPS
+            </label>
+            <span class="text-xs text-fg-subtle">Minim 3</span>
+          </div>
+          <div class="mt-2 space-y-2" data-gps-rows>
+            ${gpsRow(1)}
+            ${gpsRow(2)}
+            ${gpsRow(3)}
+          </div>
+          <button type="button" data-add-gps
+                  class="mt-3 inline-flex items-center gap-2 rounded-lg bg-surface px-3 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+            <i data-lucide="plus" class="size-4"></i>
+            Adauga punct GPS
+          </button>
+        </div>
+
+        <hr class="border-t border-border-subtle" />
+
+        <div class="flex gap-3">
+          <button type="button" data-sheet-close
+                  class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+            Anuleaza
+          </button>
+          <button type="submit" data-save
+                  class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg hover:bg-accent-hover">
+            Salveaza
+          </button>
+        </div>
+
+      </form>
+    </rurio-sheet>
+  `;
+}
+
+function bindAddTerenSheet(target) {
+  const sheet = target.querySelector("#sheet-add-teren");
+  if (!sheet) return;
+
+  const form = sheet.querySelector("[data-add-teren-form]");
+  const rows = sheet.querySelector("[data-gps-rows]");
+  const addBtn = sheet.querySelector("[data-add-gps]");
+
+  addBtn?.addEventListener("click", () => {
+    const idx = rows.querySelectorAll("[data-gps-row]").length + 1;
+    rows.insertAdjacentHTML("beforeend", gpsRow(idx));
+    document.dispatchEvent(new CustomEvent("rurio:icons-refresh"));
+  });
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    // Prototype: just close. Persistence will be wired in a later phase.
+    sheet.close();
+  });
 }
 
 export function renderDetailEmpty(target) {

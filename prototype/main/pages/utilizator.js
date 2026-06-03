@@ -1,10 +1,3 @@
-import * as profileinfo from "./profileinfo.js";
-import * as securitate from "./securitate.js";
-import * as notificari from "./notificari.js";
-import * as preferinte from "./preferinte.js";
-import * as dispozitive from "./dispozitive.js";
-import * as activitateCont from "./activitate-cont.js";
-
 export const meta = {
   id: "utilizator",
   label: "Profil Utilizator",
@@ -12,56 +5,37 @@ export const meta = {
   showInNav: false,
 };
 
-/* Each entry is a collapsible section. `render` (when set) fills the panel from
-   the matching page module — content and its bindings carry over intact. Entries
-   without `render` are still placeholder stubs. */
+/* Each row navigates to its own page; sub-pages render their own forms with
+   sticky Save + Cancel action bars and return here via the Cancel/back button. */
 const SECTIONS = [
-  { id: "profileinfo", icon: "user-round",         label: "Date cont",   render: profileinfo.render },
-  { id: "securitate",  icon: "shield-check",       label: "Securitate",  render: securitate.render  },
-  { id: "notificari",  icon: "bell",               label: "Notificări",  render: notificari.render  },
-  { id: "preferinte",  icon: "sliders-horizontal", label: "Preferințe",  render: preferinte.render },
-  { id: "dispozitive", icon: "smartphone",         label: "Dispozitive", render: dispozitive.render },
-  { id: "activitate-cont", icon: "activity",       label: "Activitate cont", render: activitateCont.render },
+  { id: "profileinfo",     icon: "user-round",         label: "Date cont" },
+  { id: "securitate",      icon: "shield-check",       label: "Securitate" },
+  { id: "notificari",      icon: "bell",               label: "Notificări" },
+  { id: "preferinte",      icon: "sliders-horizontal", label: "Preferințe" },
+  { id: "dispozitive",     icon: "smartphone",         label: "Dispozitive" },
+  { id: "activitate-cont", icon: "activity",           label: "Activitate cont" },
 ];
 
-const STUB_PLACEHOLDER = `
-  <p class="px-4 py-6 text-sm text-fg-muted">
-    Conținut în pregătire. Va fi adăugat în fazele următoare.
-  </p>
-`;
-
-/* One native <details> collapsible — keyboard-accessible, no JS toggle needed. */
-function collapsible({ id, icon, label }, isLast, isOpen) {
+function navRow({ id, icon, label }, isLast) {
+  const lastCls = isLast ? "" : "border-b border-border-subtle";
   return `
-    <details class="group ${isLast ? "" : "border-b border-border-subtle"}"${isOpen ? " open" : ""}>
-      <summary class="flex cursor-pointer list-none items-center gap-3 px-4 py-3.5 transition-colors hover:bg-subtle [&::-webkit-details-marker]:hidden">
-        <i data-lucide="${icon}" class="size-5 shrink-0 text-fg-muted"></i>
-        <span class="flex-1 text-sm font-medium text-fg">${label}</span>
-        <i data-lucide="chevron-down" class="size-4 shrink-0 text-fg-subtle transition-transform group-open:rotate-180"></i>
-      </summary>
-      <div id="panel-${id}" class="border-t border-border-subtle"></div>
-    </details>
+    <a href="#/${id}" class="${lastCls} flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-subtle">
+      <i data-lucide="${icon}" class="size-5 shrink-0 text-fg-muted"></i>
+      <span class="flex-1 text-sm font-medium text-fg">${label}</span>
+      <i data-lucide="chevron-right" class="size-4 shrink-0 text-fg-subtle"></i>
+    </a>
   `;
 }
 
 export function render(target) {
-  const cardsHtml = SECTIONS.map((s, i) => collapsible(s, i === SECTIONS.length - 1, i === 0)).join("");
+  const rows = SECTIONS.map((s, i) => navRow(s, i === SECTIONS.length - 1)).join("");
   target.innerHTML = `
     <section class="px-4 pt-6 pb-12">
       <div class="overflow-hidden rounded-2xl bg-surface ring-1 ring-border-subtle">
-        ${cardsHtml}
+        ${rows}
       </div>
     </section>
   `;
-
-  // Populate each panel — collapsed <details> still keep their content in the DOM,
-  // so all panels are filled up front (and their icons hydrate via icons-refresh).
-  SECTIONS.forEach(s => {
-    const panel = target.querySelector(`#panel-${s.id}`);
-    if (!panel) return;
-    if (s.render) s.render(panel);
-    else panel.innerHTML = STUB_PLACEHOLDER;
-  });
 
   document.dispatchEvent(new CustomEvent("rurio:icons-refresh"));
 }

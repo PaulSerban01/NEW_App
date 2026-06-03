@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Radio · Rurio</title>
+  <link rel="stylesheet" href="../../tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+</head>
+<body data-crumb="Components" data-title="Radio">
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Component</div>
+          <h1 class="ds-page-title">Radio</h1>
+          <p class="ds-page-desc">Mirrors Catalyst's <code class="ds-inline">Radio</code> + <code class="ds-inline">RadioGroup</code> + <code class="ds-inline">RadioField</code> primitives 1:1.</p>
+        </div>
+
+        <!-- 1. Basic -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">Basic example</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 160px; align-items: center; justify-content: center;">
+              <div class="cat-radio-group" role="radiogroup" aria-label="Resale and transfers" style="width: 100%; max-width: 480px;">
+                <div class="cat-radio-field">
+                  <label class="cat-radio">
+                    <input class="cat-radio__input" type="radio" name="resale-1" value="permit" checked/>
+                    <span class="cat-radio__control"></span>
+                  </label>
+                  <span class="cat-label">Allow tickets to be resold</span>
+                </div>
+                <div class="cat-radio-field">
+                  <label class="cat-radio">
+                    <input class="cat-radio__input" type="radio" name="resale-1" value="forbid"/>
+                    <span class="cat-radio__control"></span>
+                  </label>
+                  <span class="cat-label">Don't allow tickets to be resold</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. With description -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With description</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 240px; align-items: center; justify-content: center;">
+              <div class="cat-radio-group cat-radio-group--with-description" role="radiogroup" aria-label="Resale and transfers" style="width: 100%; max-width: 480px;">
+                <div class="cat-radio-field">
+                  <label class="cat-radio">
+                    <input class="cat-radio__input" type="radio" name="resale-2" value="permit" checked/>
+                    <span class="cat-radio__control"></span>
+                  </label>
+                  <span class="cat-label">Allow tickets to be resold</span>
+                  <span class="cat-description">Customers can resell or transfer their tickets if they can't make it to the event.</span>
+                </div>
+                <div class="cat-radio-field">
+                  <label class="cat-radio">
+                    <input class="cat-radio__input" type="radio" name="resale-2" value="forbid"/>
+                    <span class="cat-radio__control"></span>
+                  </label>
+                  <span class="cat-label">Don't allow tickets to be resold</span>
+                  <span class="cat-description">Tickets cannot be resold or transferred to another person.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. With custom layout (rating) -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With custom layout</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 160px; align-items: center; justify-content: center;">
+              <fieldset class="cat-fieldset" style="width: 100%; max-width: 480px;">
+                <legend class="cat-legend cat-legend--medium">How would you rate your experience?</legend>
+                <div class="cat-control" role="radiogroup" style="display: flex; gap: 2rem;">
+                  <label style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <span class="cat-radio">
+                      <input class="cat-radio__input" type="radio" name="rating" value="1"/>
+                      <span class="cat-radio__control"></span>
+                    </span>
+                    <span class="cat-label" style="user-select: none;">1</span>
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <span class="cat-radio">
+                      <input class="cat-radio__input" type="radio" name="rating" value="2"/>
+                      <span class="cat-radio__control"></span>
+                    </span>
+                    <span class="cat-label" style="user-select: none;">2</span>
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <span class="cat-radio">
+                      <input class="cat-radio__input" type="radio" name="rating" value="3" checked/>
+                      <span class="cat-radio__control"></span>
+                    </span>
+                    <span class="cat-label" style="user-select: none;">3</span>
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <span class="cat-radio">
+                      <input class="cat-radio__input" type="radio" name="rating" value="4"/>
+                      <span class="cat-radio__control"></span>
+                    </span>
+                    <span class="cat-label" style="user-select: none;">4</span>
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <span class="cat-radio">
+                      <input class="cat-radio__input" type="radio" name="rating" value="5"/>
+                      <span class="cat-radio__control"></span>
+                    </span>
+                    <span class="cat-label" style="user-select: none;">5</span>
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. With accent color -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With accent color</h2>
+          <p class="ds-section__desc">Catalyst exposes a <code class="ds-inline">color</code> prop. Example uses <code class="ds-inline">sky</code>.</p>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 160px; align-items: center; justify-content: center;">
+              <div class="cat-radio-group" role="radiogroup" aria-label="Resale and transfers" style="width: 100%; max-width: 480px;">
+                <div class="cat-radio-field">
+                  <label class="cat-radio cat-radio--sky">
+                    <input class="cat-radio__input" type="radio" name="resale-4" value="permit" checked/>
+                    <span class="cat-radio__control"></span>
+                  </label>
+                  <span class="cat-label">Allow tickets to be resold</span>
+                </div>
+                <div class="cat-radio-field">
+                  <label class="cat-radio cat-radio--sky">
+                    <input class="cat-radio__input" type="radio" name="resale-4" value="forbid"/>
+                    <span class="cat-radio__control"></span>
+                  </label>
+                  <span class="cat-label">Don't allow tickets to be resold</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. With fieldset -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">With fieldset</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 280px; align-items: center; justify-content: center;">
+              <fieldset class="cat-fieldset" style="width: 100%; max-width: 480px;">
+                <legend class="cat-legend">Resale and transfers</legend>
+                <p class="cat-text">Decide if people buy tickets from you or from scalpers.</p>
+                <div class="cat-control cat-radio-group cat-radio-group--with-description" role="radiogroup">
+                  <div class="cat-radio-field">
+                    <label class="cat-radio">
+                      <input class="cat-radio__input" type="radio" name="resale-5" value="permit" checked/>
+                      <span class="cat-radio__control"></span>
+                    </label>
+                    <span class="cat-label">Allow tickets to be resold</span>
+                    <span class="cat-description">Customers can resell or transfer their tickets if they can't make it to the event.</span>
+                  </div>
+                  <div class="cat-radio-field">
+                    <label class="cat-radio">
+                      <input class="cat-radio__input" type="radio" name="resale-5" value="forbid"/>
+                      <span class="cat-radio__control"></span>
+                    </label>
+                    <span class="cat-label">Don't allow tickets to be resold</span>
+                    <span class="cat-description">Tickets cannot be resold or transferred to another person.</span>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Disabled -->
+        <section class="ds-section">
+          <h2 class="ds-section__title">Disabled state</h2>
+          <div class="ds-board">
+            <div class="ds-row" style="min-height: 280px; align-items: center; justify-content: center;">
+              <fieldset class="cat-fieldset" style="width: 100%; max-width: 480px;">
+                <legend class="cat-legend">Resale and transfers</legend>
+                <p class="cat-text">Decide if people buy tickets from you or from scalpers.</p>
+                <div class="cat-control cat-radio-group cat-radio-group--with-description" role="radiogroup">
+                  <div class="cat-radio-field">
+                    <label class="cat-radio">
+                      <input class="cat-radio__input" type="radio" name="resale-6" value="permit" checked/>
+                      <span class="cat-radio__control"></span>
+                    </label>
+                    <span class="cat-label">Allow tickets to be resold</span>
+                    <span class="cat-description">Customers can resell or transfer their tickets if they can't make it to the event.</span>
+                  </div>
+                  <div class="cat-radio-field cat-radio-field--disabled">
+                    <label class="cat-radio">
+                      <input class="cat-radio__input" type="radio" name="resale-6" value="forbid" disabled/>
+                      <span class="cat-radio__control"></span>
+                    </label>
+                    <span class="cat-label">Don't allow tickets to be resold</span>
+                    <span class="cat-description">Tickets cannot be resold or transferred to another person.</span>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../shared/site.js"></script>
+</body>
+</html>

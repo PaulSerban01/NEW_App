@@ -21,7 +21,7 @@ const USER = {
 const PALETTES = [
   { id: "teal",      label: "Teal" },
   { id: "palette-2", label: "Mov" },
-  { id: "palette-3", label: "Portocaliu" },
+  { id: "palette-3", label: "Verde" },
 ];
 const MODES = [
   { id: "light", label: "Luminos",  icon: "sun" },

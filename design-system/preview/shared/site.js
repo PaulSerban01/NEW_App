@@ -23,24 +23,30 @@
       { href: '/foundations/accessibility.html', label: 'Accessibility' },
     ]},
     { label: 'Components', pages: [
+      { href: '/components/app-header.html', label: 'App header' },
+      { href: '/components/avatar.html', label: 'Avatar' },
+      { href: '/components/sheet.html', label: 'Bottom sheet', stub: true },
+      { href: '/components/tab-bar.html', label: 'Bottom tab bar', stub: true },
       { href: '/components/button.html', label: 'Button' },
       { href: '/components/button-group.html', label: 'Button group' },
-      { href: '/components/input.html', label: 'Input' },
       { href: '/components/card.html', label: 'Card' },
-      { href: '/components/select.html', label: 'Select', stub: true },
-      { href: '/components/switch.html', label: 'Switch & checkbox', stub: true },
-      { href: '/components/slider.html', label: 'Slider', stub: true },
-      { href: '/components/list-item.html', label: 'List item', stub: true },
-      { href: '/components/tabs.html', label: 'Tabs', stub: true },
-      { href: '/components/nav-bar.html', label: 'Top nav bar', stub: true },
-      { href: '/components/app-header.html', label: 'App header' },
-      { href: '/components/tab-bar.html', label: 'Bottom tab bar', stub: true },
-      { href: '/components/sheet.html', label: 'Bottom sheet', stub: true },
-      { href: '/components/toast.html', label: 'Toast', stub: true },
+      { href: '/components/checkbox.html', label: 'Checkbox' },
       { href: '/components/chip.html', label: 'Chip & badge' },
-      { href: '/components/empty.html', label: 'Empty state', stub: true },
       { href: '/components/date-picker.html', label: 'Date picker', stub: true },
+      { href: '/components/divider.html', label: 'Divider' },
+      { href: '/components/dropdown.html', label: 'Dropdown' },
+      { href: '/components/empty.html', label: 'Empty state', stub: true },
       { href: '/components/form.html', label: 'Form', stub: true },
+      { href: '/components/input.html', label: 'Input' },
+      { href: '/components/list-item.html', label: 'List item', stub: true },
+      { href: '/components/radio.html', label: 'Radio' },
+      { href: '/components/select.html', label: 'Select' },
+      { href: '/components/slider.html', label: 'Slider', stub: true },
+      { href: '/components/switch.html', label: 'Switch / Toggle' },
+      { href: '/components/tabs.html', label: 'Tabs', stub: true },
+      { href: '/components/textarea.html', label: 'Textarea' },
+      { href: '/components/toast.html', label: 'Toast', stub: true },
+      { href: '/components/nav-bar.html', label: 'Top nav bar', stub: true },
     ]},
   ];
 
@@ -136,12 +142,16 @@
     const groupsHtml = NAV.map(group => `
       <div class="ds-sidebar__group">
         <div class="ds-sidebar__group-label">${group.label}</div>
-        ${group.pages.map(p => `
-          <a class="ds-sidebar__item ${matchesActive(p.href, cur) ? 'is-active' : ''}" href="${rootify(p.href)}">
-            <span>${p.label}</span>
-            ${p.stub ? '<span class="ds-sidebar__tag">Soon</span>' : ''}
-          </a>
-        `).join('')}
+        <ul role="list" class="ds-sidebar__list">
+          ${group.pages.map(p => `
+            <li>
+              <a class="ds-sidebar__item ${matchesActive(p.href, cur) ? 'is-active' : ''}" href="${rootify(p.href)}">
+                <span>${p.label}</span>
+                ${p.stub ? '<span class="ds-sidebar__tag">Soon</span>' : ''}
+              </a>
+            </li>
+          `).join('')}
+        </ul>
       </div>
     `).join('');
 
@@ -155,8 +165,11 @@
       </a>
       <nav class="ds-sidebar__nav" aria-label="Docs navigation">${groupsHtml}</nav>
       <div class="ds-sidebar__footer">
+        <a class="ds-sidebar__exit" href="${ROOT}../../index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 17l-5-5 5-5"/><path d="M21 12H9"/><path d="M9 21V3"/></svg>
+          Iesire design system
+        </a>
         <div class="ds-sidebar__footer-line">React Native · WCAG 2.2 AA</div>
-        <div class="ds-sidebar__footer-line">Inter · 3 palettes · light + dark</div>
       </div>
     `;
   }
