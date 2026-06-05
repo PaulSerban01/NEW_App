@@ -1,4 +1,4 @@
-import { parcels, getParcel, STATUS_LABELS, parcelTileUrl, FILTER_CATEGORIES } from "../data/parcels.js";
+import { parcels, getParcel, STATUS_LABELS, parcelTileUrl, parcelPolygon, FILTER_CATEGORIES } from "../data/parcels.js";
 import { cultureColor } from "../data/cultures.js";
 
 // Parcel detail view lives in its own file; re-exported so the router calls it
@@ -97,7 +97,7 @@ function listItem(p, idx, activeId) {
 
       <div class="min-w-0 flex-1">
         <div class="flex items-start justify-between gap-3">
-          <p class="truncate text-base font-bold text-fg">${p.name}</p>
+          <p data-parcel-name class="truncate text-base font-bold text-fg">${p.name}</p>
           <p class="shrink-0 text-sm font-semibold tabular-nums text-fg">
             ${p.area.toFixed(1)}<span class="ml-0.5 text-xs font-medium text-fg-muted"> ha</span>
           </p>
@@ -325,6 +325,7 @@ function bindListFab(target) {
   if (!fab || !menu) return;
 
   const deleteBtn = menu.querySelector("[data-action-delete]");
+  const editBtn = menu.querySelector("[data-action-edit]");
   const badge = menu.querySelector("[data-delete-count]");
 
   function countChecked() {
@@ -333,6 +334,8 @@ function bindListFab(target) {
   function refreshSelectionState() {
     const n = countChecked();
     if (deleteBtn) deleteBtn.disabled = n === 0;
+    // "Editeaza teren" operates on a single teren — enabled only when exactly one is selected.
+    if (editBtn) editBtn.disabled = n !== 1;
     if (badge) {
       badge.hidden = n === 0;
       badge.textContent = String(n);
@@ -360,8 +363,9 @@ function bindListFab(target) {
       if (item.disabled) return;
       const label = item.dataset.actionLabel;
       if (item.hasAttribute("data-action-delete")) {
-        const n = countChecked();
-        alert(`${label} (${n} ${n === 1 ? "parcelă" : "parcele"})`);
+        openDeleteConfirm(target);
+      } else if (item.hasAttribute("data-action-edit")) {
+        openEditTeren(target);
       } else if (label === "Adauga teren") {
         document.getElementById("sheet-add-teren")?.open();
       } else {
@@ -458,7 +462,7 @@ export function render(target, ctx) {
           <div class="mt-1 flex items-end justify-between gap-3">
             <h1 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">Terenuri</h1>
             <div class="text-right">
-              <div class="text-base font-bold tabular-nums text-fg">${totalArea.toFixed(1)} ha</div>
+              <div class="text-base font-bold tabular-nums text-fg" data-area-label>${totalArea.toFixed(1)} ha</div>
               <div class="text-xs text-fg-subtle" data-count-label>${parcels.length} sole</div>
             </div>
           </div>
@@ -484,8 +488,8 @@ export function render(target, ctx) {
                       class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg">
             <i data-lucide="plus" class="size-4"></i><span>Adauga teren</span>
           </button></li>
-          <li><button type="button" role="menuitem" data-action-label="Editeaza teren"
-                      class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg">
+          <li><button type="button" role="menuitem" data-action-edit data-action-label="Editeaza teren" disabled
+                      class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-fg">
             <i data-lucide="pencil" class="size-4"></i><span>Editeaza teren</span>
           </button></li>
           <li><button type="button" role="menuitem" data-action-label="Importa teren"
@@ -514,6 +518,8 @@ export function render(target, ctx) {
     </div>
 
     ${addTerenSheet()}
+    ${editTerenSheet()}
+    ${deleteConfirmSheet()}
   `;
 
   mountSummaryBar(headerExtras, "list");
@@ -523,6 +529,8 @@ export function render(target, ctx) {
   bindActiveFiltersBar(target);
   bindListFab(target);
   bindAddTerenSheet(target);
+  bindEditTerenSheet(target);
+  bindDeleteConfirm(target);
 
   // Re-apply persisted state on each render.
   applyFiltersToDOM(target);
@@ -541,13 +549,71 @@ const INPUT_CLS =
   "block w-full rounded-lg bg-surface px-3 py-2.5 text-sm text-fg ring-1 ring-inset ring-border-subtle " +
   "placeholder:text-fg-subtle focus:outline-none focus:ring-2 focus:ring-accent transition-shadow";
 
-function gpsRow(idx) {
+function gpsRow(idx, lat = "", lon = "") {
+  // First 3 rows are mandatory (minimum for a polygon): show the delete
+  // icon but keep it disabled. Rows beyond 3 get an enabled delete button.
+  const mandatory = idx <= 3;
   return `
-    <div class="grid grid-cols-2 gap-2" data-gps-row>
-      <input type="text" inputmode="decimal" name="lat-${idx}"
-             placeholder="Lat (ex. 45.6427)" class="${INPUT_CLS}" />
-      <input type="text" inputmode="decimal" name="lon-${idx}"
-             placeholder="Lon (ex. 25.5887)" class="${INPUT_CLS}" />
+    <div class="flex items-center gap-2" data-gps-row>
+      <div class="grid flex-1 grid-cols-2 gap-2">
+        <input type="text" inputmode="decimal" name="lat-${idx}" value="${lat}"
+               placeholder="Lat (ex. 45.6427)" class="${INPUT_CLS}" />
+        <input type="text" inputmode="decimal" name="lon-${idx}" value="${lon}"
+               placeholder="Lon (ex. 25.5887)" class="${INPUT_CLS}" />
+      </div>
+      <button type="button" data-remove-gps aria-label="Sterge punct GPS" ${mandatory ? "disabled" : ""}
+              class="grid size-10 shrink-0 place-items-center rounded-lg text-danger-text transition-colors hover:bg-danger-subtle disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent">
+        <i data-lucide="trash-2" class="size-4"></i>
+      </button>
+    </div>
+  `;
+}
+
+// Shared body for the Adauga/Editeaza teren forms: a Denumire field + the
+// dynamic Puncte GPS group. `prefix` namespaces the label/input ids; the GPS
+// rows are passed in so callers can seed them (empty for add, polygon for edit).
+function terenFormFields(prefix, gpsRowsHtml) {
+  return `
+    <div>
+      <label for="${prefix}-denumire" class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
+        Denumire Teren
+      </label>
+      <input id="${prefix}-denumire" name="denumire" type="text" class="mt-1.5 ${INPUT_CLS}" />
+    </div>
+
+    <div>
+      <div class="flex items-baseline justify-between gap-2">
+        <label class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
+          Puncte GPS
+        </label>
+        <span class="text-xs text-fg-subtle">Minim 3</span>
+      </div>
+      <div class="mt-2 space-y-2" data-gps-rows>
+        ${gpsRowsHtml}
+      </div>
+      <button type="button" data-add-gps
+              class="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-surface px-3 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+        <i data-lucide="plus" class="size-4"></i>
+        Adauga punct GPS
+      </button>
+    </div>
+  `;
+}
+
+// Cancel / Save footer shared by both teren forms.
+function terenFormActions() {
+  return `
+    <hr class="border-t border-border-subtle" />
+
+    <div class="flex gap-3">
+      <button type="button" data-sheet-close
+              class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+        Anuleaza
+      </button>
+      <button type="submit" data-save
+              class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg hover:bg-accent-hover">
+        Salveaza
+      </button>
     </div>
   `;
 }
@@ -556,56 +622,28 @@ function addTerenSheet() {
   return `
     <rurio-sheet id="sheet-add-teren" title="Adauga teren">
       <form data-add-teren-form class="space-y-5" novalidate>
-
-        <div>
-          <label for="at-denumire" class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
-            Denumire Teren
-          </label>
-          <input id="at-denumire" name="denumire" type="text" class="mt-1.5 ${INPUT_CLS}" />
-        </div>
-
-        <div>
-          <div class="flex items-baseline justify-between gap-2">
-            <label class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
-              Puncte GPS
-            </label>
-            <span class="text-xs text-fg-subtle">Minim 3</span>
-          </div>
-          <div class="mt-2 space-y-2" data-gps-rows>
-            ${gpsRow(1)}
-            ${gpsRow(2)}
-            ${gpsRow(3)}
-          </div>
-          <button type="button" data-add-gps
-                  class="mt-3 inline-flex items-center gap-2 rounded-lg bg-surface px-3 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
-            <i data-lucide="plus" class="size-4"></i>
-            Adauga punct GPS
-          </button>
-        </div>
-
-        <hr class="border-t border-border-subtle" />
-
-        <div class="flex gap-3">
-          <button type="button" data-sheet-close
-                  class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
-            Anuleaza
-          </button>
-          <button type="submit" data-save
-                  class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg hover:bg-accent-hover">
-            Salveaza
-          </button>
-        </div>
-
+        ${terenFormFields("at", `${gpsRow(1)}${gpsRow(2)}${gpsRow(3)}`)}
+        ${terenFormActions()}
       </form>
     </rurio-sheet>
   `;
 }
 
-function bindAddTerenSheet(target) {
-  const sheet = target.querySelector("#sheet-add-teren");
-  if (!sheet) return;
+function editTerenSheet() {
+  // GPS rows are seeded at open time (openEditTeren) from the selected teren.
+  return `
+    <rurio-sheet id="sheet-edit-teren" title="Editeaza teren">
+      <form data-edit-teren-form class="space-y-5" novalidate>
+        ${terenFormFields("et", "")}
+        ${terenFormActions()}
+      </form>
+    </rurio-sheet>
+  `;
+}
 
-  const form = sheet.querySelector("[data-add-teren-form]");
+// Wire the "Adauga punct GPS" button + per-row delete for any sheet that
+// carries the [data-gps-rows] / [data-add-gps] markup (add + edit forms).
+function bindGpsRows(sheet) {
   const rows = sheet.querySelector("[data-gps-rows]");
   const addBtn = sheet.querySelector("[data-add-gps]");
 
@@ -615,9 +653,197 @@ function bindAddTerenSheet(target) {
     document.dispatchEvent(new CustomEvent("rurio:icons-refresh"));
   });
 
+  // Remove an optional GPS row when its (enabled) delete icon is clicked.
+  // The first 3 rows render their button disabled, so they never reach here.
+  rows?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-remove-gps]");
+    if (!btn || btn.disabled) return;
+    btn.closest("[data-gps-row]")?.remove();
+  });
+}
+
+function bindAddTerenSheet(target) {
+  const sheet = target.querySelector("#sheet-add-teren");
+  if (!sheet) return;
+
+  bindGpsRows(sheet);
+
+  const form = sheet.querySelector("[data-add-teren-form]");
   form?.addEventListener("submit", (e) => {
     e.preventDefault();
     // Prototype: just close. Persistence will be wired in a later phase.
+    sheet.close();
+  });
+}
+
+// Seed the edit sheet from the single selected teren, then open it.
+function openEditTeren(target) {
+  const sheet = target.querySelector("#sheet-edit-teren");
+  if (!sheet) return;
+
+  const checked = target.querySelectorAll('input[data-parcel-cb]:checked');
+  if (checked.length !== 1) return; // edit is single-selection only
+  const id = checked[0].dataset.parcelCb;
+  const idx = parcels.findIndex(p => p.id === id);
+  if (idx === -1) return;
+  const p = parcels[idx];
+
+  const nameInput = sheet.querySelector("#et-denumire");
+  if (nameInput) nameInput.value = p.name;
+
+  // Seed the GPS rows from the parcel polygon ([lat, lng] corners).
+  const rows = sheet.querySelector("[data-gps-rows]");
+  rows.innerHTML = parcelPolygon(p, idx)
+    .map(([lat, lon], i) => gpsRow(i + 1, lat.toFixed(6), lon.toFixed(6)))
+    .join("");
+
+  sheet.dataset.editId = id; // remembered for the save handler
+  sheet.open();              // dispatches rurio:icons-refresh for the new rows
+}
+
+function bindEditTerenSheet(target) {
+  const sheet = target.querySelector("#sheet-edit-teren");
+  if (!sheet) return;
+
+  bindGpsRows(sheet);
+
+  const form = sheet.querySelector("[data-edit-teren-form]");
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const id = sheet.dataset.editId;
+    const p = parcels.find(x => x.id === id);
+    const name = sheet.querySelector("#et-denumire")?.value.trim();
+    if (p && name) {
+      p.name = name;
+      // Reflect the new name on the list card (GPS edits aren't shown there).
+      const li = target.querySelector(`li[data-parcel-id="${id}"]`);
+      const nameEl = li?.querySelector("[data-parcel-name]");
+      if (nameEl) nameEl.textContent = name;
+    }
+    sheet.close();
+  });
+}
+
+/* ──────────────────────────────────────────────────────────────
+   "Confirmare stergere" bottom sheet — a double-confirmation guard
+   for bulk deletion. Opened from the FAB menu's "Sterge teren" action
+   when one or more terenuri are selected. The user must (1) read the
+   list of what will be removed and (2) type the exact count before the
+   destructive "Da, șterge definitiv" button enables.
+   ────────────────────────────────────────────────────────────── */
+
+// Romanian count noun: 1 → "1 teren", otherwise "N terenuri".
+function terenuriLabel(n) {
+  return `${n} ${n === 1 ? "teren" : "terenuri"}`;
+}
+
+function deleteConfirmSheet() {
+  return `
+    <rurio-sheet id="sheet-delete-teren" title="Confirmare stergere">
+      <div class="space-y-5">
+
+        <div class="flex flex-col items-center text-center">
+          <div class="flex size-12 items-center justify-center rounded-full bg-danger-subtle text-danger-text">
+            <i data-lucide="triangle-alert" class="size-6"></i>
+          </div>
+          <h3 class="mt-3 text-lg font-bold text-fg">Ești sigur?</h3>
+          <p class="mt-1 text-sm text-fg-muted">
+            Vei șterge <span data-delete-count-text class="font-semibold text-fg">0 terenuri</span>.
+            Acțiunea nu poate fi anulată.
+          </p>
+        </div>
+
+        <ul data-delete-names role="list"
+            class="max-h-40 space-y-1 overflow-y-auto rounded-lg bg-subtle p-3 text-sm text-fg ring-1 ring-inset ring-border-subtle"></ul>
+
+        <div>
+          <label for="dc-confirm" class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
+            Pentru confirmare, scrie numărul: <span data-delete-target-num class="text-danger-text">0</span>
+          </label>
+          <input id="dc-confirm" data-delete-input type="text" inputmode="numeric" autocomplete="off"
+                 class="mt-1.5 ${INPUT_CLS}" />
+        </div>
+
+        <div class="flex gap-3">
+          <button type="button" data-sheet-close
+                  class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+            Nu, anulează
+          </button>
+          <button type="button" data-delete-confirm-btn disabled
+                  class="flex-1 rounded-lg bg-danger px-4 py-3 text-center text-sm font-semibold text-danger-fg hover:bg-danger/90 disabled:cursor-not-allowed disabled:opacity-50">
+            Da, șterge definitiv
+          </button>
+        </div>
+
+      </div>
+    </rurio-sheet>
+  `;
+}
+
+// Populate the confirm sheet from the current selection, then open it.
+function openDeleteConfirm(target) {
+  const sheet = target.querySelector("#sheet-delete-teren");
+  if (!sheet) return;
+
+  const ids = Array.from(target.querySelectorAll('input[data-parcel-cb]:checked'))
+    .map(cb => cb.dataset.parcelCb);
+  const selected = ids.map(id => parcels.find(p => p.id === id)).filter(Boolean);
+  const n = selected.length;
+  if (n === 0) return;
+
+  sheet.querySelector("[data-delete-count-text]").textContent = terenuriLabel(n);
+  sheet.querySelector("[data-delete-target-num]").textContent = String(n);
+  sheet.querySelector("[data-delete-names]").innerHTML = selected.map(p => `
+    <li class="flex items-center gap-2">
+      <i data-lucide="map-pin" class="size-3.5 shrink-0 text-fg-subtle"></i>
+      <span class="truncate">${p.name}</span>
+    </li>`).join("");
+
+  const input = sheet.querySelector("[data-delete-input]");
+  input.value = "";
+  input.dataset.expected = String(n);
+  input.dataset.ids = ids.join(",");
+  sheet.querySelector("[data-delete-confirm-btn]").disabled = true;
+
+  sheet.open(); // dispatches rurio:icons-refresh, so the new icons render
+}
+
+// Remove the given parcels from the shared data + the DOM, then refresh the
+// selection-dependent UI (count label, total area, master checkbox).
+function deleteParcels(ids, target) {
+  const idSet = new Set(ids);
+  for (let i = parcels.length - 1; i >= 0; i--) {
+    if (idSet.has(parcels[i].id)) parcels.splice(i, 1);
+  }
+  ids.forEach(id => target.querySelector(`li[data-parcel-id="${id}"]`)?.remove());
+
+  applyFiltersToDOM(target); // recomputes the "N sole" count label
+
+  const areaLabel = document.querySelector("[data-area-label]");
+  if (areaLabel) {
+    const total = parcels.reduce((s, p) => s + p.area, 0);
+    areaLabel.textContent = `${total.toFixed(1)} ha`;
+  }
+  const all = document.querySelector("[data-toolbar-all]");
+  if (all) all.checked = false;
+}
+
+function bindDeleteConfirm(target) {
+  const sheet = target.querySelector("#sheet-delete-teren");
+  if (!sheet) return;
+
+  const input = sheet.querySelector("[data-delete-input]");
+  const confirmBtn = sheet.querySelector("[data-delete-confirm-btn]");
+
+  // Enable the destructive button only when the typed number matches the count.
+  input?.addEventListener("input", () => {
+    confirmBtn.disabled = input.value.trim() !== input.dataset.expected;
+  });
+
+  confirmBtn?.addEventListener("click", () => {
+    if (confirmBtn.disabled) return;
+    const ids = (input.dataset.ids || "").split(",").filter(Boolean);
+    deleteParcels(ids, target);
     sheet.close();
   });
 }

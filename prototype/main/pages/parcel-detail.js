@@ -11,14 +11,17 @@ const STATS = {
 };
 
 /* One coloured stat tile in the dashboard grid. */
-function statCard({ bg, label, value, icon, dot }) {
+function statCard({ bg, label, value, icon, dot, action }) {
+  const tag = action ? "button" : "div";
+  const attrs = action ? `type="button" data-stat-action="${action}"` : "";
+  const styles = action ? `cursor-pointer transition hover:shadow-md` : "";
   return `
-    <div class="relative aspect-square overflow-hidden rounded-2xl ${bg} p-4 text-white shadow-sm">
+    <${tag} ${attrs} class="relative aspect-square overflow-hidden rounded-2xl ${bg} p-4 text-white shadow-sm ${styles}">
       ${dot ? `<span class="absolute right-3 top-3 size-2.5 rounded-full bg-orange-400 ring-2 ring-white/30"></span>` : ""}
       <div class="text-[11px] font-medium uppercase tracking-wide text-white/80">${label}</div>
       <div class="mt-1 text-base font-bold leading-tight">${value}</div>
       <i data-lucide="${icon}" class="absolute bottom-3 right-3 size-7 text-white"></i>
-    </div>
+    </${tag}>
   `;
 }
 
@@ -100,13 +103,20 @@ export function render(id, target) {
             <i data-lucide="notebook-pen" class="size-3.5"></i>
             NOTIȚE TEREN
           </div>
-          <p class="mt-1.5 pr-10 text-sm leading-snug text-slate-700">
-            Sol argilos în zona de NE. Drenaj slab după ploi. Nu aplica tratamente când e umed.
+          <p class="mt-1.5 pr-10 text-sm leading-snug text-slate-700" data-notes-display>
+            ${(p.notes && p.notes.length > 0) ? p.notes[0] : "Nicio notă adăugată"}
           </p>
-          <button type="button" data-action-note-settings aria-label="Setări notițe"
+          <button type="button" data-note-menu-btn aria-label="Opțiuni notițe" aria-haspopup="menu" aria-expanded="false"
                   class="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-teal-800 text-white shadow-md hover:bg-teal-900">
-            <i data-lucide="settings" class="size-4"></i>
+            <i data-lucide="plus" class="size-4"></i>
           </button>
+          <ul data-note-menu role="menu" hidden
+              class="absolute right-3 top-11 w-48 overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-slate-200">
+            <li><button type="button" role="menuitem" data-action-add-note
+                        class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-slate-700 transition-colors hover:bg-slate-100">
+              <i data-lucide="plus" class="size-4"></i><span>Adaugă notă</span>
+            </button></li>
+          </ul>
         </div>
         <div class="grid grid-cols-2 divide-x divide-slate-100">
           <div class="p-3">
@@ -164,9 +174,9 @@ export function render(id, target) {
 
       <!-- GRID DASHBOARD (2-col, 8 cards) -->
       <div class="mt-3 grid grid-cols-2 gap-3 px-4">
-        ${statCard({ bg: "bg-teal-700",    label: "Satelit & NDVI",     value: `Ultima: ${STATS.satNDVI}`, icon: "satellite" })}
-        ${statCard({ bg: "bg-emerald-700", label: "Cheltuieli",         value: STATS.cheltuieli,            icon: "wallet" })}
-        ${statCard({ bg: "bg-sky-700",     label: "Rezumat Activități", value: STATS.activitati,            icon: "wheat" })}
+        ${statCard({ bg: "bg-teal-700",    label: "Satelit & NDVI",     value: `Ultima: ${STATS.satNDVI}`, icon: "satellite", action: "satelit-indici" })}
+        ${statCard({ bg: "bg-emerald-700", label: "Cheltuieli",         value: STATS.cheltuieli,            icon: "wallet", action: "cheltuieli" })}
+        ${statCard({ bg: "bg-sky-700",     label: "Rezumat Activități", value: STATS.activitati,            icon: "wheat", action: "activitati" })}
         ${statCard({ bg: "bg-violet-700",  label: "Comentarii & Note",  value: STATS.comentarii,            icon: "message-square" })}
         ${statCard({ bg: "bg-amber-800",   label: "Fotografii",         value: STATS.fotografii,            icon: "camera" })}
         ${statCard({ bg: "bg-teal-900",    label: "Info Teren",         value: "Cadastru & detalii",        icon: "settings" })}
@@ -187,13 +197,83 @@ export function render(id, target) {
             class="fixed right-4 z-30 bottom-[calc(4.25rem+env(safe-area-inset-bottom,0))] flex size-14 items-center justify-center rounded-full bg-teal-800 text-white shadow-lg hover:bg-teal-900 active:scale-95">
       <i data-lucide="list-plus" class="size-6"></i>
     </button>
+
+    <!-- ADD NOTE SHEET -->
+    <rurio-sheet id="sheet-add-note" title="Adaugă notă">
+      <form data-add-note-form class="space-y-5" novalidate>
+        <div>
+          <label for="note-text" class="block text-[11px] font-semibold uppercase tracking-wider text-slate-600">
+            Notă
+          </label>
+          <textarea id="note-text" name="note" rows="6" class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-600" placeholder="Scrie observațiile tale..."></textarea>
+        </div>
+
+        <hr class="border-t border-slate-200" />
+
+        <div class="flex gap-3">
+          <button type="button" data-sheet-close
+                  class="flex-1 rounded-lg bg-slate-100 px-4 py-3 text-center text-sm font-semibold text-slate-800 hover:bg-slate-200">
+            Anuleaza
+          </button>
+          <button type="submit"
+                  class="flex-1 rounded-lg bg-teal-800 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-teal-900">
+            Salveaza
+          </button>
+        </div>
+      </form>
+    </rurio-sheet>
   `;
 
   /* ── Bindings ────────────────────────────────────────────── */
   target.querySelector("[data-action-navigheaza]")
     ?.addEventListener("click", () => alert("Navighează către teren"));
-  target.querySelector("[data-action-note-settings]")
-    ?.addEventListener("click", () => alert("Setări notițe"));
+
+  // Note menu toggle
+  const noteMenuBtn = target.querySelector("[data-note-menu-btn]");
+  const noteMenu = target.querySelector("[data-note-menu]");
+  noteMenuBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    noteMenu.hidden = !noteMenu.hidden;
+    noteMenuBtn.setAttribute("aria-expanded", String(!noteMenu.hidden));
+  });
+
+  // Close menu on outside click
+  document.addEventListener("click", () => {
+    if (noteMenu?.isConnected && !noteMenu.hidden) {
+      noteMenu.hidden = true;
+      noteMenuBtn.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Add note action
+  target.querySelector("[data-action-add-note]")
+    ?.addEventListener("click", () => {
+      noteMenu.hidden = true;
+      noteMenuBtn.setAttribute("aria-expanded", "false");
+      document.getElementById("sheet-add-note")?.open();
+    });
+
+  const addNoteForm = target.querySelector("[data-add-note-form]");
+  addNoteForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const textarea = target.querySelector("[name='note']");
+    const noteText = textarea?.value.trim();
+    if (!noteText) return;
+
+    p.notes = p.notes || [];
+    p.notes.unshift(noteText); // prepend to show newest first
+    target.querySelector("[data-notes-display]").textContent = p.notes[0];
+    textarea.value = "";
+    document.getElementById("sheet-add-note")?.close();
+  });
+
+  // Stat card navigation
+  target.querySelectorAll("[data-stat-action]").forEach(card => {
+    card.addEventListener("click", () => {
+      const action = card.dataset.statAction;
+      window.location.hash = `#/parcels/${id}/${action}`;
+    });
+  });
   // Toggle the collapsed risk rows; only the chevron rotates so the section
   // visually stays anchored — clicking expands to 4 rows, clicking again collapses to 1.
   const riskToggle = target.querySelector("[data-risk-toggle]");

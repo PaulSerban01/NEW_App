@@ -11,6 +11,9 @@ import * as activitate from "./activitate.js";
 import * as utilaje from "./utilaje.js";
 import * as activitateCont from "./activitate-cont.js";
 import * as utilizator from "./utilizator.js";
+import * as satelitIndici from "./satelit-indici.js";
+import * as cheltuieli from "./cheltuieli.js";
+import * as activitati from "./activitati.js";
 import { stubPage } from "./_stub.js";
 
 /* Profile sub-pages (reached from the profile hub; hidden from side nav). */
@@ -39,13 +42,14 @@ export {
   dashadmin, dashops, operator, firme, echipa, stocuri, utilaje,
   jurnal, arenda, mesagerie, galerie,
   planning, quick, messages, camera,
-  profileinfo, securitate, notificari, preferinte, dispozitive, activitate, activitateCont, termeni, utilizator,
+  profileinfo, securitate, notificari, preferinte, dispozitive, activitate, activitateCont, termeni, utilizator, satelitIndici, cheltuieli, activitati,
 };
 
 /* Route ids use kebab-case ("#/activitate-cont"), but ES module exports can't
    contain hyphens. Re-export with the string-literal name so the router's
    `pages[route.page]` lookup finds it. */
 export { activitateCont as "activitate-cont" };
+export { satelitIndici as "satelit-indici" };
 
 /* ──────────────────────────────────────────────────────────────
    Convert a page module → flat nav-item shape consumed by <rurio-nav>.

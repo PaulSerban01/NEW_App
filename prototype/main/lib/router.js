@@ -4,9 +4,10 @@ const subscribers = new Set();
 
 export function parseHash(hash = location.hash) {
   const cleaned = hash.replace(/^#\/?/, "").replace(/\/+$/, "");
-  if (!cleaned) return { page: "home", id: null, raw: "#/" };
-  const [page, id = null] = cleaned.split("/");
-  return { page, id, raw: `#/${cleaned}` };
+  if (!cleaned) return { page: "home", id: null, subpage: null, raw: "#/" };
+  const parts = cleaned.split("/");
+  const [page, id = null, subpage = null] = parts;
+  return { page, id, subpage, raw: `#/${cleaned}` };
 }
 
 export function navigate(path) {
@@ -38,7 +39,10 @@ function applyShellState(route) {
   root.setAttribute("data-route-page", route.page);
   if (route.id) root.setAttribute("data-route-id", route.id);
   else root.removeAttribute("data-route-id");
+  if (route.subpage) root.setAttribute("data-subpage", route.subpage);
+  else root.removeAttribute("data-subpage");
   root.toggleAttribute("data-has-detail", !!route.id);
+  root.toggleAttribute("data-has-subpage", !!route.subpage);
 }
 
 function refreshIcons() {
@@ -62,7 +66,14 @@ function render(route) {
   }
 
   detailPane.innerHTML = "";
-  if (route.id && typeof mod.renderDetail === "function") {
+
+  // If there's a subpage, render that in the detail pane instead of the regular detail.
+  if (route.subpage && route.id) {
+    const subMod = ensurePage(route.subpage);
+    if (typeof subMod.render === "function") {
+      subMod.render(detailPane, { route });
+    }
+  } else if (route.id && typeof mod.renderDetail === "function") {
     mod.renderDetail(route.id, detailPane, { route });
   } else if (typeof mod.renderDetailEmpty === "function") {
     mod.renderDetailEmpty(detailPane, { route });
