@@ -97,18 +97,18 @@ function listItem(p, idx, activeId) {
 
       <div class="min-w-0 flex-1">
         <div class="flex items-start justify-between gap-3">
-          <p data-parcel-name class="truncate text-base font-bold text-fg">${p.name}</p>
-          <p class="shrink-0 text-sm font-semibold tabular-nums text-fg">
-            ${p.area.toFixed(1)}<span class="ml-0.5 text-xs font-medium text-fg-muted"> ha</span>
+          <p data-parcel-name class="truncate text-lg font-bold text-fg">${p.name}</p>
+          <p class="shrink-0 text-base font-semibold tabular-nums text-fg">
+            ${p.area.toFixed(1)}<span class="ml-0.5 text-sm font-medium text-fg-muted"> ha</span>
           </p>
         </div>
-        <p class="mt-0.5 truncate text-xs text-fg-muted">${p.apia}</p>
-        <p class="truncate text-xs text-fg-muted">${p.pl}</p>
-        <p class="mt-2 truncate text-sm font-semibold uppercase tracking-wide" style="color:${color};">${p.crop}</p>
-        <p class="truncate text-xs text-fg-muted">${p.soi} <span class="text-fg-subtle">·</span> ${p.norm}</p>
+        <p class="mt-0.5 truncate text-sm text-fg-muted">${p.apia}</p>
+        <p class="truncate text-sm text-fg-muted">${p.pl}</p>
+        <p class="mt-2 truncate text-base font-semibold uppercase tracking-wide" style="color:${color};">${p.crop}</p>
+        <p class="truncate text-sm text-fg-muted">${p.soi} <span class="text-fg-subtle">·</span> ${p.norm}</p>
         <div class="mt-2 flex items-center justify-between gap-2">
-          <span class="text-xs text-fg-subtle">${formatDate(p.sownAt)}</span>
-          <span class="inline-flex items-center rounded-md bg-subtle px-2 py-0.5 text-xs font-medium text-fg-muted ring-1 ring-border-subtle ring-inset">
+          <span class="text-sm text-fg-subtle">${formatDate(p.sownAt)}</span>
+          <span class="inline-flex items-center rounded-md bg-subtle px-2 py-0.5 text-sm font-medium text-fg-muted ring-1 ring-border-subtle ring-inset">
             ${STATUS_LABELS[p.status] || p.status}
           </span>
         </div>
@@ -129,7 +129,7 @@ function filterBadge(category, value) {
             data-category="${category}"
             data-value="${value}"
             aria-pressed="${isOn}"
-            class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset transition
+            class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ring-1 ring-inset transition
                    bg-surface text-fg-muted ring-border-subtle hover:bg-subtle
                    aria-pressed:bg-accent aria-pressed:text-accent-fg aria-pressed:ring-accent">
       ${value}
@@ -151,7 +151,7 @@ function cultureFilterBadge(value) {
             data-value="${value}"
             aria-pressed="${isOn}"
             style="--c:${color};"
-            class="group inline-flex items-center gap-x-1.5 rounded-sm px-2 py-1 text-xs font-medium ring-1 ring-inset transition
+            class="group inline-flex items-center gap-x-1.5 rounded-sm px-2 py-1 text-sm font-medium ring-1 ring-inset transition
                    bg-surface text-fg ring-border-subtle hover:bg-subtle
                    aria-pressed:bg-(--c) aria-pressed:text-white aria-pressed:ring-(--c)">
       <svg viewBox="0 0 6 6" aria-hidden="true"
@@ -167,7 +167,7 @@ function filterSection(category) {
   const cfg = FILTER_CATEGORIES[category];
   return `
     <div>
-      <h3 class="text-xs font-semibold uppercase tracking-wider text-fg-subtle">${cfg.label}</h3>
+      <h3 class="text-sm font-semibold uppercase tracking-wider text-fg-subtle">${cfg.label}</h3>
       <div class="mt-2 flex flex-wrap gap-2">
         ${cfg.options.map(opt => filterBadge(category, opt)).join("")}
       </div>
@@ -212,7 +212,7 @@ function renderActiveChips(target) {
   for (const cat of Object.keys(filterState)) {
     for (const val of filterState[cat]) {
       chips.push(`
-        <span class="inline-flex items-center gap-0.5 rounded-full bg-accent-subtle py-0.5 pl-2.5 pr-1 text-xs font-medium text-accent-text">
+        <span class="inline-flex items-center gap-0.5 rounded-full bg-accent-subtle py-0.5 pl-2.5 pr-1 text-sm font-medium text-accent-text">
           <span class="truncate max-w-40">${val}</span>
           <button type="button"
                   data-remove-filter
@@ -414,18 +414,18 @@ export function render(target, ctx) {
       <div class="toolbar flex items-center gap-2 bg-surface px-3 py-2 text-neutral-700 dark:text-neutral-300">
         <label class="flex cursor-pointer items-center gap-2 select-none">
           <input type="checkbox" data-toolbar-all class="size-4 cursor-pointer rounded-md accent-accent" />
-          <span class="text-sm font-medium">Toate</span>
+          <span class="text-base font-medium">Toate</span>
         </label>
 
         <div class="ml-auto flex items-center gap-1">
           <button type="button" data-toolbar-sort
-                  class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
+                  class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-base font-medium hover:bg-subtle">
             <i data-lucide="arrow-up-down" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
             <span data-sort-label>${currentSortLabel}</span>
           </button>
 
           <button type="button" data-toolbar-filter aria-expanded="false"
-                  class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
+                  class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-base font-medium hover:bg-subtle">
             <i data-lucide="search" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
             <span>Cauta / Filtre</span>
           </button>
@@ -446,10 +446,10 @@ export function render(target, ctx) {
     <!-- ACTIVE FILTERS BAR (hidden when no filters) -->
     <div data-active-filters-bar hidden
          class="flex flex-wrap items-center gap-2 border-b border-border-subtle bg-surface px-3 py-2">
-      <span class="text-xs font-semibold uppercase tracking-wider text-fg-subtle">Filtre active</span>
+      <span class="text-sm font-semibold uppercase tracking-wider text-fg-subtle">Filtre active</span>
       <div data-active-chips class="flex flex-wrap items-center gap-1.5"></div>
       <button type="button" data-reset-filters
-              class="ml-auto text-sm font-medium text-accent-text underline underline-offset-2 hover:text-accent">
+              class="ml-auto text-base font-medium text-accent-text underline underline-offset-2 hover:text-accent">
         Reset
       </button>
     </div>
@@ -458,12 +458,12 @@ export function render(target, ctx) {
       <div class="max-w-3xl mx-auto xl:mx-0">
 
         <header class="mb-5">
-          <p class="text-xs font-semibold uppercase tracking-wider text-fg-subtle">Resurse</p>
+          <p class="text-sm font-semibold uppercase tracking-wider text-fg-subtle">Resurse</p>
           <div class="mt-1 flex items-end justify-between gap-3">
-            <h1 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">Terenuri</h1>
+            <h1 class="text-3xl font-bold tracking-tight text-fg sm:text-4xl">Terenuri</h1>
             <div class="text-right">
-              <div class="text-base font-bold tabular-nums text-fg" data-area-label>${totalArea.toFixed(1)} ha</div>
-              <div class="text-xs text-fg-subtle" data-count-label>${parcels.length} sole</div>
+              <div class="text-lg font-bold tabular-nums text-fg" data-area-label>${totalArea.toFixed(1)} ha</div>
+              <div class="text-sm text-fg-subtle" data-count-label>${parcels.length} sole</div>
             </div>
           </div>
         </header>
@@ -485,32 +485,32 @@ export function render(target, ctx) {
         <ul data-list-actions-menu role="menu" hidden
             class="absolute right-0 bottom-full mb-2 w-60 overflow-hidden rounded-lg bg-surface py-1 shadow-lg ring-1 ring-border-subtle">
           <li><button type="button" role="menuitem" data-action-label="Adauga teren"
-                      class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg">
+                      class="flex w-full items-center gap-3 px-4 py-2 text-left text-base text-fg transition-colors hover:bg-accent hover:text-accent-fg">
             <i data-lucide="plus" class="size-4"></i><span>Adauga teren</span>
           </button></li>
           <li><button type="button" role="menuitem" data-action-edit data-action-label="Editeaza teren" disabled
-                      class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-fg">
+                      class="flex w-full items-center gap-3 px-4 py-2 text-left text-base text-fg transition-colors hover:bg-accent hover:text-accent-fg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-fg">
             <i data-lucide="pencil" class="size-4"></i><span>Editeaza teren</span>
           </button></li>
           <li><button type="button" role="menuitem" data-action-label="Importa teren"
-                      class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg">
+                      class="flex w-full items-center gap-3 px-4 py-2 text-left text-base text-fg transition-colors hover:bg-accent hover:text-accent-fg">
             <i data-lucide="upload" class="size-4"></i><span>Importa teren</span>
           </button></li>
           <li><button type="button" role="menuitem" data-action-label="Exporta teren"
-                      class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg">
+                      class="flex w-full items-center gap-3 px-4 py-2 text-left text-base text-fg transition-colors hover:bg-accent hover:text-accent-fg">
             <i data-lucide="download" class="size-4"></i><span>Exporta teren</span>
           </button></li>
           <li><a role="menuitem" href="#/map" data-action-navigate
-                 class="flex w-full items-center gap-3 px-4 py-2 text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg no-underline">
+                 class="flex w-full items-center gap-3 px-4 py-2 text-base text-fg transition-colors hover:bg-accent hover:text-accent-fg no-underline">
             <i data-lucide="globe" class="size-4"></i><span>Deschide harta</span>
           </a></li>
           <li class="border-t border-border-subtle">
             <button type="button" role="menuitem" data-action-delete data-action-label="Sterge teren" disabled
-                    class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-danger-text transition-colors hover:bg-danger-subtle disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent">
+                    class="flex w-full items-center gap-3 px-4 py-2 text-left text-base text-danger-text transition-colors hover:bg-danger-subtle disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent">
               <i data-lucide="trash-2" class="size-4"></i>
               <span class="flex-1">Sterge teren</span>
               <span data-delete-count hidden
-                    class="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1.5 text-xs font-semibold text-danger-fg">0</span>
+                    class="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1.5 text-sm font-semibold text-danger-fg">0</span>
             </button>
           </li>
         </ul>
@@ -546,7 +546,7 @@ export function render(target, ctx) {
    ────────────────────────────────────────────────────────────── */
 
 const INPUT_CLS =
-  "block w-full rounded-lg bg-surface px-3 py-2.5 text-sm text-fg ring-1 ring-inset ring-border-subtle " +
+  "block w-full rounded-lg bg-surface px-3 py-2.5 text-base text-fg ring-1 ring-inset ring-border-subtle " +
   "placeholder:text-fg-subtle focus:outline-none focus:ring-2 focus:ring-accent transition-shadow";
 
 function gpsRow(idx, lat = "", lon = "") {
@@ -586,13 +586,13 @@ function terenFormFields(prefix, gpsRowsHtml) {
         <label class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
           Puncte GPS
         </label>
-        <span class="text-xs text-fg-subtle">Minim 3</span>
+        <span class="text-sm text-fg-subtle">Minim 3</span>
       </div>
       <div class="mt-2 space-y-2" data-gps-rows>
         ${gpsRowsHtml}
       </div>
       <button type="button" data-add-gps
-              class="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-surface px-3 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+              class="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-surface px-3 py-2 text-base font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
         <i data-lucide="plus" class="size-4"></i>
         Adauga punct GPS
       </button>
@@ -607,11 +607,11 @@ function terenFormActions() {
 
     <div class="flex gap-3">
       <button type="button" data-sheet-close
-              class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+              class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-base font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
         Anuleaza
       </button>
       <button type="submit" data-save
-              class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg hover:bg-accent-hover">
+              class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-base font-semibold text-accent-fg hover:bg-accent-hover">
         Salveaza
       </button>
     </div>
@@ -746,15 +746,15 @@ function deleteConfirmSheet() {
           <div class="flex size-12 items-center justify-center rounded-full bg-danger-subtle text-danger-text">
             <i data-lucide="triangle-alert" class="size-6"></i>
           </div>
-          <h3 class="mt-3 text-lg font-bold text-fg">Ești sigur?</h3>
-          <p class="mt-1 text-sm text-fg-muted">
+          <h3 class="mt-3 text-xl font-bold text-fg">Ești sigur?</h3>
+          <p class="mt-1 text-base text-fg-muted">
             Vei șterge <span data-delete-count-text class="font-semibold text-fg">0 terenuri</span>.
             Acțiunea nu poate fi anulată.
           </p>
         </div>
 
         <ul data-delete-names role="list"
-            class="max-h-40 space-y-1 overflow-y-auto rounded-lg bg-subtle p-3 text-sm text-fg ring-1 ring-inset ring-border-subtle"></ul>
+            class="max-h-40 space-y-1 overflow-y-auto rounded-lg bg-subtle p-3 text-base text-fg ring-1 ring-inset ring-border-subtle"></ul>
 
         <div>
           <label for="dc-confirm" class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
@@ -766,11 +766,11 @@ function deleteConfirmSheet() {
 
         <div class="flex gap-3">
           <button type="button" data-sheet-close
-                  class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+                  class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-base font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
             Nu, anulează
           </button>
           <button type="button" data-delete-confirm-btn disabled
-                  class="flex-1 rounded-lg bg-danger px-4 py-3 text-center text-sm font-semibold text-danger-fg hover:bg-danger/90 disabled:cursor-not-allowed disabled:opacity-50">
+                  class="flex-1 rounded-lg bg-danger px-4 py-3 text-center text-base font-semibold text-danger-fg hover:bg-danger/90 disabled:cursor-not-allowed disabled:opacity-50">
             Da, șterge definitiv
           </button>
         </div>
@@ -855,8 +855,8 @@ export function renderDetailEmpty(target) {
         <div class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-subtle text-fg-subtle">
           <i data-lucide="map-pin" class="size-6"></i>
         </div>
-        <p class="mt-3 text-sm font-medium text-fg-muted">Selectează o parcelă</p>
-        <p class="mt-1 text-xs text-fg-subtle">Detaliile apar aici pe desktop.</p>
+        <p class="mt-3 text-base font-medium text-fg-muted">Selectează o parcelă</p>
+        <p class="mt-1 text-sm text-fg-subtle">Detaliile apar aici pe desktop.</p>
       </div>
     </div>
   `;

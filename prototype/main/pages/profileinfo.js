@@ -21,11 +21,11 @@ function label(forId, text) {
 }
 
 const INPUT_BASE =
-  "mt-1.5 w-full rounded-lg bg-surface px-3 py-2.5 text-sm text-fg ring-1 ring-inset ring-border-subtle " +
+  "mt-1.5 w-full rounded-lg bg-surface px-3 py-2.5 text-base text-fg ring-1 ring-inset ring-border-subtle " +
   "focus:outline-none focus:ring-2 focus:ring-accent transition-shadow";
 
 const INPUT_DISABLED =
-  "mt-1.5 w-full rounded-lg bg-subtle px-3 py-2.5 text-sm text-fg-muted ring-1 ring-inset ring-border-subtle cursor-not-allowed";
+  "mt-1.5 w-full rounded-lg bg-subtle px-3 py-2.5 text-base text-fg-muted ring-1 ring-inset ring-border-subtle cursor-not-allowed";
 
 export function render(target) {
   target.innerHTML = `
@@ -73,11 +73,11 @@ export function render(target) {
 
       <div class="sticky bottom-0 z-10 flex gap-3 border-t border-border-subtle bg-canvas px-4 py-3">
         <a href="#/utilizator"
-           class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+           class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-base font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
           Anulează
         </a>
         <button type="button" data-save
-                class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg hover:bg-accent-hover">
+                class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-base font-semibold text-accent-fg hover:bg-accent-hover">
           Salvează
         </button>
       </div>

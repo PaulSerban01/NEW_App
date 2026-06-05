@@ -138,8 +138,8 @@ export function render(target, ctx) {
           <div class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
             <i data-lucide="search-x" class="size-6"></i>
           </div>
-          <p class="mt-3 text-sm font-medium text-slate-700">Parcela nu a fost găsită</p>
-          <a href="#/parcels" class="mt-3 inline-block text-sm font-semibold text-teal-700 hover:underline">Înapoi la listă</a>
+          <p class="mt-3 text-base font-medium text-slate-700">Parcela nu a fost găsită</p>
+          <a href="#/parcels" class="mt-3 inline-block text-base font-semibold text-teal-700 hover:underline">Înapoi la listă</a>
         </div>
       </div>
     `;
@@ -156,8 +156,8 @@ export function render(target, ctx) {
           <i data-lucide="arrow-left" class="size-5"></i>
         </button>
         <div class="flex-1">
-          <h1 class="text-lg font-bold text-slate-800">Satelit & Indici</h1>
-          <p class="text-xs text-slate-500">${p.name}</p>
+          <h1 class="text-xl font-bold text-slate-800">Satelit & Indici</h1>
+          <p class="text-sm text-slate-500">${p.name}</p>
         </div>
       </div>
 
@@ -166,7 +166,7 @@ export function render(target, ctx) {
 
       <!-- ISTORIC IMAGINI - Card buttons with selected image display -->
       <div class="rounded-xl bg-white p-4 shadow-sm">
-        <h2 class="text-sm font-bold text-slate-800 mb-3">Istoric imagini</h2>
+        <h2 class="text-base font-bold text-slate-800 mb-3">Istoric imagini</h2>
 
         <!-- Image display (tap to zoom) -->
         <button type="button" data-image-zoom-trigger aria-label="Mărire imagine"
@@ -177,18 +177,18 @@ export function render(target, ctx) {
           <div class="absolute top-3 right-3 flex gap-2">
             ${INDICES.map((ix, i) => `
               <span role="button" tabindex="0" data-index-btn="${ix}"
-                    class="px-2.5 py-1 rounded-md text-white text-xs font-semibold transition ${i === 0 ? "bg-teal-700 hover:bg-teal-600" : "bg-slate-600 hover:bg-slate-500"}">${ix}</span>
+                    class="px-2.5 py-1 rounded-md text-white text-sm font-semibold transition ${i === 0 ? "bg-teal-700 hover:bg-teal-600" : "bg-slate-600 hover:bg-slate-500"}">${ix}</span>
             `).join("")}
           </div>
 
           <!-- Image info overlay -->
           <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
             <div class="flex items-end justify-between gap-2">
-              <div class="text-white text-sm">
+              <div class="text-white text-base">
                 <div class="font-semibold" data-display-date>${SATELLITE_IMAGES[0].date}</div>
-                <div class="text-xs text-gray-200" data-display-sat>${SATELLITE_IMAGES[0].sat}</div>
+                <div class="text-sm text-gray-200" data-display-sat>${SATELLITE_IMAGES[0].sat}</div>
               </div>
-              <div class="flex items-center gap-1 text-xs text-gray-200">
+              <div class="flex items-center gap-1 text-sm text-gray-200">
                 <i data-lucide="search-plus" class="size-3"></i>
                 <span>Apasă pentru mărire</span>
               </div>
@@ -206,8 +206,8 @@ export function render(target, ctx) {
           <div class="flex gap-2" data-images-carousel>
             ${SATELLITE_IMAGES.map((img, idx) => `
               <button type="button" data-image-card="${idx}" class="shrink-0 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition ${idx === 0 ? 'ring-2 ring-teal-700' : ''}">
-                <div class="text-xs font-semibold text-slate-800">${img.date}</div>
-                <div class="text-xs text-slate-600">NDVI: ${fmtIndex("NDVI", img.indices.NDVI)}</div>
+                <div class="text-sm font-semibold text-slate-800">${img.date}</div>
+                <div class="text-sm text-slate-600">NDVI: ${fmtIndex("NDVI", img.indices.NDVI)}</div>
               </button>
             `).join("")}
           </div>
@@ -222,13 +222,13 @@ export function render(target, ctx) {
               <span class="flex size-8 items-center justify-center rounded-lg bg-violet-100 text-violet-700">
                 <i data-lucide="sparkles" class="size-4"></i>
               </span>
-              <span class="text-sm font-bold text-slate-800">Interpretare AI</span>
+              <span class="text-base font-bold text-slate-800">Interpretare AI</span>
             </span>
             <i data-lucide="chevron-down" data-ai-chev class="size-4 text-slate-500 transition-transform"></i>
           </button>
 
           <div id="ai-interpretation" data-ai-content hidden class="mt-3 space-y-3">
-            <div class="flex items-center gap-1.5 text-xs font-semibold text-violet-700">
+            <div class="flex items-center gap-1.5 text-sm font-semibold text-violet-700">
               <i data-lucide="bot" class="size-3.5"></i>
               ConnAgri AI
             </div>
@@ -242,9 +242,9 @@ export function render(target, ctx) {
         <!-- Historical Chart — range selectable via dropdown -->
         <div class="rounded-xl bg-white p-4 shadow-sm">
           <div class="mb-3 flex items-center justify-between gap-2">
-            <h3 class="text-sm font-bold text-slate-800">Evoluție NDVI</h3>
+            <h3 class="text-base font-bold text-slate-800">Evoluție NDVI</h3>
             <select data-ndvi-range aria-label="Interval evoluție NDVI"
-                    class="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600">
+                    class="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600">
               <option value="3">3 luni</option>
               <option value="6" selected>6 luni</option>
               <option value="9">9 luni</option>
@@ -271,7 +271,7 @@ export function render(target, ctx) {
     <div class="relative w-11/12 max-h-[90vh] flex flex-col bg-slate-900 rounded-xl overflow-hidden shadow-2xl">
       <!-- Header -->
       <div class="flex items-center justify-between gap-3 bg-slate-800 px-4 py-3 border-b border-slate-700">
-        <div data-image-info class="text-sm font-medium text-white">Image</div>
+        <div data-image-info class="text-base font-medium text-white">Image</div>
         <button type="button" data-modal-close aria-label="Închide"
                 class="flex size-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-700 hover:text-white transition">
           <i data-lucide="x" class="size-5"></i>
@@ -292,14 +292,14 @@ export function render(target, ctx) {
                   class="flex size-10 items-center justify-center rounded-lg bg-slate-700 text-slate-200 hover:bg-slate-600 hover:text-white transition">
             <i data-lucide="minus" class="size-5"></i>
           </button>
-          <div data-zoom-level class="min-w-12 text-center text-sm font-medium text-slate-300 bg-slate-700 rounded px-2 py-1">100%</div>
+          <div data-zoom-level class="min-w-12 text-center text-base font-medium text-slate-300 bg-slate-700 rounded px-2 py-1">100%</div>
           <button type="button" data-zoom-in aria-label="Zoom în"
                   class="flex size-10 items-center justify-center rounded-lg bg-slate-700 text-slate-200 hover:bg-slate-600 hover:text-white transition">
             <i data-lucide="plus" class="size-5"></i>
           </button>
         </div>
         <button type="button" data-download-btn aria-label="Descarcă"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-700 text-white hover:bg-teal-600 transition text-sm font-medium">
+                class="flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-700 text-white hover:bg-teal-600 transition text-base font-medium">
           <i data-lucide="download" class="size-4"></i>
           <span>Descarcă</span>
         </button>
@@ -337,15 +337,15 @@ export function render(target, ctx) {
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <i data-lucide="${m.icon}" class="size-5 ${m.iconColor}"></i>
-              <h2 class="text-sm font-bold text-slate-800">${m.name}</h2>
+              <h2 class="text-base font-bold text-slate-800">${m.name}</h2>
             </div>
-            <span class="text-2xl font-bold ${m.valColor}">${fmtIndex(m.key, v)}</span>
+            <span class="text-3xl font-bold ${m.valColor}">${fmtIndex(m.key, v)}</span>
           </div>
-          <p class="mt-2 text-xs text-slate-600">Ultima actualizare: ${img.date}</p>
+          <p class="mt-2 text-sm text-slate-600">Ultima actualizare: ${img.date}</p>
           <div class="mt-3 h-2 bg-slate-200 rounded-full overflow-hidden">
             <div class="h-full ${m.bar}" style="width: ${indexPct(m, v)}%;"></div>
           </div>
-          <p class="mt-2 text-xs text-slate-600">${indexDesc(m.key, v)}</p>
+          <p class="mt-2 text-sm text-slate-600">${indexDesc(m.key, v)}</p>
         </div>
       `;
     }).join("");
@@ -355,13 +355,13 @@ export function render(target, ctx) {
   function renderAI(idx) {
     const ai = SATELLITE_IMAGES[idx].ai;
     aiBody.innerHTML = `
-      <p class="text-sm leading-relaxed text-slate-700">${ai.summary}</p>
+      <p class="text-base leading-relaxed text-slate-700">${ai.summary}</p>
       ${ai.warning ? `
         <div class="flex items-start gap-2 rounded-lg bg-amber-50 p-3 ring-1 ring-inset ring-amber-200">
           <i data-lucide="triangle-alert" class="mt-0.5 size-4 shrink-0 text-amber-500"></i>
-          <p class="text-sm leading-relaxed text-slate-700"><strong>Atenție:</strong> ${ai.warning}</p>
+          <p class="text-base leading-relaxed text-slate-700"><strong>Atenție:</strong> ${ai.warning}</p>
         </div>` : ""}
-      ${ai.note ? `<p class="text-sm leading-relaxed text-slate-700">${ai.note}</p>` : ""}
+      ${ai.note ? `<p class="text-base leading-relaxed text-slate-700">${ai.note}</p>` : ""}
     `;
   }
 

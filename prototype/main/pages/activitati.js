@@ -50,8 +50,8 @@ export function render(target, ctx) {
           <div class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
             <i data-lucide="search-x" class="size-6"></i>
           </div>
-          <p class="mt-3 text-sm font-medium text-slate-700">Parcela nu a fost găsită</p>
-          <a href="#/parcels" class="mt-3 inline-block text-sm font-semibold text-teal-700 hover:underline">Înapoi la listă</a>
+          <p class="mt-3 text-base font-medium text-slate-700">Parcela nu a fost găsită</p>
+          <a href="#/parcels" class="mt-3 inline-block text-base font-semibold text-teal-700 hover:underline">Înapoi la listă</a>
         </div>
       </div>
     `;
@@ -70,8 +70,8 @@ export function render(target, ctx) {
           <i data-lucide="arrow-left" class="size-5"></i>
         </button>
         <div class="flex-1">
-          <h1 class="text-lg font-bold text-slate-800">Rezumat activități</h1>
-          <p class="text-xs text-slate-500">${p.name}</p>
+          <h1 class="text-xl font-bold text-slate-800">Rezumat activități</h1>
+          <p class="text-sm text-slate-500">${p.name}</p>
         </div>
       </div>
 
@@ -81,15 +81,15 @@ export function render(target, ctx) {
         <!-- SUMMARY -->
         <div class="grid grid-cols-3 divide-x divide-slate-100 rounded-xl bg-white p-4 shadow-sm">
           <div class="px-2 text-center">
-            <div class="text-2xl font-bold text-sky-700">${ACTIVITIES.length}</div>
+            <div class="text-3xl font-bold text-sky-700">${ACTIVITIES.length}</div>
             <div class="text-[11px] text-slate-500">Activități</div>
           </div>
           <div class="px-2 text-center">
-            <div class="text-2xl font-bold text-sky-700">${persons.length}</div>
+            <div class="text-3xl font-bold text-sky-700">${persons.length}</div>
             <div class="text-[11px] text-slate-500">Persoane</div>
           </div>
           <div class="px-2 text-center">
-            <div class="text-sm font-bold text-slate-800">${fmtDateTime(ACTIVITIES[0].date)}</div>
+            <div class="text-base font-bold text-slate-800">${fmtDateTime(ACTIVITIES[0].date)}</div>
             <div class="text-[11px] text-slate-500">Ultima activitate</div>
           </div>
         </div>
@@ -97,16 +97,16 @@ export function render(target, ctx) {
         <!-- PERSON FILTER -->
         <div class="overflow-x-auto scrollbar-hide">
           <div class="flex gap-2" data-person-filter>
-            <button type="button" data-person="" class="shrink-0 rounded-full bg-teal-700 px-3 py-1.5 text-xs font-semibold text-white transition">Toți</button>
+            <button type="button" data-person="" class="shrink-0 rounded-full bg-teal-700 px-3 py-1.5 text-sm font-semibold text-white transition">Toți</button>
             ${persons.map(name => `
-              <button type="button" data-person="${name}" class="shrink-0 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-200 transition">${name}</button>
+              <button type="button" data-person="${name}" class="shrink-0 rounded-full bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-200 transition">${name}</button>
             `).join("")}
           </div>
         </div>
 
         <!-- TIMELINE -->
         <div class="rounded-xl bg-white p-4 shadow-sm">
-          <h2 class="mb-3 text-sm font-bold text-slate-800">Istoric activități</h2>
+          <h2 class="mb-3 text-base font-bold text-slate-800">Istoric activități</h2>
           <div data-timeline></div>
         </div>
 
@@ -121,7 +121,7 @@ export function render(target, ctx) {
   function renderTimeline(person) {
     const list = person ? ACTIVITIES.filter(a => a.who === person) : ACTIVITIES;
     if (!list.length) {
-      timelineEl.innerHTML = `<p class="py-6 text-center text-sm text-slate-400">Nicio activitate</p>`;
+      timelineEl.innerHTML = `<p class="py-6 text-center text-base text-slate-400">Nicio activitate</p>`;
       return;
     }
     timelineEl.innerHTML = `
@@ -138,8 +138,8 @@ export function render(target, ctx) {
                 ${isLast ? "" : `<span class="my-1 w-px flex-1 bg-slate-200"></span>`}
               </div>
               <div class="flex-1 ${isLast ? "" : "pb-5"}">
-                <div class="text-sm font-semibold text-slate-800">${a.title}</div>
-                ${a.detail ? `<p class="mt-0.5 text-xs leading-snug text-slate-600">${a.detail}</p>` : ""}
+                <div class="text-base font-semibold text-slate-800">${a.title}</div>
+                ${a.detail ? `<p class="mt-0.5 text-sm leading-snug text-slate-600">${a.detail}</p>` : ""}
                 <div class="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-[11px] text-slate-500">
                   <i data-lucide="user" class="size-3"></i>
                   <span class="font-medium text-slate-600">${a.who}</span>

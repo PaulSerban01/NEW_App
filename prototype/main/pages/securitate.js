@@ -10,20 +10,20 @@ function row({ label, value, last = false, disabled = false }) {
   const stateCls = disabled ? "opacity-50 select-none" : "";
   return `
     <div class="${lastCls} ${stateCls} flex items-center justify-between gap-3 px-4 py-3">
-      <span class="text-sm font-medium text-fg ${disabled ? "line-through" : ""}">${label}</span>
+      <span class="text-base font-medium text-fg ${disabled ? "line-through" : ""}">${label}</span>
       <div class="shrink-0">${value}</div>
     </div>
   `;
 }
 
 const chipNeutral = `
-  <span class="inline-flex items-center rounded-md bg-subtle px-2 py-0.5 text-xs font-medium text-fg-muted ring-1 ring-inset ring-border-subtle">
+  <span class="inline-flex items-center rounded-md bg-subtle px-2 py-0.5 text-sm font-medium text-fg-muted ring-1 ring-inset ring-border-subtle">
     Email + Parolă
   </span>
 `;
 
 const chipActive = `
-  <span class="inline-flex items-center gap-1.5 rounded-md bg-success-subtle px-2 py-0.5 text-xs font-medium text-success-text ring-1 ring-inset ring-success-text/20">
+  <span class="inline-flex items-center gap-1.5 rounded-md bg-success-subtle px-2 py-0.5 text-sm font-medium text-success-text ring-1 ring-inset ring-success-text/20">
     <svg viewBox="0 0 6 6" aria-hidden="true" class="size-1.5 fill-success">
       <circle cx="3" cy="3" r="3" />
     </svg>
@@ -32,7 +32,7 @@ const chipActive = `
 `;
 
 const chipInactive = `
-  <span class="inline-flex items-center gap-1.5 rounded-md bg-subtle px-2 py-0.5 text-xs font-medium text-fg-muted ring-1 ring-inset ring-border-subtle">
+  <span class="inline-flex items-center gap-1.5 rounded-md bg-subtle px-2 py-0.5 text-sm font-medium text-fg-muted ring-1 ring-inset ring-border-subtle">
     <svg viewBox="0 0 6 6" aria-hidden="true" class="size-1.5 fill-fg-subtle">
       <circle cx="3" cy="3" r="3" />
     </svg>
@@ -41,7 +41,7 @@ const chipInactive = `
 `;
 
 const dateValue = `
-  <span class="text-sm text-fg-muted tabular-nums">15 mar. 2026</span>
+  <span class="text-base text-fg-muted tabular-nums">15 mar. 2026</span>
 `;
 
 export function render(target) {
@@ -59,11 +59,11 @@ export function render(target) {
         <!-- Actions -->
         <div class="mt-6 space-y-3">
           <button type="button" data-action-change-password
-                  class="w-full rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
+                  class="w-full rounded-lg bg-accent px-4 py-3 text-center text-base font-semibold text-accent-fg transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
             Schimbare parolă
           </button>
           <button type="button" data-action-recover
-                  class="w-full rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default transition-colors hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
+                  class="w-full rounded-lg bg-surface px-4 py-3 text-center text-base font-semibold text-fg ring-1 ring-inset ring-border-default transition-colors hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
             Recuperare
           </button>
         </div>
@@ -72,11 +72,11 @@ export function render(target) {
 
       <div class="sticky bottom-0 z-10 flex gap-3 border-t border-border-subtle bg-canvas px-4 py-3">
         <a href="#/utilizator"
-           class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+           class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-base font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
           Anulează
         </a>
         <button type="button" data-save
-                class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg hover:bg-accent-hover">
+                class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-base font-semibold text-accent-fg hover:bg-accent-hover">
           Salvează
         </button>
       </div>

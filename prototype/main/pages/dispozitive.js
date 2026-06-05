@@ -16,15 +16,15 @@ const DEVICES = [
 function deviceRow({ icon, name, meta, current }, last) {
   const lastCls = last ? "" : "border-b border-border-subtle";
   const action = current
-    ? `<span class="inline-flex items-center rounded-md bg-success-subtle px-2 py-0.5 text-xs font-medium text-success-text ring-1 ring-inset ring-success-text/20">Acest dispozitiv</span>`
+    ? `<span class="inline-flex items-center rounded-md bg-success-subtle px-2 py-0.5 text-sm font-medium text-success-text ring-1 ring-inset ring-success-text/20">Acest dispozitiv</span>`
     : `<button type="button" data-device="${name}"
-               class="rounded-md px-2 py-1 text-xs font-semibold text-danger-text transition-colors hover:bg-danger-subtle">Deconectează</button>`;
+               class="rounded-md px-2 py-1 text-sm font-semibold text-danger-text transition-colors hover:bg-danger-subtle">Deconectează</button>`;
   return `
     <div class="${lastCls} flex items-center gap-3 px-4 py-3.5">
       <i data-lucide="${icon}" class="size-5 shrink-0 text-fg-muted"></i>
       <div class="min-w-0 flex-1">
-        <p class="text-sm font-medium text-fg">${name}</p>
-        <p class="mt-0.5 text-xs text-fg-muted">${meta}</p>
+        <p class="text-base font-medium text-fg">${name}</p>
+        <p class="mt-0.5 text-sm text-fg-muted">${meta}</p>
       </div>
       <div class="shrink-0">${action}</div>
     </div>
@@ -42,11 +42,11 @@ export function render(target) {
 
       <div class="sticky bottom-0 z-10 flex gap-3 border-t border-border-subtle bg-canvas px-4 py-3">
         <a href="#/utilizator"
-           class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+           class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-base font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
           Anulează
         </a>
         <button type="button" data-save
-                class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg hover:bg-accent-hover">
+                class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-base font-semibold text-accent-fg hover:bg-accent-hover">
           Salvează
         </button>
       </div>

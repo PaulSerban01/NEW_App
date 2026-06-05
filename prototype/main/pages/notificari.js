@@ -32,8 +32,8 @@ function toggleRow({ id, title, subtitle, on, last }) {
   return `
     <div class="${lastCls} flex items-center justify-between gap-3 px-4 py-3.5">
       <div class="min-w-0 flex-1">
-        <p class="text-sm font-medium text-fg">${title}</p>
-        <p class="mt-0.5 text-xs text-fg-muted">${subtitle}</p>
+        <p class="text-base font-medium text-fg">${title}</p>
+        <p class="mt-0.5 text-sm text-fg-muted">${subtitle}</p>
       </div>
       <label class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center" aria-label="${title}">
         <input type="checkbox" data-alert="${id}" class="peer sr-only" ${on ? "checked" : ""} />
@@ -76,11 +76,11 @@ export function render(target) {
 
       <div class="sticky bottom-0 z-10 flex gap-3 border-t border-border-subtle bg-canvas px-4 py-3">
         <a href="#/utilizator"
-           class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-sm font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
+           class="flex-1 rounded-lg bg-surface px-4 py-3 text-center text-base font-semibold text-fg ring-1 ring-inset ring-border-default hover:bg-subtle">
           Anulează
         </a>
         <button type="button" data-save
-                class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg hover:bg-accent-hover">
+                class="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-base font-semibold text-accent-fg hover:bg-accent-hover">
           Salvează
         </button>
       </div>

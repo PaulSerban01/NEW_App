@@ -23,8 +23,8 @@ function activityRow({ icon, title, meta }, last) {
         <i data-lucide="${icon}" class="size-4"></i>
       </span>
       <div class="min-w-0 flex-1">
-        <p class="text-sm font-medium text-fg">${title}</p>
-        <p class="mt-0.5 text-xs text-fg-muted">${meta}</p>
+        <p class="text-base font-medium text-fg">${title}</p>
+        <p class="mt-0.5 text-sm text-fg-muted">${meta}</p>
       </div>
     </div>
   `;

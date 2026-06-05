@@ -65,7 +65,7 @@ function mapCultureBadge(value) {
             data-map-value="${value}"
             aria-pressed="${isOn}"
             style="--c:${color};"
-            class="group inline-flex items-center gap-x-1.5 rounded-sm px-2 py-1 text-xs font-medium ring-1 ring-inset transition
+            class="group inline-flex items-center gap-x-1.5 rounded-sm px-2 py-1 text-sm font-medium ring-1 ring-inset transition
                    bg-surface text-fg ring-border-subtle hover:bg-subtle
                    aria-pressed:bg-(--c) aria-pressed:text-white aria-pressed:ring-(--c)">
       <svg viewBox="0 0 6 6" aria-hidden="true"
@@ -85,7 +85,7 @@ function mapPropertyBadge(value) {
             data-map-cat="property"
             data-map-value="${value}"
             aria-pressed="${isOn}"
-            class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset transition
+            class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ring-1 ring-inset transition
                    bg-surface text-fg-muted ring-border-subtle hover:bg-subtle
                    aria-pressed:bg-accent aria-pressed:text-accent-fg aria-pressed:ring-accent">
       ${value}
@@ -236,7 +236,7 @@ function selectWidget(id, options, selected) {
               data-map-trigger="${id}"
               aria-haspopup="listbox"
               aria-expanded="false"
-              class="inline-flex max-w-44 items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
+              class="inline-flex max-w-44 items-center gap-1.5 rounded-md px-2 py-1.5 text-base font-medium hover:bg-subtle">
         <span class="truncate" data-map-label="${id}">${current.label}</span>
         <i data-lucide="chevron-down" data-map-chev="${id}" class="size-4 shrink-0 transition-transform text-neutral-500 dark:text-neutral-400"></i>
       </button>
@@ -252,7 +252,7 @@ function selectWidget(id, options, selected) {
                 data-map-option="${id}"
                 data-map-value="${o.value}"
                 aria-selected="${isSelected}"
-                class="flex cursor-pointer select-none items-center justify-between gap-2 px-3 py-2 text-sm transition-colors ${state}">
+                class="flex cursor-pointer select-none items-center justify-between gap-2 px-3 py-2 text-base transition-colors ${state}">
               <span class="truncate">${o.label}</span>
               ${isSelected ? `<i data-lucide="check" class="size-4 shrink-0"></i>` : ""}
             </li>
@@ -314,7 +314,7 @@ function bindMapToolbar(target) {
             : "text-fg font-normal hover:bg-accent hover:text-accent-fg";
           return `
             <li role="option" data-map-option="${id}" data-map-value="${o.value}" aria-selected="${isSel}"
-                class="flex cursor-pointer select-none items-center justify-between gap-2 px-3 py-2 text-sm transition-colors ${st}">
+                class="flex cursor-pointer select-none items-center justify-between gap-2 px-3 py-2 text-base transition-colors ${st}">
               <span class="truncate">${o.label}</span>
               ${isSel ? `<i data-lucide="check" class="size-4 shrink-0"></i>` : ""}
             </li>`;
@@ -368,7 +368,7 @@ export function render(target, ctx) {
         ${selectWidget("layer", MAP_LAYER_OPTIONS, mapToolbarState.layer)}
 
         <button type="button" data-map-search aria-expanded="false" aria-haspopup="dialog"
-                class="ml-auto inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
+                class="ml-auto inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-base font-medium hover:bg-subtle">
           <i data-lucide="search" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
           <span>Cauta</span>
         </button>
@@ -386,7 +386,7 @@ export function render(target, ctx) {
           <i data-lucide="search" class="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-fg-subtle"></i>
           <input type="search" data-map-search-input
                  placeholder="Cauta teren sau filtreaza..."
-                 class="w-full rounded-md bg-surface py-2 pl-9 pr-9 text-sm text-fg ring-1 ring-inset ring-border-subtle placeholder:text-fg-subtle focus:outline-none focus:ring-2 focus:ring-accent" />
+                 class="w-full rounded-md bg-surface py-2 pl-9 pr-9 text-base text-fg ring-1 ring-inset ring-border-subtle placeholder:text-fg-subtle focus:outline-none focus:ring-2 focus:ring-accent" />
           <button type="button" data-map-filter-close
                   aria-label="Închide panou"
                   class="absolute right-2 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center rounded-md text-fg-subtle hover:bg-subtle hover:text-fg">
@@ -396,7 +396,7 @@ export function render(target, ctx) {
 
         <!-- Cultură -->
         <div>
-          <h3 class="text-xs font-semibold uppercase tracking-wider text-fg-subtle">Cultură</h3>
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-fg-subtle">Cultură</h3>
           <div class="mt-2 flex flex-wrap gap-2">
             ${FILTER_CATEGORIES.culture.options.map(mapCultureBadge).join("")}
           </div>
@@ -404,7 +404,7 @@ export function render(target, ctx) {
 
         <!-- Proprietate -->
         <div>
-          <h3 class="text-xs font-semibold uppercase tracking-wider text-fg-subtle">Proprietate</h3>
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-fg-subtle">Proprietate</h3>
           <div class="mt-2 flex flex-wrap gap-2">
             ${FILTER_CATEGORIES.property.options.map(mapPropertyBadge).join("")}
           </div>
@@ -413,7 +413,7 @@ export function render(target, ctx) {
 
       <div id="parcels-map-container"
            class="relative isolate h-full xl:h-[calc(100dvh-6.75rem)] bg-subtle">
-        <div class="absolute inset-0 flex items-center justify-center text-sm text-fg-subtle">
+        <div class="absolute inset-0 flex items-center justify-center text-base text-fg-subtle">
           Se încarcă harta…
         </div>
       </div>
@@ -481,28 +481,28 @@ export function render(target, ctx) {
             class="absolute right-0 bottom-full mb-2 w-56 overflow-hidden rounded-lg bg-surface py-1 shadow-lg ring-1 ring-border-subtle">
           <li>
             <button type="button" role="menuitem" data-action-label="Importa terenuri"
-                    class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg">
+                    class="flex w-full items-center gap-3 px-4 py-2 text-left text-base text-fg transition-colors hover:bg-accent hover:text-accent-fg">
               <i data-lucide="upload" class="size-4"></i>
               <span>Importa terenuri</span>
             </button>
           </li>
           <li>
             <button type="button" role="menuitem" data-action-label="Exporta terenuri"
-                    class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg">
+                    class="flex w-full items-center gap-3 px-4 py-2 text-left text-base text-fg transition-colors hover:bg-accent hover:text-accent-fg">
               <i data-lucide="download" class="size-4"></i>
               <span>Exporta terenuri</span>
             </button>
           </li>
           <li>
             <button type="button" role="menuitem" data-action-label="Deseneaza teren nou"
-                    class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg">
+                    class="flex w-full items-center gap-3 px-4 py-2 text-left text-base text-fg transition-colors hover:bg-accent hover:text-accent-fg">
               <i data-lucide="pencil-ruler" class="size-4"></i>
               <span>Deseneaza teren nou</span>
             </button>
           </li>
           <li>
             <button type="button" role="menuitem" data-action-label="Adauga punct de interes"
-                    class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-fg transition-colors hover:bg-accent hover:text-accent-fg">
+                    class="flex w-full items-center gap-3 px-4 py-2 text-left text-base text-fg transition-colors hover:bg-accent hover:text-accent-fg">
               <i data-lucide="map-pin-plus" class="size-4"></i>
               <span>Adauga punct de interes</span>
             </button>
@@ -587,7 +587,7 @@ export function render(target, ctx) {
       console.error("Leaflet load failed:", err);
       if (!container.isConnected) return;
       container.innerHTML = `
-        <div class="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-danger-text">
+        <div class="absolute inset-0 flex items-center justify-center p-6 text-center text-base text-danger-text">
           Nu s-a putut încărca harta. Verifică conexiunea la internet.
         </div>`;
     });
@@ -603,8 +603,8 @@ export function renderDetailEmpty(target) {
         <div class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-subtle text-fg-subtle">
           <i data-lucide="globe" class="size-6"></i>
         </div>
-        <p class="mt-3 text-sm font-medium text-fg-muted">Apasă pe o parcelă</p>
-        <p class="mt-1 text-xs text-fg-subtle">Detaliile parcelei selectate apar aici.</p>
+        <p class="mt-3 text-base font-medium text-fg-muted">Apasă pe o parcelă</p>
+        <p class="mt-1 text-sm text-fg-subtle">Detaliile parcelei selectate apar aici.</p>
       </div>
     </div>
   `;

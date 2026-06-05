@@ -23,11 +23,11 @@ export function selectControl({ id, name, options, value }) {
     options.find(o => o.value === value) || options[0] || { value: "", label: "—" };
   return `
       <el-select id="${id}" name="${name || id}" value="${current.value}" class="mt-1.5 block">
-        <button type="button" class="grid w-full cursor-default grid-cols-1 rounded-md bg-surface py-2.5 pr-2 pl-3 text-left text-sm font-medium text-fg outline-1 -outline-offset-1 outline-border focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-border-focus">
+        <button type="button" class="grid w-full cursor-default grid-cols-1 rounded-md bg-surface py-2.5 pr-2 pl-3 text-left text-base font-medium text-fg outline-1 -outline-offset-1 outline-border focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-border-focus">
           <el-selectedcontent class="col-start-1 row-start-1 truncate pr-6">${current.label}</el-selectedcontent>
           <i data-lucide="chevron-down" aria-hidden="true" class="col-start-1 row-start-1 size-4 self-center justify-self-end text-fg-subtle"></i>
         </button>
-        <el-options anchor="bottom start" popover class="max-h-60 w-(--button-width) overflow-auto rounded-md bg-surface py-1 text-sm shadow-lg outline-1 outline-border-subtle [--anchor-gap:--spacing(1)] data-leave:transition data-leave:transition-discrete data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0">
+        <el-options anchor="bottom start" popover class="max-h-60 w-(--button-width) overflow-auto rounded-md bg-surface py-1 text-base shadow-lg outline-1 outline-border-subtle [--anchor-gap:--spacing(1)] data-leave:transition data-leave:transition-discrete data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0">
           ${options.map(optionRow).join("")}
         </el-options>
       </el-select>`;

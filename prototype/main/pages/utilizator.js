@@ -21,7 +21,7 @@ function navRow({ id, icon, label }, isLast) {
   return `
     <a href="#/${id}" class="${lastCls} flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-subtle">
       <i data-lucide="${icon}" class="size-5 shrink-0 text-fg-muted"></i>
-      <span class="flex-1 text-sm font-medium text-fg">${label}</span>
+      <span class="flex-1 text-base font-medium text-fg">${label}</span>
       <i data-lucide="chevron-right" class="size-4 shrink-0 text-fg-subtle"></i>
     </a>
   `;

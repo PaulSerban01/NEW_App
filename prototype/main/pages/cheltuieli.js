@@ -79,8 +79,8 @@ export function render(target, ctx) {
           <div class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
             <i data-lucide="search-x" class="size-6"></i>
           </div>
-          <p class="mt-3 text-sm font-medium text-slate-700">Parcela nu a fost găsită</p>
-          <a href="#/parcels" class="mt-3 inline-block text-sm font-semibold text-teal-700 hover:underline">Înapoi la listă</a>
+          <p class="mt-3 text-base font-medium text-slate-700">Parcela nu a fost găsită</p>
+          <a href="#/parcels" class="mt-3 inline-block text-base font-semibold text-teal-700 hover:underline">Înapoi la listă</a>
         </div>
       </div>
     `;
@@ -106,8 +106,8 @@ export function render(target, ctx) {
           <i data-lucide="arrow-left" class="size-5"></i>
         </button>
         <div class="flex-1">
-          <h1 class="text-lg font-bold text-slate-800">Cheltuieli</h1>
-          <p class="text-xs text-slate-500">${p.name}</p>
+          <h1 class="text-xl font-bold text-slate-800">Cheltuieli</h1>
+          <p class="text-sm text-slate-500">${p.name}</p>
         </div>
       </div>
 
@@ -118,24 +118,24 @@ export function render(target, ctx) {
         <div class="rounded-xl bg-white p-4 shadow-sm">
           <div class="mb-3 flex items-center gap-2">
             <i data-lucide="calendar-range" class="size-4 text-teal-600"></i>
-            <h2 class="text-sm font-bold text-slate-800">Perioadă</h2>
+            <h2 class="text-base font-bold text-slate-800">Perioadă</h2>
           </div>
           <div class="mb-3 flex flex-wrap gap-2" data-presets>
             ${PRESETS.map(pr => `
               <button type="button" data-preset="${pr.name}"
-                      class="rounded-full px-3 py-1.5 text-xs font-semibold transition ${pr.name === "all" ? "bg-teal-700 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}">${pr.label}</button>
+                      class="rounded-full px-3 py-1.5 text-sm font-semibold transition ${pr.name === "all" ? "bg-teal-700 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}">${pr.label}</button>
             `).join("")}
           </div>
           <div class="grid grid-cols-2 gap-3">
             <label class="block">
               <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">De la</span>
               <input type="date" data-from min="${span.min}" max="${span.max}" value="${span.min}"
-                     class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+                     class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-base text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600" />
             </label>
             <label class="block">
               <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Până la</span>
               <input type="date" data-to min="${span.min}" max="${span.max}" value="${span.max}"
-                     class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+                     class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-base text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600" />
             </label>
           </div>
         </div>
@@ -147,11 +147,11 @@ export function render(target, ctx) {
             Total cheltuieli
           </div>
           <div class="mt-1 flex items-baseline gap-1.5">
-            <span class="text-3xl font-bold leading-none" data-total>0</span>
-            <span class="text-sm font-semibold text-emerald-100">LEI</span>
+            <span class="text-4xl font-bold leading-none" data-total>0</span>
+            <span class="text-base font-semibold text-emerald-100">LEI</span>
           </div>
-          <p class="mt-1 text-xs text-emerald-100" data-range-label></p>
-          <div class="mt-3 flex items-center justify-between border-t border-white/20 pt-3 text-xs">
+          <p class="mt-1 text-sm text-emerald-100" data-range-label></p>
+          <div class="mt-3 flex items-center justify-between border-t border-white/20 pt-3 text-sm">
             <div>
               <div class="text-emerald-100">Pe hectar</div>
               <div class="font-bold"><span data-perha>0</span> LEI/ha</div>
@@ -169,19 +169,19 @@ export function render(target, ctx) {
 
         <!-- DISTRIBUȚIE PE CATEGORII -->
         <div class="rounded-xl bg-white p-4 shadow-sm">
-          <h2 class="text-sm font-bold text-slate-800 mb-3">Distribuție pe categorii</h2>
+          <h2 class="text-base font-bold text-slate-800 mb-3">Distribuție pe categorii</h2>
           <div class="space-y-3" data-breakdown></div>
         </div>
 
         <!-- EVOLUȚIE LUNARĂ -->
         <div class="rounded-xl bg-white p-4 shadow-sm">
-          <h3 class="text-sm font-bold text-slate-800 mb-3">Evoluție lunară</h3>
+          <h3 class="text-base font-bold text-slate-800 mb-3">Evoluție lunară</h3>
           <div data-chart></div>
         </div>
 
         <!-- TRANZACȚII -->
         <div class="rounded-xl bg-white p-4 shadow-sm">
-          <h2 class="text-sm font-bold text-slate-800 mb-3">Tranzacții</h2>
+          <h2 class="text-base font-bold text-slate-800 mb-3">Tranzacții</h2>
           <ul class="divide-y divide-slate-100" data-tx-list></ul>
         </div>
 
@@ -199,7 +199,7 @@ export function render(target, ctx) {
           <div>
             <label for="exp-label" class="block text-[11px] font-semibold uppercase tracking-wider text-slate-600">Denumire cheltuială</label>
             <input id="exp-label" name="label" type="text" required
-                   class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-600"
+                   class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-600"
                    placeholder="ex. Tratament fungicid" />
           </div>
 
@@ -216,32 +216,32 @@ export function render(target, ctx) {
             <div>
               <label for="exp-amount" class="block text-[11px] font-semibold uppercase tracking-wider text-slate-600">Sumă (LEI)</label>
               <input id="exp-amount" name="amount" type="number" min="0" step="any" inputmode="decimal" required
-                     class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-600"
+                     class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-600"
                      placeholder="0" />
             </div>
             <div>
               <label for="exp-date" class="block text-[11px] font-semibold uppercase tracking-wider text-slate-600">Dată</label>
               <input id="exp-date" name="date" type="date" required value="${span.max}"
-                     class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+                     class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600" />
             </div>
           </div>
 
           <div>
             <label for="exp-notes" class="block text-[11px] font-semibold uppercase tracking-wider text-slate-600">Observații</label>
             <textarea id="exp-notes" name="notes" rows="3"
-                      class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-600"
+                      class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-600"
                       placeholder="Detalii, comentarii (opțional)"></textarea>
           </div>
 
-          <p data-expense-error hidden class="text-xs font-medium text-rose-600">Completează denumirea, suma și data.</p>
+          <p data-expense-error hidden class="text-sm font-medium text-rose-600">Completează denumirea, suma și data.</p>
 
           <hr class="border-t border-slate-200" />
 
           <div class="flex gap-3">
             <button type="button" data-sheet-close
-                    class="flex-1 rounded-lg bg-slate-100 px-4 py-3 text-center text-sm font-semibold text-slate-800 hover:bg-slate-200">Anulează</button>
+                    class="flex-1 rounded-lg bg-slate-100 px-4 py-3 text-center text-base font-semibold text-slate-800 hover:bg-slate-200">Anulează</button>
             <button type="submit"
-                    class="flex-1 rounded-lg bg-emerald-700 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-emerald-800">Salvează</button>
+                    class="flex-1 rounded-lg bg-emerald-700 px-4 py-3 text-center text-base font-semibold text-white hover:bg-emerald-800">Salvează</button>
           </div>
         </form>
       </rurio-sheet>
@@ -261,7 +261,7 @@ export function render(target, ctx) {
   const chartEl = target.querySelector("[data-chart]");
   const txListEl = target.querySelector("[data-tx-list]");
 
-  const empty = (msg) => `<p class="py-6 text-center text-sm text-slate-400">${msg}</p>`;
+  const empty = (msg) => `<p class="py-6 text-center text-base text-slate-400">${msg}</p>`;
 
   /* ── Render the dynamic sections for [from, to] ──────────── */
   function applyRange(from, to) {
@@ -286,9 +286,9 @@ export function render(target, ctx) {
           <div class="flex items-center justify-between gap-2">
             <div class="flex items-center gap-2">
               <i data-lucide="${c.icon}" class="size-4 ${c.iconColor}"></i>
-              <span class="text-sm font-medium text-slate-700">${c.label}</span>
+              <span class="text-base font-medium text-slate-700">${c.label}</span>
             </div>
-            <div class="text-sm font-bold text-slate-800">${fmtLei(c.amount)} <span class="text-xs font-normal text-slate-500">LEI</span></div>
+            <div class="text-base font-bold text-slate-800">${fmtLei(c.amount)} <span class="text-sm font-normal text-slate-500">LEI</span></div>
           </div>
           <div class="mt-1.5 flex items-center gap-2">
             <div class="h-2 flex-1 bg-slate-200 rounded-full overflow-hidden">
@@ -328,11 +328,11 @@ export function render(target, ctx) {
             <i data-lucide="${c.icon}" class="size-4"></i>
           </span>
           <div class="min-w-0 flex-1">
-            <div class="truncate text-sm font-medium text-slate-700">${t.label}</div>
+            <div class="truncate text-base font-medium text-slate-700">${t.label}</div>
             <div class="text-[11px] text-slate-500">${fmtDate(t.date)} • ${c.label}</div>
             ${t.notes ? `<div class="truncate text-[11px] text-slate-400">${t.notes}</div>` : ""}
           </div>
-          <div class="shrink-0 text-sm font-bold text-slate-800">${fmtLei(t.amount)} <span class="text-xs font-normal text-slate-500">LEI</span></div>
+          <div class="shrink-0 text-base font-bold text-slate-800">${fmtLei(t.amount)} <span class="text-sm font-normal text-slate-500">LEI</span></div>
         </li>
       `;
     }).join("") : empty("Nicio tranzacție în perioada selectată");

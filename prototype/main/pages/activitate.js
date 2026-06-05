@@ -26,10 +26,10 @@ const PEOPLE = [
 
 const LABEL_CLS = "block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle";
 const SELECT_CLS =
-  "w-full cursor-pointer appearance-none rounded-lg bg-surface px-3 py-2.5 pr-9 text-sm font-medium text-fg " +
+  "w-full cursor-pointer appearance-none rounded-lg bg-surface px-3 py-2.5 pr-9 text-base font-medium text-fg " +
   "ring-1 ring-inset ring-border-subtle focus:outline-none focus:ring-2 focus:ring-accent transition-shadow";
 const INPUT_DATE_CLS =
-  "w-full rounded-lg bg-surface px-3 py-2.5 text-sm font-medium text-fg ring-1 ring-inset ring-border-subtle " +
+  "w-full rounded-lg bg-surface px-3 py-2.5 text-base font-medium text-fg ring-1 ring-inset ring-border-subtle " +
   "focus:outline-none focus:ring-2 focus:ring-accent transition-shadow";
 
 function selectField({ id, label, options }) {
@@ -53,8 +53,8 @@ export function render(target) {
       <div class="max-w-2xl mx-auto xl:mx-0">
 
         <header>
-          <p class="text-xs font-semibold uppercase tracking-wider text-fg-subtle">Configurator firme</p>
-          <h1 class="mt-1 text-2xl font-bold tracking-tight text-fg sm:text-3xl">Activitate</h1>
+          <p class="text-sm font-semibold uppercase tracking-wider text-fg-subtle">Configurator firme</p>
+          <h1 class="mt-1 text-3xl font-bold tracking-tight text-fg sm:text-4xl">Activitate</h1>
         </header>
 
         <form class="mt-6 space-y-4" data-form-activitate novalidate>
@@ -71,7 +71,7 @@ export function render(target) {
           </div>
 
           <button type="button" data-action-generate
-                  class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-4 py-3 text-sm font-semibold text-accent-fg transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
+                  class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-4 py-3 text-base font-semibold text-accent-fg transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
             <i data-lucide="file-down" class="size-4"></i>
             Generează excel
           </button>

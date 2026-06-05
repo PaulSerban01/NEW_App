@@ -66,7 +66,7 @@ function formatDateTime(iso) {
 }
 function detail(icon, label, value) {
   return `
-    <div class="flex items-center gap-2 text-xs text-fg-muted">
+    <div class="flex items-center gap-2 text-sm text-fg-muted">
       <i data-lucide="${icon}" class="size-4 shrink-0 text-fg-subtle"></i>
       <span class="text-fg-subtle">${label}:</span>
       <span class="truncate font-medium text-fg">${value}</span>
@@ -78,7 +78,7 @@ function statusBadge(u) {
   const speed = u.status === "driving" && typeof u.speed === "number"
     ? ` <span class="text-fg-muted">·</span> <span class="tabular-nums">${u.speed} km/h</span>` : "";
   return `
-    <span class="inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${s.cls}">
+    <span class="inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-sm font-medium ring-1 ring-inset ${s.cls}">
       <svg viewBox="0 0 6 6" aria-hidden="true" class="size-1.5 ${s.dot}"><circle cx="3" cy="3" r="3"/></svg>
       ${s.label}${speed}
     </span>
@@ -103,14 +103,14 @@ function utilajCard(u) {
 
         <div class="min-w-0 flex-1">
           <p class="truncate text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">${u.farm}</p>
-          <h3 class="mt-0.5 truncate text-base font-bold text-fg">${u.name}</h3>
-          <p class="mt-0.5 truncate text-xs text-fg-muted">${u.model} <span class="text-fg-subtle">·</span> ${u.tip}</p>
+          <h3 class="mt-0.5 truncate text-lg font-bold text-fg">${u.name}</h3>
+          <p class="mt-0.5 truncate text-sm text-fg-muted">${u.model} <span class="text-fg-subtle">·</span> ${u.tip}</p>
 
           <div class="mt-3 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
             ${detail("fuel",    "Litri",       `${u.liters.toLocaleString("ro-RO")} L`)}
             ${detail("clock",   "Ultima act.", formatDateTime(u.lastActive))}
             ${detail("map-pin", "Locație",     u.location)}
-            <div class="flex items-center gap-2 text-xs">
+            <div class="flex items-center gap-2 text-sm">
               <i data-lucide="activity" class="size-4 shrink-0 text-fg-subtle"></i>
               <span class="text-fg-subtle">Status:</span>
               ${statusBadge(u)}
@@ -131,7 +131,7 @@ function filterBadge(category, value) {
             data-category="${category}"
             data-value="${value}"
             aria-pressed="${isOn}"
-            class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset transition
+            class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ring-1 ring-inset transition
                    bg-surface text-fg-muted ring-border-subtle hover:bg-subtle
                    aria-pressed:bg-accent aria-pressed:text-accent-fg aria-pressed:ring-accent">
       ${value}
@@ -142,7 +142,7 @@ function filterSection(category) {
   const cfg = FILTER_CATEGORIES[category];
   return `
     <div>
-      <h3 class="text-xs font-semibold uppercase tracking-wider text-fg-subtle">${cfg.label}</h3>
+      <h3 class="text-sm font-semibold uppercase tracking-wider text-fg-subtle">${cfg.label}</h3>
       <div class="mt-2 flex flex-wrap gap-2">
         ${cfg.options.map(opt => filterBadge(category, opt)).join("")}
       </div>
@@ -181,7 +181,7 @@ function renderActiveChips(target) {
   for (const cat of Object.keys(filterState)) {
     for (const val of filterState[cat]) {
       chips.push(`
-        <span class="inline-flex items-center gap-0.5 rounded-full bg-accent-subtle py-0.5 pl-2.5 pr-1 text-xs font-medium text-accent-text">
+        <span class="inline-flex items-center gap-0.5 rounded-full bg-accent-subtle py-0.5 pl-2.5 pr-1 text-sm font-medium text-accent-text">
           <span class="truncate max-w-40">${val}</span>
           <button type="button"
                   data-remove-filter
@@ -284,16 +284,16 @@ export function render(target) {
       <div class="toolbar flex items-center gap-2 border-t border-border-subtle bg-surface px-3 py-2 text-neutral-700 dark:text-neutral-300">
         <label class="flex cursor-pointer items-center gap-2 select-none">
           <input type="checkbox" data-toolbar-all class="size-4 cursor-pointer rounded-md accent-accent" />
-          <span class="text-sm font-medium">Toate</span>
+          <span class="text-base font-medium">Toate</span>
         </label>
         <div class="ml-auto flex items-center gap-1">
           <button type="button" data-toolbar-sort
-                  class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
+                  class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-base font-medium hover:bg-subtle">
             <i data-lucide="arrow-up-down" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
             <span data-sort-label>${currentSortLabel}</span>
           </button>
           <button type="button" data-toolbar-filter aria-expanded="false"
-                  class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-subtle">
+                  class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-base font-medium hover:bg-subtle">
             <i data-lucide="search" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
             <span>Cauta / Filtre</span>
           </button>
@@ -314,10 +314,10 @@ export function render(target) {
     <!-- ACTIVE FILTERS BAR -->
     <div data-active-filters-bar hidden
          class="flex flex-wrap items-center gap-2 border-b border-border-subtle bg-surface px-3 py-2">
-      <span class="text-xs font-semibold uppercase tracking-wider text-fg-subtle">Filtre active</span>
+      <span class="text-sm font-semibold uppercase tracking-wider text-fg-subtle">Filtre active</span>
       <div data-active-chips class="flex flex-wrap items-center gap-1.5"></div>
       <button type="button" data-reset-filters
-              class="ml-auto text-sm font-medium text-accent-text underline underline-offset-2 hover:text-accent">
+              class="ml-auto text-base font-medium text-accent-text underline underline-offset-2 hover:text-accent">
         Reset
       </button>
     </div>
@@ -326,8 +326,8 @@ export function render(target) {
       <div class="mx-auto max-w-2xl xl:mx-0">
 
         <header class="flex items-baseline justify-between gap-3">
-          <h1 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">Utilaje</h1>
-          <p class="text-sm font-medium tabular-nums text-fg-muted">
+          <h1 class="text-3xl font-bold tracking-tight text-fg sm:text-4xl">Utilaje</h1>
+          <p class="text-base font-medium tabular-nums text-fg-muted">
             <span class="text-fg" data-count-label>${total} utilaje</span>
           </p>
         </header>

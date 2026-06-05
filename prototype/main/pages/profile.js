@@ -45,14 +45,14 @@ function navRow({ icon, label, href, disabled = false, last = false }) {
     return `
       <div class="${lastCls} flex items-center gap-3 px-4 py-3.5 opacity-50 cursor-not-allowed select-none">
         <i data-lucide="${icon}" class="size-5 shrink-0 text-fg-muted"></i>
-        <span class="flex-1 text-sm text-fg">${label}</span>
+        <span class="flex-1 text-base text-fg">${label}</span>
       </div>
     `;
   }
   return `
     <a href="${href}" class="${lastCls} flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-subtle">
       <i data-lucide="${icon}" class="size-5 shrink-0 text-fg-muted"></i>
-      <span class="flex-1 text-sm font-medium text-fg">${label}</span>
+      <span class="flex-1 text-base font-medium text-fg">${label}</span>
       <i data-lucide="chevron-right" class="size-4 shrink-0 text-fg-subtle"></i>
     </a>
   `;
@@ -62,7 +62,7 @@ function controlRow({ label, control, last = false }) {
   const lastCls = last ? "" : "border-b border-border-subtle";
   return `
     <div class="${lastCls} flex items-center justify-between gap-3 px-4 py-3">
-      <span class="text-sm font-medium text-fg">${label}</span>
+      <span class="text-base font-medium text-fg">${label}</span>
       <div class="shrink-0">${control}</div>
     </div>
   `;
@@ -93,7 +93,7 @@ function btnGroupItem(name, opt, activeId, position) {
     <button type="button"
             aria-pressed="${isActive}"
             data-${name}="${opt.id}"
-            class="relative ${offset} inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm font-semibold ring-1 ring-inset transition focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${radius} ${state}">
+            class="relative ${offset} inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-base font-semibold ring-1 ring-inset transition focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${radius} ${state}">
       ${opt.icon ? `<i data-lucide="${opt.icon}" class="size-4"></i>` : ""}
       <span>${opt.label}</span>
     </button>
@@ -120,7 +120,7 @@ function paletteSelect(activeId) {
               data-palette-trigger
               aria-haspopup="listbox"
               aria-expanded="false"
-              class="flex h-9 cursor-pointer items-center gap-1.5 rounded-md bg-surface px-3 text-sm font-medium text-fg ring-1 ring-inset ring-border-subtle hover:bg-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors">
+              class="flex h-9 cursor-pointer items-center gap-1.5 rounded-md bg-surface px-3 text-base font-medium text-fg ring-1 ring-inset ring-border-subtle hover:bg-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors">
         <span data-palette-label>${current.label}</span>
         <i data-lucide="chevron-down" data-palette-chev class="size-4 text-fg-muted transition-transform"></i>
       </button>
@@ -133,7 +133,7 @@ function paletteSelect(activeId) {
             : "text-fg font-normal hover:bg-accent hover:text-accent-fg";
           return `
             <li role="option" data-palette-option data-value="${p.id}" aria-selected="${isSel}"
-                class="flex cursor-pointer items-center justify-between gap-2 px-3 py-2 text-sm transition-colors ${cls}">
+                class="flex cursor-pointer items-center justify-between gap-2 px-3 py-2 text-base transition-colors ${cls}">
               <span>${p.label}</span>
               ${isSel ? `<i data-lucide="check" class="size-4 shrink-0"></i>` : ""}
             </li>
@@ -176,9 +176,9 @@ export function render(target) {
           <img src="${USER.avatar}" alt="" loading="lazy" class="size-full object-cover" />
         </div>
         <div class="min-w-0 flex-1">
-          <h1 class="truncate text-2xl font-bold tracking-tight text-fg sm:text-3xl">${USER.name}</h1>
-          <p class="truncate text-sm text-fg-muted">${USER.email}</p>
-          <p class="truncate text-xs text-fg-subtle">${USER.workspace}</p>
+          <h1 class="truncate text-3xl font-bold tracking-tight text-fg sm:text-4xl">${USER.name}</h1>
+          <p class="truncate text-base text-fg-muted">${USER.email}</p>
+          <p class="truncate text-sm text-fg-subtle">${USER.workspace}</p>
         </div>
       </header>
 
@@ -189,12 +189,12 @@ export function render(target) {
       <!-- Exit buttons -->
       <div class="mt-8 space-y-3 px-4">
         <button type="button" data-exit-account
-                class="w-full rounded-lg bg-danger px-4 py-3 text-center text-sm font-semibold text-danger-fg transition-colors hover:bg-danger/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
+                class="w-full rounded-lg bg-danger px-4 py-3 text-center text-base font-semibold text-danger-fg transition-colors hover:bg-danger/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger focus-visible:ring-offset-2 focus-visible:ring-offset-canvas">
           Ieșire din cont
         </button>
         <a href="../../index.html" data-exit-prototype
            class="block w-full rounded-lg bg-surface px-4 py-3 text-center no-underline ring-1 ring-inset ring-border-default hover:bg-subtle">
-          <span class="block text-sm font-semibold text-danger-text">Ieșire din prototype</span>
+          <span class="block text-base font-semibold text-danger-text">Ieșire din prototype</span>
           <span class="mt-0.5 block text-[10px] font-normal text-fg-subtle">Doar pentru prototip</span>
         </a>
       </div>
@@ -278,7 +278,7 @@ function bindPaletteSelect(target) {
     list.querySelectorAll("[data-palette-option]").forEach(li => {
       const isSel = li.dataset.value === id;
       li.setAttribute("aria-selected", String(isSel));
-      li.className = `flex cursor-pointer items-center justify-between gap-2 px-3 py-2 text-sm transition-colors ${
+      li.className = `flex cursor-pointer items-center justify-between gap-2 px-3 py-2 text-base transition-colors ${
         isSel
           ? "bg-accent text-accent-fg font-semibold hover:bg-accent-hover"
           : "text-fg font-normal hover:bg-accent hover:text-accent-fg"
