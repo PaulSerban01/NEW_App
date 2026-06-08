@@ -16,29 +16,11 @@ function row({ label, value, last = false, disabled = false }) {
   `;
 }
 
-const chipNeutral = `
-  <span class="inline-flex items-center rounded-md bg-subtle px-2 py-0.5 text-sm font-medium text-fg-muted ring-1 ring-inset ring-border-subtle">
-    Email + Parolă
-  </span>
-`;
+const chipNeutral = `<rurio-badge intent="neutral">Email + Parolă</rurio-badge>`;
 
-const chipActive = `
-  <span class="inline-flex items-center gap-1.5 rounded-md bg-success-subtle px-2 py-0.5 text-sm font-medium text-success-text ring-1 ring-inset ring-success-text/20">
-    <svg viewBox="0 0 6 6" aria-hidden="true" class="size-1.5 fill-success">
-      <circle cx="3" cy="3" r="3" />
-    </svg>
-    Activ
-  </span>
-`;
+const chipActive = `<rurio-badge intent="success" dot>Activ</rurio-badge>`;
 
-const chipInactive = `
-  <span class="inline-flex items-center gap-1.5 rounded-md bg-subtle px-2 py-0.5 text-sm font-medium text-fg-muted ring-1 ring-inset ring-border-subtle">
-    <svg viewBox="0 0 6 6" aria-hidden="true" class="size-1.5 fill-fg-subtle">
-      <circle cx="3" cy="3" r="3" />
-    </svg>
-    Inactiv
-  </span>
-`;
+const chipInactive = `<rurio-badge intent="neutral" dot>Inactiv</rurio-badge>`;
 
 const dateValue = `
   <span class="text-base text-fg-muted tabular-nums">15 mar. 2026</span>

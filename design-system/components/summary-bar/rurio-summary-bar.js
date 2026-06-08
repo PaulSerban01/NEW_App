@@ -170,7 +170,7 @@ class RurioSummaryBar extends HTMLElement {
     const presetsHtml = presets.length
       ? `
         <div class="border-b border-border-subtle py-1">
-          <div class="px-3 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">Predefinite</div>
+          <div class="px-3 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-fg-subtle">Predefinite</div>
           ${presets.map(p => {
             const isSel = p.start === dr.start && p.end === dr.end;
             const cls = isSel
@@ -179,7 +179,7 @@ class RurioSummaryBar extends HTMLElement {
             return `
               <button type="button"
                       data-summary-preset="${p.id}"
-                      class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm transition-colors ${cls}">
+                      class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-base transition-colors ${cls}">
                 <span class="truncate">${p.label}</span>
                 ${isSel ? `<i data-lucide="check" class="size-4 shrink-0"></i>` : ""}
               </button>
@@ -225,7 +225,7 @@ class RurioSummaryBar extends HTMLElement {
                   aria-haspopup="dialog"
                   aria-expanded="false"
                   aria-label="${dr.ariaLabel || "Interval"}"
-                  class="flex h-10 w-full cursor-pointer items-center gap-2 rounded-lg bg-surface px-3 text-left text-sm font-semibold text-fg ring-1 ring-inset ring-border-subtle hover:bg-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors">
+                  class="flex h-10 w-full cursor-pointer items-center gap-2 rounded-lg bg-surface px-3 text-left text-base font-semibold text-fg ring-1 ring-inset ring-border-subtle hover:bg-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors">
             <i data-lucide="calendar" class="size-4 shrink-0 text-fg-muted"></i>
             <span class="flex-1 truncate">${labelText}</span>
             <i data-lucide="chevron-down" data-summary-chev
@@ -237,19 +237,19 @@ class RurioSummaryBar extends HTMLElement {
             ${presetsHtml}
             <div class="space-y-3 p-3">
               <div>
-                <label for="summary-date-from" class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">De la</label>
+                <label for="summary-date-from" class="block text-xs font-semibold uppercase tracking-wider text-fg-subtle">De la</label>
                 <input type="date" id="summary-date-from" data-summary-from
                        value="${dr.start || ""}"
-                       class="mt-1 w-full rounded-md bg-surface px-3 py-2 text-sm text-fg ring-1 ring-inset ring-border-subtle focus:outline-none focus:ring-2 focus:ring-accent" />
+                       class="mt-1 w-full rounded-md bg-surface px-3 py-2 text-base text-fg ring-1 ring-inset ring-border-subtle focus:outline-none focus:ring-2 focus:ring-accent" />
               </div>
               <div>
-                <label for="summary-date-to" class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">Până la</label>
+                <label for="summary-date-to" class="block text-xs font-semibold uppercase tracking-wider text-fg-subtle">Până la</label>
                 <input type="date" id="summary-date-to" data-summary-to
                        value="${dr.end || ""}"
-                       class="mt-1 w-full rounded-md bg-surface px-3 py-2 text-sm text-fg ring-1 ring-inset ring-border-subtle focus:outline-none focus:ring-2 focus:ring-accent" />
+                       class="mt-1 w-full rounded-md bg-surface px-3 py-2 text-base text-fg ring-1 ring-inset ring-border-subtle focus:outline-none focus:ring-2 focus:ring-accent" />
               </div>
               <button type="button" data-summary-apply
-                      class="w-full rounded-md bg-accent py-2 text-sm font-semibold text-accent-fg transition-colors hover:bg-accent-hover">
+                      class="w-full rounded-md bg-accent py-2 text-base font-semibold text-accent-fg transition-colors hover:bg-accent-hover">
                 Aplică
               </button>
             </div>

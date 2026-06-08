@@ -42,6 +42,7 @@
       { href: '/components/radio.html', label: 'Radio' },
       { href: '/components/select.html', label: 'Select' },
       { href: '/components/slider.html', label: 'Slider', stub: true },
+      { href: '/components/summary-bar.html', label: 'Summary bar' },
       { href: '/components/switch.html', label: 'Switch / Toggle' },
       { href: '/components/tabs.html', label: 'Tabs', stub: true },
       { href: '/components/textarea.html', label: 'Textarea' },

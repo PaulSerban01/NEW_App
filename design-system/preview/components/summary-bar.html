@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en" data-palette="teal" data-mode="light" data-frame="ios">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=1280">
+  <title>Summary bar · Rurio</title>
+  <link rel="stylesheet" href="../../tokens.css">
+  <link rel="stylesheet" href="../shared/site.css">
+  <link rel="stylesheet" href="../shared/components.css">
+  <link rel="stylesheet" href="../shared/frames.css">
+
+  <!-- Tailwind v4 in-browser build (same pattern as chip.html / select.html).
+       <rurio-summary-bar> is built from Tailwind utilities; the @theme block maps
+       our design-system tokens onto the color utilities it uses, so the same class
+       names render identically here and in the app. -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-surface:        var(--bg-surface);
+      --color-subtle:         var(--bg-subtle);
+      --color-fg:             var(--fg-default);
+      --color-fg-muted:       var(--fg-muted);
+      --color-fg-subtle:      var(--fg-subtle);
+      --color-border-subtle:  var(--border-subtle);
+      --color-accent:         var(--accent-bg);
+      --color-accent-hover:   var(--accent-bg-hover);
+      --color-accent-fg:      var(--accent-fg);
+      --color-accent-border:  var(--accent-border);
+    }
+  </style>
+
+  <!-- Lucide icons (calendar / chevron-down / check / list / globe). -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <!-- Register the <rurio-summary-bar> custom element. -->
+  <script type="module" src="../../components/index.js"></script>
+</head>
+<body data-crumb="Components" data-title="Summary bar" data-show-frame-toggle>
+  <div class="ds-layout">
+    <aside id="ds-sidebar" class="ds-sidebar"></aside>
+    <main class="ds-main">
+      <header id="ds-topbar" class="ds-topbar"></header>
+      <div class="ds-content">
+        <div class="ds-page-header">
+          <div class="ds-eyebrow">Component</div>
+          <h1 class="ds-page-title">Summary bar</h1>
+          <p class="ds-page-desc">
+            Fixed sub-header — <code>&lt;rurio-summary-bar&gt;</code> — used on the
+            parcels list &amp; map. Holds a season / date-range picker on the left
+            (predefined seasons plus a custom “De la / Până la” range) and an optional
+            view switcher on the right. Configured via the <code>.config</code> property.
+          </p>
+        </div>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Interactive demo</h2>
+          <p class="ds-section__desc">Open the picker, choose a season or set a custom range, and switch views. Add the <code>static</code> attribute (used here) to drop the fixed positioning when embedding.</p>
+          <div class="ds-board" style="overflow:visible;">
+            <div style="max-width:420px;margin:0 auto;border:1px solid var(--border-subtle);border-radius:var(--radius-xl);overflow:visible;">
+              <rurio-summary-bar id="demo-bar" static></rurio-summary-bar>
+              <div style="padding:16px;color:var(--fg-subtle);font-size:14px;">Conținutul paginii…</div>
+            </div>
+            <p class="ds-section__desc" id="demo-log" style="margin-top:12px;">Selectează un interval.</p>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Type sizing &amp; scaling</h2>
+          <div class="ds-board">
+            <p class="ds-section__desc" style="margin:0;">
+              All text uses <code>rem</code>-based Tailwind classes, so the bar responds to the
+              <strong>Mărime text</strong> preference (<code>--font-scale</code>). Defaults:
+            </p>
+            <table class="ds-table" style="margin-top:12px;">
+              <thead><tr><th>Element</th><th>Class</th><th>Default (Medium)</th></tr></thead>
+              <tbody>
+                <tr><td>Trigger label</td><td><code>text-base</code></td><td>16px</td></tr>
+                <tr><td>Season presets</td><td><code>text-base</code></td><td>16px</td></tr>
+                <tr><td>Date inputs</td><td><code>text-base</code></td><td>16px</td></tr>
+                <tr><td>“Aplică” button</td><td><code>text-base</code></td><td>16px</td></tr>
+                <tr><td>Section labels (Predefinite / De la / Până la)</td><td><code>text-xs</code></td><td>12px</td></tr>
+              </tbody>
+            </table>
+            <p class="ds-section__desc" style="margin-top:12px;">
+              The small labels were previously a fixed <code>text-[11px]</code> that ignored the size
+              preference — now <code>text-xs</code>, so they scale with everything else.
+            </p>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Anatomy</h2>
+          <div class="ds-board">
+            <pre class="ds-code"><code>&lt;rurio-summary-bar id="bar"&gt;&lt;/rurio-summary-bar&gt;
+
+&lt;script type="module"&gt;
+  import "../../components/index.js";
+  const bar = document.getElementById("bar");
+  bar.config = {
+    dateRange: {
+      start: "2025-09-01",
+      end:   "2026-08-31",
+      ariaLabel: "Interval",
+      presets: [
+        { id: "2025-2026", label: "Sezon 2025-2026", start: "2025-09-01", end: "2026-08-31" },
+        { id: "apia-2025-2026", label: "Apia 2025-2026", start: "2025-10-01", end: "2026-09-30" },
+      ],
+    },
+    views: [
+      { id: "list", icon: "list",  href: "#/parcels", label: "Listă" },
+      { id: "map",  icon: "globe", href: "#/map",     label: "Hartă" },
+    ],
+    activeView: "list",
+  };
+&lt;/script&gt;</code></pre>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Events &amp; attributes</h2>
+          <div class="ds-board">
+            <table class="ds-table">
+              <thead><tr><th>API</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>.config</code></td><td>Object — <code>dateRange</code> (start/end/presets/ariaLabel), <code>views</code>, <code>activeView</code>.</td></tr>
+                <tr><td><code>static</code> attr</td><td>Drops the fixed positioning + spacer (for mounting inside an already-fixed container).</td></tr>
+                <tr><td><code>rurio:summary-change</code></td><td>Bubbling event with <code>{ start, end }</code> when the range changes.</td></tr>
+                <tr><td><code>rurio:route-change</code></td><td>Listened on document → auto-syncs <code>activeView</code>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../shared/site.js"></script>
+  <script type="module">
+    import "../../components/index.js";
+
+    // Refresh Lucide icons whenever a component re-renders.
+    document.addEventListener("rurio:icons-refresh", () => window.lucide?.createIcons());
+
+    customElements.whenDefined("rurio-summary-bar").then(() => {
+      const bar = document.getElementById("demo-bar");
+      bar.config = {
+        dateRange: {
+          start: "2025-09-01",
+          end:   "2026-08-31",
+          ariaLabel: "Interval",
+          presets: [
+            { id: "2023-2024", label: "Sezon 2023-2024", start: "2023-09-01", end: "2024-08-31" },
+            { id: "2024-2025", label: "Sezon 2024-2025", start: "2024-09-01", end: "2025-08-31" },
+            { id: "2025-2026", label: "Sezon 2025-2026", start: "2025-09-01", end: "2026-08-31" },
+            { id: "apia-2025-2026", label: "Apia 2025-2026", start: "2025-10-01", end: "2026-09-30" },
+          ],
+        },
+        views: [
+          { id: "list", icon: "list",  href: "#/parcels", label: "Listă" },
+          { id: "map",  icon: "globe", href: "#/map",     label: "Hartă" },
+        ],
+        activeView: "list",
+      };
+      window.lucide?.createIcons();
+
+      bar.addEventListener("rurio:summary-change", (e) => {
+        document.getElementById("demo-log").textContent =
+          `Interval selectat: ${e.detail.start} → ${e.detail.end}`;
+      });
+    });
+  </script>
+</body>
+</html>

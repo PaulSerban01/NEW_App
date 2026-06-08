@@ -21,11 +21,11 @@ function renderNavItem(it, active) {
 
   let cls;
   if (isDisabled) {
-    cls = "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-fg-subtle opacity-50 cursor-not-allowed select-none";
+    cls = "flex items-center gap-3 rounded-lg px-3 py-2.5 text-base font-medium text-fg-subtle opacity-50 cursor-not-allowed select-none";
   } else if (isActive) {
-    cls = "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold bg-accent text-accent-fg";
+    cls = "flex items-center gap-3 rounded-lg px-3 py-2.5 text-base font-semibold bg-accent text-accent-fg";
   } else {
-    cls = "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-fg-muted hover:bg-subtle hover:text-fg";
+    cls = "flex items-center gap-3 rounded-lg px-3 py-2.5 text-base font-medium text-fg-muted hover:bg-subtle hover:text-fg";
   }
 
   const iconCls = `shrink-0${isDisabled ? " grayscale" : ""}`;

@@ -16,7 +16,7 @@ const DEVICES = [
 function deviceRow({ icon, name, meta, current }, last) {
   const lastCls = last ? "" : "border-b border-border-subtle";
   const action = current
-    ? `<span class="inline-flex items-center rounded-md bg-success-subtle px-2 py-0.5 text-sm font-medium text-success-text ring-1 ring-inset ring-success-text/20">Acest dispozitiv</span>`
+    ? `<rurio-badge intent="success">Acest dispozitiv</rurio-badge>`
     : `<button type="button" data-device="${name}"
                class="rounded-md px-2 py-1 text-sm font-semibold text-danger-text transition-colors hover:bg-danger-subtle">Deconectează</button>`;
   return `

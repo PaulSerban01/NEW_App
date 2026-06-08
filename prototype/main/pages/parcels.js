@@ -104,13 +104,11 @@ function listItem(p, idx, activeId) {
         </div>
         <p class="mt-0.5 truncate text-sm text-fg-muted">${p.apia}</p>
         <p class="truncate text-sm text-fg-muted">${p.pl}</p>
-        <p class="mt-2 truncate text-base font-semibold uppercase tracking-wide" style="color:${color};">${p.crop}</p>
-        <p class="truncate text-sm text-fg-muted">${p.soi} <span class="text-fg-subtle">·</span> ${p.norm}</p>
-        <div class="mt-2 flex items-center justify-between gap-2">
-          <span class="text-sm text-fg-subtle">${formatDate(p.sownAt)}</span>
-          <span class="inline-flex items-center rounded-md bg-subtle px-2 py-0.5 text-sm font-medium text-fg-muted ring-1 ring-border-subtle ring-inset">
-            ${STATUS_LABELS[p.status] || p.status}
-          </span>
+        <p class="mt-2 truncate text-sm text-fg-muted">${p.soi} <span class="text-fg-subtle">·</span> ${p.norm}</p>
+        <p class="mt-2 text-sm text-fg-subtle">${formatDate(p.sownAt)}</p>
+        <div class="mt-2 flex flex-wrap items-center gap-1.5">
+          <rurio-badge intent="neutral">${STATUS_LABELS[p.status] || p.status}</rurio-badge>
+          <rurio-badge intent="neutral" shape="pill" dot color="${color}">${p.crop}</rurio-badge>
         </div>
       </div>
     </li>
@@ -124,42 +122,29 @@ function filterBadge(category, value) {
 
   const isOn = filterState[category].has(value);
   return `
-    <button type="button"
-            data-filter-badge
-            data-category="${category}"
-            data-value="${value}"
-            aria-pressed="${isOn}"
-            class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ring-1 ring-inset transition
-                   bg-surface text-fg-muted ring-border-subtle hover:bg-subtle
-                   aria-pressed:bg-accent aria-pressed:text-accent-fg aria-pressed:ring-accent">
-      ${value}
-    </button>
+    <rurio-badge selectable shape="pill"
+                 data-filter-badge
+                 data-category="${category}"
+                 data-value="${value}"
+                 value="${value}"
+                 ${isOn ? "selected" : ""}>${value}</rurio-badge>
   `;
 }
 
-// Tailwind Plus "flat badge with colored dot" — constant neutral surface +
-// ring + text; only the leading dot picks up the culture color.
-// Active (selected as a filter): fills with the culture color for clear
-// pressed feedback; dot hides since the whole pill is now in that color.
+// Culture chip: selectable <rurio-badge> with a per-crop color. Unselected shows
+// a neutral surface + the crop-colored leading dot; selected fills with the crop
+// color (the dot hides). The `color` attribute drives both.
 function cultureFilterBadge(value) {
   const color = cultureColor(value);
   const isOn = filterState.culture.has(value);
   return `
-    <button type="button"
-            data-filter-badge
-            data-category="culture"
-            data-value="${value}"
-            aria-pressed="${isOn}"
-            style="--c:${color};"
-            class="group inline-flex items-center gap-x-1.5 rounded-sm px-2 py-1 text-sm font-medium ring-1 ring-inset transition
-                   bg-surface text-fg ring-border-subtle hover:bg-subtle
-                   aria-pressed:bg-(--c) aria-pressed:text-white aria-pressed:ring-(--c)">
-      <svg viewBox="0 0 6 6" aria-hidden="true"
-           class="size-1.5 fill-(--c) group-aria-pressed:hidden">
-        <circle cx="3" cy="3" r="3" />
-      </svg>
-      ${value}
-    </button>
+    <rurio-badge selectable shape="pill" dot
+                 color="${color}"
+                 data-filter-badge
+                 data-category="culture"
+                 data-value="${value}"
+                 value="${value}"
+                 ${isOn ? "selected" : ""}>${value}</rurio-badge>
   `;
 }
 
@@ -211,19 +196,10 @@ function renderActiveChips(target) {
   const chips = [];
   for (const cat of Object.keys(filterState)) {
     for (const val of filterState[cat]) {
-      chips.push(`
-        <span class="inline-flex items-center gap-0.5 rounded-full bg-accent-subtle py-0.5 pl-2.5 pr-1 text-sm font-medium text-accent-text">
-          <span class="truncate max-w-40">${val}</span>
-          <button type="button"
-                  data-remove-filter
-                  data-category="${cat}"
-                  data-value="${val}"
-                  aria-label="Elimină filtru ${val}"
-                  class="flex size-4 items-center justify-center rounded-full hover:bg-accent hover:text-accent-fg">
-            <i data-lucide="x" class="size-3"></i>
-          </button>
-        </span>
-      `);
+      chips.push(
+        `<rurio-badge intent="accent" shape="pill" removable
+                      data-active-chip data-category="${cat}" data-value="${val}" value="${val}">${val}</rurio-badge>`
+      );
     }
   }
   wrap.innerHTML = chips.join("");
@@ -277,34 +253,29 @@ function bindToolbar(toolbarRoot, target) {
 }
 
 function bindFilterBadges(target) {
-  target.querySelectorAll("[data-filter-badge]").forEach(badge => {
+  // Selectable <rurio-badge> chips bubble `rurio:badge-toggle` when toggled.
+  // Delegated on `target` so it keeps working across panel re-renders.
+  target.addEventListener("rurio:badge-toggle", (e) => {
+    const badge = e.target.closest("[data-filter-badge]");
+    if (!badge) return;
     const cat = badge.dataset.category;
     const val = badge.dataset.value;
-    badge.addEventListener("click", () => {
-      const isOn = badge.getAttribute("aria-pressed") === "true";
-      if (isOn) {
-        filterState[cat].delete(val);
-        badge.setAttribute("aria-pressed", "false");
-      } else {
-        filterState[cat].add(val);
-        badge.setAttribute("aria-pressed", "true");
-      }
-      applyFiltersToDOM(target);
-      renderActiveChips(target);
-    });
+    if (e.detail.selected) filterState[cat].add(val);
+    else filterState[cat].delete(val);
+    applyFiltersToDOM(target);
+    renderActiveChips(target);
   });
 }
 
 function bindActiveFiltersBar(target) {
-  // Remove a single filter when its chip × is clicked.
-  target.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-remove-filter]");
-    if (!btn) return;
-    const cat = btn.dataset.category;
-    const val = btn.dataset.value;
+  // Remove a single filter when its active chip is clicked (rurio:badge-remove).
+  target.addEventListener("rurio:badge-remove", (e) => {
+    const chip = e.target.closest("[data-active-chip]");
+    if (!chip) return;
+    const cat = chip.dataset.category, val = chip.dataset.value;
     filterState[cat]?.delete(val);
     const badge = target.querySelector(`[data-filter-badge][data-category="${cat}"][data-value="${val}"]`);
-    if (badge) badge.setAttribute("aria-pressed", "false");
+    if (badge) badge.removeAttribute("selected");
     applyFiltersToDOM(target);
     renderActiveChips(target);
   });
@@ -313,7 +284,7 @@ function bindActiveFiltersBar(target) {
   const reset = target.querySelector("[data-reset-filters]");
   reset?.addEventListener("click", () => {
     for (const cat of Object.keys(filterState)) filterState[cat].clear();
-    target.querySelectorAll("[data-filter-badge]").forEach(b => b.setAttribute("aria-pressed", "false"));
+    target.querySelectorAll("[data-filter-badge]").forEach(b => b.removeAttribute("selected"));
     applyFiltersToDOM(target);
     renderActiveChips(target);
   });
@@ -412,7 +383,7 @@ export function render(target, ctx) {
 
       <!-- TOOLBAR (no longer fixed — the app-header owns positioning + the divider) -->
       <div class="toolbar flex items-center gap-2 bg-surface px-3 py-2 text-neutral-700 dark:text-neutral-300">
-        <label class="flex cursor-pointer items-center gap-2 select-none">
+        <label class="flex cursor-pointer items-center gap-2 px-2 py-1.5 select-none">
           <input type="checkbox" data-toolbar-all class="size-4 cursor-pointer rounded-md accent-accent" />
           <span class="text-base font-medium">Toate</span>
         </label>
@@ -426,8 +397,8 @@ export function render(target, ctx) {
 
           <button type="button" data-toolbar-filter aria-expanded="false"
                   class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-base font-medium hover:bg-subtle">
-            <i data-lucide="search" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
-            <span>Cauta / Filtre</span>
+            <i data-lucide="sliders-horizontal" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
+            <span>Filtre</span>
           </button>
         </div>
       </div>
@@ -437,7 +408,7 @@ export function render(target, ctx) {
   target.innerHTML = `
     <!-- FILTER PANEL (full-width, hidden until toggled) -->
     <div data-filter-panel hidden
-         class="border-b border-border-subtle bg-surface px-3 py-4 space-y-4 sm:px-6">
+         class="fixed inset-x-0 top-(--app-header-h) z-20 max-h-[70dvh] overflow-y-auto border-b border-border-subtle bg-surface px-3 py-4 space-y-4 shadow-lg sm:px-6">
       ${filterSection("culture")}
       ${filterSection("property")}
       ${filterSection("works")}
@@ -458,12 +429,11 @@ export function render(target, ctx) {
       <div class="max-w-3xl mx-auto xl:mx-0">
 
         <header class="mb-5">
-          <p class="text-sm font-semibold uppercase tracking-wider text-fg-subtle">Resurse</p>
-          <div class="mt-1 flex items-end justify-between gap-3">
-            <h1 class="text-3xl font-bold tracking-tight text-fg sm:text-4xl">Terenuri</h1>
+          <div class="flex items-center justify-between gap-3">
+            <h1 class="text-2xl font-bold tracking-tight text-fg">Terenuri</h1>
             <div class="text-right">
               <div class="text-lg font-bold tabular-nums text-fg" data-area-label>${totalArea.toFixed(1)} ha</div>
-              <div class="text-sm text-fg-subtle" data-count-label>${parcels.length} sole</div>
+              <div class="text-base text-fg-subtle" data-count-label>${parcels.length} sole</div>
             </div>
           </div>
         </header>
@@ -550,9 +520,9 @@ const INPUT_CLS =
   "placeholder:text-fg-subtle focus:outline-none focus:ring-2 focus:ring-accent transition-shadow";
 
 function gpsRow(idx, lat = "", lon = "") {
-  // First 3 rows are mandatory (minimum for a polygon): show the delete
-  // icon but keep it disabled. Rows beyond 3 get an enabled delete button.
-  const mandatory = idx <= 3;
+  // Delete buttons are enabled only when there are MORE than 3 points (a polygon
+  // needs ≥3). Rendered disabled by default; refreshGpsDeletes() flips every
+  // button on/off based on the live row count after each add/remove.
   return `
     <div class="flex items-center gap-2" data-gps-row>
       <div class="grid flex-1 grid-cols-2 gap-2">
@@ -561,12 +531,21 @@ function gpsRow(idx, lat = "", lon = "") {
         <input type="text" inputmode="decimal" name="lon-${idx}" value="${lon}"
                placeholder="Lon (ex. 25.5887)" class="${INPUT_CLS}" />
       </div>
-      <button type="button" data-remove-gps aria-label="Sterge punct GPS" ${mandatory ? "disabled" : ""}
+      <button type="button" data-remove-gps aria-label="Sterge punct GPS" disabled
               class="grid size-10 shrink-0 place-items-center rounded-lg text-danger-text transition-colors hover:bg-danger-subtle disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent">
         <i data-lucide="trash-2" class="size-4"></i>
       </button>
     </div>
   `;
+}
+
+// Every delete button is enabled only when the form has more than 3 GPS points;
+// at 3 or fewer, all are disabled (a polygon needs at least 3 corners).
+function refreshGpsDeletes(rows) {
+  if (!rows) return;
+  const dels = rows.querySelectorAll("[data-remove-gps]");
+  const deletable = dels.length > 3;
+  dels.forEach(btn => { btn.disabled = !deletable; });
 }
 
 // Shared body for the Adauga/Editeaza teren forms: a Denumire field + the
@@ -575,7 +554,7 @@ function gpsRow(idx, lat = "", lon = "") {
 function terenFormFields(prefix, gpsRowsHtml) {
   return `
     <div>
-      <label for="${prefix}-denumire" class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
+      <label for="${prefix}-denumire" class="block text-sm font-semibold uppercase tracking-wider text-fg-subtle">
         Denumire Teren
       </label>
       <input id="${prefix}-denumire" name="denumire" type="text" class="mt-1.5 ${INPUT_CLS}" />
@@ -583,7 +562,7 @@ function terenFormFields(prefix, gpsRowsHtml) {
 
     <div>
       <div class="flex items-baseline justify-between gap-2">
-        <label class="block text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
+        <label class="block text-sm font-semibold uppercase tracking-wider text-fg-subtle">
           Puncte GPS
         </label>
         <span class="text-sm text-fg-subtle">Minim 3</span>
@@ -647,18 +626,22 @@ function bindGpsRows(sheet) {
   const rows = sheet.querySelector("[data-gps-rows]");
   const addBtn = sheet.querySelector("[data-add-gps]");
 
+  refreshGpsDeletes(rows);
+
   addBtn?.addEventListener("click", () => {
     const idx = rows.querySelectorAll("[data-gps-row]").length + 1;
     rows.insertAdjacentHTML("beforeend", gpsRow(idx));
+    refreshGpsDeletes(rows);
     document.dispatchEvent(new CustomEvent("rurio:icons-refresh"));
   });
 
-  // Remove an optional GPS row when its (enabled) delete icon is clicked.
-  // The first 3 rows render their button disabled, so they never reach here.
+  // Remove a GPS row when its (enabled) delete icon is clicked — only possible
+  // when there are more than 3 points; re-evaluate every button afterwards.
   rows?.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-remove-gps]");
     if (!btn || btn.disabled) return;
     btn.closest("[data-gps-row]")?.remove();
+    refreshGpsDeletes(rows);
   });
 }
 
@@ -696,6 +679,7 @@ function openEditTeren(target) {
   rows.innerHTML = parcelPolygon(p, idx)
     .map(([lat, lon], i) => gpsRow(i + 1, lat.toFixed(6), lon.toFixed(6)))
     .join("");
+  refreshGpsDeletes(rows);
 
   sheet.dataset.editId = id; // remembered for the save handler
   sheet.open();              // dispatches rurio:icons-refresh for the new rows

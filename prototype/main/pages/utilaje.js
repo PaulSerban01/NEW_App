@@ -12,30 +12,81 @@ export const meta = {
    • statusTags     → used by the status filter (any-tag matches)
    • status         → used for the visible badge on the card
    ────────────────────────────────────────────────────────────── */
-const UTILAJE = [
-  { id:"ut-001", farm:"Agro Vest Holdings", name:"Tractorul Mare",   model:"John Deere 7R 330",       categorie:"Utilaje",      tip:"Tractor",     liters:540,   lastActive:"2026-05-29T08:14:00", location:"Parcela 12 Nord",     status:"driving",     speed:14, statusTags:["Activ","GPS"] },
-  { id:"ut-002", farm:"Agro Vest Holdings", name:"Recoltatorul",     model:"Claas Lexion 8900",       categorie:"Utilaje",      tip:"Combina",     liters:1280,  lastActive:"2026-05-29T07:42:00", location:"Parcela 7 Est",       status:"active",                statusTags:["Activ","GPS"] },
-  { id:"ut-003", farm:"Ferma Sud",          name:"Stropitorul",      model:"Amazone UX 6201",         categorie:"Echipamente",  tip:"Stropitoare", liters:6200,  lastActive:"2026-05-28T19:05:00", location:"Bază Cluj-Napoca",    status:"idle",                  statusTags:["Inactiv"] },
-  { id:"ut-004", farm:"Ferma Sud",          name:"Plug Mare",        model:"Lemken Diamant 16",       categorie:"Agregate",     tip:"Plug",        liters:0,     lastActive:"2026-05-25T16:30:00", location:"Atelier Timișoara",   status:"maintenance",           statusTags:["Defect"] },
-  { id:"ut-005", farm:"Agro Vest Holdings", name:"Cisterna Apă",     model:"Joskin Modulo2 16000",    categorie:"Echipamente",  tip:"Stropitoare", liters:16000, lastActive:"2026-05-22T11:10:00", location:"Bază Brașov",         status:"offline",               statusTags:["Inactiv"] },
-  { id:"ut-006", farm:"Agro Vest Holdings", name:"Camion Logistică", model:"MAN TGS 26.470",          categorie:"Autovehicule", tip:"Camion",      liters:580,   lastActive:"2026-05-29T06:20:00", location:"DN1 → Sibiu",         status:"driving",     speed:78, statusTags:["Activ","GPS"] },
-  { id:"ut-007", farm:"Ferma Sud",          name:"Pickup Câmp",      model:"Ford Ranger Raptor",      categorie:"Autovehicule", tip:"SUV",         liters:65,    lastActive:"2026-05-28T17:48:00", location:"Bază Cluj-Napoca",    status:"idle",                  statusTags:["Inactiv"] },
-  { id:"ut-008", farm:"Agro Vest Holdings", name:"Drona Scout",      model:"DJI Mavic 3 Multispectral", categorie:"Echipamente", tip:"Drona",     liters:0,     lastActive:"2026-05-29T05:55:00", location:"Parcela 12 Nord",     status:"active",                statusTags:["Activ","GPS"] },
-  { id:"ut-009", farm:"Ferma Sud",          name:"Semănătoare",      model:"Väderstad Tempo V12",     categorie:"Agregate",     tip:"Semanatoarice", liters:0,   lastActive:"2026-04-15T10:00:00", location:"Atelier Timișoara",   status:"maintenance",           statusTags:["Defect"] },
+// Vehicle images live in images/utilaje/Farm/utilaje/ as `${prefix}_${brand}.png`.
+const IMG_BASE = "images/utilaje/Farm/utilaje";
+const BRAND = {
+  Case:"Case IH", Class:"Claas", DeutzFahr:"Deutz-Fahr", Fendt:"Fendt", JD:"John Deere",
+  Kubota:"Kubota", MF:"Massey Ferguson", NH:"New Holland", Steyr:"Steyr",
+  Valtra:"Valtra", Chalenger:"Challenger",
+};
+
+// Vehicle families → the brand renders that exist for each.
+const FLEET = [
+  { prefix:"A1", tip:"Tractor",        categorie:"Utilaje",     model:"Seria 5",  brands:["Case","Class","DeutzFahr","Fendt","JD","Kubota","MF","NH","Steyr","Valtra"] },
+  { prefix:"B1", tip:"Tractor",        categorie:"Utilaje",     model:"Seria 8",  brands:["Class","DeutzFahr","Fendt","JD","Kubota","MF","NH","Steyr","Valtra"] },
+  { prefix:"D",  tip:"Tractor șenile", categorie:"Utilaje",     model:"Track",    brands:["Case","Chalenger","Fendt","JD"] },
+  { prefix:"H",  tip:"Combină",        categorie:"Utilaje",     model:"Recoltat", brands:["Case","Class","DeutzFahr","Fendt","JD","Kubota","MF","NH","Steyr","Valtra"] },
+  { prefix:"S",  tip:"Stropitoare",    categorie:"Echipamente", model:"Boom 36m", brands:["Case","Fendt","JD","Kubota","NH","Steyr","Valtra"] },
+];
+const SINGLES = [
+  { img:"Atv",  tip:"ATV",    categorie:"Autovehicule", name:"ATV Quad",       model:"4x4 Outlander" },
+  { img:"Auto", tip:"SUV",    categorie:"Autovehicule", name:"Pickup Câmp",    model:"Ranger Raptor" },
+  { img:"Tir",  tip:"Camion", categorie:"Autovehicule", name:"Camion Cereale", model:"Trailer basculabil" },
 ];
 
+// Deterministic pools — keep prototype data stable (no randomness).
+const FARMS     = ["Agro Vest Holdings", "Ferma Sud", "Agro Transilvania"];
+const LOCATIONS = ["Parcela 12 Nord", "Parcela 7 Est", "Bază Cluj-Napoca", "Atelier Timișoara", "Bază Brașov", "DN1 → Sibiu", "Parcela 4 Vest", "Bază Arad"];
+const STATUSES  = ["active", "driving", "idle", "maintenance", "offline"];
+const TAGS      = { active:["Activ","GPS"], driving:["Activ","GPS"], idle:["Inactiv"], maintenance:["Defect"], offline:["Inactiv"] };
+const LASTACT   = ["2026-06-07T08:14:00","2026-06-07T07:42:00","2026-06-06T19:05:00","2026-06-05T16:30:00","2026-06-03T11:10:00","2026-06-07T06:20:00","2026-06-06T17:48:00","2026-05-20T10:00:00"];
+const LITERS    = [540, 1280, 6200, 0, 16000, 580, 65, 0, 320, 140, 900, 2400, 75];
+
+const UTILAJE = (() => {
+  const out = [];
+  let i = 0;
+  const push = (o) => {
+    const status = STATUSES[i % STATUSES.length];
+    const e = {
+      id: `ut-${String(i + 1).padStart(3, "0")}`,
+      farm: FARMS[i % FARMS.length],
+      location: LOCATIONS[i % LOCATIONS.length],
+      lastActive: LASTACT[i % LASTACT.length],
+      liters: LITERS[i % LITERS.length],
+      status,
+      statusTags: TAGS[status],
+      ...o,
+    };
+    if (status === "driving") e.speed = 12 + (i % 6) * 11;
+    out.push(e);
+    i++;
+  };
+  FLEET.forEach(g => g.brands.forEach(b => push({
+    name: `${g.tip} ${BRAND[b]}`,
+    model: `${BRAND[b]} ${g.model}`,
+    categorie: g.categorie,
+    tip: g.tip,
+    img: `${IMG_BASE}/${g.prefix}_${b}.png`,
+  })));
+  SINGLES.forEach(s => push({
+    name: s.name, model: s.model, categorie: s.categorie, tip: s.tip,
+    img: `${IMG_BASE}/${s.img}.png`,
+  }));
+  return out;
+})();
+
 const STATUS = {
-  driving:     { label:"În deplasare", cls:"bg-success-subtle text-success-text ring-success-text/20", dot:"fill-success" },
-  active:      { label:"Activ",        cls:"bg-success-subtle text-success-text ring-success-text/20", dot:"fill-success" },
-  idle:        { label:"În repaus",    cls:"bg-subtle text-fg-muted ring-border-subtle",               dot:"fill-fg-subtle" },
-  maintenance: { label:"Mentenanță",   cls:"bg-warning-subtle text-warning-text ring-warning-text/20", dot:"fill-warning" },
-  offline:     { label:"Offline",      cls:"bg-subtle text-fg-muted ring-border-subtle",               dot:"fill-fg-subtle" },
+  driving:     { label:"În deplasare", intent:"success" },
+  active:      { label:"Activ",        intent:"success" },
+  idle:        { label:"În repaus",    intent:"neutral" },
+  maintenance: { label:"Mentenanță",   intent:"warning" },
+  offline:     { label:"Offline",      intent:"neutral" },
 };
 
 /* ───────── Filters ───────── */
 const FILTER_CATEGORIES = {
-  categorie: { label:"Categorie", options:["Utilaje", "Agregate", "Autovehicule", "Echipamente"] },
-  tip:       { label:"TIP",       options:["Tractor", "Combina", "Plug", "Semanatoarice", "Stropitoare", "SUV", "Camion", "Drona"] },
+  categorie: { label:"Categorie", options:["Utilaje", "Echipamente", "Autovehicule"] },
+  tip:       { label:"TIP",       options:["Tractor", "Tractor șenile", "Combină", "Stropitoare", "ATV", "SUV", "Camion"] },
   status:    { label:"Status",    options:["Activ", "Defect", "Inactiv", "GPS"] },
 };
 const filterState = { categorie:new Set(), tip:new Set(), status:new Set() };
@@ -76,47 +127,34 @@ function detail(icon, label, value) {
 function statusBadge(u) {
   const s = STATUS[u.status] || STATUS.offline;
   const speed = u.status === "driving" && typeof u.speed === "number"
-    ? ` <span class="text-fg-muted">·</span> <span class="tabular-nums">${u.speed} km/h</span>` : "";
-  return `
-    <span class="inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-sm font-medium ring-1 ring-inset ${s.cls}">
-      <svg viewBox="0 0 6 6" aria-hidden="true" class="size-1.5 ${s.dot}"><circle cx="3" cy="3" r="3"/></svg>
-      ${s.label}${speed}
-    </span>
-  `;
+    ? ` · ${u.speed} km/h` : "";
+  return `<rurio-badge intent="${s.intent}" size="sm" dot>${s.label}${speed}</rurio-badge>`;
 }
 
 function utilajCard(u) {
   return `
     <li data-utilaj-id="${u.id}"
-        class="relative overflow-hidden rounded-xl bg-surface shadow-sm ring-1 ring-border-subtle transition-shadow hover:shadow-md">
-      <div class="flex gap-3 p-3">
+        class="relative flex gap-3 overflow-hidden rounded-xl bg-surface py-3 pl-3 pr-5 shadow-sm transition-shadow hover:shadow-md">
 
-        <div class="flex shrink-0 flex-col items-center gap-2">
-          <input type="checkbox"
-                 data-utilaj-cb="${u.id}"
-                 aria-label="Selectează ${u.name}"
-                 class="size-4 cursor-pointer rounded-md accent-accent shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1 focus-visible:ring-offset-surface" />
-          <div class="flex size-14 items-center justify-center rounded-lg bg-accent-subtle text-accent-text">
-            <i data-lucide="tractor" class="size-7"></i>
-          </div>
+      <div class="relative w-24 shrink-0 overflow-hidden rounded-md bg-subtle ring-1 ring-border-subtle">
+        <img src="${u.img}" alt="${u.name}" loading="lazy" class="h-full w-full object-contain p-1" />
+        <input type="checkbox"
+               data-utilaj-cb="${u.id}"
+               aria-label="Selectează ${u.name}"
+               class="absolute left-1.5 top-1.5 size-4 cursor-pointer rounded-md accent-accent shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1 focus-visible:ring-offset-surface" />
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">${u.farm}</p>
+        <h3 class="mt-0.5 truncate text-lg font-bold text-fg">${u.name}</h3>
+        <p class="mt-0.5 truncate text-sm text-fg-muted">${u.model} <span class="text-fg-subtle">·</span> ${u.tip}</p>
+
+        <div class="mt-2 space-y-1">
+          ${detail("fuel",    "Litri",       `${u.liters.toLocaleString("ro-RO")} L`)}
+          ${detail("clock",   "Ultima act.", formatDateTime(u.lastActive))}
+          ${detail("map-pin", "Locație",     u.location)}
         </div>
-
-        <div class="min-w-0 flex-1">
-          <p class="truncate text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">${u.farm}</p>
-          <h3 class="mt-0.5 truncate text-lg font-bold text-fg">${u.name}</h3>
-          <p class="mt-0.5 truncate text-sm text-fg-muted">${u.model} <span class="text-fg-subtle">·</span> ${u.tip}</p>
-
-          <div class="mt-3 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
-            ${detail("fuel",    "Litri",       `${u.liters.toLocaleString("ro-RO")} L`)}
-            ${detail("clock",   "Ultima act.", formatDateTime(u.lastActive))}
-            ${detail("map-pin", "Locație",     u.location)}
-            <div class="flex items-center gap-2 text-sm">
-              <i data-lucide="activity" class="size-4 shrink-0 text-fg-subtle"></i>
-              <span class="text-fg-subtle">Status:</span>
-              ${statusBadge(u)}
-            </div>
-          </div>
-        </div>
+        <div class="mt-2">${statusBadge(u)}</div>
       </div>
     </li>
   `;
@@ -126,16 +164,12 @@ function utilajCard(u) {
 function filterBadge(category, value) {
   const isOn = filterState[category].has(value);
   return `
-    <button type="button"
-            data-filter-badge
-            data-category="${category}"
-            data-value="${value}"
-            aria-pressed="${isOn}"
-            class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ring-1 ring-inset transition
-                   bg-surface text-fg-muted ring-border-subtle hover:bg-subtle
-                   aria-pressed:bg-accent aria-pressed:text-accent-fg aria-pressed:ring-accent">
-      ${value}
-    </button>
+    <rurio-badge selectable shape="pill"
+                 data-filter-badge
+                 data-category="${category}"
+                 data-value="${value}"
+                 value="${value}"
+                 ${isOn ? "selected" : ""}>${value}</rurio-badge>
   `;
 }
 function filterSection(category) {
@@ -180,19 +214,10 @@ function renderActiveChips(target) {
   const chips = [];
   for (const cat of Object.keys(filterState)) {
     for (const val of filterState[cat]) {
-      chips.push(`
-        <span class="inline-flex items-center gap-0.5 rounded-full bg-accent-subtle py-0.5 pl-2.5 pr-1 text-sm font-medium text-accent-text">
-          <span class="truncate max-w-40">${val}</span>
-          <button type="button"
-                  data-remove-filter
-                  data-category="${cat}"
-                  data-value="${val}"
-                  aria-label="Elimină filtru ${val}"
-                  class="flex size-4 items-center justify-center rounded-full hover:bg-accent hover:text-accent-fg">
-            <i data-lucide="x" class="size-3"></i>
-          </button>
-        </span>
-      `);
+      chips.push(
+        `<rurio-badge intent="accent" shape="pill" removable
+                      data-active-chip data-category="${cat}" data-value="${val}" value="${val}">${val}</rurio-badge>`
+      );
     }
   }
   wrap.innerHTML = chips.join("");
@@ -240,33 +265,33 @@ function bindToolbar(toolbarRoot, target) {
 }
 
 function bindFilterBadges(target) {
-  target.querySelectorAll("[data-filter-badge]").forEach(badge => {
-    const cat = badge.dataset.category;
-    const val = badge.dataset.value;
-    badge.addEventListener("click", () => {
-      const isOn = badge.getAttribute("aria-pressed") === "true";
-      if (isOn) { filterState[cat].delete(val); badge.setAttribute("aria-pressed", "false"); }
-      else      { filterState[cat].add(val);    badge.setAttribute("aria-pressed", "true"); }
-      applyFiltersToDOM(target);
-      renderActiveChips(target);
-    });
+  // Selectable <rurio-badge> chips bubble `rurio:badge-toggle` when toggled.
+  target.addEventListener("rurio:badge-toggle", (e) => {
+    const badge = e.target.closest("[data-filter-badge]");
+    if (!badge) return;
+    const cat = badge.dataset.category, val = badge.dataset.value;
+    if (e.detail.selected) filterState[cat].add(val);
+    else filterState[cat].delete(val);
+    applyFiltersToDOM(target);
+    renderActiveChips(target);
   });
 }
 
 function bindActiveFiltersBar(target) {
-  target.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-remove-filter]");
-    if (!btn) return;
-    const cat = btn.dataset.category, val = btn.dataset.value;
+  // Removable <rurio-badge> active chips bubble `rurio:badge-remove`.
+  target.addEventListener("rurio:badge-remove", (e) => {
+    const chip = e.target.closest("[data-active-chip]");
+    if (!chip) return;
+    const cat = chip.dataset.category, val = chip.dataset.value;
     filterState[cat]?.delete(val);
     const badge = target.querySelector(`[data-filter-badge][data-category="${cat}"][data-value="${val}"]`);
-    if (badge) badge.setAttribute("aria-pressed", "false");
+    if (badge) badge.removeAttribute("selected");
     applyFiltersToDOM(target);
     renderActiveChips(target);
   });
   target.querySelector("[data-reset-filters]")?.addEventListener("click", () => {
     for (const cat of Object.keys(filterState)) filterState[cat].clear();
-    target.querySelectorAll("[data-filter-badge]").forEach(b => b.setAttribute("aria-pressed", "false"));
+    target.querySelectorAll("[data-filter-badge]").forEach(b => b.removeAttribute("selected"));
     applyFiltersToDOM(target);
     renderActiveChips(target);
   });
@@ -294,8 +319,8 @@ export function render(target) {
           </button>
           <button type="button" data-toolbar-filter aria-expanded="false"
                   class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-base font-medium hover:bg-subtle">
-            <i data-lucide="search" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
-            <span>Cauta / Filtre</span>
+            <i data-lucide="sliders-horizontal" class="size-4 text-neutral-500 dark:text-neutral-400"></i>
+            <span>Filtre</span>
           </button>
         </div>
       </div>
@@ -305,7 +330,7 @@ export function render(target) {
   target.innerHTML = `
     <!-- FILTER PANEL -->
     <div data-filter-panel hidden
-         class="border-b border-border-subtle bg-surface px-3 py-4 space-y-4 sm:px-6">
+         class="fixed inset-x-0 top-(--app-header-h) z-20 max-h-[70dvh] overflow-y-auto border-b border-border-subtle bg-surface px-3 py-4 space-y-4 shadow-lg sm:px-6">
       ${filterSection("categorie")}
       ${filterSection("tip")}
       ${filterSection("status")}

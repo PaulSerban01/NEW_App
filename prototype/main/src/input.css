@@ -45,21 +45,25 @@
   --color-danger-fg: var(--danger-fg);
   --color-danger-subtle: var(--danger-subtle);
   --color-danger-text: var(--danger-text);
+  --color-danger-border: var(--danger-border);
 
   --color-success: var(--success-bg);
   --color-success-fg: var(--success-fg);
   --color-success-subtle: var(--success-subtle);
   --color-success-text: var(--success-text);
+  --color-success-border: var(--success-border);
 
   --color-warning: var(--warning-bg);
   --color-warning-fg: var(--warning-fg);
   --color-warning-subtle: var(--warning-subtle);
   --color-warning-text: var(--warning-text);
+  --color-warning-border: var(--warning-border);
 
   --color-info: var(--info-bg);
   --color-info-fg: var(--info-fg);
   --color-info-subtle: var(--info-subtle);
   --color-info-text: var(--info-text);
+  --color-info-border: var(--info-border);
 
   /* neutrals (primitives — use sparingly; prefer fg / bg semantics) */
   --color-neutral-0: var(--n-0);

@@ -59,37 +59,25 @@ function mapCultureBadge(value) {
   const color = cultureColor(value);
   const isOn = mapFilterState.culture.has(value);
   return `
-    <button type="button"
-            data-map-filter-badge
-            data-map-cat="culture"
-            data-map-value="${value}"
-            aria-pressed="${isOn}"
-            style="--c:${color};"
-            class="group inline-flex items-center gap-x-1.5 rounded-sm px-2 py-1 text-sm font-medium ring-1 ring-inset transition
-                   bg-surface text-fg ring-border-subtle hover:bg-subtle
-                   aria-pressed:bg-(--c) aria-pressed:text-white aria-pressed:ring-(--c)">
-      <svg viewBox="0 0 6 6" aria-hidden="true"
-           class="size-1.5 fill-(--c) group-aria-pressed:hidden">
-        <circle cx="3" cy="3" r="3" />
-      </svg>
-      ${value}
-    </button>
+    <rurio-badge selectable shape="pill" dot
+                 color="${color}"
+                 data-map-filter-badge
+                 data-map-cat="culture"
+                 data-map-value="${value}"
+                 value="${value}"
+                 ${isOn ? "selected" : ""}>${value}</rurio-badge>
   `;
 }
 
 function mapPropertyBadge(value) {
   const isOn = mapFilterState.property.has(value);
   return `
-    <button type="button"
-            data-map-filter-badge
-            data-map-cat="property"
-            data-map-value="${value}"
-            aria-pressed="${isOn}"
-            class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ring-1 ring-inset transition
-                   bg-surface text-fg-muted ring-border-subtle hover:bg-subtle
-                   aria-pressed:bg-accent aria-pressed:text-accent-fg aria-pressed:ring-accent">
-      ${value}
-    </button>
+    <rurio-badge selectable shape="pill"
+                 data-map-filter-badge
+                 data-map-cat="property"
+                 data-map-value="${value}"
+                 value="${value}"
+                 ${isOn ? "selected" : ""}>${value}</rurio-badge>
   `;
 }
 
@@ -124,20 +112,13 @@ function bindMapFilter(toolbarRoot, panelRoot) {
     mapSearchQuery = search.value || "";
   });
 
-  // Badges
-  panelRoot.querySelectorAll("[data-map-filter-badge]").forEach(b => {
-    b.addEventListener("click", () => {
-      const cat = b.dataset.mapCat;
-      const val = b.dataset.mapValue;
-      const isOn = b.getAttribute("aria-pressed") === "true";
-      if (isOn) {
-        mapFilterState[cat].delete(val);
-        b.setAttribute("aria-pressed", "false");
-      } else {
-        mapFilterState[cat].add(val);
-        b.setAttribute("aria-pressed", "true");
-      }
-    });
+  // Badges — selectable <rurio-badge> bubble `rurio:badge-toggle`.
+  panelRoot.addEventListener("rurio:badge-toggle", (e) => {
+    const b = e.target.closest("[data-map-filter-badge]");
+    if (!b) return;
+    const cat = b.dataset.mapCat, val = b.dataset.mapValue;
+    if (e.detail.selected) mapFilterState[cat].add(val);
+    else mapFilterState[cat].delete(val);
   });
 }
 
@@ -424,7 +405,7 @@ export function render(target, ctx) {
          (clears bottom-nav height + iOS safe area); on desktop just bottom of viewport.
          pointer-events-none on the wrapper lets map gestures pass through the
          transparent padding; pointer-events-auto on the FAB cluster restores them. -->
-    <div class="pointer-events-none fixed left-0 z-30 p-3 bottom-[calc(4.25rem+env(safe-area-inset-bottom,0))] xl:bottom-0">
+    <div class="pointer-events-none fixed left-0 z-10 p-3 bottom-[calc(4.25rem+env(safe-area-inset-bottom,0))] xl:bottom-0">
       <div class="pointer-events-auto flex flex-col gap-2">
         <button type="button" aria-label="Mărește"
                 data-map-fab="zoom-in"
@@ -451,7 +432,7 @@ export function render(target, ctx) {
 
     <!-- Floating map controls — RIGHT.
          Third FAB is accent-colored and opens an action menu (listbox-style popover). -->
-    <div class="pointer-events-none fixed right-0 z-30 p-3 bottom-[calc(4.25rem+env(safe-area-inset-bottom,0))] xl:bottom-0">
+    <div class="pointer-events-none fixed right-0 z-10 p-3 bottom-[calc(4.25rem+env(safe-area-inset-bottom,0))] xl:bottom-0">
       <div class="pointer-events-auto flex flex-col gap-2">
         <button type="button" aria-label="Focalizare"
                 data-map-fab="focus"

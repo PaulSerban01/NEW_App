@@ -72,7 +72,7 @@ function section(title, contentHtml) {
   return `
     <div class="mt-5">
       ${title
-        ? `<h2 class="px-4 pb-2 text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">${title}</h2>`
+        ? `<h2 class="px-4 pb-2 text-sm font-semibold uppercase tracking-wider text-fg-subtle">${title}</h2>`
         : ""}
       <div class="mx-4 overflow-hidden rounded-xl bg-surface shadow-sm">
         ${contentHtml}
@@ -176,7 +176,7 @@ export function render(target) {
           <img src="${USER.avatar}" alt="" loading="lazy" class="size-full object-cover" />
         </div>
         <div class="min-w-0 flex-1">
-          <h1 class="truncate text-3xl font-bold tracking-tight text-fg sm:text-4xl">${USER.name}</h1>
+          <h1 class="truncate text-2xl font-bold tracking-tight text-fg">${USER.name}</h1>
           <p class="truncate text-base text-fg-muted">${USER.email}</p>
           <p class="truncate text-sm text-fg-subtle">${USER.workspace}</p>
         </div>

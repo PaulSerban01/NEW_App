@@ -97,9 +97,9 @@ export function render(target, ctx) {
         <!-- PERSON FILTER -->
         <div class="overflow-x-auto scrollbar-hide">
           <div class="flex gap-2" data-person-filter>
-            <button type="button" data-person="" class="shrink-0 rounded-full bg-teal-700 px-3 py-1.5 text-sm font-semibold text-white transition">Toți</button>
+            <rurio-badge class="shrink-0" selectable shape="pill" data-person="" value="Toți" selected>Toți</rurio-badge>
             ${persons.map(name => `
-              <button type="button" data-person="${name}" class="shrink-0 rounded-full bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-200 transition">${name}</button>
+              <rurio-badge class="shrink-0" selectable shape="pill" data-person="${name}" value="${name}">${name}</rurio-badge>
             `).join("")}
           </div>
         </div>
@@ -158,12 +158,8 @@ export function render(target, ctx) {
 
   function setActivePerson(person) {
     personBtns.forEach(b => {
-      const active = b.dataset.person === person;
-      b.classList.toggle("bg-teal-700", active);
-      b.classList.toggle("text-white", active);
-      b.classList.toggle("bg-slate-100", !active);
-      b.classList.toggle("text-slate-700", !active);
-      b.classList.toggle("hover:bg-slate-200", !active);
+      if (b.dataset.person === person) b.setAttribute("selected", "");
+      else b.removeAttribute("selected");
     });
   }
 
@@ -171,11 +167,11 @@ export function render(target, ctx) {
   target.querySelector("[data-back-btn]")
     ?.addEventListener("click", () => window.history.back());
 
-  personBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      setActivePerson(btn.dataset.person);
-      renderTimeline(btn.dataset.person);
-    });
+  target.querySelector("[data-person-filter]")?.addEventListener("rurio:badge-toggle", (e) => {
+    const badge = e.target.closest("[data-person]");
+    if (!badge) return;
+    setActivePerson(badge.dataset.person);
+    renderTimeline(badge.dataset.person);
   });
 
   renderTimeline("");

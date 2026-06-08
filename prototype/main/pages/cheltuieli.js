@@ -122,8 +122,7 @@ export function render(target, ctx) {
           </div>
           <div class="mb-3 flex flex-wrap gap-2" data-presets>
             ${PRESETS.map(pr => `
-              <button type="button" data-preset="${pr.name}"
-                      class="rounded-full px-3 py-1.5 text-sm font-semibold transition ${pr.name === "all" ? "bg-teal-700 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}">${pr.label}</button>
+              <rurio-badge selectable shape="pill" data-preset="${pr.name}" value="${pr.name}" ${pr.name === "all" ? "selected" : ""}>${pr.label}</rurio-badge>
             `).join("")}
           </div>
           <div class="grid grid-cols-2 gap-3">
@@ -343,12 +342,8 @@ export function render(target, ctx) {
 
   function setActivePreset(name) {
     presetBtns.forEach(b => {
-      const active = b.dataset.preset === name;
-      b.classList.toggle("bg-teal-700", active);
-      b.classList.toggle("text-white", active);
-      b.classList.toggle("bg-slate-100", !active);
-      b.classList.toggle("text-slate-700", !active);
-      b.classList.toggle("hover:bg-slate-200", !active);
+      if (b.dataset.preset === name) b.setAttribute("selected", "");
+      else b.removeAttribute("selected");
     });
   }
 
@@ -356,14 +351,14 @@ export function render(target, ctx) {
   target.querySelector("[data-back-btn]")
     ?.addEventListener("click", () => window.history.back());
 
-  presetBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const { from, to } = presetRange(btn.dataset.preset, dataSpan().max);
-      fromInput.value = from;
-      toInput.value = to;
-      setActivePreset(btn.dataset.preset);
-      applyRange(from, to);
-    });
+  target.querySelector("[data-presets]")?.addEventListener("rurio:badge-toggle", (e) => {
+    const badge = e.target.closest("[data-preset]");
+    if (!badge) return;
+    const { from, to } = presetRange(badge.dataset.preset, dataSpan().max);
+    fromInput.value = from;
+    toInput.value = to;
+    setActivePreset(badge.dataset.preset);
+    applyRange(from, to);
   });
 
   // Add expense — append to the in-memory list and reflect it immediately.

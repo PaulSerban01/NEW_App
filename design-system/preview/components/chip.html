@@ -2,11 +2,45 @@
 <html lang="en" data-palette="teal" data-mode="light" data-frame="ios">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=1280">
-  <title>Chip & badge · Rurio</title>
+  <title>Chip &amp; badge · Rurio</title>
   <link rel="stylesheet" href="../../tokens.css">
   <link rel="stylesheet" href="../shared/site.css">
   <link rel="stylesheet" href="../shared/components.css">
   <link rel="stylesheet" href="../shared/frames.css">
+
+  <!-- Tailwind v4 in-browser build (same pattern as select.html / dropdown.html).
+       The <rurio-badge> component is built from Tailwind utilities; the @theme block
+       below maps our design-system tokens onto the color utilities it uses, so the
+       SAME class names render identically here and in the app. -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-subtle:         var(--bg-subtle);
+      --color-fg:             var(--fg-default);
+      --color-fg-muted:       var(--fg-muted);
+      --color-border-subtle:  var(--border-subtle);
+      --color-accent-subtle:  var(--accent-subtle);
+      --color-accent-text:    var(--accent-text);
+      --color-accent-border:  var(--accent-border);
+      --color-success-subtle: var(--success-subtle);
+      --color-success-text:   var(--success-text);
+      --color-success-border: var(--success-border);
+      --color-warning-subtle: var(--warning-subtle);
+      --color-warning-text:   var(--warning-text);
+      --color-warning-border: var(--warning-border);
+      --color-danger-subtle:  var(--danger-subtle);
+      --color-danger-text:    var(--danger-text);
+      --color-danger-border:  var(--danger-border);
+      --color-info-subtle:    var(--info-subtle);
+      --color-info-text:      var(--info-text);
+      --color-info-border:    var(--info-border);
+    }
+  </style>
+
+  <!-- Lucide icons (used by the removable badge's × button). -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <!-- Register the <rurio-badge> custom element. -->
+  <script type="module" src="../../components/index.js"></script>
 </head>
 <body data-crumb="Components" data-title="Chip &amp; badge" data-show-frame-toggle>
   <div class="ds-layout">
@@ -18,48 +52,122 @@
           <div class="ds-eyebrow">Component</div>
           <h1 class="ds-page-title">Chip &amp; badge</h1>
           <p class="ds-page-desc">
-            Inline status pill for short labels. Five variants cover the common semantic intents
-            (neutral, accent, success, warning, danger) plus an optional leading dot.
-            Pattern based on Tailwind Plus badges, themed with design-system tokens.
+            Inline status badge for short labels — <code>&lt;rurio-badge&gt;</code>.
+            Adapted from the Tailwind Plus badge set (pill variants only — the “flat”
+            variants are intentionally excluded) and mapped onto our six semantic
+            intents (neutral, accent, success, warning, danger, info). Built entirely
+            from Tailwind utility classes; base font size is <code>text-base</code> (16px).
           </p>
         </div>
 
         <section class="ds-section">
-          <h2 class="ds-section__title">Variants</h2>
+          <h2 class="ds-section__title">Pill</h2>
+          <p class="ds-section__desc">Fully-rounded badge (<code>shape="pill"</code>) with a subtle intent fill.</p>
           <div class="ds-board">
             <div class="ds-row">
-              <span class="rn-chip rn-chip--neutral">Neutral</span>
-              <span class="rn-chip rn-chip--accent">Accent</span>
-              <span class="rn-chip rn-chip--success">Success</span>
-              <span class="rn-chip rn-chip--warning">Warning</span>
-              <span class="rn-chip rn-chip--danger">Danger</span>
-            </div>
-            <p class="ds-section__desc" style="margin-top:12px;">
-              The <strong>neutral</strong> variant matches the Tailwind Plus &ldquo;gray&rdquo; badge
-              and is the default choice when the badge content isn&rsquo;t inherently positive or negative
-              (e.g. a generic status like &ldquo;În cultură&rdquo; or &ldquo;Active&rdquo;).
-            </p>
-          </div>
-        </section>
-
-        <section class="ds-section">
-          <h2 class="ds-section__title">With leading dot</h2>
-          <p class="ds-section__desc">For unread/online indicators or visual emphasis on the badge color.</p>
-          <div class="ds-board">
-            <div class="ds-row">
-              <span class="rn-chip rn-chip--neutral"><span class="rn-chip__dot"></span>Idle</span>
-              <span class="rn-chip rn-chip--success"><span class="rn-chip__dot"></span>Online</span>
-              <span class="rn-chip rn-chip--warning"><span class="rn-chip__dot"></span>Pending</span>
-              <span class="rn-chip rn-chip--danger"><span class="rn-chip__dot"></span>Offline</span>
+              <rurio-badge shape="pill" intent="neutral">Neutral</rurio-badge>
+              <rurio-badge shape="pill" intent="accent">Accent</rurio-badge>
+              <rurio-badge shape="pill" intent="success">Success</rurio-badge>
+              <rurio-badge shape="pill" intent="warning">Warning</rurio-badge>
+              <rurio-badge shape="pill" intent="danger">Danger</rurio-badge>
+              <rurio-badge shape="pill" intent="info">Info</rurio-badge>
             </div>
           </div>
         </section>
 
         <section class="ds-section">
-          <h2 class="ds-section__title">In context — list row</h2>
-          <p class="ds-section__desc">Neutral badge used on the parcels list to display agricultural status.</p>
-          <div class="ds-stage">
-            <div id="frame-demo"></div>
+          <h2 class="ds-section__title">Pill with border</h2>
+          <p class="ds-section__desc">Add the <code>outline</code> attribute for a 1px inset ring in the intent color.</p>
+          <div class="ds-board">
+            <div class="ds-row">
+              <rurio-badge shape="pill" outline intent="neutral">Neutral</rurio-badge>
+              <rurio-badge shape="pill" outline intent="accent">Accent</rurio-badge>
+              <rurio-badge shape="pill" outline intent="success">Success</rurio-badge>
+              <rurio-badge shape="pill" outline intent="warning">Warning</rurio-badge>
+              <rurio-badge shape="pill" outline intent="danger">Danger</rurio-badge>
+              <rurio-badge shape="pill" outline intent="info">Info</rurio-badge>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Pill with dot</h2>
+          <p class="ds-section__desc">Add <code>dot</code> for an online/status indicator. The dot uses the intent text color.</p>
+          <div class="ds-board">
+            <div class="ds-row">
+              <rurio-badge shape="pill" dot intent="neutral">Idle</rurio-badge>
+              <rurio-badge shape="pill" dot intent="success">Online</rurio-badge>
+              <rurio-badge shape="pill" dot intent="warning">Pending</rurio-badge>
+              <rurio-badge shape="pill" dot intent="danger">Offline</rurio-badge>
+              <rurio-badge shape="pill" dot intent="info">Syncing</rurio-badge>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Pill with remove button</h2>
+          <p class="ds-section__desc">Add <code>removable</code> for a trailing × button. Clicking it removes the badge and fires <code>rurio:badge-remove</code>.</p>
+          <div class="ds-board">
+            <div class="ds-row" id="removable-demo">
+              <rurio-badge shape="pill" removable intent="accent" value="grau">Grâu</rurio-badge>
+              <rurio-badge shape="pill" removable intent="accent" value="porumb">Porumb</rurio-badge>
+              <rurio-badge shape="pill" removable intent="accent" value="floarea">Floarea-soarelui</rurio-badge>
+            </div>
+            <p class="ds-section__desc" id="removable-log" style="margin-top:12px;">Click an × to remove a chip.</p>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Selectable (filter toggle)</h2>
+          <p class="ds-section__desc">Add <code>selectable</code> to turn the badge into an on/off toggle (used by the parcels filter chips). It's keyboard-operable and fires <code>rurio:badge-toggle</code> with <code>{ value, selected }</code>. Add <code>color="…"</code> for a per-item custom color (e.g. crop colors) — the selected state fills with that color and the leading <code>dot</code> uses it.</p>
+          <div class="ds-board">
+            <div class="ds-row">
+              <rurio-badge selectable shape="pill" value="arenda">Arendă</rurio-badge>
+              <rurio-badge selectable shape="pill" selected value="proprietate">Proprietate</rurio-badge>
+            </div>
+            <div class="ds-row" style="margin-top:12px;">
+              <rurio-badge selectable shape="pill" dot color="#1c8e44" value="grau">Grâu</rurio-badge>
+              <rurio-badge selectable shape="pill" dot color="#d99612" value="porumb">Porumb</rurio-badge>
+              <rurio-badge selectable shape="pill" dot color="#215ebd" selected value="floarea">Floarea-soarelui</rurio-badge>
+            </div>
+            <p class="ds-section__desc" style="margin-top:12px;">Click any chip to toggle it.</p>
+          </div>
+        </section>
+
+        <section class="ds-section">
+          <h2 class="ds-section__title">Tailwind colors</h2>
+          <p class="ds-section__desc">The eight standard Tailwind palettes, added as shared primitives in <code>tokens.css</code> and available as <code>intent</code> values alongside the semantic intents. Every text/background pair passes WCAG AA (yellow &amp; green use the <code>-800</code> text level; the rest use <code>-700</code>).</p>
+          <div class="ds-board">
+            <div class="ds-row">
+              <rurio-badge shape="pill" intent="gray">Gray</rurio-badge>
+              <rurio-badge shape="pill" intent="red">Red</rurio-badge>
+              <rurio-badge shape="pill" intent="yellow">Yellow</rurio-badge>
+              <rurio-badge shape="pill" intent="green">Green</rurio-badge>
+              <rurio-badge shape="pill" intent="blue">Blue</rurio-badge>
+              <rurio-badge shape="pill" intent="indigo">Indigo</rurio-badge>
+              <rurio-badge shape="pill" intent="purple">Purple</rurio-badge>
+              <rurio-badge shape="pill" intent="pink">Pink</rurio-badge>
+            </div>
+            <div class="ds-row" style="margin-top:12px;">
+              <rurio-badge shape="pill" outline intent="gray">Gray</rurio-badge>
+              <rurio-badge shape="pill" outline intent="red">Red</rurio-badge>
+              <rurio-badge shape="pill" outline intent="yellow">Yellow</rurio-badge>
+              <rurio-badge shape="pill" outline intent="green">Green</rurio-badge>
+              <rurio-badge shape="pill" outline intent="blue">Blue</rurio-badge>
+              <rurio-badge shape="pill" outline intent="indigo">Indigo</rurio-badge>
+              <rurio-badge shape="pill" outline intent="purple">Purple</rurio-badge>
+              <rurio-badge shape="pill" outline intent="pink">Pink</rurio-badge>
+            </div>
+            <div class="ds-row" style="margin-top:12px;">
+              <rurio-badge shape="pill" dot intent="gray">Gray</rurio-badge>
+              <rurio-badge shape="pill" dot intent="red">Red</rurio-badge>
+              <rurio-badge shape="pill" dot intent="yellow">Yellow</rurio-badge>
+              <rurio-badge shape="pill" dot intent="green">Green</rurio-badge>
+              <rurio-badge shape="pill" dot intent="blue">Blue</rurio-badge>
+              <rurio-badge shape="pill" dot intent="indigo">Indigo</rurio-badge>
+              <rurio-badge shape="pill" dot intent="purple">Purple</rurio-badge>
+              <rurio-badge shape="pill" dot intent="pink">Pink</rurio-badge>
+            </div>
           </div>
         </section>
 
@@ -67,13 +175,14 @@
           <h2 class="ds-section__title">Tokens</h2>
           <div class="ds-board">
             <table class="ds-table">
-              <thead><tr><th>Variant</th><th>Background</th><th>Foreground</th><th>Border</th></tr></thead>
+              <thead><tr><th>Intent</th><th>Background</th><th>Text</th><th>Outline ring</th></tr></thead>
               <tbody>
                 <tr><td>Neutral</td><td><code>--bg-subtle</code></td><td><code>--fg-muted</code></td><td><code>--border-subtle</code></td></tr>
-                <tr><td>Accent</td><td><code>--accent-subtle</code></td><td><code>--accent-text</code></td><td>25% accent-bg</td></tr>
-                <tr><td>Success</td><td><code>--success-subtle</code></td><td><code>--success-text</code></td><td>25% success-bg</td></tr>
-                <tr><td>Warning</td><td><code>--warning-subtle</code></td><td><code>--warning-text</code></td><td>25% warning-bg</td></tr>
-                <tr><td>Danger</td><td><code>--danger-subtle</code></td><td><code>--danger-text</code></td><td>25% danger-bg</td></tr>
+                <tr><td>Accent</td><td><code>--accent-subtle</code></td><td><code>--accent-text</code></td><td><code>--accent-border</code></td></tr>
+                <tr><td>Success</td><td><code>--success-subtle</code></td><td><code>--success-text</code></td><td><code>--success-border</code></td></tr>
+                <tr><td>Warning</td><td><code>--warning-subtle</code></td><td><code>--warning-text</code></td><td><code>--warning-border</code></td></tr>
+                <tr><td>Danger</td><td><code>--danger-subtle</code></td><td><code>--danger-text</code></td><td><code>--danger-border</code></td></tr>
+                <tr><td>Info</td><td><code>--info-subtle</code></td><td><code>--info-text</code></td><td><code>--info-border</code></td></tr>
               </tbody>
             </table>
           </div>
@@ -82,12 +191,17 @@
         <section class="ds-section">
           <h2 class="ds-section__title">Anatomy</h2>
           <div class="ds-board">
-            <pre class="ds-code"><code>&lt;span class="rn-chip rn-chip--neutral"&gt;În cultură&lt;/span&gt;
+            <pre class="ds-code"><code>&lt;!-- pill (default size = text-base / 16px) --&gt;
+&lt;rurio-badge shape="pill" intent="success"&gt;Activ&lt;/rurio-badge&gt;
 
-&lt;!-- with leading dot --&gt;
-&lt;span class="rn-chip rn-chip--success"&gt;
-  &lt;span class="rn-chip__dot"&gt;&lt;/span&gt;Online
-&lt;/span&gt;</code></pre>
+&lt;!-- pill with border --&gt;
+&lt;rurio-badge shape="pill" outline intent="info"&gt;Info&lt;/rurio-badge&gt;
+
+&lt;!-- pill with dot --&gt;
+&lt;rurio-badge shape="pill" dot intent="warning"&gt;În așteptare&lt;/rurio-badge&gt;
+
+&lt;!-- pill with remove button --&gt;
+&lt;rurio-badge shape="pill" removable intent="accent" value="grau"&gt;Grâu&lt;/rurio-badge&gt;</code></pre>
           </div>
         </section>
 
@@ -95,33 +209,15 @@
     </main>
   </div>
   <script src="../shared/site.js"></script>
-  <script src="../shared/frames.js"></script>
   <script>
-    RurioFrames.render('frame-demo', `
-      <div class="phone-screen phone-pad">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border-subtle);">
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--fg-default);">Parcela 12 Nord</div>
-            <div style="font-size:12px;color:var(--fg-muted);margin-top:2px;">Grâu de toamnă · 67.8 ha</div>
-          </div>
-          <span class="rn-chip rn-chip--neutral">În cultură</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border-subtle);">
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--fg-default);">Parcela 4 Vest</div>
-            <div style="font-size:12px;color:var(--fg-muted);margin-top:2px;">Sole în repaus · 8.4 ha</div>
-          </div>
-          <span class="rn-chip rn-chip--neutral">În repaus</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;">
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--fg-default);">Tractor JD-4520</div>
-            <div style="font-size:12px;color:var(--fg-muted);margin-top:2px;">În operare</div>
-          </div>
-          <span class="rn-chip rn-chip--success"><span class="rn-chip__dot"></span>Online</span>
-        </div>
-      </div>
-    `);
+    // Render Lucide icons (the removable badge's × button) on demand + on load.
+    document.addEventListener("rurio:icons-refresh", () => window.lucide?.createIcons());
+    window.addEventListener("load", () => window.lucide?.createIcons());
+
+    // Demo: surface the remove event from the "Pill with remove button" section.
+    document.getElementById("removable-demo").addEventListener("rurio:badge-remove", (e) => {
+      document.getElementById("removable-log").textContent = `Removed: ${e.detail.value}`;
+    });
   </script>
 </body>
 </html>

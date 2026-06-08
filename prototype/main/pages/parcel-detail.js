@@ -79,7 +79,7 @@ export function render(id, target) {
           <div class="mt-2 flex flex-wrap items-baseline gap-x-1.5">
             <span class="text-3xl font-bold leading-none text-teal-800">${p.area.toFixed(1)}</span>
             <span class="text-base font-semibold text-teal-800">ha</span>
-            <span class="inline-flex items-center rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-semibold text-teal-800">${p.property || "Propriu"}</span>
+            <rurio-badge intent="info" shape="pill" size="sm">${p.property || "Propriu"}</rurio-badge>
           </div>
 
           <div class="mt-1.5 flex items-center gap-1.5">

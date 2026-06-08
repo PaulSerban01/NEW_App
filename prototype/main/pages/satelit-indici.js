@@ -174,10 +174,9 @@ export function render(target, ctx) {
           <img data-display-img src="${SATELLITE_IMAGES[0].url}" alt="Imagine satelit" class="w-full h-64 object-cover" />
 
           <!-- Index toggle buttons -->
-          <div class="absolute top-3 right-3 flex gap-2">
+          <div class="absolute top-3 right-3 flex gap-2" data-index-row>
             ${INDICES.map((ix, i) => `
-              <span role="button" tabindex="0" data-index-btn="${ix}"
-                    class="px-2.5 py-1 rounded-md text-white text-sm font-semibold transition ${i === 0 ? "bg-teal-700 hover:bg-teal-600" : "bg-slate-600 hover:bg-slate-500"}">${ix}</span>
+              <rurio-badge selectable data-index-btn="${ix}" value="${ix}" ${i === 0 ? "selected" : ""}>${ix}</rurio-badge>
             `).join("")}
           </div>
 
@@ -408,26 +407,20 @@ export function render(target, ctx) {
   function selectSpectralIndex(ix) {
     selectedIndex = ix;
     indexBtns.forEach(btn => {
-      const active = btn.dataset.indexBtn === ix;
-      btn.classList.toggle("bg-teal-700", active);
-      btn.classList.toggle("hover:bg-teal-600", active);
-      btn.classList.toggle("bg-slate-600", !active);
-      btn.classList.toggle("hover:bg-slate-500", !active);
+      if (btn.dataset.indexBtn === ix) btn.setAttribute("selected", "");
+      else btn.removeAttribute("selected");
     });
   }
 
-  indexBtns.forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      selectSpectralIndex(btn.dataset.indexBtn);
-    });
-    btn.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        e.stopPropagation();
-        selectSpectralIndex(btn.dataset.indexBtn);
-      }
-    });
+  // Index badges sit on top of the image-zoom button — stop their clicks/keys
+  // from bubbling to it, and react to the badge's toggle event.
+  const indexRow = target.querySelector("[data-index-row]");
+  ["click", "keydown"].forEach(evt =>
+    indexRow?.addEventListener(evt, (e) => e.stopPropagation()));
+  indexRow?.addEventListener("rurio:badge-toggle", (e) => {
+    const badge = e.target.closest("[data-index-btn]");
+    if (!badge) return;
+    selectSpectralIndex(badge.dataset.indexBtn);
   });
 
   // Tap the displayed image → open the zoom viewer on the current selection.
