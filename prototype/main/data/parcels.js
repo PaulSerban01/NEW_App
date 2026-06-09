@@ -19,8 +19,12 @@ export function getParcel(id) {
 }
 
 export const STATUS_LABELS = {
-  active: "În cultură",
-  fallow: "În repaus",
+  erbicidare:  "Erbicidare",
+  semanat:     "Semănat",
+  pregatire:   "Pregătire sol",
+  fertilizare: "Fertilizare",
+  tratament:   "Tratament",
+  fallow:      "În repaus",
 };
 
 // Filter category options surfaced in the toolbar.

@@ -117,10 +117,10 @@ function formatDateTime(iso) {
 }
 function detail(icon, label, value) {
   return `
-    <div class="flex items-center gap-2 text-sm text-fg-muted">
+    <div class="flex items-center gap-2 text-base text-fg-muted">
       <i data-lucide="${icon}" class="size-4 shrink-0 text-fg-subtle"></i>
-      <span class="text-fg-subtle">${label}:</span>
-      <span class="truncate font-medium text-fg">${value}</span>
+      <span class="shrink-0 text-fg-subtle">${label}:</span>
+      <span class="min-w-0 truncate font-medium text-fg">${value}</span>
     </div>
   `;
 }
@@ -128,7 +128,7 @@ function statusBadge(u) {
   const s = STATUS[u.status] || STATUS.offline;
   const speed = u.status === "driving" && typeof u.speed === "number"
     ? ` · ${u.speed} km/h` : "";
-  return `<rurio-badge intent="${s.intent}" size="sm" dot>${s.label}${speed}</rurio-badge>`;
+  return `<rurio-badge intent="${s.intent}" dot>${s.label}${speed}</rurio-badge>`;
 }
 
 function utilajCard(u) {
@@ -147,7 +147,7 @@ function utilajCard(u) {
       <div class="min-w-0 flex-1">
         <p class="truncate text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">${u.farm}</p>
         <h3 class="mt-0.5 truncate text-lg font-bold text-fg">${u.name}</h3>
-        <p class="mt-0.5 truncate text-sm text-fg-muted">${u.model} <span class="text-fg-subtle">·</span> ${u.tip}</p>
+        <p class="mt-0.5 truncate text-base text-fg-muted">${u.model} <span class="text-fg-subtle">·</span> ${u.tip}</p>
 
         <div class="mt-2 space-y-1">
           ${detail("fuel",    "Litri",       `${u.liters.toLocaleString("ro-RO")} L`)}
@@ -351,7 +351,7 @@ export function render(target) {
       <div class="mx-auto max-w-2xl xl:mx-0">
 
         <header class="flex items-baseline justify-between gap-3">
-          <h1 class="text-3xl font-bold tracking-tight text-fg sm:text-4xl">Utilaje</h1>
+          <h1 class="text-2xl font-bold tracking-tight text-fg">Utilaje</h1>
           <p class="text-base font-medium tabular-nums text-fg-muted">
             <span class="text-fg" data-count-label>${total} utilaje</span>
           </p>

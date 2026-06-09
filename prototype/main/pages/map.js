@@ -344,7 +344,7 @@ export function render(target, ctx) {
       <rurio-summary-bar static></rurio-summary-bar>
 
       <!-- MAP TOOLBAR (border-b dropped — the app-header owns the single divider) -->
-      <div class="map-toolbar flex items-center gap-2 bg-surface px-3 py-2 text-neutral-700 dark:text-neutral-300">
+      <div class="map-toolbar flex items-center bg-surface px-3 py-2 text-neutral-700 dark:text-neutral-300">
         ${selectWidget("view",  MAP_VIEW_OPTIONS,  mapToolbarState.view)}
         ${selectWidget("layer", MAP_LAYER_OPTIONS, mapToolbarState.layer)}
 

@@ -99,13 +99,13 @@ function listItem(p, idx, activeId) {
         <div class="flex items-start justify-between gap-3">
           <p data-parcel-name class="truncate text-lg font-bold text-fg">${p.name}</p>
           <p class="shrink-0 text-base font-semibold tabular-nums text-fg">
-            ${p.area.toFixed(1)}<span class="ml-0.5 text-sm font-medium text-fg-muted"> ha</span>
+            ${p.area.toFixed(1)}<span class="ml-0.5 text-base font-medium text-fg-muted"> ha</span>
           </p>
         </div>
-        <p class="mt-0.5 truncate text-sm text-fg-muted">${p.apia}</p>
-        <p class="truncate text-sm text-fg-muted">${p.pl}</p>
-        <p class="mt-2 truncate text-sm text-fg-muted">${p.soi} <span class="text-fg-subtle">·</span> ${p.norm}</p>
-        <p class="mt-2 text-sm text-fg-subtle">${formatDate(p.sownAt)}</p>
+        <p class="mt-0.5 truncate text-base text-fg-muted">${p.apia}</p>
+        <p class="truncate text-base text-fg-muted">${p.pl}</p>
+        <p class="mt-2 truncate text-base text-fg-muted">${p.soi} <span class="text-fg-subtle">·</span> ${p.norm}</p>
+        <p class="mt-2 text-base text-fg-subtle">${formatDate(p.sownAt)}</p>
         <div class="mt-2 flex flex-wrap items-center gap-1.5">
           <rurio-badge intent="neutral">${STATUS_LABELS[p.status] || p.status}</rurio-badge>
           <rurio-badge intent="neutral" shape="pill" dot color="${color}">${p.crop}</rurio-badge>
